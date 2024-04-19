@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { FaCircleArrowRight } from "react-icons/fa6";
-import AddNew from "../../../components/AddNew";
+import AddNew from "../../../components/Admin/AddNewQuestion";
 
 function ExerciseYoga() {
-
   const [isOpen, setIsOpen] = useState(false);
 
   const handleAdd = () => {
