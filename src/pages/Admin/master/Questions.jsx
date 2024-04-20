@@ -1,16 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import AddNew from "../../../components/AddNew";
+import AddNewQuestion from "../../../components/Admin/AddNewQuestion";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import { MdDelete, MdEdit } from "react-icons/md";
+import Swal from "sweetalert2";
 
 function Questions() {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
-  const [serialCount, setSerialCount] = useState(0);
   const [nextPageName, setNextPageName] = useState("Next");
   const [nextPage, setNextPage] = useState(false);
+
+  const handleChangePages = () => {
+    setNextPage(!nextPage);
+    nextPage ? setNextPageName("Next") : setNextPageName("Previous");
+  };
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -18,7 +23,6 @@ function Questions() {
       .then((res) => {
         console.log(res.data);
         setGetQuestionsPart1(res.data);
-        setSerialCount(res.data?.length);
       })
       .catch((err) => {
         console.log(err);
@@ -49,6 +53,73 @@ function Questions() {
     });
   };
 
+  const editQuestion = async (val, part) => {
+    const see =
+      part === "1"
+        ? getQuestionsPart1.filter((item) => item?.id === val)
+        : getQuestionsPart2.filter((item) => item?.id === val);
+    console.log(see);
+    const { value: formValues } = await Swal.fire({
+      title: "Edit the question",
+      html: `
+    <div class="flex flex-col items-center justify-center text-black">
+      <div>
+        Part:<select id="swal-input1" name="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
+          <option value="1" ${part == 1 ? "selected" : ""}>1</option>
+          <option value="2" ${part == 2 ? "selected" : ""}>2</option>
+        </select>
+      </div>
+      <div>
+        Gender:<select id="swal-input2" name="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
+          <option value="female" ${see[0].gender === "female" ? "selected" : ""}>Female</option>
+          <option value="male" ${see[0].gender === "male" ? "selected" : ""}>Male</option>
+          <option value="both" ${see[0].gender === "both" ? "selected" : ""}>Both</option>
+        </select>
+      </div>
+      <div>
+        Language:<select id="swal-input3" name="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
+          <option value="gujarati" ${see[0].language === "gujarati" ? "selected" : ""}>Gujarati</option>
+          <option value="hindi" ${see[0].language === "hindi" ? "selected" : ""}>Hindi</option>
+          <option value="english" ${see[0].language === "english" ? "selected" : ""}>English</option>
+        </select>
+      </div>
+      <div class="flex items-center">Question:<textarea rows="5" cols="30" type="text" id="swal-input4" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${see[0]?.question}</textarea></div>
+    </div>
+  `,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        return [
+          document.getElementById("swal-input1").value,
+          document.getElementById("swal-input2").value,
+          document.getElementById("swal-input3").value,
+          document.getElementById("swal-input4").value,
+        ];
+      },
+    });
+    if (formValues) {
+      const formData = new FormData();
+      formData.append("question[part]", formValues[0]);
+      formData.append("question[gender]", formValues[1]);
+      formData.append("question[language]", formValues[2]);
+      formData.append("question[question]", formValues[3]);
+      axios.put(`api/v1/questions/${val}`, formData).then((res) => {
+        console.log(res);
+        part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your question is updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    }
+  };
+
   const deleteQuestion = (val, part) => {
     axios
       .delete(`/api/v1/questions/${val}`)
@@ -74,18 +145,13 @@ function Questions() {
               <div className="font-semibold text-xl">Questions List</div>
               <div className="flex-grow" />
               <button
-                onClick={() => {
-                  setNextPage(!nextPage);
-                  nextPage
-                    ? setNextPageName("Next")
-                    : setNextPageName("Previous");
-                }}
+                onClick={handleChangePages}
                 className="px-3 py-1.5 border rounded-md bg-gray-700 text-white  hover:scale-105  border-x-gray-300"
               >
                 {nextPageName} Page
               </button>
               <div className="flex-grow" />
-              <AddNew
+              <AddNewQuestion
                 handleApi={handleAddQuestion}
                 gender="gender"
                 language="Language"
@@ -145,7 +211,7 @@ function Questions() {
                             <TdComponent
                               things={
                                 <button
-                                  onClick={() => console.log("edit")}
+                                  onClick={() => editQuestion(val.id, val.part)}
                                   className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
                                 >
                                   <MdEdit size={20} />
@@ -185,9 +251,7 @@ function Questions() {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">
-                            {index + 1}
-                          </div>
+                          <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.question} />
@@ -203,7 +267,7 @@ function Questions() {
                           <TdComponent
                             things={
                               <button
-                                onClick={() => console.log("edit")}
+                                onClick={() => editQuestion(val.id, val.part)}
                                 className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
                               >
                                 <MdEdit size={20} />
