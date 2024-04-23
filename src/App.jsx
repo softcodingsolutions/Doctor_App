@@ -12,6 +12,8 @@ import Medicine from "./pages/Admin/master/Medicine";
 import ExerciseYoga from "./pages/Admin/master/ExerciseYoga";
 import NutritionSupplements from "./pages/Admin/master/NutritionSupplements";
 import DietMaster from "./pages/Admin/master/DietMaster";
+import UserMain from "./pages/User/UserMain";
+import UserDashboard from "./pages/User/UserDashboard";
 
 function App() {
   return (
@@ -20,9 +22,8 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="signup" element={<SignUpPage />} />
         {/* User */}
-        <Route path="" element={<AdminMain />}>
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="customers" element={<AdminCustomers />} />
+        <Route path="user" element={<UserMain />}>
+          <Route path="dashboard" element={<UserDashboard />} />
         </Route>
 
         {/* Admin */}

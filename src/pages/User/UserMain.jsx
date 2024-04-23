@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import AdminSidebar from "./AdminSidebar";
+import UserSidebar from "./UserSidebar";
 
-function AdminMain() {
+function UserMain() {
   const [showSidebar, onSetShowSidebar] = useState(false);
 
   const onSidebarHide = () => {
@@ -11,7 +11,7 @@ function AdminMain() {
 
   return (
     <div className="flex">
-      <AdminSidebar
+      <UserSidebar
         onSidebarHide={() => {
           onSetShowSidebar(false);
         }}
@@ -22,4 +22,4 @@ function AdminMain() {
   );
 }
 
-export default AdminMain;
+export default UserMain;

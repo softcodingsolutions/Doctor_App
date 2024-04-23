@@ -54,7 +54,7 @@ function SignUpPage() {
               icon: "success",
               title: "Signed up successfully",
             });
-
+            navigate("/");
             reset();
           })
           .catch((err) => {
