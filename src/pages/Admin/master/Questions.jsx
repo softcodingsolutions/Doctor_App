@@ -50,6 +50,16 @@ function Questions() {
     axios.post("/api/v1/questions", formData).then((res) => {
       console.log(res);
       part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+      if (res.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: "Your question is added.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     });
   };
 
@@ -71,19 +81,33 @@ function Questions() {
       </div>
       <div>
         Gender:<select id="swal-input2" name="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-          <option value="female" ${see[0].gender === "female" ? "selected" : ""}>Female</option>
-          <option value="male" ${see[0].gender === "male" ? "selected" : ""}>Male</option>
-          <option value="both" ${see[0].gender === "both" ? "selected" : ""}>Both</option>
+          <option value="female" ${
+            see[0].gender === "female" ? "selected" : ""
+          }>Female</option>
+          <option value="male" ${
+            see[0].gender === "male" ? "selected" : ""
+          }>Male</option>
+          <option value="both" ${
+            see[0].gender === "both" ? "selected" : ""
+          }>Both</option>
         </select>
       </div>
       <div>
         Language:<select id="swal-input3" name="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-          <option value="gujarati" ${see[0].language === "gujarati" ? "selected" : ""}>Gujarati</option>
-          <option value="hindi" ${see[0].language === "hindi" ? "selected" : ""}>Hindi</option>
-          <option value="english" ${see[0].language === "english" ? "selected" : ""}>English</option>
+          <option value="gujarati" ${
+            see[0].language === "gujarati" ? "selected" : ""
+          }>Gujarati</option>
+          <option value="hindi" ${
+            see[0].language === "hindi" ? "selected" : ""
+          }>Hindi</option>
+          <option value="english" ${
+            see[0].language === "english" ? "selected" : ""
+          }>English</option>
         </select>
       </div>
-      <div class="flex items-center">Question:<textarea rows="5" cols="30" type="text" id="swal-input4" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${see[0]?.question}</textarea></div>
+      <div class="flex items-center">Question:<textarea rows="5" cols="30" type="text" id="swal-input4" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${
+        see[0]?.question
+      }</textarea></div>
     </div>
   `,
       focusConfirm: false,
@@ -111,7 +135,7 @@ function Questions() {
             position: "top-end",
             icon: "success",
             title: "Updated!",
-            text: "Your question is updated.",
+            text: "Your question has been updated.",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -124,8 +148,27 @@ function Questions() {
     axios
       .delete(`/api/v1/questions/${val}`)
       .then((res) => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            part === "1"
+              ? handleGetQuestionsPart1()
+              : handleGetQuestionsPart2();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your question has been deleted.",
+              icon: "success",
+            });
+          }
+        });
         console.log(res);
-        part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
       })
       .catch((err) => {
         console.log(err);
