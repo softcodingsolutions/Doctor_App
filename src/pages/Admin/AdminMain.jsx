@@ -8,6 +8,7 @@ function AdminMain() {
   const onSidebarHide = () => {
     onSetShowSidebar(true);
   };
+
   return (
     <div className="flex">
       <AdminSidebar
@@ -16,7 +17,7 @@ function AdminMain() {
         }}
         showSidebar={showSidebar}
       />
-      <Outlet context={[onSidebarHide]}/>
+      <Outlet context={[onSidebarHide]} />
     </div>
   );
 }

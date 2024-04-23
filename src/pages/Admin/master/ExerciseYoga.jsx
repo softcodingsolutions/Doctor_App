@@ -1,47 +1,95 @@
-import React, { useState } from "react";
-import { FaCircleArrowRight } from "react-icons/fa6";
-import AddNew from "../../../components/Admin/AddNewQuestion";
+import { useState } from "react";
+import { MdDelete, MdEdit } from "react-icons/md";
+import ThComponent from "../../../components/ThComponent";
+import TdComponent from "../../../components/TdComponent";
+import AddNewExercise from "../../../components/Admin/AddNewExercise";
 
 function ExerciseYoga() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleAdd = () => {
-    setIsOpen(true);
-  };
+  const [getExercise, setGetExercise] = useState([]);
+  const handleGetExercise = () => {};
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white overflow-auto">
-        <div className="flex p-4 h-full flex-col">
-          <div className="">
+      <div className="rounded-lg bg-card h-[85vh] bg-white">
+        <div className="flex p-4 h-full flex-col space-y-8">
+          <div>
             <div className="flex items-center">
-              <div className="font-semibold text-xl">Exercise / Yoga</div>
+              <div className="font-semibold text-xl">Exercise & Yoga List</div>
               <div className="flex-grow" />
-
-              {isOpen ? (
-                <div className="animate-fade-left animate-delay-100 animate-once animate-ease-out sm:w-[45%] md:w-[31%] w-[90%] border border-gray-400 border-r-0 rounded-tl-[2rem] rounded-bl-[2rem] absolute top-[12rem] right-10 xl:top-[5rem] sm:top-[8rem] xl:right-10 sm:right-10 h-[82vh] bg-[#dfdbda] shadow-md z-50">
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className={`mx-3 my-3 `}
-                  >
-                    <FaCircleArrowRight size={38} />
-                  </button>
-                  <AddNew />
-                </div>
-              ) : (
-                <div className="animate-fade-right animate-duration-[700ms] animate-once animate-ease-out flex flex-col z-50 absolute right-10 xl:top-20 sm:top-32 xs:top-44 py-3.5">
-                  <button
-                    className="border border-black hover:bg-black hover:text-white p-1.5 rounded-md"
-                    onClick={handleAdd}
-                  >
-                    Add Exercise
-                  </button>
-                </div>
-              )}
+              <AddNewExercise
+                handleApi={handleGetExercise}
+                name="Add Exercise/Yoga"
+                title="Add New Exercise/Yoga"
+                exercise_name="Exercise/Yoga Name"
+                exercise_describe="Details"
+              />
             </div>
           </div>
 
-          <div className="flex-grow"></div>
+          <div className="animate-fade-left animate-delay-100 animate-once animate-ease-out overflow-auto h-[93%]">
+            <table className="w-full min-w-[460px] z-0">
+              <thead className="uppercase ">
+                <tr className="bg-[rgb(31,41,55)] text-white rounded-md">
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="No."
+                  />
+                  <ThComponent name="Exercise Name" />
+                  <ThComponent />
+                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
+                </tr>
+              </thead>
+              <tbody>
+                {getExercise.length === 0 ? (
+                  <tr>
+                    <th
+                      className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
+                      colSpan={8}
+                    >
+                      No Exercise & Yoga Found!
+                    </th>
+                  </tr>
+                ) : (
+                  getExercise.map((val, index) => {
+                    return (
+                      <tr key={val.id}>
+                        <td className="py-2 px-4 border-b border-b-gray-50">
+                          <div className="flex items-center">{index + 1}</div>
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.medicine_name} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <button
+                                onClick={() => console.log("edit")}
+                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
+                              >
+                                <MdEdit size={20} />
+                              </button>
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <button
+                                onClick={() => console.log("delete")}
+                                className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
+                              >
+                                <MdDelete size={20} />
+                              </button>
+                            }
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

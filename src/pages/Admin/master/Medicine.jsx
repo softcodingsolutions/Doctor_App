@@ -72,7 +72,7 @@ function Medicine() {
             position: "top-end",
             icon: "success",
             title: "Updated!",
-            text: "Your medicine is updated.",
+            text: "Your medicine has been updated.",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -86,7 +86,24 @@ function Medicine() {
       .delete(`/api/v1/medicines/${val}`)
       .then((res) => {
         console.log(res);
-        handleGetMedicines();
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleGetMedicines();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your medicine has been deleted.",
+              icon: "success",
+            });
+          }
+        });
       })
       .catch((err) => {
         console.log(err);
