@@ -23,7 +23,7 @@ function DietMaster() {
                 title="Add New Diet"
                 diet_code="Diet Code"
                 diet_name="Diet Name"
-                diet_describe="Details..."
+                diet_describe="Details"
               />
             </div>
           </div>
