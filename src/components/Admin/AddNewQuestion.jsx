@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
@@ -9,17 +9,28 @@ import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import Stack from "@mui/joy/Stack";
 import Add from "@mui/icons-material/Add";
-import { Textarea } from "@mui/joy";
 import { useForm } from "react-hook-form";
+import "react-transliterate/dist/index.css";
+import { ReactTransliterate } from "react-transliterate";
 
 function AddNewQuestion(props) {
-  const [open, setOpen] = React.useState(false);
+  const [text, setText] = useState({
+    hindi: "",
+    gujarati: "",
+    english: "",
+  });
+  const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
 
   const submittedData = (d) => {
+    console.log(text);
     console.log(d);
-    props.handleApi(d.gender, d.Question, d.Language, d.Part);
+    props.handleApi(d.gender, text.gujarati, text.english, text.hindi, d.Part);
     reset();
+    setText({
+      hindi: "",
+      gujarati: "",
+    });
   };
 
   return (
@@ -51,6 +62,7 @@ function AddNewQuestion(props) {
               <FormControl>
                 <FormLabel>{props.part} :-</FormLabel>
                 <Select
+                  required
                   placeholder="Choose any one..."
                   name={`${props.part}`}
                   {...register(`${props.part}`)}
@@ -64,6 +76,7 @@ function AddNewQuestion(props) {
                 <FormLabel>{props.label1} :-</FormLabel>
                 <Select
                   placeholder="Choose for whom..."
+                  required
                   name={`${props.gender}`}
                   {...register(`${props.gender}`)}
                 >
@@ -73,30 +86,80 @@ function AddNewQuestion(props) {
                 </Select>
               </FormControl>
 
-              <FormControl>
-                <FormLabel>{props.language} :-</FormLabel>
-                <Select
-                  placeholder="Choose one language..."
-                  name={`${props.language}`}
-                  {...register(`${props.language}`)}
-                >
-                  <Option value="gujarati">Gujarati</Option>
-                  <Option value="hindi">Hindi</Option>
-                  <Option value="english">English</Option>
-                </Select>
-              </FormControl>
-
-              <FormControl>
+              <FormControl fullWidth>
                 <FormLabel>{props.label2} :-</FormLabel>
-                <Textarea
-                  placeholder="Write something..."
-                  name={`${props.label2}`}
-                  {...register(`${props.label2}`)}
-                  minRows={5}
-                  required
-                />
-              </FormControl>
+                <div className="grid grid-cols-3 gap-2">
+                  <ReactTransliterate
+                    name={`question_english`}
+                    {...register(`question_english`)}
+                    value={text.english}
+                    lang="en"
+                    onChangeText={(value) => {
+                      setText((prev) => {
+                        return {
+                          ...prev,
+                          english: value,
+                        };
+                      });
+                    }}
+                    renderComponent={(props) => {
+                      return (
+                        <textarea {...props} placeholder="In English..." />
+                      );
+                    }}
+                    className="p-1 border border-gray-400 rounded-sm"
+                    rows={5}
+                    cols={12}
+                    required
+                  />
 
+                  <ReactTransliterate
+                    name={`question_hindi`}
+                    {...register(`question_hindi`)}
+                    value={text.hindi}
+                    lang="hi"
+                    onChangeText={(value) => {
+                      setText((prev) => {
+                        return {
+                          ...prev,
+                          hindi: value,
+                        };
+                      });
+                    }}
+                    renderComponent={(props) => {
+                      return <textarea {...props} placeholder="In Hindi..." />;
+                    }}
+                    className="p-1 border border-gray-400 rounded-sm"
+                    rows={5}
+                    cols={12}
+                    required
+                  />
+
+                  <ReactTransliterate
+                    name={`question_gujarati`}
+                    {...register(`question_gujarati`)}
+                    value={text.gujarati}
+                    lang="gu"
+                    onChangeText={(value) => {
+                      setText((prev) => {
+                        return {
+                          ...prev,
+                          gujarati: value,
+                        };
+                      });
+                    }}
+                    renderComponent={(props) => {
+                      return (
+                        <textarea {...props} placeholder="In Gujarati..." />
+                      );
+                    }}
+                    className="p-1 border border-gray-400 rounded-sm"
+                    rows={5}
+                    cols={12}
+                    required
+                  />
+                </div>
+              </FormControl>
               <Button type="submit">Submit</Button>
             </Stack>
           </form>

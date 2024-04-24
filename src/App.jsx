@@ -9,6 +9,10 @@ import AdminListFollowUp from "./pages/Admin/AdminListFollowUp";
 import Questions from "./pages/Admin/master/Questions";
 import ListFranchise from "./pages/Admin/master/ListFranchise";
 import Medicine from "./pages/Admin/master/Medicine";
+import DosDonts from "./pages/Admin/master/DosDonts";
+import AddReason from "./pages/Admin/master/AddReason";
+import Complain from "./pages/Admin/master/Complains";
+import FamilyReason from "./pages/Admin/master/FamilyReason";
 import ExerciseYoga from "./pages/Admin/master/ExerciseYoga";
 import NutritionSupplements from "./pages/Admin/master/NutritionSupplements";
 import DietMaster from "./pages/Admin/master/DietMaster";
@@ -35,6 +39,10 @@ function App() {
             <Route path="questions" element={<Questions />} />
             <Route path="medicine" element={<Medicine />} />
             <Route path="diet" element={<DietMaster />} />
+            <Route path="dos-donts" element={<DosDonts />} />
+            <Route path="add-reason" element={<AddReason />} />
+            <Route path="complains" element={<Complain />} />
+            <Route path="family-reason" element={<FamilyReason />} />
             <Route path="exercise-yoga" element={<ExerciseYoga />} />
             <Route
               path="nutrition-supplements"

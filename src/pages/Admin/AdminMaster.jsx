@@ -1,11 +1,22 @@
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 import { CiViewList } from "react-icons/ci";
-import { FaRegQuestionCircle } from "react-icons/fa";
+import {
+  FaAngleRight,
+  FaChevronLeft,
+  FaChevronRight,
+  FaRegQuestionCircle,
+} from "react-icons/fa";
 import { AiOutlineMedicineBox } from "react-icons/ai";
-import { MdFoodBank } from "react-icons/md";
+import {
+  MdError,
+  MdFamilyRestroom,
+  MdFoodBank,
+  MdOutlinePostAdd,
+} from "react-icons/md";
 import { GrYoga } from "react-icons/gr";
 import { LiaCapsulesSolid } from "react-icons/lia";
-import { useState } from "react";
+import { BsNintendoSwitch } from "react-icons/bs";
+import { useEffect, useRef, useState } from "react";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 
 const masterButtons = [
@@ -45,21 +56,77 @@ const masterButtons = [
     icons: <LiaCapsulesSolid size={18} />,
     to: "nutrition-supplements",
   },
+  {
+    id: "7",
+    name: "Dos/Don'ts",
+    icons: <BsNintendoSwitch size={18} />,
+    to: "dos-donts",
+  },
+  {
+    id: "8",
+    name: "Family Reason",
+    icons: <MdFamilyRestroom size={18} />,
+    to: "family-reason",
+  },
+  {
+    id: "9",
+    name: "Complains",
+    icons: <MdError size={18} />,
+    to: "complains",
+  },
+  {
+    id: "10",
+    name: "Add Reason",
+    icons: <MdOutlinePostAdd size={18} />,
+    to: "add-reason",
+  },
 ];
+
+const TRANSLATE_AMOUNT = 100;
 
 function AdminMaster() {
   const context = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
+  const [translate, setTranslate] = useState(0);
+  const [isLeftVisible, setIsLeftVisible] = useState(false);
+  const [isRightVisible, setIsRightVisible] = useState(true);
+  const containerRef = useRef();
+
+  useEffect(() => {
+    if (containerRef == null) return;
+
+    const observer = new ResizeObserver((entries) => {
+      const container = entries[0]?.target;
+      if (container == null) return;
+
+      setIsLeftVisible(translate > 0);
+      setIsRightVisible(
+        translate + container.clientWidth < container.scrollWidth
+      );
+    });
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [translate, selectedId]);
 
   return (
     <div className="flex w-full">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2">
+      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-full sm:flex p-2 items-end">
-          <div className="sm:flex-grow flex justify-between ">
-            <div className="grid grid-cols-4 xl:grid-cols-12 lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-2.5 p-1 min-w-fit">
+          <div
+            ref={containerRef}
+            className="sm:flex-grow flex justify-between overflow-x-hidden"
+          >
+            <div
+              style={{ transform: `translateX(-${translate}px)` }}
+              className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"
+            >
               {masterButtons.map((res) => {
                 return (
                   <Link
@@ -79,6 +146,40 @@ function AdminMaster() {
                 );
               })}
             </div>
+            {isLeftVisible && (
+              <div className=" absolute left-[16rem] top-[1.2rem] p-1 h-11 hidden xl:flex items-center justify-start bg-gradient-to-r w-14 from-white from-60% to-transparent">
+                <FaChevronLeft
+                  onClick={() => {
+                    setTranslate((translate) => {
+                      const newTranslate = translate - TRANSLATE_AMOUNT;
+                      if (newTranslate <= 0) return 0;
+                      return newTranslate;
+                    });
+                  }}
+                  className="aspect-square cursor-pointer w-auto h-fit p-2 hover:bg-gray-200 rounded-full"
+                />
+              </div>
+            )}
+            {isRightVisible && (
+              <div className="absolute right-4 top-[1.2rem] p-1 h-11 hidden xl:flex items-center justify-end bg-gradient-to-l w-14 from-white from-70% to-transparent">
+                <FaChevronRight
+                  onClick={() => {
+                    setTranslate((translate) => {
+                      if (containerRef.current === null) return translate;
+                      const newTranslate = translate + TRANSLATE_AMOUNT;
+                      const edge = containerRef.current.scrollWidth;
+                      const width = containerRef.current.clientWidth;
+                      if (newTranslate + width >= edge) {
+                        console.log(edge - width);
+                        return edge - width + 110;
+                      }
+                      return newTranslate;
+                    });
+                  }}
+                  className="aspect-square cursor-pointer w-auto h-fit p-2 hover:bg-gray-200 rounded-full"
+                />
+              </div>
+            )}
             <button
               onClick={context[0]}
               type="button"
