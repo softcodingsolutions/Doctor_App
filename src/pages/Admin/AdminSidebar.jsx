@@ -27,7 +27,7 @@ function AdminSidebar({ onSidebarHide, showSidebar }) {
     {
       id: "2",
       title: "Master",
-      to: "master",
+      to: "master/list-franchise",
       icons: <FaLightbulb size={18} />,
     },
     {

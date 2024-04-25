@@ -41,15 +41,24 @@ function Questions() {
       });
   };
 
-  const handleAddQuestion = (gender, question, language, part) => {
+  const handleAddQuestion = (
+    gender,
+    question_gujarati,
+    question_hindi,
+    question_english,
+    Part,
+    reset
+  ) => {
     const formData = new FormData();
+    console.log();
     formData.append("question[gender]", gender);
-    formData.append("question[question]", question);
-    formData.append("question[language]", language);
-    formData.append("question[part]", part);
+    formData.append("question[question_gujarati]", question_gujarati);
+    formData.append("question[question_hindi]", question_hindi);
+    formData.append("question[question_english]", question_english);
+    formData.append("question[part]", Part);
     axios.post("/api/v1/questions", formData).then((res) => {
       console.log(res);
-      part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+      Part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
       if (res.data) {
         Swal.fire({
           position: "top-end",
@@ -63,9 +72,9 @@ function Questions() {
     });
   };
 
-  const editQuestion = async (val, part) => {
+  const editQuestion = async (val, Part) => {
     const see =
-      part === "1"
+      Part === "1"
         ? getQuestionsPart1.filter((item) => item?.id === val)
         : getQuestionsPart2.filter((item) => item?.id === val);
     console.log(see);
@@ -75,8 +84,8 @@ function Questions() {
     <div class="flex flex-col items-center justify-center text-black">
       <div>
         Part:<select id="swal-input1" name="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-          <option value="1" ${part == 1 ? "selected" : ""}>1</option>
-          <option value="2" ${part == 2 ? "selected" : ""}>2</option>
+          <option value="1" ${Part == 1 ? "selected" : ""}>1</option>
+          <option value="2" ${Part == 2 ? "selected" : ""}>2</option>
         </select>
       </div>
       <div>
@@ -105,9 +114,12 @@ function Questions() {
           }>English</option>
         </select>
       </div>
-      <div class="flex items-center">Question:<textarea rows="5" cols="30" type="text" id="swal-input4" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${
-        see[0]?.question
-      }</textarea></div>
+      <div class="flex items-center">
+        Question:
+        <textarea rows="5" cols="30" type="text" id="swal-input4" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${
+          see[0]?.question
+        }
+      </textarea></div>
     </div>
   `,
       focusConfirm: false,
@@ -126,10 +138,12 @@ function Questions() {
       formData.append("question[part]", formValues[0]);
       formData.append("question[gender]", formValues[1]);
       formData.append("question[language]", formValues[2]);
-      formData.append("question[question]", formValues[3]);
+      formData.append("question[question_gujarati]", formValues[3]);
+      formData.append("question[question_hindi]", formValues[4]);
+      formData.append("question[question_english]", formValues[5]);
       axios.put(`api/v1/questions/${val}`, formData).then((res) => {
         console.log(res);
-        part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+        Part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
         if (res.data) {
           Swal.fire({
             position: "top-end",
@@ -144,7 +158,7 @@ function Questions() {
     }
   };
 
-  const deleteQuestion = (val, part) => {
+  const deleteQuestion = (val, Part) => {
     axios
       .delete(`/api/v1/questions/${val}`)
       .then((res) => {
@@ -158,7 +172,7 @@ function Questions() {
           confirmButtonText: "Yes, delete it!",
         }).then((result) => {
           if (result.isConfirmed) {
-            part === "1"
+            Part === "1"
               ? handleGetQuestionsPart1()
               : handleGetQuestionsPart2();
             Swal.fire({
@@ -216,6 +230,8 @@ function Questions() {
                     name="No."
                   />
                   <ThComponent name="In English" />
+                  <ThComponent name="In Hindi" />
+                  <ThComponent name="In Gujarati" />
                   <ThComponent name="For" />
                   <ThComponent />
                   <ThComponent />
@@ -239,6 +255,12 @@ function Questions() {
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <div className="flex items-center">{index + 1}</div>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.question} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.question} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.question} />
@@ -295,6 +317,12 @@ function Questions() {
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
                           <div className="flex items-center">{index + 1}</div>
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.question} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.question} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.question} />

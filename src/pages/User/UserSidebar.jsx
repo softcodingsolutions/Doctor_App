@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useState } from "react";
 
-function UserSidebar({ onSidebarHide, showSidebar }) {
+function UserSidebar({ onSidebarHide, showSidebar, user }) {
   const navigate = useNavigate();
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
   const [selected, setSelected] = useState("0");
@@ -78,13 +78,20 @@ function UserSidebar({ onSidebarHide, showSidebar }) {
 
       <div className="flex-shrink-0 overflow-hidden p-2">
         <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
-          <img
-            src={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdbB5giaOWV-eex1n8vAKr47X363dGA7UsgYJ2o-D2fg&s`}
-            alt=""
-            className={"size-10 rounded-full"}
-          />
+          <div
+            onClick={() =>
+              toggleLogoutMenu(setIsLogoutMenuOpen, isLogoutMenuOpen)
+            }
+            className={
+              "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
+            }
+          >
+            <div className="text-lg font-semibold">
+              {user.first_name[0]}{user.last_name[0]}
+            </div>
+          </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">
-            User
+            {user.first_name} {user.last_name}
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <img

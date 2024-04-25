@@ -15,7 +15,7 @@ function ListFranchise() {
         <div className="flex p-4 h-full flex-col space-y-8">
           <div>
             <div className="flex items-center">
-              <div className="font-semibold text-xl">Diet List</div>
+              <div className="font-semibold text-xl">Franchise List</div>
               <div className="flex-grow" />
               <AddListFranchise
                 handleApi={handleAddDiet}
