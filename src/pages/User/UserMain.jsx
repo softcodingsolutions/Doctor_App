@@ -5,7 +5,7 @@ import axios from "axios";
 
 function UserMain() {
   const [showSidebar, onSetShowSidebar] = useState(false);
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(0);
 
   const onSidebarHide = () => {
     onSetShowSidebar(true);

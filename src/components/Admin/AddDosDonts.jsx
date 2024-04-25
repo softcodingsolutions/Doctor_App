@@ -1,32 +1,34 @@
+import { Add } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  DialogTitle,
+  FormControl,
+  FormLabel,
+  Modal,
+  ModalClose,
+  ModalDialog,
+  Option,
+  Select,
+  Stack,
+} from "@mui/joy";
 import React, { useState } from "react";
-import Button from "@mui/joy/Button";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Modal from "@mui/joy/Modal";
-import ModalDialog from "@mui/joy/ModalDialog";
-import DialogTitle from "@mui/joy/DialogTitle";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
-import Stack from "@mui/joy/Stack";
-import Add from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
-import "react-transliterate/dist/index.css";
 import { ReactTransliterate } from "react-transliterate";
-import { Box, ModalClose } from "@mui/joy";
 
-function AddNewQuestion(props) {
+function AddDosDonts(props) {
+  const [open, setOpen] = useState(false);
   const [text, setText] = useState({
     hindi: "",
     gujarati: "",
     english: "",
   });
-  const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
 
   const submittedData = (d) => {
     console.log(text);
     console.log(d);
-    props.handleApi(d.gender, text.gujarati, text.english, text.hindi, d.Part);
+    props.handleApi(d.do_dont, text.hindi, text.gujarati, text.english);
     reset();
     setText({
       hindi: "",
@@ -62,38 +64,22 @@ function AddNewQuestion(props) {
             }}
           >
             <Stack spacing={3}>
-              <Box className="flex space-x-4">
-                <FormControl className="w-1/2">
-                  <FormLabel>{props.part} :-</FormLabel>
-                  <Select
-                    className="w-full"
-                    required
-                    placeholder="Choose any one..."
-                    name={`${props.part}`}
-                    {...register(`${props.part}`)}
-                  >
-                    <Option value="1">1</Option>
-                    <Option value="2">2</Option>
-                  </Select>
-                </FormControl>
-
-                <FormControl className="w-1/2">
-                  <FormLabel>{props.label1} :-</FormLabel>
-                  <Select
-                    placeholder="Choose gender..."
-                    required
-                    name={`${props.gender}`}
-                    {...register(`${props.gender}`)}
-                  >
-                    <Option value="female">Female</Option>
-                    <Option value="male">Male</Option>
-                    <Option value="both">Both</Option>
-                  </Select>
-                </FormControl>
-              </Box>
+              <FormControl>
+                <FormLabel>{props.do_dont} :-</FormLabel>
+                <Select
+                  className="w-full"
+                  required
+                  placeholder="Choose any one..."
+                  name={`do_dont`}
+                  {...register(`do_dont`)}
+                >
+                  <Option value="do">Do</Option>
+                  <Option value="dont">Don't</Option>
+                </Select>
+              </FormControl>
 
               <FormControl>
-                <FormLabel>{props.label2} :-</FormLabel>
+                <FormLabel>{props.details} :-</FormLabel>
                 <Box className="flex flex-col items-center w-full">
                   <ReactTransliterate
                     name={`question_english`}
@@ -166,6 +152,7 @@ function AddNewQuestion(props) {
                   />
                 </Box>
               </FormControl>
+
               <Button type="submit">Submit</Button>
             </Stack>
           </form>
@@ -175,4 +162,4 @@ function AddNewQuestion(props) {
   );
 }
 
-export default AddNewQuestion;
+export default AddDosDonts;

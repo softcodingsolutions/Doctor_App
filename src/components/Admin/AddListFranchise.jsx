@@ -6,6 +6,7 @@ import {
   FormLabel,
   Input,
   Modal,
+  ModalClose,
   ModalDialog,
   Stack,
 } from "@mui/joy";
@@ -39,6 +40,7 @@ function AddListFranchise(props) {
         }}
       >
         <ModalDialog>
+          <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
             onSubmit={(event) => {
