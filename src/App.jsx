@@ -20,6 +20,7 @@ import LabTest from "./pages/Admin/master/LabTest";
 import UserMain from "./pages/User/UserMain";
 import UserDashboard from "./pages/User/UserDashboard";
 import WeightReason from "./pages/Admin/master/WeightReason";
+import TreatmentQuestionPart1 from "./pages/Admin/treatment/TreatmentQuestionPart1";
 
 function App() {
   return (
@@ -52,7 +53,9 @@ function App() {
               element={<NutritionSupplements />}
             />
           </Route>
-          <Route path="treatment" element={<AdminTreatment />} />
+          <Route path="treatment" element={<AdminTreatment />}>
+            <Route path="question_part1" element={<TreatmentQuestionPart1 />} />
+          </Route>
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
         </Route>
 

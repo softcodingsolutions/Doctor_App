@@ -6,16 +6,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { MdOutlineGppGood } from "react-icons/md";
-import { Option, Select, Stack } from "@mui/joy";
+import { Option, Select } from "@mui/joy";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
   const [selected, setSelected] = useState(
-    localStorage.getItem("sidebarSelected_id")
-      ? localStorage.getItem("sidebarSelected_id")
-      : "1"
+    localStorage.getItem("sidebarSelected_id") || "1"
   );
+
+  const handleSelectChange = (event) => {
+    setSelected(event.target.value);
+  };
 
   const sidebarItems = [
     {
@@ -48,7 +50,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "5",
       title: "Treatment",
-      to: "treatment",
+      to: "treatment/question_part1",
       icons: <MdOutlineGppGood size={18} />,
     },
   ];
@@ -66,6 +68,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     localStorage.setItem("sidebarSelected_id", selected);
   }, [selected]);
 
+  console.log(selected);
   return (
     <div
       className={clsx(
@@ -114,10 +117,10 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
 
         <Select
           style={{ backgroundColor: "transparent", color: "white" }}
-          className="mt-4 mx-1"
+          className={clsx("xl:mt-4 mt-6 mx-1")}
           value={selected}
           placeholder="Select"
-          onChange={(e) => setSelected(e?.target?.value)}
+          onChange={handleSelectChange}
         >
           {masterItems.map((res) => (
             <Option key={res.id} value={res.id}>

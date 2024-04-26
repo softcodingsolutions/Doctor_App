@@ -192,7 +192,7 @@ function AdminMaster() {
             <button
               onClick={context[0]}
               type="button"
-              className="absolute end-5 sm:hidden hover:scale-110 w-fit"
+              className="absolute end-5 top-6 sm:hidden hover:scale-110 w-fit"
             >
               <img
                 src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
