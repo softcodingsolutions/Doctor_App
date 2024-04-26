@@ -13,7 +13,7 @@ import {
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-function AddNewExercise(props) {
+function AddNewComplain(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
 
@@ -80,4 +80,4 @@ function AddNewExercise(props) {
   );
 }
 
-export default AddNewExercise;
+export default AddNewComplain;

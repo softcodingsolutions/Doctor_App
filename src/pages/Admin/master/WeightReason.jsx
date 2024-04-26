@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
-import AddNewFamily from "../../../components/Admin/AddNewFamily";
 import { MdDelete, MdEdit } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
+import { useEffect, useState } from "react";
+import AddNewWeight from "../../../components/Admin/AddNewWeight";
 
-function FamilyReason() {
-  const [getFamily, setGetFamily] = useState([]);
+function WeightReason() {
+  const [getWeight, setGetWeight] = useState([]);
 
-  const handleGetFamily = () => {};
-
-  const handleAddFamily = () => {};
-
-  const deleteFamily = (val) => {};
-
-  const editFamily = (val) => {};
+  const handleGetWeight = () => {};
+  const handleAddWeight = () => {};
+  const editWeight = () => {};
+  const deleteWeight = () => {};
 
   useEffect(() => {
-    handleGetFamily();
+    handleGetWeight();
   }, []);
 
   return (
@@ -25,12 +22,13 @@ function FamilyReason() {
         <div className="flex p-4 h-full flex-col space-y-8">
           <div>
             <div className="flex items-center">
-              <div className="font-semibold text-xl">Family Reason List</div>
+              <div className="font-semibold text-xl">Weight Reason List</div>
               <div className="flex-grow" />
-              <AddNewFamily
-                handleApi={handleAddFamily}
-                name="Add Family Reason"
-                title="Add New Reason"
+              <AddNewWeight
+                handleApi={handleAddWeight}
+                name="Add Weight Reason"
+                title="Add New Weight Reason"
+                weight_name="Weight Name"
               />
             </div>
           </div>
@@ -43,39 +41,39 @@ function FamilyReason() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="No."
                   />
-                  <ThComponent name="Family Name" />
+                  <ThComponent name="Weight Name" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
               <tbody>
-                {getFamily.length === 0 ? (
+                {getWeight.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                       colSpan={8}
                     >
-                      No Family Reason Found!
+                      No Weight Reasons Found!
                     </th>
                   </tr>
                 ) : (
-                  getFamily.map((val, index) => {
+                  getWeight.map((val, index) => {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.code} />
+                          <TdComponent things={val.medicine_name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.chart_english} />
+                          <TdComponent things={val.medicine_quantity} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
                             things={
                               <button
-                                onClick={() => editFamily(val.id)}
+                                onClick={() => editWeight(val.id)}
                                 className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
                               >
                                 <MdEdit size={20} />
@@ -87,7 +85,7 @@ function FamilyReason() {
                           <TdComponent
                             things={
                               <button
-                                onClick={() => deleteFamily(val.id)}
+                                onClick={() => deleteWeight(val.id)}
                                 className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
                               >
                                 <MdDelete size={20} />
@@ -108,4 +106,4 @@ function FamilyReason() {
   );
 }
 
-export default FamilyReason;
+export default WeightReason;

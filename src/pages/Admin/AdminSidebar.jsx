@@ -5,6 +5,8 @@ import { IoMdHome } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
+import { MdOutlineGppGood } from "react-icons/md";
+import { Option, Select, Stack } from "@mui/joy";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -29,16 +31,25 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <IoPersonSharp size={18} />,
     },
     {
+      id: "4",
+      title: "List Follow Up",
+      to: "list-follow-up",
+      icons: <FaWpforms size={18} />,
+    },
+  ];
+
+  const masterItems = [
+    {
       id: "3",
       title: "Master",
       to: "master/list-franchise",
       icons: <FaLightbulb size={18} />,
     },
     {
-      id: "4",
-      title: "List Follow Up",
-      to: "list-follow-up",
-      icons: <FaWpforms size={18} />,
+      id: "5",
+      title: "Treatment",
+      to: "treatment",
+      icons: <MdOutlineGppGood size={18} />,
     },
   ];
 
@@ -100,6 +111,29 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             <div className="block sm:hidden xl:block flex-grow" />
           </Link>
         ))}
+
+        <Select
+          style={{ backgroundColor: "transparent", color: "white" }}
+          className="mt-4 mx-1"
+          value={selected}
+          placeholder="Select"
+          onChange={(e) => setSelected(e?.target?.value)}
+        >
+          {masterItems.map((res) => (
+            <Option key={res.id} value={res.id}>
+              {" "}
+              <Link
+                to={res.to}
+                key={res.id}
+                className={"w-full flex items-center space-x-2"}
+                onClick={() => setSelected(res.id)}
+              >
+                <div>{res.icons}</div>
+                <div>{res.title}</div>
+              </Link>
+            </Option>
+          ))}
+        </Select>
         <div className="flex-grow" />
       </div>
 

@@ -10,10 +10,11 @@ import {
   ModalDialog,
   Stack,
 } from "@mui/joy";
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-function AddNewExercise(props) {
+function AddNewWeight(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
 
@@ -51,22 +52,12 @@ function AddNewExercise(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.exercise_name} :-</FormLabel>
+                <FormLabel>{props.weight_name} :-</FormLabel>
                 <Input
                   placeholder="Name..."
-                  name={`exercise_name`}
-                  {...register(`exercise_name`)}
+                  name={`weight_name`}
+                  {...register(`weight_name`)}
                   autoFocus
-                  required
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.exercise_describe} :-</FormLabel>
-                <Input
-                  placeholder="Describe..."
-                  name={`exercise_describe`}
-                  {...register(`exercise_describe`)}
                   required
                 />
               </FormControl>
@@ -80,4 +71,4 @@ function AddNewExercise(props) {
   );
 }
 
-export default AddNewExercise;
+export default AddNewWeight;
