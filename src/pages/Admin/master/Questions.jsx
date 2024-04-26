@@ -9,13 +9,8 @@ import Swal from "sweetalert2";
 function Questions() {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
-  const [nextPageName, setNextPageName] = useState("Next");
-  const [nextPage, setNextPage] = useState(false);
-
-  const handleChangePages = () => {
-    setNextPage(!nextPage);
-    nextPage ? setNextPageName("Next") : setNextPageName("Previous");
-  };
+  const [showPart1, setShowPart1] = useState(true);
+  const [showPart2, setShowPart2] = useState(false);
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -46,8 +41,7 @@ function Questions() {
     question_gujarati,
     question_hindi,
     question_english,
-    Part,
-    reset
+    Part
   ) => {
     const formData = new FormData();
     console.log();
@@ -159,19 +153,20 @@ function Questions() {
   };
 
   const deleteQuestion = (val, Part) => {
-    axios
-      .delete(`/api/v1/questions/${val}`)
-      .then((res) => {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "You won't be able to revert this!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, delete it!",
-        }).then((result) => {
-          if (result.isConfirmed) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/questions/${val}`)
+          .then((res) => {
+            console.log(res);
             Part === "1"
               ? handleGetQuestionsPart1()
               : handleGetQuestionsPart2();
@@ -180,18 +175,17 @@ function Questions() {
               text: "Your question has been deleted.",
               icon: "success",
             });
-          }
-        });
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   };
 
   useEffect(() => {
-    nextPage ? handleGetQuestionsPart2() : handleGetQuestionsPart1();
-  }, [nextPage]);
+    showPart2 ? handleGetQuestionsPart2() : handleGetQuestionsPart1();
+  }, [showPart1, showPart2]);
 
   return (
     <div className="w-full p-2">
@@ -201,12 +195,34 @@ function Questions() {
             <div className="flex items-center">
               <div className="font-semibold text-xl">Questions List</div>
               <div className="flex-grow" />
-              <button
-                onClick={handleChangePages}
-                className="px-3 py-1.5 border rounded-md bg-gray-700 text-white  hover:scale-105  border-x-gray-300"
-              >
-                {nextPageName} Page
-              </button>
+              <div className="space-x-1">
+                <button
+                  onClick={() => {
+                    setShowPart2(false);
+                    setShowPart1(true);
+                  }}
+                  className={`px-3 py-1.5 border-[1.5px] rounded-md ${
+                    showPart1
+                      ? "scale-105 bg-gray-700 text-white"
+                      : "bg-gray-50"
+                  } hover:scale-105 border-x-gray-300`}
+                >
+                  Part 1
+                </button>
+                <button
+                  onClick={() => {
+                    setShowPart1(false);
+                    setShowPart2(true);
+                  }}
+                  className={`px-3 py-1.5 rounded-md ${
+                    showPart2
+                      ? "scale-105 bg-gray-700 text-white"
+                      : "bg-gray-50"
+                  } hover:scale-105  border-x-gray-300 border-[1.5px]`}
+                >
+                  Part 2
+                </button>
+              </div>
               <div className="flex-grow" />
               <AddNewQuestion
                 handleApi={handleAddQuestion}
@@ -239,14 +255,14 @@ function Questions() {
                 </tr>
               </thead>
               <tbody>
-                {!nextPage ? (
+                {showPart1 ? (
                   getQuestionsPart1.length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                         colSpan={8}
                       >
-                        No Questions Found!
+                        No Questions found in Part 1!
                       </th>
                     </tr>
                   ) : (
@@ -302,66 +318,71 @@ function Questions() {
                       );
                     })
                   )
-                ) : getQuestionsPart2.length === 0 ? (
-                  <tr>
-                    <th
-                      className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
-                      colSpan={8}
-                    >
-                      No Questions Found!
-                    </th>
-                  </tr>
-                ) : (
-                  getQuestionsPart2.map((val, index) => {
-                    return (
-                      <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">{index + 1}</div>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={`${val.gender[0].toUpperCase()}${val.gender.slice(
-                              1
-                            )}`}
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editQuestion(val.id, val.part)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => deleteQuestion(val.id, val.part)}
-                                className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
-                              >
-                                <MdDelete size={20} />
-                              </button>
-                            }
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
+                ) : null}
+                {showPart2 ? (
+                  getQuestionsPart2.length === 0 ? (
+                    <tr>
+                      <th
+                        className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
+                        colSpan={8}
+                      >
+                        No Questions Found in Part 2!
+                      </th>
+                    </tr>
+                  ) : (
+                    getQuestionsPart2.map((val, index) => {
+                      return (
+                        <tr key={val.id}>
+                          <td className="py-2 px-4 border-b border-b-gray-50">
+                            <div className="flex items-center">{index + 1}</div>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.question} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.question} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.question} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent
+                              things={`${val.gender[0].toUpperCase()}${val.gender.slice(
+                                1
+                              )}`}
+                            />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent
+                              things={
+                                <button
+                                  onClick={() => editQuestion(val.id, val.part)}
+                                  className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
+                                >
+                                  <MdEdit size={20} />
+                                </button>
+                              }
+                            />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent
+                              things={
+                                <button
+                                  onClick={() =>
+                                    deleteQuestion(val.id, val.part)
+                                  }
+                                  className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
+                                >
+                                  <MdDelete size={20} />
+                                </button>
+                              }
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )
+                ) : null}
               </tbody>
             </table>
           </div>

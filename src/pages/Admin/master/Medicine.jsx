@@ -82,32 +82,32 @@ function Medicine() {
   };
 
   const deleteMedicine = (val) => {
-    axios
-      .delete(`/api/v1/medicines/${val}`)
-      .then((res) => {
-        console.log(res);
-        Swal.fire({
-          title: "Are you sure?",
-          text: "You won't be able to revert this!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, delete it!",
-        }).then((result) => {
-          if (result.isConfirmed) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/medicines/${val}`)
+          .then((res) => {
+            console.log(res);
             handleGetMedicines();
             Swal.fire({
               title: "Deleted!",
               text: "Your medicine has been deleted.",
               icon: "success",
             });
-          }
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   };
 
   useEffect(() => {

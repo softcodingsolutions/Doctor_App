@@ -6,6 +6,7 @@ import {
   FormLabel,
   Input,
   Modal,
+  ModalClose,
   ModalDialog,
   Stack,
 } from "@mui/joy";
@@ -18,7 +19,7 @@ function AddNewExercise(props) {
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi();
+    props.handleApi(d.exercise_describe, d.exercise_name);
     reset();
   };
 
@@ -39,6 +40,7 @@ function AddNewExercise(props) {
         }}
       >
         <ModalDialog>
+          <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
             onSubmit={(event) => {

@@ -1,7 +1,6 @@
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 import { CiViewList } from "react-icons/ci";
 import {
-  FaAngleRight,
   FaChevronLeft,
   FaChevronRight,
   FaRegQuestionCircle,
@@ -13,7 +12,7 @@ import {
   MdFoodBank,
   MdOutlinePostAdd,
 } from "react-icons/md";
-import { GrYoga } from "react-icons/gr";
+import { GrTest, GrYoga } from "react-icons/gr";
 import { LiaCapsulesSolid } from "react-icons/lia";
 import { BsNintendoSwitch } from "react-icons/bs";
 import { useEffect, useRef, useState } from "react";
@@ -80,13 +79,23 @@ const masterButtons = [
     icons: <MdOutlinePostAdd size={18} />,
     to: "add-reason",
   },
+  {
+    id: "11",
+    name: "Lab Tests",
+    icons: <GrTest size={18} />,
+    to: "lab-tests",
+  },
 ];
 
-const TRANSLATE_AMOUNT = 100;
+const TRANSLATE_AMOUNT = 262;
 
 function AdminMaster() {
   const context = useOutletContext();
-  const [selectedId, setSelectedId] = useState("1");
+  const [selectedId, setSelectedId] = useState(
+    localStorage.getItem("selectedMaster_id")
+      ? localStorage.getItem("selectedMaster_id")
+      : "1"
+  );
   const [translate, setTranslate] = useState(0);
   const [isLeftVisible, setIsLeftVisible] = useState(false);
   const [isRightVisible, setIsRightVisible] = useState(true);
@@ -106,7 +115,7 @@ function AdminMaster() {
     });
 
     observer.observe(containerRef.current);
-
+    localStorage.setItem("selectedMaster_id", selectedId);
     return () => {
       observer.disconnect();
     };
@@ -171,7 +180,7 @@ function AdminMaster() {
                       const width = containerRef.current.clientWidth;
                       if (newTranslate + width >= edge) {
                         console.log(edge - width);
-                        return edge - width + 110;
+                        return edge - width + 150;
                       }
                       return newTranslate;
                     });

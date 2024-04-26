@@ -6,6 +6,7 @@ import {
   FormLabel,
   Input,
   Modal,
+  ModalClose,
   ModalDialog,
   Stack,
 } from "@mui/joy";
@@ -18,7 +19,7 @@ function AddNewMedicine(props) {
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi();
+    props.handleApi(d.diet_code, d.diet_describe, d.diet_name);
     reset();
   };
 
@@ -39,6 +40,7 @@ function AddNewMedicine(props) {
         }}
       >
         <ModalDialog>
+          <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
             onSubmit={(event) => {

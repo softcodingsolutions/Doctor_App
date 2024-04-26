@@ -87,7 +87,8 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
             }
           >
             <div className="text-lg font-semibold">
-              {user.first_name[0]}{user.last_name[0]}
+              {user.first_name[0].toUpperCase()}
+              {user.last_name[0].toUpperCase()}
             </div>
           </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">

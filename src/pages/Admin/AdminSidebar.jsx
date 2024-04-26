@@ -4,34 +4,38 @@ import { IoPersonSharp, IoCloseOutline } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function AdminSidebar({ onSidebarHide, showSidebar }) {
+function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
-  const [selected, setSelected] = useState("0");
+  const [selected, setSelected] = useState(
+    localStorage.getItem("sidebarSelected_id")
+      ? localStorage.getItem("sidebarSelected_id")
+      : "1"
+  );
 
   const sidebarItems = [
     {
-      id: "0",
+      id: "1",
       title: "Dashboard",
       to: "dashboard",
       icons: <IoMdHome size={18} />,
     },
     {
-      id: "1",
+      id: "2",
       title: "Customers",
       to: "customers",
       icons: <IoPersonSharp size={18} />,
     },
     {
-      id: "2",
+      id: "3",
       title: "Master",
       to: "master/list-franchise",
       icons: <FaLightbulb size={18} />,
     },
     {
-      id: "3",
+      id: "4",
       title: "List Follow Up",
       to: "list-follow-up",
       icons: <FaWpforms size={18} />,
@@ -46,6 +50,10 @@ function AdminSidebar({ onSidebarHide, showSidebar }) {
   const toggleLogoutMenu = () => {
     setIsLogoutMenuOpen(!isLogoutMenuOpen);
   };
+
+  useEffect(() => {
+    localStorage.setItem("sidebarSelected_id", selected);
+  }, [selected]);
 
   return (
     <div
@@ -97,13 +105,21 @@ function AdminSidebar({ onSidebarHide, showSidebar }) {
 
       <div className="flex-shrink-0 overflow-hidden p-2">
         <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
-          <img
-            src={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdbB5giaOWV-eex1n8vAKr47X363dGA7UsgYJ2o-D2fg&s`}
-            alt=""
-            className={"size-10 rounded-full"}
-          />
+          <div
+            onClick={() =>
+              toggleLogoutMenu(setIsLogoutMenuOpen, isLogoutMenuOpen)
+            }
+            className={
+              "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
+            }
+          >
+            <div className="text-lg font-semibold">
+              {admin?.first_name[0]?.toUpperCase()}
+              {admin?.last_name[0]?.toUpperCase()}
+            </div>
+          </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">
-            Administrator
+            {admin?.first_name} {admin?.last_name}
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <img

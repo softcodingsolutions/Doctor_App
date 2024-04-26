@@ -16,6 +16,7 @@ import FamilyReason from "./pages/Admin/master/FamilyReason";
 import ExerciseYoga from "./pages/Admin/master/ExerciseYoga";
 import NutritionSupplements from "./pages/Admin/master/NutritionSupplements";
 import DietMaster from "./pages/Admin/master/DietMaster";
+import LabTest from "./pages/Admin/master/LabTest";
 import UserMain from "./pages/User/UserMain";
 import UserDashboard from "./pages/User/UserDashboard";
 
@@ -44,6 +45,7 @@ function App() {
             <Route path="complains" element={<Complain />} />
             <Route path="family-reason" element={<FamilyReason />} />
             <Route path="exercise-yoga" element={<ExerciseYoga />} />
+            <Route path="lab-tests" element={<LabTest />} />
             <Route
               path="nutrition-supplements"
               element={<NutritionSupplements />}
