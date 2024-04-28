@@ -16,7 +16,9 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   );
 
   const handleSelectChange = (event) => {
-    setSelected(event.target.value);
+    if (event) {
+      setSelected(event.target.value);
+    }
   };
 
   const sidebarItems = [
@@ -50,7 +52,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "5",
       title: "Treatment",
-      to: "treatment/question_part1",
+      to: "treatment/question-part1",
       icons: <MdOutlineGppGood size={18} />,
     },
   ];
@@ -68,7 +70,6 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     localStorage.setItem("sidebarSelected_id", selected);
   }, [selected]);
 
-  console.log(selected);
   return (
     <div
       className={clsx(

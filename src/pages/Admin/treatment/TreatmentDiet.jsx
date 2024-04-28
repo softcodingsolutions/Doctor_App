@@ -1,39 +1,34 @@
-import { useEffect, useState } from "react";
-import ThComponent from "../../../components/ThComponent";
-import TdComponent from "../../../components/TdComponent";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import TdComponent from "../../../components/TdComponent";
+import ThComponent from "../../../components/ThComponent";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import NextPageButton from "../../../components/Admin/NextPageButton";
 
-function TreatmentQuestionPart1() {
-  const navigate = useNavigate();
-  const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
+function TreatmentDiet() {
+  const [getDiet, setGetDiet] = useState([]);
 
-  const handleGetQuestionsPart1 = () => {
+  const handleGetDiet = () => {
     axios
-      .get("/api/v1/questions/part1")
+      .get("/api/v1/diets")
       .then((res) => {
         console.log(res.data);
-        setGetQuestionsPart1(res.data);
+        setGetDiet(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const handleToNextPage = () => {
-    navigate("../question-part2");
-  };
-
   useEffect(() => {
-    handleGetQuestionsPart1();
+    handleGetDiet();
   }, []);
 
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-8">
-          <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -41,45 +36,39 @@ function TreatmentQuestionPart1() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="No."
                   />
-                  <ThComponent name="In English" />
-                  <ThComponent name="In Hindi" />
-                  <ThComponent name="In Gujarati" />
-                  <ThComponent name="For" />
-                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
+                  <ThComponent name="Diet Code" />
+                  <ThComponent name="Diet Name" />
+                  <ThComponent
+                    moreClasses={"rounded-tr-md rounded-br-md"}
+                    name="Diet Description"
+                  />
                 </tr>
               </thead>
               <tbody>
-                {getQuestionsPart1.length === 0 ? (
+                {getDiet.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                       colSpan={8}
                     >
-                      No Questions Found in Part-1!
+                      No Diet Found!
                     </th>
                   </tr>
                 ) : (
-                  getQuestionsPart1.map((val, index) => {
+                  getDiet.map((val, index) => {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
+                          <TdComponent things={val.code} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
+                          <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={`${val.gender[0].toUpperCase()}${val.gender.slice(
-                              1
-                            )}`}
-                          />
+                          <TdComponent things={val.chart_english} />
                         </td>
                       </tr>
                     );
@@ -88,8 +77,9 @@ function TreatmentQuestionPart1() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-end">
-            <NextPageButton to="../question-part2" />
+          <div className="flex justify-between">
+            <PrevPageButton to="../medicines" />
+            <NextPageButton to="../exercise" />
           </div>
         </div>
       </div>
@@ -97,4 +87,4 @@ function TreatmentQuestionPart1() {
   );
 }
 
-export default TreatmentQuestionPart1;
+export default TreatmentDiet;

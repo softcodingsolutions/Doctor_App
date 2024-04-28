@@ -5,7 +5,7 @@ import ThComponent from "../../../components/ThComponent";
 import AddNewComplain from "../../../components/Admin/AddNewComplain";
 
 function Complains() {
-const [getComplain, setGetComplain] = useState([]);
+  const [getComplain, setGetComplain] = useState([]);
 
   const handleGetComplain = () => {};
 
@@ -35,7 +35,7 @@ const [getComplain, setGetComplain] = useState([]);
             </div>
           </div>
 
-          <div className="animate-fade-left animate-delay-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -59,7 +59,7 @@ const [getComplain, setGetComplain] = useState([]);
                     </th>
                   </tr>
                 ) : (
-                    getComplain.map((val, index) => {
+                  getComplain.map((val, index) => {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">

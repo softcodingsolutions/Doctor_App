@@ -6,13 +6,13 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import AddListFranchise from "../../components/Admin/AddListFranchise";
 
 function AdminCustomers() {
-    const [getCustomer, setGetCustomer] = useState([]);
+  const [getCustomer, setGetCustomer] = useState([]);
 
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-8">
-          <div className="animate-fade-left animate-delay-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -36,7 +36,7 @@ function AdminCustomers() {
                     </th>
                   </tr>
                 ) : (
-                    getCustomer.map((val, index) => {
+                  getCustomer.map((val, index) => {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
