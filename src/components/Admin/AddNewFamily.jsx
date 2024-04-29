@@ -19,7 +19,7 @@ function AddNewFamily(props) {
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi();
+    props.handleApi(d.reason_detail);
     reset();
   };
 
@@ -51,26 +51,15 @@ function AddNewFamily(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.exercise_name} :-</FormLabel>
+                <FormLabel>{props.reason_detail} :-</FormLabel>
                 <Input
                   placeholder="Name..."
-                  name={`exercise_name`}
-                  {...register(`exercise_name`)}
+                  name={`reason_detail`}
+                  {...register(`reason_detail`)}
                   autoFocus
                   required
                 />
               </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.exercise_describe} :-</FormLabel>
-                <Input
-                  placeholder="Describe..."
-                  name={`exercise_describe`}
-                  {...register(`exercise_describe`)}
-                  required
-                />
-              </FormControl>
-
               <Button type="submit">Submit</Button>
             </Stack>
           </form>

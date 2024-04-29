@@ -20,13 +20,15 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #0b0a0a;
+  --tw-bg-opacity: 1;
+  background: rgb(31 41 55 / var(--tw-bg-opacity));
+
   border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #000;
+  background: #0b0a0a;
 }
 
 .sidebar-separator-top {

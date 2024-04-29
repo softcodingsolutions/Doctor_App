@@ -5,6 +5,7 @@ import {
   DialogTitle,
   FormControl,
   FormLabel,
+  Input,
   Modal,
   ModalClose,
   ModalDialog,
@@ -28,7 +29,13 @@ function AddDosDonts(props) {
   const submittedData = (d) => {
     console.log(text);
     console.log(d);
-    props.handleApi(d.do_dont, text.hindi, text.gujarati, text.english);
+    props.handleApi(
+      d.comments,
+      d.do_dont,
+      text.hindi,
+      text.gujarati,
+      text.english
+    );
     reset();
     setText({
       hindi: "",
@@ -76,6 +83,16 @@ function AddDosDonts(props) {
                   <Option value="do">Do</Option>
                   <Option value="dont">Don't</Option>
                 </Select>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>{props.comments} :-</FormLabel>
+                <Input
+                  placeholder="Comments..."
+                  name={`comments`}
+                  {...register(`comments`)}
+                  autoFocus
+                />
               </FormControl>
 
               <FormControl>
