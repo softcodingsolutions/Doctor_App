@@ -1,12 +1,33 @@
-import { useOutletContext } from "react-router-dom";
-import ThComponent from "../../components/ThComponent";
-import { useState } from "react";
-import TdComponent from "../../components/TdComponent";
-import { MdDelete, MdEdit } from "react-icons/md";
-import AddListFranchise from "../../components/Admin/AddListFranchise";
+import { useEffect, useState } from "react";
+import ThComponent from "../../../components/ThComponent";
+import TdComponent from "../../../components/TdComponent";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import NextPageButton from "../../../components/Admin/NextPageButton";
 
-function AdminCustomers() {
-  const [getCustomer, setGetCustomer] = useState([]);
+function TreatmentQuestionPart1() {
+  const navigate = useNavigate();
+  const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
+
+  const handleGetQuestionsPart1 = () => {
+    axios
+      .get("/api/v1/questions/part1")
+      .then((res) => {
+        console.log(res.data);
+        setGetQuestionsPart1(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleToNextPage = () => {
+    navigate("../question-part2");
+  };
+
+  useEffect(() => {
+    handleGetQuestionsPart1();
+  }, []);
 
   return (
     <div className="w-full p-2">
@@ -20,53 +41,44 @@ function AdminCustomers() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="No."
                   />
-                  <ThComponent name="Customer Name" />
-                  <ThComponent />
+                  <ThComponent name="In English" />
+                  <ThComponent name="In Hindi" />
+                  <ThComponent name="In Gujarati" />
+                  <ThComponent name="For" />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
               <tbody>
-                {getCustomer.length === 0 ? (
+                {getQuestionsPart1.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                       colSpan={8}
                     >
-                      No Franchise Found!
+                      No Questions Found in Part-1!
                     </th>
                   </tr>
                 ) : (
-                  getCustomer.map((val, index) => {
+                  getQuestionsPart1.map((val, index) => {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
+                          <TdComponent things={val.question} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.question} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.question} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
-                            things={
-                              <button
-                                onClick={() => console.log("edit")}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => console.log("delete")}
-                                className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
-                              >
-                                <MdDelete size={20} />
-                              </button>
-                            }
+                            things={`${val.gender[0].toUpperCase()}${val.gender.slice(
+                              1
+                            )}`}
                           />
                         </td>
                       </tr>
@@ -76,10 +88,13 @@ function AdminCustomers() {
               </tbody>
             </table>
           </div>
+          <div className="flex justify-end">
+            <NextPageButton to="../question-part2" />
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default AdminCustomers;
+export default TreatmentQuestionPart1;

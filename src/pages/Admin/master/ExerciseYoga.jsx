@@ -131,7 +131,7 @@ function ExerciseYoga() {
             </div>
           </div>
 
-          <div className="animate-fade-left animate-delay-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[rgb(31,41,55)] text-white rounded-md">

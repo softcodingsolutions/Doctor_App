@@ -75,9 +75,9 @@ const masterButtons = [
   },
   {
     id: "10",
-    name: "Add Reason",
+    name: "Weight Reason",
     icons: <MdOutlinePostAdd size={18} />,
-    to: "add-reason",
+    to: "weight-reason",
   },
   {
     id: "11",
@@ -87,7 +87,7 @@ const masterButtons = [
   },
 ];
 
-const TRANSLATE_AMOUNT = 262;
+const TRANSLATE_AMOUNT = 260;
 
 function AdminMaster() {
   const context = useOutletContext();
@@ -180,7 +180,7 @@ function AdminMaster() {
                       const width = containerRef.current.clientWidth;
                       if (newTranslate + width >= edge) {
                         console.log(edge - width);
-                        return edge - width + 150;
+                        return edge - width + 160;
                       }
                       return newTranslate;
                     });
@@ -192,7 +192,7 @@ function AdminMaster() {
             <button
               onClick={context[0]}
               type="button"
-              className="absolute end-5 sm:hidden hover:scale-110 w-fit"
+              className="absolute end-5 top-6 sm:hidden hover:scale-110 w-fit"
             >
               <img
                 src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}

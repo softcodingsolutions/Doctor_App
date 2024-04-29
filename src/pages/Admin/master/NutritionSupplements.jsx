@@ -77,9 +77,7 @@ function NutritionSupplements() {
       focusConfirm: false,
       showCancelButton: true,
       preConfirm: () => {
-        return [
-          document.getElementById("swal-input1").value,
-        ];
+        return [document.getElementById("swal-input1").value];
       },
     });
 
@@ -126,7 +124,7 @@ function NutritionSupplements() {
             </div>
           </div>
 
-          <div className="animate-fade-left animate-delay-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
