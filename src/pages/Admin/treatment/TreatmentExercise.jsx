@@ -50,7 +50,7 @@ function TreatmentExercise() {
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                       colSpan={8}
                     >
-                      No Diet Found!
+                      No Exercise Found!
                     </th>
                   </tr>
                 ) : (

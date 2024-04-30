@@ -3,13 +3,36 @@ import AddNewFamily from "../../../components/Admin/AddNewFamily";
 import { MdDelete, MdEdit } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
+import axios from "axios";
 
 function FamilyReason() {
   const [getFamily, setGetFamily] = useState([]);
 
-  const handleGetFamily = () => {};
+  const handleGetFamily = () => {
+    axios
+      .get("/api/v1/family_reasons")
+      .then((res) => {
+        console.log(res.data);
+        setGetFamily(res.data?.family_reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const handleAddFamily = () => {};
+  const handleAddFamily = (reason_detail) => {
+    const formData = new FormData();
+    formData.append("family_reason[details]", reason_detail);
+    axios
+      .post("api/v1/family_reasons", formData)
+      .then((res) => {
+        console.log(res);
+        handleGetFamily();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const deleteFamily = (val) => {};
 
@@ -31,6 +54,7 @@ function FamilyReason() {
                 handleApi={handleAddFamily}
                 name="Add Family Reason"
                 title="Add New Reason"
+                reason_detail="Details"
               />
             </div>
           </div>
@@ -43,7 +67,7 @@ function FamilyReason() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="No."
                   />
-                  <ThComponent name="Family Name" />
+                  <ThComponent name="Family Details" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -67,9 +91,6 @@ function FamilyReason() {
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.code} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.chart_english} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent

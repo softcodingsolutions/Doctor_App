@@ -16,7 +16,7 @@ function Questions() {
     axios
       .get("/api/v1/questions/part1")
       .then((res) => {
-        console.log(res.data);
+        console.log("Part1",res.data);
         setGetQuestionsPart1(res.data);
       })
       .catch((err) => {
@@ -28,7 +28,7 @@ function Questions() {
     axios
       .get("/api/v1/questions/part2")
       .then((res) => {
-        console.log(res.data);
+        console.log("Part2",res.data);
         setGetQuestionsPart2(res.data);
       })
       .catch((err) => {

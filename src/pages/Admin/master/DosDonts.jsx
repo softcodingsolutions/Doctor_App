@@ -3,6 +3,7 @@ import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import AddDosDonts from "../../../components/Admin/AddDosDonts";
+import axios from "axios";
 
 function DosDonts() {
   const [getDos, setGetDos] = useState([]);
@@ -10,17 +11,65 @@ function DosDonts() {
   const [showDos, setShowDos] = useState(true);
   const [showDonts, setShowDonts] = useState(false);
 
-  const handleGetDos = () => {};
+  const handleGetDos = () => {
+    axios
+      .get("/api/v1/avoid_and_adds")
+      .then((res) => {
+        console.log(
+          "Dos",
+          res.data?.avoid_and_adds.filter((res) => res.category === "do")
+        );
+        setGetDos(
+          res.data?.avoid_and_adds.filter((res) => res.category === "do")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const handleAddDosDonts = () => {};
+  const handleGetDonts = () => {
+    axios
+      .get("/api/v1/avoid_and_adds")
+      .then((res) => {
+        console.log(
+          "Donts",
+          res.data?.avoid_and_adds.filter((res) => res.category === "dont")
+        );
+        setGetDonts(
+          res.data?.avoid_and_adds.filter((res) => res.category === "dont")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleAddDosDonts = (comments, do_dont, hindi, gujarati, english) => {
+    const formData = new FormData();
+    formData.append("avoid_and_add[category]", do_dont);
+    formData.append("avoid_and_add[comments]", comments);
+    formData.append("avoid_and_add[details_in_english]", english);
+    formData.append("avoid_and_add[details_in_hindi]", hindi);
+    formData.append("avoid_and_add[details_in_gujarati]", gujarati);
+    axios
+      .post("api/v1/avoid_and_adds", formData)
+      .then((res) => {
+        console.log(res);
+        handleGetDos();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const editDosDonts = (val) => {};
 
   const deleteDosDonts = (val) => {};
 
   useEffect(() => {
-    handleGetDos();
-  }, []);
+    showDos ? handleGetDos() : handleGetDonts();
+  }, [showDos, showDonts]);
 
   return (
     <div className="w-full p-2">
@@ -28,7 +77,7 @@ function DosDonts() {
         <div className="flex p-4 h-full flex-col space-y-8">
           <div>
             <div className="flex items-center">
-              <div className="font-semibold text-xl">Questions List</div>
+              <div className="font-semibold text-xl">Do/Don't List</div>
               <div className="flex-grow" />
               <div className="space-x-1">
                 <button
@@ -63,6 +112,7 @@ function DosDonts() {
                 title="Add New Do/Don't"
                 do_dont="Do/Don't"
                 details="Details"
+                comments="Comments"
               />
             </div>
           </div>
@@ -78,8 +128,6 @@ function DosDonts() {
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
                   <ThComponent name="In Gujarati" />
-                  <ThComponent name="For" />
-                  <ThComponent />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -103,20 +151,13 @@ function DosDonts() {
                             <div className="flex items-center">{index + 1}</div>
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question} />
+                            <TdComponent things={val.details_in_english} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question} />
+                            <TdComponent things={val.details_in_hindi} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question} />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={`${val.gender[0].toUpperCase()}${val.gender.slice(
-                                1
-                              )}`}
-                            />
+                            <TdComponent things={val.details_in_gujarati} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
@@ -165,20 +206,13 @@ function DosDonts() {
                             <div className="flex items-center">{index + 1}</div>
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question} />
+                            <TdComponent things={val.details_in_english} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question} />
+                            <TdComponent things={val.details_in_hindi} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question} />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={`${val.gender[0].toUpperCase()}${val.gender.slice(
-                                1
-                              )}`}
-                            />
+                            <TdComponent things={val.details_in_gujarati} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent

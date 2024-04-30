@@ -3,11 +3,23 @@ import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import AddNewWeight from "../../../components/Admin/AddNewWeight";
+import axios from "axios";
 
 function WeightReason() {
   const [getWeight, setGetWeight] = useState([]);
 
-  const handleGetWeight = () => {};
+  const handleGetWeight = () => {
+    axios
+      .get("/api/v1/weight_reasons")
+      .then((res) => {
+        console.log(res.data);
+        setGetWeight(res.data?.weight_reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleAddWeight = () => {};
   const editWeight = () => {};
   const deleteWeight = () => {};
