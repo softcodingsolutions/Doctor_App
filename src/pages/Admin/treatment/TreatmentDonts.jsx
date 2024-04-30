@@ -3,11 +3,27 @@ import TdComponent from "../../../components/TdComponent";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import NextPageButton from "../../../components/Admin/NextPageButton";
 import ThComponent from "../../../components/ThComponent";
+import axios from "axios";
 
 function TreatmentDonts() {
   const [getDonts, setGetDonts] = useState([]);
 
-  const handleGetDonts = () => {};
+  const handleGetDonts = () => {
+    axios
+      .get("/api/v1/avoid_and_adds")
+      .then((res) => {
+        console.log(
+          "Donts",
+          res.data?.avoid_and_adds.filter((res) => res.category === "dont")
+        );
+        setGetDonts(
+          res.data?.avoid_and_adds.filter((res) => res.category === "dont")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     handleGetDonts();
@@ -27,10 +43,9 @@ function TreatmentDonts() {
                   />
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
-                  <ThComponent name="In Gujarati" />
                   <ThComponent
                     moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="For"
+                    name="In Gujarati"
                   />
                 </tr>
               </thead>
@@ -45,20 +60,20 @@ function TreatmentDonts() {
                     </th>
                   </tr>
                 ) : (
-                    getDonts.map((val, index) => {
+                  getDonts.map((val, index) => {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
+                          <TdComponent things={val.details_in_english} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
+                          <TdComponent things={val.details_in_hindi} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
+                          <TdComponent things={val.details_in_gujarati} />
                         </td>
                       </tr>
                     );

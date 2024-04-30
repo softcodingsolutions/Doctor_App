@@ -1,5 +1,6 @@
 import { Add } from "@mui/icons-material";
 import {
+    Box,
   Button,
   DialogTitle,
   FormControl,
@@ -12,15 +13,27 @@ import {
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { ReactTransliterate } from "react-transliterate";
 
 function AddNewFamily(props) {
   const [open, setOpen] = useState(false);
+  const [text, setText] = useState({
+    hindi: "",
+    gujarati: "",
+    english: "",
+  });
   const { register, handleSubmit, reset } = useForm();
 
   const submittedData = (d) => {
+    console.log(text);
     console.log(d);
-    props.handleApi(d.reason_detail);
+    props.handleApi(text.hindi, text.gujarati, text.english);
     reset();
+    setText({
+      hindi: "",
+      gujarati: "",
+      english: "",
+    });
   };
 
   return (
@@ -51,15 +64,80 @@ function AddNewFamily(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.reason_detail} :-</FormLabel>
-                <Input
-                  placeholder="Name..."
-                  name={`reason_detail`}
-                  {...register(`reason_detail`)}
-                  autoFocus
-                  required
-                />
+                <FormLabel>{props.details} :-</FormLabel>
+                <Box className="flex flex-col items-center w-full">
+                  <ReactTransliterate
+                    name={`question_english`}
+                    {...register(`question_english`)}
+                    value={text.english}
+                    lang="en"
+                    onChangeText={(value) => {
+                      setText((prev) => {
+                        return {
+                          ...prev,
+                          english: value,
+                        };
+                      });
+                    }}
+                    renderComponent={(props) => {
+                      return (
+                        <textarea {...props} placeholder="In English..." />
+                      );
+                    }}
+                    className="p-1 border border-gray-400 rounded-sm"
+                    rows={4}
+                    cols={30}
+                    required
+                  />
+
+                  <ReactTransliterate
+                    name={`question_hindi`}
+                    {...register(`question_hindi`)}
+                    value={text.hindi}
+                    lang="hi"
+                    onChangeText={(value) => {
+                      setText((prev) => {
+                        return {
+                          ...prev,
+                          hindi: value,
+                        };
+                      });
+                    }}
+                    renderComponent={(props) => {
+                      return <textarea {...props} placeholder="In Hindi..." />;
+                    }}
+                    className="p-1 border border-gray-400 rounded-sm"
+                    rows={4}
+                    cols={30}
+                    required
+                  />
+
+                  <ReactTransliterate
+                    name={`question_gujarati`}
+                    {...register(`question_gujarati`)}
+                    value={text.gujarati}
+                    lang="gu"
+                    onChangeText={(value) => {
+                      setText((prev) => {
+                        return {
+                          ...prev,
+                          gujarati: value,
+                        };
+                      });
+                    }}
+                    renderComponent={(props) => {
+                      return (
+                        <textarea {...props} placeholder="In Gujarati..." />
+                      );
+                    }}
+                    className="p-1 border border-gray-400 rounded-sm"
+                    rows={4}
+                    cols={30}
+                    required
+                  />
+                </Box>
               </FormControl>
+
               <Button type="submit">Submit</Button>
             </Stack>
           </form>

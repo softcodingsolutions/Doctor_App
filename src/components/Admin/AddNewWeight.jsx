@@ -8,7 +8,10 @@ import {
   Modal,
   ModalClose,
   ModalDialog,
+  Option,
+  Select,
   Stack,
+  Textarea,
 } from "@mui/joy";
 
 import React, { useState } from "react";
@@ -20,7 +23,7 @@ function AddNewWeight(props) {
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi();
+    props.handleApi(d.reason_name, d.reason_for, d.reason_comments);
     reset();
   };
 
@@ -52,12 +55,39 @@ function AddNewWeight(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.weight_name} :-</FormLabel>
+                <FormLabel>{props.reason_name} :-</FormLabel>
                 <Input
                   placeholder="Name..."
-                  name={`weight_name`}
-                  {...register(`weight_name`)}
+                  name={`reason_name`}
+                  {...register(`reason_name`)}
                   autoFocus
+                  required
+                />
+              </FormControl>
+
+              <FormControl className="w-1/2">
+                  <FormLabel>{props.reason_for} :-</FormLabel>
+                  <Select
+                    sx={{ width: '200%'}}
+                    required
+                    placeholder="Choose gender..."
+                    name={`reason_for`}
+                    {...register(`reason_for`)}
+                  >
+                    <Option value="female">Female</Option>
+                    <Option value="male">Male</Option>
+                    <Option value="both">Both</Option>
+                  </Select>
+                </FormControl>
+
+              <FormControl>
+                <FormLabel>{props.reason_comments} :-</FormLabel>
+                <Textarea
+                  placeholder="Coments..."
+                  name={`reason_comments`}
+                  {...register(`reason_comments`)}
+                  autoFocus
+                  minRows={5}
                   required
                 />
               </FormControl>

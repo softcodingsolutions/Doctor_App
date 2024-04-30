@@ -18,6 +18,16 @@ function DietMaster() {
       .post("/api/v1/diets", formData)
       .then((res) => {
         console.log(res.data);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: `Your diet has been added.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
         handleGetDiet();
       })
       .catch((err) => {

@@ -16,6 +16,16 @@ function NutritionSupplements() {
       .post("/api/v1/nutritions", formData)
       .then((res) => {
         console.log(res.data);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: "Your nutrition has been added.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
         handleGetNutrition();
       })
       .catch((err) => {

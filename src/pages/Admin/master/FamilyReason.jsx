@@ -4,6 +4,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function FamilyReason() {
   const [getFamily, setGetFamily] = useState([]);
@@ -20,13 +21,25 @@ function FamilyReason() {
       });
   };
 
-  const handleAddFamily = (reason_detail) => {
+  const handleAddFamily = (hindi, gujarati, english) => {
     const formData = new FormData();
-    formData.append("family_reason[details]", reason_detail);
+    formData.append("family_reason[details_in_hindi]", hindi);
+    formData.append("family_reason[details_in_gujarati]", gujarati);
+    formData.append("family_reason[details_in_english]", english);
     axios
       .post("api/v1/family_reasons", formData)
       .then((res) => {
         console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: "Your family reason has been added.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
         handleGetFamily();
       })
       .catch((err) => {
@@ -54,7 +67,7 @@ function FamilyReason() {
                 handleApi={handleAddFamily}
                 name="Add Family Reason"
                 title="Add New Reason"
-                reason_detail="Details"
+                details="Details"
               />
             </div>
           </div>

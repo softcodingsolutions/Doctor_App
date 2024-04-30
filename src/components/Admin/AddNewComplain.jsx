@@ -9,6 +9,7 @@ import {
   ModalClose,
   ModalDialog,
   Stack,
+  Textarea,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -19,7 +20,7 @@ function AddNewComplain(props) {
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi();
+    props.handleApi(d.complain_details);
     reset();
   };
 
@@ -51,22 +52,13 @@ function AddNewComplain(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.exercise_name} :-</FormLabel>
-                <Input
-                  placeholder="Name..."
-                  name={`exercise_name`}
-                  {...register(`exercise_name`)}
+                <FormLabel>{props.complain_details} :-</FormLabel>
+                <Textarea
+                  placeholder="Details..."
+                  name={`complain_details`}
+                  {...register(`complain_details`)}
                   autoFocus
-                  required
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.exercise_describe} :-</FormLabel>
-                <Input
-                  placeholder="Describe..."
-                  name={`exercise_describe`}
-                  {...register(`exercise_describe`)}
+                  minRows={5}
                   required
                 />
               </FormControl>

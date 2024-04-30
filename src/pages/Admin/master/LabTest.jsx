@@ -3,11 +3,22 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import AddLabTest from "../../../components/Admin/AddLabTest";
+import axios from "axios";
 
 function LabTest() {
   const [getTests, setGetTests] = useState([]);
 
-  const handleGetTests = () => {};
+  const handleGetTests = () => {
+    axios
+      .get("/api/v1/lab_tests")
+      .then((res) => {
+        console.log(res.data);
+        // setGetTests(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleAddTests = () => {};
 
