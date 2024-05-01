@@ -4,6 +4,7 @@ import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import AddNewWeight from "../../../components/Admin/AddNewWeight";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function WeightReason() {
   const [getWeight, setGetWeight] = useState([]);
@@ -20,9 +21,62 @@ function WeightReason() {
       });
   };
 
-  const handleAddWeight = () => {};
-  const editWeight = () => {};
-  const deleteWeight = () => {};
+  const handleAddWeight = (reason_name, reason_for, reason_comments) => {
+    const formData = new FormData();
+    formData.append("weight_reason[name]", reason_name);
+    formData.append("weight_reason[for]", reason_for);
+    formData.append("weight_reason[comments]", reason_comments);
+    axios
+      .post("api/v1/weight_reasons", formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: "Your weight reason has been added.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetWeight();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const editWeight = (val) => {};
+
+  const deleteWeight = (val) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/weight_reasons/${val}`)
+          .then((res) => {
+            console.log(res);
+            handleGetWeight();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your weight reason has been deleted.",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
 
   useEffect(() => {
     handleGetWeight();
@@ -40,7 +94,9 @@ function WeightReason() {
                 handleApi={handleAddWeight}
                 name="Add Weight Reason"
                 title="Add New Weight Reason"
-                weight_name="Weight Name"
+                reason_name="Weight Name"
+                reason_for="Gender"
+                reason_comments="Comments"
               />
             </div>
           </div>
@@ -54,6 +110,8 @@ function WeightReason() {
                     name="No."
                   />
                   <ThComponent name="Weight Name" />
+                  <ThComponent name="For" />
+                  <ThComponent name="Comments" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -76,10 +134,13 @@ function WeightReason() {
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_name} />
+                          <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_quantity} />
+                          <TdComponent things={val.for} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.comments} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent

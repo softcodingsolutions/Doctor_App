@@ -7,8 +7,10 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
 function TreatmentQuestionPart2() {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
+  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
-  const handleGetQuestionsPart1 = () => {
+  const handleGetQuestionsPart2 = () => {
     axios
       .get("/api/v1/questions/part2")
       .then((res) => {
@@ -20,22 +22,72 @@ function TreatmentQuestionPart2() {
       });
   };
 
+  const handleToggleCheckboxes = () => {
+    setShowCheckboxes(!showCheckboxes);
+  };
+
+  const handleCheckboxChange = (event) => {
+    const checkboxValue = event.target.value;
+    setSelectedCheckboxes((prevCheckboxes) => {
+      if (prevCheckboxes.includes(checkboxValue)) {
+        return prevCheckboxes.filter((val) => val !== checkboxValue);
+      } else {
+        return [...prevCheckboxes, checkboxValue];
+      }
+    });
+  };
+
+  const handleSave = () => {
+    console.log("Selected checkboxes:", selectedCheckboxes);
+    selectedCheckboxes.map((res) => {
+      console.log(getQuestionsPart2.find((val) => val.id === Number(res)));
+    });
+    setSelectedCheckboxes([]);
+    setShowCheckboxes(false);
+  };
+
   useEffect(() => {
-    handleGetQuestionsPart1();
+    handleGetQuestionsPart2();
   }, []);
 
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-8">
+          <div className="flex justify-center">
+            {!showCheckboxes ? (
+              <button
+                type="button"
+                onClick={handleToggleCheckboxes}
+                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
+              >
+                Select Questions (Part-2)
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSave}
+                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
+              >
+                Save
+              </button>
+            )}
+          </div>
           <div className="animate-fade-left animate-delay-75 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="No."
-                  />
+                  {showCheckboxes ? (
+                    <ThComponent
+                      moreClasses={"rounded-tl-md rounded-bl-md"}
+                      name="Select"
+                    />
+                  ) : (
+                    <ThComponent
+                      moreClasses={"rounded-tl-md rounded-bl-md"}
+                      name="No."
+                    />
+                  )}
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
                   <ThComponent name="In Gujarati" />
@@ -54,12 +106,26 @@ function TreatmentQuestionPart2() {
                     </th>
                   </tr>
                 ) : (
-                  getQuestionsPart2.map((val, index) => {
+                    getQuestionsPart2.map((val, index) => {
                     return (
                       <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">{index + 1}</div>
-                        </td>
+                        {showCheckboxes && (
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <input
+                              value={val.id}
+                              onChange={handleCheckboxChange}
+                              type="checkbox"
+                              defaultChecked={selectedCheckboxes.includes(
+                                val.id
+                              )}
+                            />
+                          </td>
+                        )}
+                        {!showCheckboxes && (
+                          <td className="py-2 px-4 border-b border-b-gray-50">
+                            <div className="flex items-center">{index + 1}</div>
+                          </td>
+                        )}
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.question} />
                         </td>

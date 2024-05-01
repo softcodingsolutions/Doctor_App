@@ -1,15 +1,49 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import AddNewComplain from "../../../components/Admin/AddNewComplain";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function Complains() {
   const [getComplain, setGetComplain] = useState([]);
 
-  const handleGetComplain = () => {};
+  const handleGetComplain = () => {
+    axios
+      .get("/api/v1/complaints")
+      .then((res) => {
+        console.log(res.data);
+        setGetComplain(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const handleAddComplain = () => {};
+  const handleAddComplain = (complain) => {
+    const formData = new FormData();
+    formData.append("complaint[complain]", complain);
+    axios
+      .post("/api/v1/complaints", formData)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: `Your complain has been added.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetComplain();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const editComplain = () => {};
 
@@ -31,6 +65,7 @@ function Complains() {
                 handleApi={handleAddComplain}
                 name="Add Complain"
                 title="Add New Complain"
+                complain_details="Details"
               />
             </div>
           </div>

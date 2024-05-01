@@ -7,6 +7,7 @@ import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { MdOutlineGppGood } from "react-icons/md";
 import { Option, Select } from "@mui/joy";
+import { masterButtons } from "../../constants/admin/AdminConstants";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "3",
       title: "Master",
-      to: "master/list-franchise",
+      to: `master/${masterButtons.find((res) => res.id === selected)?.to}`,
       icons: <FaLightbulb size={18} />,
     },
     {
@@ -56,6 +57,10 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <MdOutlineGppGood size={18} />,
     },
   ];
+
+  const save = masterButtons.find((res) => res.id == selected)?.to;
+
+  console.log("asd", save);
 
   const handleLogoutClick = () => {
     localStorage.clear();

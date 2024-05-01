@@ -30,6 +30,16 @@ function Medicine() {
       .post("api/v1/medicines", formData)
       .then((res) => {
         console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: "Your medicine has been added.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
         handleGetMedicines();
       })
       .catch((err) => {

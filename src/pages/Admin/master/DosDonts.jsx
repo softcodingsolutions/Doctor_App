@@ -4,6 +4,7 @@ import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import AddDosDonts from "../../../components/Admin/AddDosDonts";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function DosDonts() {
   const [getDos, setGetDos] = useState([]);
@@ -56,7 +57,17 @@ function DosDonts() {
       .post("api/v1/avoid_and_adds", formData)
       .then((res) => {
         console.log(res);
-        handleGetDos();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: `Your ${showDos ? "Dos" : "Don'ts"}  has been added.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        showDos ? handleGetDos() : handleGetDonts();
       })
       .catch((err) => {
         console.log(err);
@@ -65,7 +76,34 @@ function DosDonts() {
 
   const editDosDonts = (val) => {};
 
-  const deleteDosDonts = (val) => {};
+  const deleteDosDonts = (val) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/avoid_and_adds/${val}`)
+          .then((res) => {
+            console.log(res);
+            showDos ? handleGetDos() : handleGetDonts();
+            Swal.fire({
+              title: "Deleted!",
+              text: `Your ${showDos ? "Dos" : "Don'ts"} has been deleted.`,
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
 
   useEffect(() => {
     showDos ? handleGetDos() : handleGetDonts();

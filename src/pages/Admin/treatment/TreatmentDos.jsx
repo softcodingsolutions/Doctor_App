@@ -3,11 +3,27 @@ import NextPageButton from "../../../components/Admin/NextPageButton";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function TreatmentDos() {
   const [getDos, setGetDos] = useState([]);
 
-  const handleGetDos = () => {};
+  const handleGetDos = () => {
+    axios
+      .get("/api/v1/avoid_and_adds")
+      .then((res) => {
+        console.log(
+          "Dos",
+          res.data?.avoid_and_adds.filter((res) => res.category === "do")
+        );
+        setGetDos(
+          res.data?.avoid_and_adds.filter((res) => res.category === "do")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     handleGetDos();
@@ -27,10 +43,9 @@ function TreatmentDos() {
                   />
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
-                  <ThComponent name="In Gujarati" />
                   <ThComponent
                     moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="For"
+                    name="In Gujarati"
                   />
                 </tr>
               </thead>
@@ -52,13 +67,13 @@ function TreatmentDos() {
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
+                          <TdComponent things={val.details_in_english} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
+                          <TdComponent things={val.details_in_hindi} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question} />
+                          <TdComponent things={val.details_in_gujarati} />
                         </td>
                       </tr>
                     );
