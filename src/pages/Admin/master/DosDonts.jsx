@@ -112,50 +112,44 @@ function DosDonts() {
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-8">
-          <div>
-            <div className="flex items-center">
-              <div className="font-semibold text-xl">Do/Don't List</div>
-              <div className="flex-grow" />
-              <div className="space-x-1">
-                <button
-                  onClick={() => {
-                    setShowDonts(false);
-                    setShowDos(true);
-                  }}
-                  className={`px-3 py-1.5 border-[1.5px] rounded-md ${
-                    showDos ? "scale-105 bg-gray-700 text-white" : "bg-gray-50"
-                  } hover:scale-105 border-x-gray-300`}
-                >
-                  Dos
-                </button>
-                <button
-                  onClick={() => {
-                    setShowDos(false);
-                    setShowDonts(true);
-                  }}
-                  className={`px-3 py-1.5 rounded-md ${
-                    showDonts
-                      ? "scale-105 bg-gray-700 text-white"
-                      : "bg-gray-50"
-                  } hover:scale-105  border-x-gray-300 border-[1.5px]`}
-                >
-                  Don'ts
-                </button>
-              </div>
-              <div className="flex-grow" />
-              <AddDosDonts
-                handleApi={handleAddDosDonts}
-                name="Add Do/Don't"
-                title="Add New Do/Don't"
-                do_dont="Do/Don't"
-                details="Details"
-                comments="Comments"
-              />
+        <div className="flex px-4 py-3 h-full flex-col space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="font-semibold text-xl">Do/Don't List</div>
+            <div className="space-x-1">
+              <button
+                onClick={() => {
+                  setShowDonts(false);
+                  setShowDos(true);
+                }}
+                className={`px-3 py-1.5 border-[1.5px] rounded-md ${
+                  showDos ? "scale-105 bg-gray-700 text-white" : "bg-gray-50"
+                } hover:scale-105 border-x-gray-300`}
+              >
+                Dos
+              </button>
+              <button
+                onClick={() => {
+                  setShowDos(false);
+                  setShowDonts(true);
+                }}
+                className={`px-3 py-1.5 rounded-md ${
+                  showDonts ? "scale-105 bg-gray-700 text-white" : "bg-gray-50"
+                } hover:scale-105  border-x-gray-300 border-[1.5px]`}
+              >
+                Don'ts
+              </button>
             </div>
+            <AddDosDonts
+              handleApi={handleAddDosDonts}
+              name="Add Do/Don't"
+              title="Add New Do/Don't"
+              do_dont="Do/Don't"
+              details="Details"
+              comments="Comments"
+            />
           </div>
 
-          <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">

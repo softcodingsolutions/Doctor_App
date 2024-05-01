@@ -16,6 +16,10 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     localStorage.getItem("sidebarSelected_id") || "1"
   );
 
+  const save = masterButtons.find(
+    (res) => res.id == localStorage.getItem("selectedMaster_id")
+  )?.to;
+
   const handleSelectChange = (event) => {
     if (event) {
       setSelected(event.target.value);
@@ -47,7 +51,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "3",
       title: "Master",
-      to: `master/${masterButtons.find((res) => res.id === selected)?.to}`,
+      to: `master/${save ? save : "list-franchise"}`,
       icons: <FaLightbulb size={18} />,
     },
     {
@@ -57,10 +61,6 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <MdOutlineGppGood size={18} />,
     },
   ];
-
-  const save = masterButtons.find((res) => res.id == selected)?.to;
-
-  console.log("asd", save);
 
   const handleLogoutClick = () => {
     localStorage.clear();

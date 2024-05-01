@@ -19,7 +19,7 @@ function AddNewExercise(props) {
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi();
+    props.handleApi(d.exercise_describe, d.exercise_name);
     reset();
   };
 
