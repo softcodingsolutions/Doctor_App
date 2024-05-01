@@ -130,23 +130,20 @@ function DietMaster() {
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-8">
-          <div>
-            <div className="flex items-center">
-              <div className="font-semibold text-xl">Diet List</div>
-              <div className="flex-grow" />
-              <AddNewDiet
-                handleApi={handleAddDiet}
-                name="Add Diet"
-                title="Add New Diet"
-                diet_code="Diet Code"
-                diet_name="Diet Name"
-                diet_describe="Details"
-              />
-            </div>
+        <div className="flex px-4 py-3 h-full flex-col space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="font-semibold text-xl">Diet List</div>
+            <AddNewDiet
+              handleApi={handleAddDiet}
+              name="Add Diet"
+              title="Add New Diet"
+              diet_code="Diet Code"
+              diet_name="Diet Name"
+              diet_describe="Details"
+            />
           </div>
 
-          <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
