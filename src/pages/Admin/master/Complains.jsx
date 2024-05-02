@@ -23,7 +23,7 @@ function Complains() {
 
   const handleAddComplain = (complain) => {
     const formData = new FormData();
-    formData.append("complaint[complain]", complain);
+    formData.append("complaint[details]", complain);
     axios
       .post("/api/v1/complaints", formData)
       .then((res) => {
@@ -98,10 +98,7 @@ function Complains() {
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.code} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.chart_english} />
+                          <TdComponent things={val.details} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
