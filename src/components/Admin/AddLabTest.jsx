@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import {
-    Button,
-    DialogTitle,
-    FormControl,
-    FormLabel,
-    Input,
-    Modal,
-    ModalClose,
-    ModalDialog,
-    Stack,
-    Box,
-    Textarea
-  } from "@mui/joy";
+  Button,
+  DialogTitle,
+  FormControl,
+  FormLabel,
+  Input,
+  Modal,
+  ModalClose,
+  ModalDialog,
+  Stack,
+  Box,
+  Textarea,
+  Select,
+  Option,
+} from "@mui/joy";
 import Add from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 import "react-transliterate/dist/index.css";
@@ -27,15 +29,9 @@ function AddLabTest(props) {
   const { register, handleSubmit, reset } = useForm();
 
   const submittedData = (d) => {
-    console.log(text);
     console.log(d);
-    props.handleApi();
+    props.handleApi(d.test_name, d.gender, d.test_comments);
     reset();
-    setText({
-      hindi: "",
-      gujarati: "",
-      english: "",
-    });
   };
 
   return (
@@ -77,6 +73,20 @@ function AddLabTest(props) {
               </FormControl>
 
               <FormControl>
+                <FormLabel>{props.gender} :-</FormLabel>
+                <Select
+                  placeholder="Choose gender..."
+                  required
+                  name={`gender`}
+                  {...register(`gender`)}
+                >
+                  <Option value="female">Female</Option>
+                  <Option value="male">Male</Option>
+                  <Option value="both">Both</Option>
+                </Select>
+              </FormControl>
+
+              <FormControl>
                 <FormLabel>{props.test_comments} :-</FormLabel>
                 <Textarea
                   placeholder="Name..."
@@ -86,81 +96,6 @@ function AddLabTest(props) {
                   minRows={3}
                   required
                 />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.details} :-</FormLabel>
-                <Box className="flex flex-col items-center w-full">
-                  <ReactTransliterate
-                    name={`question_english`}
-                    {...register(`question_english`)}
-                    value={text.english}
-                    lang="en"
-                    onChangeText={(value) => {
-                      setText((prev) => {
-                        return {
-                          ...prev,
-                          english: value,
-                        };
-                      });
-                    }}
-                    renderComponent={(props) => {
-                      return (
-                        <textarea {...props} placeholder="In English..." />
-                      );
-                    }}
-                    className="p-1 border border-gray-400 rounded-sm"
-                    rows={3}
-                    cols={30}
-                    required
-                  />
-
-                  <ReactTransliterate
-                    name={`question_hindi`}
-                    {...register(`question_hindi`)}
-                    value={text.hindi}
-                    lang="hi"
-                    onChangeText={(value) => {
-                      setText((prev) => {
-                        return {
-                          ...prev,
-                          hindi: value,
-                        };
-                      });
-                    }}
-                    renderComponent={(props) => {
-                      return <textarea {...props} placeholder="In Hindi..." />;
-                    }}
-                    className="p-1 border border-gray-400 rounded-sm"
-                    rows={3}
-                    cols={30}
-                    required
-                  />
-
-                  <ReactTransliterate
-                    name={`question_gujarati`}
-                    {...register(`question_gujarati`)}
-                    value={text.gujarati}
-                    lang="gu"
-                    onChangeText={(value) => {
-                      setText((prev) => {
-                        return {
-                          ...prev,
-                          gujarati: value,
-                        };
-                      });
-                    }}
-                    renderComponent={(props) => {
-                      return (
-                        <textarea {...props} placeholder="In Gujarati..." />
-                      );
-                    }}
-                    className="p-1 border border-gray-400 rounded-sm"
-                    rows={3}
-                    cols={30}
-                    required
-                  />
-                </Box>
               </FormControl>
 
               <Button type="submit">Submit</Button>

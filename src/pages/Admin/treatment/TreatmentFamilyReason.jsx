@@ -3,13 +3,24 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import NextPageButton from "../../../components/Admin/NextPageButton";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function TreatmentFamilyReason() {
   const [getFamily, setGetFamily] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
 
-  const handleGetFamily = () => {};
+  const handleGetFamily = () => {
+    axios
+      .get("/api/v1/family_reasons")
+      .then((res) => {
+        console.log(res.data);
+        setGetFamily(res.data?.family_reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleToggleCheckboxes = () => {
     setShowCheckboxes(!showCheckboxes);
@@ -81,10 +92,11 @@ function TreatmentFamilyReason() {
                       name="No."
                     />
                   )}
-                  <ThComponent name="Family Name" />
+                  <ThComponent name="In English" />
+                  <ThComponent name="In Hindi" />
                   <ThComponent
                     moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="Family Details"
+                    name="In Gujarati"
                   />
                 </tr>
               </thead>
@@ -120,10 +132,13 @@ function TreatmentFamilyReason() {
                           </td>
                         )}
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.code} />
+                          <TdComponent things={val.details_in_english} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.chart_english} />
+                          <TdComponent things={val.details_in_hindi} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.details_in_gujarati} />
                         </td>
                       </tr>
                     );

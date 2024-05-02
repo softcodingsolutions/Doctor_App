@@ -3,12 +3,16 @@ import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import axios from "axios";
 import NextPageButton from "../../../components/Admin/NextPageButton";
+import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function TreatmentQuestionPart1() {
+  const context = useOutletContext();
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [questionsToBeAnswered, setQuestionsToBeAnswered] = useState(0);
+  const [getPackages, setPackages] = useState([]);
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -38,17 +42,62 @@ function TreatmentQuestionPart1() {
     });
   };
 
-  const handleSave = () => {
+  const handlegetPackages = () => {
+    axios
+      .get("/api/v1/packages")
+      .then((res) => {
+        console.log("Packages", res.data?.packages);
+        setPackages(res.data?.packages);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleSave = () => {    
     console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getQuestionsPart1.find((val) => val.id === Number(res)));
-    });
+    const selectedObjects = selectedCheckboxes.map((id) =>
+      getQuestionsPart1.find((question) => question.id === Number(id))
+    );
+
+    const sendData = {
+      details: {
+        weight_reason: context,
+        questions_part1: selectedObjects,
+      },
+    };
+
+    console.log(sendData);
+
+    const formData = new FormData();
+    formData.append("package[details]", JSON.stringify(sendData.details));
+    axios
+      .post("/api/v1/packages", formData)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: `Your complain has been added.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetQuestionsPart1();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     setSelectedCheckboxes([]);
     setShowCheckboxes(false);
   };
 
   useEffect(() => {
     handleGetQuestionsPart1();
+    handlegetPackages();
   }, []);
 
   return (
@@ -73,9 +122,11 @@ function TreatmentQuestionPart1() {
                 Save
               </button>
             )}
-            <div className="font-[550] text-lg">
-              No. of questions checked: {selectedCheckboxes.length}
-            </div>
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of questions checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             <div className="font-bold text-lg">
               No. of questions to be answered: {questionsToBeAnswered}

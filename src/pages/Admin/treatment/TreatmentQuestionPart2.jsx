@@ -73,9 +73,11 @@ function TreatmentQuestionPart2() {
                 Save
               </button>
             )}
-            <div className="font-[550] text-lg">
-              No. of questions checked: {selectedCheckboxes.length}
-            </div>
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of questions checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             <div className="font-bold text-lg">
               No. of questions to be answered: {questionsToBeAnswered}

@@ -1,12 +1,12 @@
 import { Option, Select } from "@mui/joy";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
-import WeightReason from "./master/WeightReason";
 
 function AdminTreatment() {
   const context = useOutletContext();
   const [getWeightReason, setGetWeightReason] = useState([]);
+  const [sendWeightReason, setSendWeightReason] = useState(0);
 
   const handleGetWeightReason = () => {
     axios
@@ -20,9 +20,13 @@ function AdminTreatment() {
       });
   };
 
-  useEffect(()=>{
+  const handleSendWeightReason = (val) => {
+    setSendWeightReason(val);
+  };
+
+  useEffect(() => {
     handleGetWeightReason();
-  }, [])
+  }, []);
 
   return (
     <div className="flex w-full">
@@ -32,10 +36,14 @@ function AdminTreatment() {
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-fit p-2">
           <div className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"></div>
-          <Select required defaultValue="a" placeholder="Select">
+          <Select required placeholder="Select">
             {getWeightReason.map((res) => {
               return (
-                <Option key={res.id} value={res.name}>
+                <Option
+                  key={res.id}
+                  value={res.name}
+                  onClick={() => handleSendWeightReason(res.name)}
+                >
                   {res.name}
                 </Option>
               );
@@ -52,7 +60,7 @@ function AdminTreatment() {
             />
           </button>
         </div>
-        <Outlet />
+        <Outlet context={sendWeightReason} />
       </div>
     </div>
   );

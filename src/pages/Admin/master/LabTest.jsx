@@ -1,30 +1,50 @@
 import { useEffect, useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import AddLabTest from "../../../components/Admin/AddLabTest";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function LabTest() {
   const [getTests, setGetTests] = useState([]);
 
   const handleGetTests = () => {
     axios
-      .get("/api/v1/lab_tests")
+      .get("/api/v1/labtest_managements")
       .then((res) => {
         console.log(res.data);
-        // setGetTests(res.data);
+        setGetTests(res.data?.lab_managements);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const handleAddTests = () => {};
-
-  const editTests = (val) => {};
-
-  const deleteTests = (val) => {};
+  const handleAddTests = (test_name, test_for, comments) => {
+    const formData = new FormData();
+    formData.append("labtest_management[name]", test_name);
+    formData.append("labtest_management[for]", test_for);
+    formData.append("labtest_management[comments]", comments);
+    axios
+      .post("api/v1/labtest_managements", formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: "Your family reason has been added.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetTests();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     handleGetTests();
@@ -41,8 +61,8 @@ function LabTest() {
               name="Add New Test"
               title="Add Test"
               test_name="Test Name"
+              gender="Gender"
               test_comments="Test Comments"
-              details="Details"
             />
           </div>
 
@@ -55,9 +75,7 @@ function LabTest() {
                     name="No."
                   />
                   <ThComponent name="Test Name" />
-                  <ThComponent name="Details in English" />
-                  <ThComponent name="Details in Hindi" />
-                  <ThComponent name="Details in Gujarati" />
+                  <ThComponent name="Gender" />
                   <ThComponent name="Comments" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
@@ -88,30 +106,6 @@ function LabTest() {
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.medicine_quantity} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editTests(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => deleteTests(val.id)}
-                                className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
-                              >
-                                <MdDelete size={20} />
-                              </button>
-                            }
-                          />
                         </td>
                       </tr>
                     );
