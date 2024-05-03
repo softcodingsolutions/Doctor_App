@@ -31,6 +31,15 @@ import TreatmentDonts from "./pages/Admin/treatment/TreatmentDonts";
 import TreatmentFamilyReason from "./pages/Admin/treatment/TreatmentFamilyReason";
 import TreatmentComplains from "./pages/Admin/treatment/TreatmentComplains";
 import TreatmentLabTests from "./pages/Admin/treatment/TreatmentLabTests";
+import UserQuestions from "./pages/User/UserQuestions";
+import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
+import QueCurrentDiet from "./pages/User/Questions/QueCurrentDiet";
+import QueFamilyHistory from "./pages/User/Questions/QueFamilyHistory";
+import QueComplains from "./pages/User/Questions/QueComplains";
+import QueUserQuestions from "./pages/User/Questions/QueUserQuestions";
+import QueCheckout from "./pages/User/Questions/QueCheckout";
+import QueDiagnosis from "./pages/User/Questions/QueDiagnosis";
+
 
 function App() {
   return (
@@ -41,6 +50,15 @@ function App() {
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="dashboard" element={<UserDashboard />} />
+          <Route path="questions" element={<UserQuestions />}>
+            <Route path="general-details" element={<QueGeneralDetails />} />
+            <Route path="current-diet" element={<QueCurrentDiet />} />
+            <Route path="family-history" element={<QueFamilyHistory />} />
+            <Route path="complains" element={<QueComplains />} />
+            <Route path="user-questions" element={<QueUserQuestions />} />
+            <Route path="diagnosis" element={<QueDiagnosis />} />
+            <Route path="checkout" element={<QueCheckout />} />
+          </Route>
         </Route>
 
         {/* Admin */}
