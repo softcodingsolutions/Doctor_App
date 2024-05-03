@@ -157,8 +157,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             }
           >
             <div className="text-lg font-semibold">
-              {admin?.first_name[0]?.toUpperCase()}
-              {admin?.last_name[0]?.toUpperCase()}
+              {admin?.first_name?.toUpperCase()[0]}
+              {admin?.last_name?.toUpperCase()[0]}
             </div>
           </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">

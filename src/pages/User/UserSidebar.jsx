@@ -2,7 +2,7 @@ import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaRegCircleQuestion } from "react-icons/fa6";
 import { useState } from "react";
 
 function UserSidebar({ onSidebarHide, showSidebar, user }) {
@@ -16,6 +16,12 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
       title: "Dashboard",
       to: "dashboard",
       icons: <IoMdHome size={18} />,
+    },
+    {
+      id: "1",
+      title: "Questions",
+      to: "questions",
+      icons: <FaRegCircleQuestion size={18} />,
     },
   ];
 
@@ -87,8 +93,8 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
             }
           >
             <div className="text-lg font-semibold">
-              {user.first_name[0].toUpperCase()}
-              {user.last_name[0].toUpperCase()}
+              {user.first_name?.toUpperCase()[0]}
+              {user.last_name?.toUpperCase()[0]}
             </div>
           </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">
