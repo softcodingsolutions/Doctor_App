@@ -38,7 +38,7 @@ function SignUpPage() {
             console.log("Login", res);
             localStorage.setItem("access_token", res.data?.user?.access_token);
             localStorage.setItem("role", res.data?.user?.role);
-            
+
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
