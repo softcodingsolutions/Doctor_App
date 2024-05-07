@@ -54,7 +54,7 @@ function TreatmentQuestionPart1() {
       });
   };
 
-  const handleSave = () => {    
+  const handleSave = () => {
     console.log("Selected checkboxes:", selectedCheckboxes);
     const selectedObjects = selectedCheckboxes.map((id) =>
       getQuestionsPart1.find((question) => question.id === Number(id))
@@ -67,10 +67,12 @@ function TreatmentQuestionPart1() {
       },
     };
 
-    console.log(sendData);
-
     const formData = new FormData();
-    formData.append("package[details]", JSON.stringify(sendData.details));
+    formData.append("package[weight_reason]", context);
+    formData.append(
+      "package[questions_part_one]",
+      JSON.stringify(selectedObjects)
+    );
     axios
       .post("/api/v1/packages", formData)
       .then((res) => {

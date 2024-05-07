@@ -53,6 +53,8 @@ function LoginPage() {
         }
         reset();
       });
+    }).catch((err)=>{
+        alert(err.message);
     });
   };
 

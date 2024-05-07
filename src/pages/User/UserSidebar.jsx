@@ -20,7 +20,7 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
     {
       id: "1",
       title: "Questions",
-      to: "questions",
+      to: "questions/general-details",
       icons: <FaRegCircleQuestion size={18} />,
     },
   ];
