@@ -12,7 +12,6 @@ function TreatmentQuestionPart1() {
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [questionsToBeAnswered, setQuestionsToBeAnswered] = useState(0);
-  const [getPackages, setPackages] = useState([]);
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -42,33 +41,17 @@ function TreatmentQuestionPart1() {
     });
   };
 
-  const handlegetPackages = () => {
-    axios
-      .get("/api/v1/packages")
-      .then((res) => {
-        console.log("Packages", res.data?.packages);
-        setPackages(res.data?.packages);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const handleSave = () => {
     console.log("Selected checkboxes:", selectedCheckboxes);
     const selectedObjects = selectedCheckboxes.map((id) =>
       getQuestionsPart1.find((question) => question.id === Number(id))
     );
 
-    const sendData = {
-      details: {
-        weight_reason: context,
-        questions_part1: selectedObjects,
-      },
-    };
-
     const formData = new FormData();
-    formData.append("package[weight_reason]", context);
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
     formData.append(
       "package[questions_part_one]",
       JSON.stringify(selectedObjects)
@@ -88,6 +71,7 @@ function TreatmentQuestionPart1() {
           });
         }
         handleGetQuestionsPart1();
+        context[1]();
       })
       .catch((err) => {
         console.log(err);
@@ -99,7 +83,7 @@ function TreatmentQuestionPart1() {
 
   useEffect(() => {
     handleGetQuestionsPart1();
-    handlegetPackages();
+    context[1]();
   }, []);
 
   return (
@@ -152,8 +136,10 @@ function TreatmentQuestionPart1() {
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
                   <ThComponent name="In Gujarati" />
-                  <ThComponent name="For" />
-                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
+                  <ThComponent
+                    moreClasses={"rounded-tr-md rounded-br-md"}
+                    name="For"
+                  />
                 </tr>
               </thead>
               <tbody>
@@ -169,7 +155,20 @@ function TreatmentQuestionPart1() {
                 ) : (
                   getQuestionsPart1.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        key={val.id}
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages.questions_part_one?.some(
+                                (question) => question.id === val.id
+                              )
+                          )
+                            ? "bg-green-400 "
+                            : "bg-white"
+                        } w-full`}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input

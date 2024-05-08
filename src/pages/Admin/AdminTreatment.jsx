@@ -6,7 +6,8 @@ import { Outlet, useOutletContext } from "react-router-dom";
 function AdminTreatment() {
   const context = useOutletContext();
   const [getWeightReason, setGetWeightReason] = useState([]);
-  const [sendWeightReason, setSendWeightReason] = useState(0);
+  const [sendWeightReason, setSendWeightReason] = useState(null);
+  const [getPackages, setPackages] = useState([]);
 
   const handleGetWeightReason = () => {
     axios
@@ -20,12 +21,25 @@ function AdminTreatment() {
       });
   };
 
+  const handlegetPackages = () => {
+    axios
+      .get("/api/v1/packages")
+      .then((res) => {
+        console.log("Packages", res.data?.packages);
+        setPackages(res.data?.packages);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleSendWeightReason = (val) => {
     setSendWeightReason(val);
   };
 
   useEffect(() => {
     handleGetWeightReason();
+    handlegetPackages();
   }, []);
 
   return (
@@ -60,7 +74,7 @@ function AdminTreatment() {
             />
           </button>
         </div>
-        <Outlet context={sendWeightReason} />
+        <Outlet context={[sendWeightReason, handlegetPackages, getPackages]} />
       </div>
     </div>
   );
