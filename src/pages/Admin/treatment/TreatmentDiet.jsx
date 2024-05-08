@@ -4,8 +4,11 @@ import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import NextPageButton from "../../../components/Admin/NextPageButton";
+import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function TreatmentDiet() {
+  const context = useOutletContext();
   const [getDiet, setGetDiet] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -26,28 +29,67 @@ function TreatmentDiet() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const updatedSelectedCheckboxes = [...selectedCheckboxes];
+    const checkboxIndex = updatedSelectedCheckboxes.indexOf(checkboxValue);
+
+    if (checkboxIndex === -1) {
+      updatedSelectedCheckboxes.push(checkboxValue);
+    } else {
+      updatedSelectedCheckboxes.splice(checkboxIndex, 1);
+    }
+
+    setSelectedCheckboxes(updatedSelectedCheckboxes);
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getDiet.find((val) => val.id === Number(res)));
-    });
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+  const handleSave = async () => {
+    if (selectedCheckboxes.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Diet Selected",
+        text: "Please select at least one diet to save.",
+      });
+    }
+
+    const selectedDiet = selectedCheckboxes.map((id) =>
+      getDiet.find((diet) => diet.id === Number(id))
+    );
+
+    console.log("Selected Diet: ", selectedDiet);
+
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[diet]", JSON.stringify(selectedDiet));
+
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your diet has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetDiet();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
 
   useEffect(() => {
     handleGetDiet();
+    context[1]();
   }, []);
 
   return (
@@ -72,9 +114,17 @@ function TreatmentDiet() {
                 Save
               </button>
             )}
+
             <div className="font-[550] text-lg">
               No. of diets checked: {selectedCheckboxes.length}
             </div>
+
+            {!showCheckboxes && (
+              <div className="font-[550] text-lg flex items-center">
+                Checked Diet -{" "}
+                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+              </div>
+            )}
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -113,15 +163,30 @@ function TreatmentDiet() {
                 ) : (
                   getDiet.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages.diet?.some((diet) => diet.id === val.id)
+                          )
+                            ? "bg-green-400 "
+                            : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.diet?.some(
+                                    (diet) => diet.id === val.id
+                                  )
                               )}
                             />
                           </td>

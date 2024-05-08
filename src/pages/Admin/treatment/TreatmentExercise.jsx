@@ -4,8 +4,11 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import NextPageButton from "../../../components/Admin/NextPageButton";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
+import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function TreatmentExercise() {
+  const context = useOutletContext();
   const [getExercise, setGetExercise] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -26,28 +29,67 @@ function TreatmentExercise() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const updatedSelectedCheckboxes = [...selectedCheckboxes];
+    const checkboxIndex = updatedSelectedCheckboxes.indexOf(checkboxValue);
+
+    if (checkboxIndex === -1) {
+      updatedSelectedCheckboxes.push(checkboxValue);
+    } else {
+      updatedSelectedCheckboxes.splice(checkboxIndex, 1);
+    }
+
+    setSelectedCheckboxes(updatedSelectedCheckboxes);
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getExercise.find((val) => val.id === Number(res)));
-    });
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+  const handleSave = async () => {
+    if (selectedCheckboxes.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Exercise Selected",
+        text: "Please select at least one exercise to save.",
+      });
+    }
+
+    const selectedExercise = selectedCheckboxes.map((id) =>
+      getExercise.find((exe) => exe.id === Number(id))
+    );
+
+    console.log("Selected Exercise: ", selectedExercise);
+
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[exercise]", JSON.stringify(selectedExercise));
+
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your exercise has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetExercise();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
 
   useEffect(() => {
     handleGetExercise();
+    context[1]();
   }, []);
 
   return (
@@ -72,9 +114,17 @@ function TreatmentExercise() {
                 Save
               </button>
             )}
+
             <div className="font-[550] text-lg">
               No. of exercises checked: {selectedCheckboxes.length}
             </div>
+
+            {!showCheckboxes && (
+              <div className="font-[550] text-lg flex items-center">
+                Checked Exercise -{" "}
+                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+              </div>
+            )}
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -112,15 +162,32 @@ function TreatmentExercise() {
                 ) : (
                   getExercise.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages?.exercise?.some(
+                                (exercise) => exercise.id === val.id
+                              )
+                          )
+                            ? "bg-green-400 "
+                            : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.exercise?.some(
+                                    (exercise) => exercise.id === val.id
+                                  )
                               )}
                             />
                           </td>

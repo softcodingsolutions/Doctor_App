@@ -77,9 +77,17 @@ function TreatmentDonts() {
                 Save
               </button>
             )}
+
             <div className="font-[550] text-lg">
               No. of Don'ts checked: {selectedCheckboxes.length}
             </div>
+
+            {!showCheckboxes && (
+              <div className="font-[550] text-lg flex items-center">
+                Checked Don'ts -{" "}
+                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+              </div>
+            )}
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
