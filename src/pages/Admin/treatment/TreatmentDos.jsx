@@ -4,8 +4,12 @@ import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
+import Swal from "sweetalert2";
+import { useOutletContext } from "react-router-dom";
 
 function TreatmentDos() {
+  const context = useOutletContext();
   const [getDos, setGetDos] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -31,25 +35,72 @@ function TreatmentDos() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
+    } else {
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
+    }
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getDos.find((val) => val.id === Number(res)));
-    });
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+  const handleSave = async () => {
+    const selectedDos = selectedCheckboxes
+      .map((id) => getDos.find((doss) => doss.id === Number(id)))
+      .filter((doss) => doss);
+
+    if (selectedDos.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Dos Selected",
+        text: "Please select at least one dos to save.",
+      });
+    }
+
+    console.log("Selected Dos: ", selectedDos);
+
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[dos]", JSON.stringify(selectedDos));
+
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your dos has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetDos();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
+
+  useEffect(() => {
+    const preSelectedDos = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.dos.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedDos);
+  }, [context]);
 
   useEffect(() => {
     handleGetDos();
@@ -69,18 +120,14 @@ function TreatmentDos() {
                 Select Dos
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
 
-            <div className="font-[550] text-lg">
-              No. of Dos checked: {selectedCheckboxes.length}
-            </div>
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of dos checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
@@ -126,15 +173,30 @@ function TreatmentDos() {
                 ) : (
                   getDos.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages.dos?.some((doss) => doss.id === val.id)
+                          )
+                            ? "bg-green-400 "
+                            : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.dos?.some(
+                                    (doss) => doss.id === val.id
+                                  )
                               )}
                             />
                           </td>
@@ -162,7 +224,7 @@ function TreatmentDos() {
           </div>
           <div className="flex justify-between">
             <PrevPageButton to="../nutrition" />
-            <NextPageButton to="../donts" />
+            <NextPageButton name="Don'ts" to="../donts" />
           </div>
         </div>
       </div>

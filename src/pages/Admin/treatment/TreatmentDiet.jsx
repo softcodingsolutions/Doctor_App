@@ -6,6 +6,7 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import NextPageButton from "../../../components/Admin/NextPageButton";
 import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 
 function TreatmentDiet() {
   const context = useOutletContext();
@@ -31,30 +32,29 @@ function TreatmentDiet() {
 
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
-    const updatedSelectedCheckboxes = [...selectedCheckboxes];
-    const checkboxIndex = updatedSelectedCheckboxes.indexOf(checkboxValue);
+    const isChecked = e.target.checked;
 
-    if (checkboxIndex === -1) {
-      updatedSelectedCheckboxes.push(checkboxValue);
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
     } else {
-      updatedSelectedCheckboxes.splice(checkboxIndex, 1);
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
     }
-
-    setSelectedCheckboxes(updatedSelectedCheckboxes);
   };
 
   const handleSave = async () => {
-    if (selectedCheckboxes.length === 0) {
+    const selectedDiet = selectedCheckboxes
+      .map((id) => getDiet.find((die) => die.id === Number(id)))
+      .filter((die) => die);
+
+    if (selectedDiet.length === 0) {
       return Swal.fire({
         icon: "warning",
         title: "No Diet Selected",
         text: "Please select at least one diet to save.",
       });
     }
-
-    const selectedDiet = selectedCheckboxes.map((id) =>
-      getDiet.find((diet) => diet.id === Number(id))
-    );
 
     console.log("Selected Diet: ", selectedDiet);
 
@@ -72,7 +72,7 @@ function TreatmentDiet() {
           position: "top-end",
           icon: "success",
           title: "Added!",
-          text: `Your diet has been added.`,
+          text: `Your question has been added.`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -88,8 +88,17 @@ function TreatmentDiet() {
   };
 
   useEffect(() => {
+    const preSelectedDiet = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.diet.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedDiet);
+  }, [context]);
+
+  useEffect(() => {
     handleGetDiet();
-    context[1]();
   }, []);
 
   return (
@@ -106,18 +115,14 @@ function TreatmentDiet() {
                 Select Diet
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
 
-            <div className="font-[550] text-lg">
-              No. of diets checked: {selectedCheckboxes.length}
-            </div>
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of diets checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
@@ -214,7 +219,7 @@ function TreatmentDiet() {
           </div>
           <div className="flex justify-between">
             <PrevPageButton to="../medicines" />
-            <NextPageButton to="../exercise" />
+            <NextPageButton name="Exercise" to="../exercise" />
           </div>
         </div>
       </div>

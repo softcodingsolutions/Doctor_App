@@ -6,6 +6,7 @@ import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 
 function TreatmentExercise() {
   const context = useOutletContext();
@@ -31,30 +32,29 @@ function TreatmentExercise() {
 
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
-    const updatedSelectedCheckboxes = [...selectedCheckboxes];
-    const checkboxIndex = updatedSelectedCheckboxes.indexOf(checkboxValue);
+    const isChecked = e.target.checked;
 
-    if (checkboxIndex === -1) {
-      updatedSelectedCheckboxes.push(checkboxValue);
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
     } else {
-      updatedSelectedCheckboxes.splice(checkboxIndex, 1);
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
     }
-
-    setSelectedCheckboxes(updatedSelectedCheckboxes);
   };
 
   const handleSave = async () => {
-    if (selectedCheckboxes.length === 0) {
+    const selectedExercise = selectedCheckboxes
+      .map((id) => getExercise.find((exe) => exe.id === Number(id)))
+      .filter((exe) => exe);
+
+    if (selectedExercise.length === 0) {
       return Swal.fire({
         icon: "warning",
         title: "No Exercise Selected",
         text: "Please select at least one exercise to save.",
       });
     }
-
-    const selectedExercise = selectedCheckboxes.map((id) =>
-      getExercise.find((exe) => exe.id === Number(id))
-    );
 
     console.log("Selected Exercise: ", selectedExercise);
 
@@ -88,8 +88,17 @@ function TreatmentExercise() {
   };
 
   useEffect(() => {
+    const preSelectedExercise = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.exercise.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedExercise);
+  }, [context]);
+
+  useEffect(() => {
     handleGetExercise();
-    context[1]();
   }, []);
 
   return (
@@ -106,18 +115,14 @@ function TreatmentExercise() {
                 Select Exercise
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
 
-            <div className="font-[550] text-lg">
-              No. of exercises checked: {selectedCheckboxes.length}
-            </div>
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of exercise checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
@@ -212,7 +217,7 @@ function TreatmentExercise() {
           </div>
           <div className="flex justify-between">
             <PrevPageButton to="../diet" />
-            <NextPageButton to="../nutrition" />
+            <NextPageButton name="Nutrition" to="../nutrition" />
           </div>
         </div>
       </div>

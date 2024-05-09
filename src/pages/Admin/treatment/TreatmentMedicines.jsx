@@ -6,6 +6,7 @@ import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 
 function TreatmentMedicines() {
   const context = useOutletContext();
@@ -31,30 +32,29 @@ function TreatmentMedicines() {
 
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
-    const updatedSelectedCheckboxes = [...selectedCheckboxes];
-    const checkboxIndex = updatedSelectedCheckboxes.indexOf(checkboxValue);
+    const isChecked = e.target.checked;
 
-    if (checkboxIndex === -1) {
-      updatedSelectedCheckboxes.push(checkboxValue);
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
     } else {
-      updatedSelectedCheckboxes.splice(checkboxIndex, 1);
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
     }
-
-    setSelectedCheckboxes(updatedSelectedCheckboxes);
   };
 
   const handleSave = async () => {
-    if (selectedCheckboxes.length === 0) {
+    const selectedMedicine = selectedCheckboxes
+      .map((id) => getMedicines.find((med) => med.id === Number(id)))
+      .filter((med) => med);
+
+    if (selectedMedicine.length === 0) {
       return Swal.fire({
         icon: "warning",
-        title: "No Medicine Selected",
+        title: "No Medicines Selected",
         text: "Please select at least one medicine to save.",
       });
     }
-
-    const selectedMedicine = selectedCheckboxes.map((id) =>
-      getMedicines.find((med) => med.id === Number(id))
-    );
 
     console.log("Selected Medicine: ", selectedMedicine);
 
@@ -88,8 +88,17 @@ function TreatmentMedicines() {
   };
 
   useEffect(() => {
+    const preSelectedMedicine = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.medicines.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedMedicine);
+  }, [context]);
+
+  useEffect(() => {
     handleGetMedicines();
-    context[1]();
   }, []);
 
   return (
@@ -106,18 +115,14 @@ function TreatmentMedicines() {
                 Select Medicines
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
-            
-            <div className="font-[550] text-lg">
-              No. of medicines checked: {selectedCheckboxes.length}
-            </div>
+
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of medicines checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
@@ -216,7 +221,7 @@ function TreatmentMedicines() {
           </div>
           <div className="flex justify-between">
             <PrevPageButton to="../question-part2" />
-            <NextPageButton to="../diet" />
+            <NextPageButton name="Diet" to="../diet" />
           </div>
         </div>
       </div>
