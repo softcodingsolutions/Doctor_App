@@ -29,23 +29,34 @@ function TreatmentQuestionPart1() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    console.log(checkboxValue);
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const updatedSelectedCheckboxes = [...selectedCheckboxes];
+    const checkboxIndex = updatedSelectedCheckboxes.indexOf(checkboxValue);
+
+    if (checkboxIndex === -1) {
+      updatedSelectedCheckboxes.push(checkboxValue);
+    } else {
+      updatedSelectedCheckboxes.splice(checkboxIndex, 1);
+    }
+
+    setSelectedCheckboxes(updatedSelectedCheckboxes);
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    const selectedObjects = selectedCheckboxes.map((id) =>
+  const handleSave = async () => {
+    if (selectedCheckboxes.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Questions Selected",
+        text: "Please select at least one question to save.",
+      });
+    }
+
+    const selectedQuestions = selectedCheckboxes.map((id) =>
       getQuestionsPart1.find((question) => question.id === Number(id))
     );
+
+    console.log("Selected Questions: ", selectedQuestions);
 
     const formData = new FormData();
     formData.append(
@@ -54,32 +65,40 @@ function TreatmentQuestionPart1() {
     );
     formData.append(
       "package[questions_part_one]",
-      JSON.stringify(selectedObjects)
+      JSON.stringify(selectedQuestions)
     );
-    axios
-      .post("/api/v1/packages", formData)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: `Your complain has been added.`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        handleGetQuestionsPart1();
-        context[1]();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
 
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your complain has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetQuestionsPart1();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
+
+  useEffect(() => {
+    const preSelectedQuestions = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.questions_part_one.map((q) => q.id)];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedQuestions);
+  }, [context]);
 
   useEffect(() => {
     handleGetQuestionsPart1();
@@ -117,6 +136,13 @@ function TreatmentQuestionPart1() {
             <div className="font-bold text-lg">
               No. of questions to be answered: {questionsToBeAnswered}
             </div>
+
+            {!showCheckboxes && (
+              <div className="font-[550] text-lg flex items-center">
+                Checked Questions -{" "}
+                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+              </div>
+            )}
           </div>
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
@@ -166,7 +192,7 @@ function TreatmentQuestionPart1() {
                               )
                           )
                             ? "bg-green-400 "
-                            : "bg-white"
+                            : ""
                         } w-full`}
                       >
                         {showCheckboxes && (
@@ -175,8 +201,12 @@ function TreatmentQuestionPart1() {
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.questions_part_one?.some(
+                                    (question) => question.id === val.id
+                                  )
                               )}
                             />
                           </td>

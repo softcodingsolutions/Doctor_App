@@ -4,8 +4,11 @@ import axios from "axios";
 import TdComponent from "../../../components/TdComponent";
 import NextPageButton from "../../../components/Admin/NextPageButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
+import Swal from "sweetalert2";
+import { useOutletContext } from "react-router-dom";
 
 function TreatmentQuestionPart2() {
+  const context = useOutletContext();
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
@@ -27,28 +30,70 @@ function TreatmentQuestionPart2() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const updatedSelectedCheckboxes = [...selectedCheckboxes];
+    const checkboxIndex = updatedSelectedCheckboxes.indexOf(checkboxValue);
+
+    if (checkboxIndex === -1) {
+      updatedSelectedCheckboxes.push(checkboxValue);
+    } else {
+      updatedSelectedCheckboxes.splice(checkboxIndex, 1);
+    }
+
+    setSelectedCheckboxes(updatedSelectedCheckboxes);
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getQuestionsPart2.find((val) => val.id === Number(res)));
-    });
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+  const handleSave = async () => {
+    if (selectedCheckboxes.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Questions Selected",
+        text: "Please select at least one question to save.",
+      });
+    }
+
+    const selectedQuestions = selectedCheckboxes.map((id) =>
+      getQuestionsPart2.find((question) => question.id === Number(id))
+    );
+
+    console.log("Selected Questions: ", selectedQuestions);
+
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append(
+      "package[questions_part_two]",
+      JSON.stringify(selectedQuestions)
+    );
+
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your complain has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetQuestionsPart2();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
 
   useEffect(() => {
     handleGetQuestionsPart2();
+    context[1]();
   }, []);
 
   return (
@@ -82,6 +127,13 @@ function TreatmentQuestionPart2() {
             <div className="font-bold text-lg">
               No. of questions to be answered: {questionsToBeAnswered}
             </div>
+
+            {!showCheckboxes && (
+              <div className="font-[550] text-lg flex items-center">
+                Checked Questions -{" "}
+                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+              </div>
+            )}
           </div>
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
@@ -101,8 +153,10 @@ function TreatmentQuestionPart2() {
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
                   <ThComponent name="In Gujarati" />
-                  <ThComponent name="For" />
-                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
+                  <ThComponent
+                    moreClasses={"rounded-tr-md rounded-br-md"}
+                    name="For"
+                  />
                 </tr>
               </thead>
               <tbody>
@@ -118,15 +172,32 @@ function TreatmentQuestionPart2() {
                 ) : (
                   getQuestionsPart2.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages.questions_part_two?.some(
+                                (question) => question.id === val.id
+                              )
+                          )
+                            ? "bg-green-400 "
+                            : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.questions_part_two?.some(
+                                    (question) => question.id === val.id
+                                  )
                               )}
                             />
                           </td>

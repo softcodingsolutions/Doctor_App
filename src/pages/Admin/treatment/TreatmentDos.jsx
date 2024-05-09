@@ -77,16 +77,24 @@ function TreatmentDos() {
                 Save
               </button>
             )}
+
             <div className="font-[550] text-lg">
               No. of Dos checked: {selectedCheckboxes.length}
             </div>
+
+            {!showCheckboxes && (
+              <div className="font-[550] text-lg flex items-center">
+                Checked Dons -{" "}
+                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+              </div>
+            )}
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                {showCheckboxes ? (
+                  {showCheckboxes ? (
                     <ThComponent
                       moreClasses={"rounded-tl-md rounded-bl-md"}
                       name="Select"
