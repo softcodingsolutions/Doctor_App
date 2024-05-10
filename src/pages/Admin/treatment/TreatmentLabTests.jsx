@@ -3,8 +3,12 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
+import Swal from "sweetalert2";
+import { useOutletContext } from "react-router-dom";
 
 function TreatmentLabTests() {
+  const context = useOutletContext();
   const [getTests, setGetTests] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -25,25 +29,72 @@ function TreatmentLabTests() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
+    } else {
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
+    }
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getTests.find((val) => val.id === Number(res)));
-    });
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+  const handleSave = async () => {
+    const selectedTests = selectedCheckboxes
+      .map((id) => getTests.find((com) => com.id === Number(id)))
+      .filter((com) => com);
+
+    if (selectedTests.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Lab Test Selected",
+        text: "Please select at least one test to save.",
+      });
+    }
+
+    console.log("Selected Lab Test: ", selectedTests);
+
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[lab_test]", JSON.stringify(selectedTests));
+
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your lab test has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetTests();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
+
+  useEffect(() => {
+    const preSelectedTest = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.lab_test.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedTest);
+  }, [context]);
 
   useEffect(() => {
     handleGetTests();
@@ -60,25 +111,19 @@ function TreatmentLabTests() {
                 onClick={handleToggleCheckboxes}
                 className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
               >
-                Select Test
+                Select Tests
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
-
-            <div className="font-[550] text-lg">
-              No. of tests checked: {selectedCheckboxes.length}
-            </div>
-
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of tests checked: {selectedCheckboxes.length}
+              </div>
+            )}
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
-                Checked Tests -{" "}
+                Checked Lab Tests -{" "}
                 <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
               </div>
             )}
@@ -114,21 +159,38 @@ function TreatmentLabTests() {
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                       colSpan={8}
                     >
-                      No Tests Found!
+                      No Lab Tests Found!
                     </th>
                   </tr>
                 ) : (
                   getTests.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages.lab_test?.some(
+                                (test) => test.id === val.id
+                              )
+                          )
+                            ? "bg-green-400 "
+                            : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.lab_test?.some(
+                                    (test) => test.id === val.id
+                                  )
                               )}
                             />
                           </td>

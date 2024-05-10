@@ -6,6 +6,7 @@ import NextPageButton from "../../../components/Admin/NextPageButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 
 function TreatmentQuestionPart2() {
   const context = useOutletContext();
@@ -32,30 +33,31 @@ function TreatmentQuestionPart2() {
 
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
-    const updatedSelectedCheckboxes = [...selectedCheckboxes];
-    const checkboxIndex = updatedSelectedCheckboxes.indexOf(checkboxValue);
+    const isChecked = e.target.checked;
 
-    if (checkboxIndex === -1) {
-      updatedSelectedCheckboxes.push(checkboxValue);
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
     } else {
-      updatedSelectedCheckboxes.splice(checkboxIndex, 1);
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
     }
-
-    setSelectedCheckboxes(updatedSelectedCheckboxes);
   };
 
   const handleSave = async () => {
-    if (selectedCheckboxes.length === 0) {
+    const selectedQuestions = selectedCheckboxes
+      .map((id) =>
+        getQuestionsPart2.find((question) => question.id === Number(id))
+      )
+      .filter((question) => question);
+
+    if (selectedQuestions.length === 0) {
       return Swal.fire({
         icon: "warning",
         title: "No Questions Selected",
         text: "Please select at least one question to save.",
       });
     }
-
-    const selectedQuestions = selectedCheckboxes.map((id) =>
-      getQuestionsPart2.find((question) => question.id === Number(id))
-    );
 
     console.log("Selected Questions: ", selectedQuestions);
 
@@ -76,7 +78,7 @@ function TreatmentQuestionPart2() {
           position: "top-end",
           icon: "success",
           title: "Added!",
-          text: `Your complain has been added.`,
+          text: `Your question has been added.`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -92,8 +94,17 @@ function TreatmentQuestionPart2() {
   };
 
   useEffect(() => {
+    const preSelectedQuestions = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.questions_part_two.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedQuestions);
+  }, [context]);
+
+  useEffect(() => {
     handleGetQuestionsPart2();
-    context[1]();
   }, []);
 
   return (
@@ -110,13 +121,7 @@ function TreatmentQuestionPart2() {
                 Select Questions (Part-2)
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
             {showCheckboxes && (
               <div className="font-[550] text-lg">
@@ -232,7 +237,7 @@ function TreatmentQuestionPart2() {
           </div>
           <div className="flex justify-between">
             <PrevPageButton to="../question-part1" />
-            <NextPageButton to="../medicines" />
+            <NextPageButton name="Medicines" to="../medicines" />
           </div>
         </div>
       </div>

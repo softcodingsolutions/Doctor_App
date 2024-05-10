@@ -4,8 +4,12 @@ import NextPageButton from "../../../components/Admin/NextPageButton";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
+import Swal from "sweetalert2";
+import { useOutletContext } from "react-router-dom";
 
 function TreatmentFamilyReason() {
+  const context = useOutletContext();
   const [getFamily, setGetFamily] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -26,25 +30,72 @@ function TreatmentFamilyReason() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
+    } else {
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
+    }
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getFamily.find((val) => val.id === Number(res)));
-    });
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+  const handleSave = async () => {
+    const selectedFamily = selectedCheckboxes
+      .map((id) => getFamily.find((fam) => fam.id === Number(id)))
+      .filter((fam) => fam);
+
+    if (selectedFamily.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Family Reason Selected",
+        text: "Please select at least one reason to save.",
+      });
+    }
+
+    console.log("Selected Family Reason: ", selectedFamily);
+
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[family_reasons]", JSON.stringify(selectedFamily));
+
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your family reason has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetFamily();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
+
+  useEffect(() => {
+    const preSelectedFamily = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.family_reasons.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedFamily);
+  }, [context]);
 
   useEffect(() => {
     handleGetFamily();
@@ -64,18 +115,14 @@ function TreatmentFamilyReason() {
                 Select Family Reason
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
 
-            <div className="font-[550] text-lg">
-              No. of family reasons checked: {selectedCheckboxes.length}
-            </div>
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of family reasons checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
@@ -121,15 +168,32 @@ function TreatmentFamilyReason() {
                 ) : (
                   getFamily.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages.family_reasons?.some(
+                                (fam) => fam.id === val.id
+                              )
+                          )
+                            ? "bg-green-400 "
+                            : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.family_reasons?.some(
+                                    (fam) => fam.id === val.id
+                                  )
                               )}
                             />
                           </td>
@@ -157,7 +221,7 @@ function TreatmentFamilyReason() {
           </div>
           <div className="flex justify-between">
             <PrevPageButton to="../donts" />
-            <NextPageButton to="../complains" />
+            <NextPageButton name="Complains" to="../complains" />
           </div>
         </div>
       </div>

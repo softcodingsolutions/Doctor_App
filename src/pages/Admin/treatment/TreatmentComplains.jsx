@@ -4,8 +4,12 @@ import NextPageButton from "../../../components/Admin/NextPageButton";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
+import Swal from "sweetalert2";
+import { useOutletContext } from "react-router-dom";
 
 function TreatmentComplains() {
+  const context = useOutletContext();
   const [getComplain, setGetComplain] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -26,25 +30,72 @@ function TreatmentComplains() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
+    } else {
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
+    }
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getComplain.find((val) => val.id === Number(res)));
-    });
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+  const handleSave = async () => {
+    const selectedComplain = selectedCheckboxes
+      .map((id) => getComplain.find((com) => com.id === Number(id)))
+      .filter((com) => com);
+
+    if (selectedComplain.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Complains Selected",
+        text: "Please select at least one complain to save.",
+      });
+    }
+
+    console.log("Selected Complain: ", selectedComplain);
+
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[complaints]", JSON.stringify(selectedComplain));
+
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your complain has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetComplain();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
+
+  useEffect(() => {
+    const preSelectedComplain = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.complaints.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedComplain);
+  }, [context]);
 
   useEffect(() => {
     handleGetComplain();
@@ -61,21 +112,17 @@ function TreatmentComplains() {
                 onClick={handleToggleCheckboxes}
                 className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
               >
-                Select Complain
+                Select Complains
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
 
-            <div className="font-[550] text-lg">
-              No. of complains checked: {selectedCheckboxes.length}
-            </div>
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of complains checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
@@ -119,15 +166,32 @@ function TreatmentComplains() {
                 ) : (
                   getComplain.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages.complaints?.some(
+                                (com) => com.id === val.id
+                              )
+                          )
+                            ? "bg-green-400 "
+                            : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.complaints?.some(
+                                    (com) => com.id === val.id
+                                  )
                               )}
                             />
                           </td>
@@ -149,7 +213,7 @@ function TreatmentComplains() {
           </div>
           <div className="flex justify-between">
             <PrevPageButton to="../family-reason" />
-            <NextPageButton to="../lab-tests" />
+            <NextPageButton name="Lab Tests" to="../lab-tests" />
           </div>
         </div>
       </div>

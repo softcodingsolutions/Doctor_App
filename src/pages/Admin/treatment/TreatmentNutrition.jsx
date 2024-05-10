@@ -5,8 +5,12 @@ import ThComponent from "../../../components/ThComponent";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
+import Swal from "sweetalert2";
+import { useOutletContext } from "react-router-dom";
 
 function TreatmentNutrition() {
+  const context = useOutletContext();
   const [getNutrition, setGetNutrition] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -27,25 +31,72 @@ function TreatmentNutrition() {
     setShowCheckboxes(!showCheckboxes);
   };
 
-  const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    setSelectedCheckboxes((prevCheckboxes) => {
-      if (prevCheckboxes.includes(checkboxValue)) {
-        return prevCheckboxes.filter((val) => val !== checkboxValue);
-      } else {
-        return [...prevCheckboxes, checkboxValue];
-      }
-    });
+  const handleCheckboxChange = (e) => {
+    const checkboxValue = e.target.value;
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
+    } else {
+      setSelectedCheckboxes((prevState) =>
+        prevState.filter((value) => value !== checkboxValue)
+      );
+    }
   };
 
-  const handleSave = () => {
-    console.log("Selected checkboxes:", selectedCheckboxes);
-    selectedCheckboxes.map((res) => {
-      console.log(getNutrition.find((val) => val.id === Number(res)));
-    });
-    setSelectedCheckboxes([]);
-    setShowCheckboxes(false);
+  const handleSave = async () => {
+    const selectedNutritions = selectedCheckboxes
+      .map((id) => getNutrition.find((nut) => nut.id === Number(id)))
+      .filter((nut) => nut);
+
+    if (selectedNutritions.length === 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "No Nutritions Selected",
+        text: "Please select at least one nutrition to save.",
+      });
+    }
+
+    console.log("Selected Nutritions: ", selectedNutritions);
+
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[nutrition]", JSON.stringify(selectedNutritions));
+
+    try {
+      const response = await axios.post("/api/v1/packages", formData);
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: `Your nutrition has been added.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetNutrition();
+      context[1]();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSelectedCheckboxes([]);
+      setShowCheckboxes(false);
+    }
   };
+
+  useEffect(() => {
+    const preSelectedNutrition = context[2]?.reduce((acc, packages) => {
+      if (context[0] === packages.weight_reason) {
+        acc = [...acc, ...packages.nutrition.map((q) => String(q.id))];
+      }
+      return acc;
+    }, []);
+    setSelectedCheckboxes(preSelectedNutrition);
+  }, [context]);
 
   useEffect(() => {
     handleGetNutrition();
@@ -65,18 +116,14 @@ function TreatmentNutrition() {
                 Select Nutritions
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleSave}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Save
-              </button>
+              <SaveTreatmentButtons function={handleSave} />
             )}
 
-            <div className="font-[550] text-lg">
-              No. of nutritions checked: {selectedCheckboxes.length}
-            </div>
+            {showCheckboxes && (
+              <div className="font-[550] text-lg">
+                No. of nutritions checked: {selectedCheckboxes.length}
+              </div>
+            )}
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
@@ -119,15 +166,32 @@ function TreatmentNutrition() {
                 ) : (
                   getNutrition.map((val, index) => {
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          context[2]?.some(
+                            (packages) =>
+                              context[0] === packages.weight_reason &&
+                              packages.nutrition?.some(
+                                (nut) => nut.id === val.id
+                              )
+                          )
+                            ? "bg-green-400 "
+                            : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         {showCheckboxes && (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <input
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={selectedCheckboxes.includes(
-                                val.id
+                              defaultChecked={context[2]?.some(
+                                (packages) =>
+                                  context[0] === packages.weight_reason &&
+                                  packages.nutrition?.some(
+                                    (nut) => nut.id === val.id
+                                  )
                               )}
                             />
                           </td>
@@ -149,7 +213,7 @@ function TreatmentNutrition() {
           </div>
           <div className="flex justify-between">
             <PrevPageButton to="../exercise" />
-            <NextPageButton to="../dos" />
+            <NextPageButton name="Dos" to="../dos" />
           </div>
         </div>
       </div>
