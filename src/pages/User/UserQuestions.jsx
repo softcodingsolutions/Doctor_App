@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSchema } from "../../schemas/UserDetailsSchema";
-import NextPageButton from "../../components/Admin/NextPageButton";
-import PrevPageButton from "../../components/Admin/PrevPageButton";
+import SaveUserDetailsButton from "../../components/User/SaveUserDetailsButton";
+import UserDetailsInput from "../../components/User/UserDetailsInput";
 
 function UserQuestions() {
   const navigate = useNavigate();
+  const context = useOutletContext();
   const {
     register,
     handleSubmit,
@@ -19,36 +20,179 @@ function UserQuestions() {
 
   const submittedData = (d) => {
     console.log(d);
-  }
+    reset();
+  };
 
   return (
-    <div className="flex w-full p-4">
+    <div className="flex w-full p-3">
       <div className="w-full hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" flex-grow space-y-2 overflow-auto flex rounded-lg bg-card h-[94vh] bg-white flex-wrap content-start p-2">
-        <div className="text-xl font-semibold">General Details :-</div>
-        <div className="w-full flex flex-col justify-between p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[94%]">
-          <form
-            onSubmit={handleSubmit(submittedData)}
-            className="w-full h-fit flex flex-col justify-center items-center"
-            method="post"
-          >
-            <div className="flex space-x-2 items-center">
-              <div>First Name:</div>
-              <input type="text" className="border w-full rounded-sm p-1" />
+      <div className=" flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2 ">
+        <div className="w-full sm:flex items-end">
+          <div className="sm:flex-grow flex justify-end ">
+            <button
+              onClick={context[0]}
+              type="button"
+              className="block sm:hidden hover:scale-110"
+            >
+              <img
+                src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+                alt=""
+                className="w-full h-full"
+              />
+            </button>
+          </div>
+          <div className="w-full flex-grow space-y-2.5 overflow-auto flex rounded-lg bg-card h-[94vh] bg-white flex-wrap content-start p-2 px-4">
+            <div className="text-xl font-semibold">General Details :-</div>
+            <div className="w-full flex flex-col p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+              <form
+                onSubmit={handleSubmit(submittedData)}
+                className="w-full h-full flex flex-col md:justify-between md:items-start justify-center items-center"
+                method="post"
+              >
+                <div className="md:flex w-full justify-between">
+                  <UserDetailsInput
+                    name="firstname"
+                    type="text"
+                    label="First Name"
+                    placeholder="firstname"
+                    hook={register("firstname")}
+                  />
+                  {errors.firstname && (
+                    <span className="text-s text-red-500  -mt-2.5">
+                      {errors.firstname?.message}
+                    </span>
+                  )}
+                  <UserDetailsInput
+                    name="lastname"
+                    type="text"
+                    label="Last Name"
+                    placeholder="lastname"
+                    hook={register("lastname")}
+                  />
+                  {errors.firstname && (
+                    <span className="text-s text-red-500  -mt-2.5">
+                      {errors.firstname?.message}
+                    </span>
+                  )}
+                </div>
+                <UserDetailsInput
+                  name="email"
+                  type="email"
+                  label="Email"
+                  placeholder="name@email.com"
+                  hook={register("email")}
+                />
+                {errors.email && (
+                  <span className="text-sm text-red-500  -mt-2.5">
+                    {errors.email?.message}
+                  </span>
+                )}
+                <UserDetailsInput
+                  name="mobile"
+                  type="text"
+                  label="Mobile Number"
+                  placeholder="mobile number"
+                  hook={register("mobile")}
+                />
+                {errors.mobile && (
+                  <span className="text-sm  text-red-500 -mt-2.5">
+                    {errors.mobile?.message}
+                  </span>
+                )}
+                <UserDetailsInput
+                  req="required"
+                  name="Reffered By"
+                  type="text"
+                  label="Reffered By"
+                  placeholder="reffered by"
+                  hook={register("refferedby")}
+                />
+                <div className="md:flex w-full justify-between">
+                  <UserDetailsInput
+                    name="address"
+                    type="text"
+                    label="Address"
+                    placeholder="address"
+                    hook={register("address")}
+                  />
+                  <UserDetailsInput
+                    name="city"
+                    type="text"
+                    label="City"
+                    placeholder="City"
+                    hook={register("city")}
+                  />
+                  {errors.city && (
+                    <span className="text-sm text-red-500 -mt-2.5">
+                      {errors.city?.message}
+                    </span>
+                  )}
+                </div>
+                <UserDetailsInput
+                  name="language"
+                  type="text"
+                  label="Language"
+                  placeholder="Language"
+                  hook={register("language")}
+                />
+                <UserDetailsInput
+                  name="age"
+                  type="number"
+                  label="Age"
+                  placeholder="Age"
+                  hook={register("Age")}
+                />
+                {errors.age && (
+                  <span className="text-sm text-red-500 -mt-2.5">
+                    {errors.age?.message}
+                  </span>
+                )}
+                <div className="md:flex w-full justify-between">
+                  <UserDetailsInput
+                    name="height"
+                    type="number"
+                    label="Height(cm"
+                    placeholder="height(cm)"
+                    hook={register("height(cm)")}
+                  />
+                  {errors.height && (
+                    <span className="text-sm text-red-500 -mt-2.5">
+                      {errors.height?.message}
+                    </span>
+                  )}
+
+                  <UserDetailsInput
+                    name="weight"
+                    type="number"
+                    label="Weight(Kg)"
+                    placeholder="Weight(Kg)"
+                    hook={register("Weight(Kg)")}
+                  />
+                  {errors.weight && (
+                    <span className="text-sm text-red-500 -mt-2.5">
+                      {errors.weight?.message}
+                    </span>
+                  )}
+                </div>
+                <UserDetailsInput
+                  name="sex"
+                  type="number"
+                  label="sex"
+                  placeholder="height(cm)"
+                  hook={register("height(cm)")}
+                />
+                {errors.height && (
+                  <span className="text-sm text-red-500 -mt-2.5">
+                    {errors.height?.message}
+                  </span>
+                )}
+                <div className="flex w-full justify-center">
+                  <SaveUserDetailsButton name="Save & Continue" />
+                </div>
+              </form>
             </div>
-            <div className="flex space-x-2 items-center">
-              <div>Last Name:</div>
-              <input type="text" required className="border rounded-sm p-1" />
-            </div>
-            <div className="flex space-x-2 items-center">
-              <div>Email:</div>
-              <input type="email" required className="border rounded-sm p-1" />
-            </div>
-          </form>
-          <div className="flex justify-end">
-            <NextPageButton to="./current-diet" />
           </div>
         </div>
       </div>

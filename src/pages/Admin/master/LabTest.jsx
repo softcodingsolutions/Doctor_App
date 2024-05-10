@@ -4,6 +4,7 @@ import ThComponent from "../../../components/ThComponent";
 import AddLabTest from "../../../components/Admin/AddLabTest";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { MdDelete, MdEdit } from "react-icons/md";
 
 function LabTest() {
   const [getTests, setGetTests] = useState([]);
@@ -23,7 +24,7 @@ function LabTest() {
   const handleAddTests = (test_name, test_for, comments) => {
     const formData = new FormData();
     formData.append("labtest_management[name]", test_name);
-    formData.append("labtest_management[for]", test_for);
+    formData.append("labtest_management[gender]", test_for);
     formData.append("labtest_management[comments]", comments);
     axios
       .post("api/v1/labtest_managements", formData)
@@ -45,6 +46,14 @@ function LabTest() {
         console.log(err);
       });
   };
+
+  const editTest = (val) => {
+
+  }
+
+  const deleteTest = (val) => {
+    
+  }
 
   useEffect(() => {
     handleGetTests();
@@ -99,13 +108,37 @@ function LabTest() {
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_name} />
+                          <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
+                          <TdComponent things={val.gender} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_quantity} />
+                          <TdComponent things={val.comments} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <button
+                                onClick={() => editTest(val.id)}
+                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
+                              >
+                                <MdEdit size={20} />
+                              </button>
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <button
+                                onClick={() => deleteTest(val.id)}
+                                className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
+                              >
+                                <MdDelete size={20} />
+                              </button>
+                            }
+                          />
                         </td>
                       </tr>
                     );

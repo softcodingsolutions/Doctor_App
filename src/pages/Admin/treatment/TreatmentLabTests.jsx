@@ -201,7 +201,13 @@ function TreatmentLabTests() {
                           </td>
                         )}
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details} />
+                          <TdComponent things={val.name} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.gender} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.comments} />
                         </td>
                       </tr>
                     );
