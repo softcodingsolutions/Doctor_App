@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 function DietMaster() {
   const [getDiet, setGetDiet] = useState([]);
 
-  const handleAddDiet = (diet_code, diet_describe, diet_name) => {
+  const handleAddDiet = (diet_code, diet_name, diet_describe) => {
     const formData = new FormData();
     formData.append("diet[name]", diet_name);
     formData.append("diet[code]", diet_code);

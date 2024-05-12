@@ -12,15 +12,19 @@ import {
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 function AddNewExercise(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
+  const [value, setValue] = useState("");
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi(d.exercise_describe, d.exercise_name);
+    props.handleApi(d.exercise_name, value);
     reset();
+    setValue("");
   };
 
   return (
@@ -63,10 +67,13 @@ function AddNewExercise(props) {
 
               <FormControl>
                 <FormLabel>{props.exercise_describe} :-</FormLabel>
-                <Input
+                <ReactQuill
+                  className="w-96 min-h-fit max-h-36 overflow-auto"
                   placeholder="Describe..."
+                  theme="snow"
                   name={`exercise_describe`}
-                  {...register(`exercise_describe`)}
+                  value={value}
+                  onChange={setValue}
                   required
                 />
               </FormControl>

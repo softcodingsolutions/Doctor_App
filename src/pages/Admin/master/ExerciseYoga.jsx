@@ -21,7 +21,7 @@ function ExerciseYoga() {
       });
   };
 
-  const handleAddExercise = (exercise_describe, exercise_name) => {
+  const handleAddExercise = (exercise_name, exercise_describe) => {
     const formData = new FormData();
     formData.append("exercise[name]", exercise_name);
     formData.append("exercise[details]", exercise_describe);

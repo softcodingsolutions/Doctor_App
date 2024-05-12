@@ -12,15 +12,20 @@ import {
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 function AddNewMedicine(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
+  const [value, setValue] = useState("");
 
   const submittedData = (d) => {
+    console.log("Value", value);
     console.log(d);
-    props.handleApi(d.diet_code, d.diet_describe, d.diet_name);
+    props.handleApi(d.diet_code, d.diet_name, value);
     reset();
+    setValue("");
   };
 
   return (
@@ -73,10 +78,13 @@ function AddNewMedicine(props) {
 
               <FormControl>
                 <FormLabel>{props.diet_describe} :-</FormLabel>
-                <Input
+                <ReactQuill
+                  className="w-96 min-h-fit max-h-36 overflow-auto"
                   placeholder="Describe..."
+                  theme="snow"
                   name={`diet_describe`}
-                  {...register(`diet_describe`)}
+                  value={value}
+                  onChange={setValue}
                   required
                 />
               </FormControl>
