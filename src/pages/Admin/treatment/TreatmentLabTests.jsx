@@ -6,6 +6,7 @@ import axios from "axios";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
+import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
 
 function TreatmentLabTests() {
   const context = useOutletContext();
@@ -105,26 +106,23 @@ function TreatmentLabTests() {
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
           <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes ? (
-              <button
-                type="button"
-                onClick={handleToggleCheckboxes}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Select Tests
-              </button>
-            ) : (
-              <SaveTreatmentButtons function={handleSave} />
+            {!showCheckboxes && (
+              <SelectTreatmentButton
+                name="Select Lab Tests"
+                function={handleToggleCheckboxes}
+              />
             )}
+
             {showCheckboxes && (
               <div className="font-[550] text-lg">
                 No. of tests checked: {selectedCheckboxes.length}
               </div>
             )}
+
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Lab Tests -{" "}
-                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
               </div>
             )}
           </div>
@@ -174,7 +172,7 @@ function TreatmentLabTests() {
                                 (test) => test.id === val.id
                               )
                           )
-                            ? "bg-green-400 "
+                            ? "bg-gray-400 "
                             : ""
                         } w-full`}
                         key={val.id}
@@ -216,9 +214,17 @@ function TreatmentLabTests() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-between">
-            <PrevPageButton to="../complains" />
-          </div>
+
+          {!showCheckboxes && (
+            <div className="flex justify-between">
+              <PrevPageButton to="../complains" />
+            </div>
+          )}
+          {showCheckboxes && (
+            <div className="flex justify-end">
+              <SaveTreatmentButtons function={handleSave} />{" "}
+            </div>
+          )}
         </div>
       </div>
     </div>

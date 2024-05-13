@@ -7,6 +7,7 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
+import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
 
 function TreatmentQuestionPart2() {
   const context = useOutletContext();
@@ -14,6 +15,7 @@ function TreatmentQuestionPart2() {
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [questionsToBeAnswered, setQuestionsToBeAnswered] = useState(0);
+  const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
 
   const handleGetQuestionsPart2 = () => {
     axios
@@ -41,6 +43,31 @@ function TreatmentQuestionPart2() {
       setSelectedCheckboxes((prevState) =>
         prevState.filter((value) => value !== checkboxValue)
       );
+    }
+  };
+
+  const handleSendQuestionToBeAnswered = async (e) => {
+    console.log("min", e.target.value);
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[number_of_question_two]", e.target.value);
+
+    try {
+      await axios
+        .post("/api/v1/packages", formData)
+        .then((res) => {
+          console.log("min question list:", res);
+          e.target.value = "";
+          context[1]();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -90,10 +117,21 @@ function TreatmentQuestionPart2() {
     } finally {
       setSelectedCheckboxes([]);
       setShowCheckboxes(false);
+      setQuestionsToBeAnswered(selectedCheckboxes.length);
     }
   };
 
   useEffect(() => {
+    const defaultValue =
+      context[2]?.find((packages) => {
+        return (
+          context[0] === packages.weight_reason &&
+          packages.number_of_question_two
+        );
+      })?.number_of_question_two || 0;
+
+    setDefaultDropdownValue(defaultValue);
+
     const preSelectedQuestions = context[2]?.reduce((acc, packages) => {
       if (context[0] === packages.weight_reason) {
         acc = [...acc, ...packages.questions_part_two.map((q) => String(q.id))];
@@ -101,6 +139,7 @@ function TreatmentQuestionPart2() {
       return acc;
     }, []);
     setSelectedCheckboxes(preSelectedQuestions);
+    setQuestionsToBeAnswered(selectedCheckboxes.length);
   }, [context]);
 
   useEffect(() => {
@@ -112,16 +151,11 @@ function TreatmentQuestionPart2() {
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
           <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes ? (
-              <button
-                type="button"
-                onClick={handleToggleCheckboxes}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Select Questions (Part-2)
-              </button>
-            ) : (
-              <SaveTreatmentButtons function={handleSave} />
+            {!showCheckboxes && (
+              <SelectTreatmentButton
+                name="Select Questions (Part-2)"
+                function={handleToggleCheckboxes}
+              />
             )}
             {showCheckboxes && (
               <div className="font-[550] text-lg">
@@ -130,13 +164,28 @@ function TreatmentQuestionPart2() {
             )}
 
             <div className="font-bold text-lg">
-              No. of questions to be answered: {questionsToBeAnswered}
+              No. of questions to be answered: {defaultDropdownValue}
+              <select
+                className="border border-gray-400 p-1 font-normal ml-1 rounded-sm justify-center"
+                onChange={handleSendQuestionToBeAnswered}
+              >
+                <option value="" disabled selected>
+                  Select questions
+                </option>
+                {[...Array(selectedCheckboxes.length).keys()].map((index) => {
+                  return (
+                    <option key={index + 1} value={index + 1}>
+                      {index + 1}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Questions -{" "}
-                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
               </div>
             )}
           </div>
@@ -186,7 +235,7 @@ function TreatmentQuestionPart2() {
                                 (question) => question.id === val.id
                               )
                           )
-                            ? "bg-green-400 "
+                            ? "bg-gray-400 "
                             : ""
                         } w-full`}
                         key={val.id}
@@ -235,10 +284,17 @@ function TreatmentQuestionPart2() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-between">
-            <PrevPageButton to="../question-part1" />
-            <NextPageButton name="Medicines" to="../medicines" />
-          </div>
+          {!showCheckboxes && (
+            <div className="flex justify-between">
+              <PrevPageButton to="../question-part1" />
+              <NextPageButton name="Medicines" to="../medicines" />
+            </div>
+          )}
+          {showCheckboxes && (
+            <div className="flex justify-end">
+              <SaveTreatmentButtons function={handleSave} />{" "}
+            </div>
+          )}
         </div>
       </div>
     </div>
