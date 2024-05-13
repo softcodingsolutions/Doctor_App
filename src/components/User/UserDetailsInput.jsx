@@ -1,7 +1,7 @@
 function UserDetailsInput(props) {
   return (
-    <div className="flex px-2 space-x-2 items-center justify-between w-[48%]">
-      <label className="text-lg">{props.label}:</label>
+    <div className="flex px-2 items-center justify-between w-full">
+      <label className="text-lg text-end w-1/3 mr-2">{props.label}:</label>
       <input
         {...props.hook}
         type={props.type}
@@ -10,7 +10,7 @@ function UserDetailsInput(props) {
         autoComplete="off"
         id={props.name}
         {...props.req}
-        className="py-1 px-2 rounded-md border border-black w-[18rem]"
+        className="py-1 px-2 rounded-md border border-black w-[40vh]"
       />
     </div>
   );

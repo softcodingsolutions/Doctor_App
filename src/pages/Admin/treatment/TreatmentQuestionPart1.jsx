@@ -6,13 +6,16 @@ import NextPageButton from "../../../components/Admin/NextPageButton";
 import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
+import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
 
 function TreatmentQuestionPart1() {
   const context = useOutletContext();
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [questionsToBeAnswered, setQuestionsToBeAnswered] = useState(0);
+  const [questionsToBeAnswered, setQuestionsToBeAnswered] =
+    useState(selectedCheckboxes);
+  const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -43,6 +46,31 @@ function TreatmentQuestionPart1() {
     }
   };
 
+  const handleSendQuestionToBeAnswered = async (e) => {
+    console.log("min", e.target.value);
+    const formData = new FormData();
+    formData.append(
+      "package[weight_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append("package[number_of_question_one]", e.target.value);
+
+    try {
+      await axios
+        .post("/api/v1/packages", formData)
+        .then((res) => {
+          console.log("min question list:", res);
+          e.target.value = "";
+          context[1]();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleSave = async () => {
     const selectedQuestions = selectedCheckboxes
       .map((id) =>
@@ -55,6 +83,7 @@ function TreatmentQuestionPart1() {
         icon: "warning",
         title: "No Questions Selected",
         text: "Please select at least one question to save.",
+        showCancelButtons: true,
       });
     }
 
@@ -89,10 +118,21 @@ function TreatmentQuestionPart1() {
     } finally {
       setSelectedCheckboxes([]);
       setShowCheckboxes(false);
+      setQuestionsToBeAnswered(selectedCheckboxes.length);
     }
   };
 
   useEffect(() => {
+    const defaultValue =
+      context[2]?.find((packages) => {
+        return (
+          context[0] === packages.weight_reason &&
+          packages.number_of_question_one
+        );
+      })?.number_of_question_one || 0;
+
+    setDefaultDropdownValue(defaultValue);
+
     const preSelectedQuestions = context[2]?.reduce((acc, packages) => {
       if (context[0] === packages.weight_reason) {
         acc = [...acc, ...packages.questions_part_one.map((q) => String(q.id))];
@@ -100,6 +140,7 @@ function TreatmentQuestionPart1() {
       return acc;
     }, []);
     setSelectedCheckboxes(preSelectedQuestions);
+    setQuestionsToBeAnswered(selectedCheckboxes.length);
   }, [context]);
 
   useEffect(() => {
@@ -112,16 +153,11 @@ function TreatmentQuestionPart1() {
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
           <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes ? (
-              <button
-                type="button"
-                onClick={handleToggleCheckboxes}
-                className={`p-1.5 border-[1.5px] border-gray-400 rounded-md hover:text-white hover:bg-green-600`}
-              >
-                Select Questions (Part-1)
-              </button>
-            ) : (
-              <SaveTreatmentButtons function={handleSave} />
+            {!showCheckboxes && (
+              <SelectTreatmentButton
+                name="Select Questions (Part-1)"
+                function={handleToggleCheckboxes}
+              />
             )}
             {showCheckboxes && (
               <div className="font-[550] text-lg">
@@ -130,13 +166,28 @@ function TreatmentQuestionPart1() {
             )}
 
             <div className="font-bold text-lg">
-              No. of questions to be answered: {questionsToBeAnswered}
+              No. of questions to be answered: {defaultDropdownValue}
+              <select
+                className="border border-gray-400 p-1 font-normal ml-1 rounded-sm justify-center"
+                onChange={handleSendQuestionToBeAnswered}
+              >
+                <option value="" disabled selected>
+                  Select questions
+                </option>
+                {[...Array(selectedCheckboxes.length).keys()].map((index) => {
+                  return (
+                    <option key={index + 1} value={index + 1}>
+                      {index + 1}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Questions -{" "}
-                <div className="ml-2 bg-green-400 border border-gray-200 size-5"></div>
+                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
               </div>
             )}
           </div>
@@ -187,7 +238,7 @@ function TreatmentQuestionPart1() {
                                 (question) => question.id === val.id
                               )
                           )
-                            ? "bg-green-400 "
+                            ? "bg-gray-400"
                             : ""
                         } w-full`}
                       >
@@ -236,7 +287,13 @@ function TreatmentQuestionPart1() {
             </table>
           </div>
           <div className="flex justify-end">
-            <NextPageButton name="Questions (Part-2)" to="../question-part2" />
+            {!showCheckboxes && (
+              <NextPageButton
+                name="Questions (Part-2)"
+                to="../question-part2"
+              />
+            )}
+            {showCheckboxes && <SaveTreatmentButtons function={handleSave} />}
           </div>
         </div>
       </div>
