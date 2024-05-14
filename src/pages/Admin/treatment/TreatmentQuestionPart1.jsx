@@ -286,15 +286,21 @@ function TreatmentQuestionPart1() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-end">
-            {!showCheckboxes && (
+
+          {!showCheckboxes && (
+            <div className="flex justify-end">
               <NextPageButton
                 name="Questions (Part-2)"
                 to="../question-part2"
               />
-            )}
-            {showCheckboxes && <SaveTreatmentButtons function={handleSave} />}
-          </div>
+            </div>
+          )}
+
+          {showCheckboxes && (
+            <div className="flex justify-center">
+              <SaveTreatmentButtons function={handleSave} />{" "}
+            </div>
+          )}
         </div>
       </div>
     </div>

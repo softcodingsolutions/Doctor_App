@@ -216,12 +216,12 @@ function TreatmentLabTests() {
           </div>
 
           {!showCheckboxes && (
-            <div className="flex justify-between">
+            <div className="flex justify-center">
               <PrevPageButton to="../complains" />
             </div>
           )}
           {showCheckboxes && (
-            <div className="flex justify-end">
+            <div className="flex justify-center">
               <SaveTreatmentButtons function={handleSave} />{" "}
             </div>
           )}

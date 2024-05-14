@@ -228,7 +228,7 @@ function TreatmentDonts() {
             </div>
           )}
           {showCheckboxes && (
-            <div className="flex justify-end">
+            <div className="flex justify-center">
               <SaveTreatmentButtons function={handleSave} />{" "}
             </div>
           )}

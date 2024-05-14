@@ -1,5 +1,3 @@
-import React from "react";
-
 function SaveTreatmentButtons(props) {
   return (
     <button
