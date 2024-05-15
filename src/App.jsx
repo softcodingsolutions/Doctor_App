@@ -39,6 +39,9 @@ import QueUserQuestions from "./pages/User/Questions/QueUserQuestions";
 import QueCheckout from "./pages/User/Questions/QueCheckout";
 import QueDiagnosis from "./pages/User/Questions/QueDiagnosis";
 import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
+import CustomerAllUsers from "./pages/Admin/customer/CustomerAllUsers";
+import CustomerUserDiagnosis from "./pages/Admin/customer/CustomerUserDiagnosis";
+import CustomerGenerateReport from "./pages/Admin/customer/CustomerGenerateReport";
 
 function App() {
   return (
@@ -63,7 +66,27 @@ function App() {
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="customers" element={<AdminCustomers />} />
+          <Route path="new-user">
+            <Route path="general-details" element={<QueGeneralDetails />} />
+            <Route path="current-diet" element={<QueCurrentDiet />} />
+            <Route path="family-history" element={<QueFamilyHistory />} />
+            <Route path="complains" element={<QueComplains />} />
+            <Route path="user-questions" element={<QueUserQuestions />} />
+            <Route path="diagnosis" element={<QueDiagnosis />} />
+            <Route path="checkout" element={<QueCheckout />} />
+          </Route>
+
+          {/* customers */}
+          <Route path="customers" element={<AdminCustomers />}>
+            <Route path="all-users" element={<CustomerAllUsers />} />
+            <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
+              <Route
+                path="generate-report"
+                element={<CustomerGenerateReport />}
+              />
+            </Route>
+          </Route>
+          {/* master */}
           <Route path="master" element={<AdminMaster />}>
             <Route path="list-franchise" element={<ListFranchise />} />
             <Route path="questions" element={<Questions />} />
@@ -80,6 +103,7 @@ function App() {
               element={<NutritionSupplements />}
             />
           </Route>
+          {/* treatment */}
           <Route path="treatment" element={<AdminTreatment />}>
             <Route path="question-part1" element={<TreatmentQuestionPart1 />} />
             <Route path="question-part2" element={<TreatmentQuestionPart2 />} />
