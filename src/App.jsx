@@ -32,14 +32,13 @@ import TreatmentFamilyReason from "./pages/Admin/treatment/TreatmentFamilyReason
 import TreatmentComplains from "./pages/Admin/treatment/TreatmentComplains";
 import TreatmentLabTests from "./pages/Admin/treatment/TreatmentLabTests";
 import UserQuestions from "./pages/User/UserQuestions";
-import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
 import QueCurrentDiet from "./pages/User/Questions/QueCurrentDiet";
 import QueFamilyHistory from "./pages/User/Questions/QueFamilyHistory";
 import QueComplains from "./pages/User/Questions/QueComplains";
 import QueUserQuestions from "./pages/User/Questions/QueUserQuestions";
 import QueCheckout from "./pages/User/Questions/QueCheckout";
 import QueDiagnosis from "./pages/User/Questions/QueDiagnosis";
-
+import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
 
 function App() {
   return (
