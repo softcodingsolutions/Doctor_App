@@ -15,7 +15,6 @@ function AdminCustomers() {
       </div>
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-fit p-1">
-          <div className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 min-w-fit xl:flex"></div>
           <button
             onClick={handleAddUsers}
             className="border border-gray-300 p-1 rounded-md bg-green-600 text-white hover:scale-105"
