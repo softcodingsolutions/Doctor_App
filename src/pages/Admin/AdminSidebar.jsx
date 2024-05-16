@@ -36,7 +36,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "2",
       title: "Customers",
-      to: "customers",
+      to: "customers/all-users",
       icons: <IoPersonSharp size={18} />,
     },
     {

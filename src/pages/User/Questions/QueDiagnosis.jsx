@@ -1,4 +1,4 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
@@ -8,9 +8,11 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 
 function QueDiagnosis() {
   const context = useOutletContext();
+  const { state } = useLocation();
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const navigate = useNavigate();
+  const { email } = state;
 
   const handleGetQuestionsPart2 = () => {
     axios
@@ -56,11 +58,14 @@ function QueDiagnosis() {
     console.log("Selected Questions: ", selectedQuestions);
 
     try {
-      const response = await axios.put("/api/v1/users", {
-        personal_detail: {
-          user_selected_questions_two: JSON.stringify(selectedQuestions),
-        },
-      });
+      const response = await axios.put(
+        `/api/v2/users/update_personal_details?email=${email}`,
+        {
+          personal_detail: {
+            user_selected_questions_two: JSON.stringify(selectedQuestions),
+          },
+        }
+      );
       if (response.data) {
         Swal.fire({
           position: "top-end",
@@ -74,7 +79,7 @@ function QueDiagnosis() {
     } catch (err) {
       console.error(err);
     } finally {
-      //   navigate("../diagnosis");
+        navigate("../../customers/all-users");
       setSelectedCheckboxes([]);
     }
   };

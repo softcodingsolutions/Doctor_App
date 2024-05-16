@@ -1,4 +1,4 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
@@ -8,9 +8,12 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 
 function QueUserQuestions() {
   const context = useOutletContext();
+  const { state } = useLocation();
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const { email } = state;
   const navigate = useNavigate();
+console.log("id of the user", email);
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -56,7 +59,7 @@ function QueUserQuestions() {
     console.log("Selected Questions: ", selectedQuestions);
 
     try {
-      const response = await axios.put("/api/v1/users", {
+      const response = await axios.put(`/api/v2/users/update_personal_details?email=${email}`, {
         personal_detail: {
           user_selected_questions_one: JSON.stringify(selectedQuestions),
         },
@@ -77,7 +80,7 @@ function QueUserQuestions() {
       //   navigate("./diagnosis");
       setSelectedCheckboxes([]);
     }
-    navigate("../diagnosis");
+    navigate("../diagnosis", {state: { email: email}});
   };
 
   useEffect(() => {

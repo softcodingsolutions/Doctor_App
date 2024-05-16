@@ -22,31 +22,37 @@ function QueGeneralDetails() {
     console.log(d);
 
     axios.get(`/api/v1/users/app_creds`).then((res) => {
-        console.log(res);
-      axios.post("/api/v1/users", {
-        user: {
-          first_name: d.firstname,
-          last_name: d.lastname,
-          email: d.email,
-          phone_number: d.mobile,
-          address: d.address,
-        },
-        personal_detail: {
-          city: d.city,
-          age: d.age,
-          gender: d.gender,
-          overweight_since: d.overweight,
-          language: d.language,
-          reffered_by: d.refferedBy,
-          weight: d.weight,
-          height: d.height,
-          whatsapp_number: d.whatsapp,
-        },
-        client_id:res.data?.client_id
-      });
+      console.log(res);
+      axios
+        .post("/api/v1/users", {
+          user: {
+            first_name: d.firstname,
+            last_name: d.lastname,
+            email: d.email,
+            phone_number: d.mobile,
+            address: d.address,
+          },
+          personal_detail: {
+            city: d.city,
+            age: d.age,
+            gender: d.gender,
+            overweight_since: d.overweight,
+            language: d.language,
+            reffered_by: d.refferedBy,
+            weight: d.weight,
+            height: d.height,
+            whatsapp_number: d.whatsapp,
+          },
+          client_id: res.data?.client_id,
+        })
+        .then((res) => {
+          console.log(res);
+          navigate("../user-questions", {
+            state: { email: res.data?.user?.user?.email },
+          });
+        });
     });
     reset();
-    navigate("../user-questions");
   };
 
   console.log(context);
