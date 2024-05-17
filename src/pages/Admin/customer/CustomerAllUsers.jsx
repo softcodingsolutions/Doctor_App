@@ -11,13 +11,13 @@ function CustomerAllUsers() {
 
   const handleGetAllUsers = () => {
     axios.get('/api/v1/users').then((res)=>{
-        console.log(res);
+        console.log(res.data.users);
         setGetCustomers(res.data.users);
     })
   };
 
-  const handleDiagnosis = () => {
-    navigate("../user-diagnosis");
+  const handleDiagnosis = (val) => {
+    navigate("../user-diagnosis", { state: {id: val}});
   };
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function CustomerAllUsers() {
                           <TdComponent things={val.phone_number} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
+                          <TdComponent things={val.personal_detail?.city} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.medicine_content} />
@@ -85,7 +85,7 @@ function CustomerAllUsers() {
                           <TdComponent
                             things={
                               <button
-                                onClick={() => handleDiagnosis()}
+                                onClick={() => handleDiagnosis(val.id)}
                                 className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
                               >
                                 Diagnosis
