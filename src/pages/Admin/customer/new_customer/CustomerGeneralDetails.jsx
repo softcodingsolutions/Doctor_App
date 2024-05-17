@@ -1,12 +1,12 @@
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { UserSchema } from "../../../schemas/UserDetailsSchema";
-import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
-import UserDetailsInput from "../../../components/User/UserDetailsInput";
+import { UserSchema } from "../../../../schemas/UserDetailsSchema";
+import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
+import UserDetailsInput from "../../../../components/User/UserDetailsInput";
 import axios from "axios";
 
-function QueGeneralDetails() {
+function CustomerGeneralDetails() {
   const context = useOutletContext();
   const navigate = useNavigate();
   const {
@@ -21,76 +21,44 @@ function QueGeneralDetails() {
   const submittedData = (d) => {
     console.log(d);
 
-    axios
-      .get(
-        `/api/v1/users/find_user?access_token=${localStorage.getItem(
-          "access_token"
-        )}`
-      )
-      .then(async (res) => {
-        console.log(res);
-        await axios.put(
-          `/api/v1/users/update_profile?access_token=${localStorage.getItem(
-            "access_token"
-          )}`,
-          {
-            user: {
-              first_name: d.firstname,
-              last_name: d.lastname,
-              email: d.email,
-              phone_number: d.mobile,
-              address: d.address,
-            },
-          }
-        );
-
-        await axios
-          .put(
-            `/api/v2/users/update_personal_details?email=${res.data?.user?.email}`,
-            {
-              personal_detail: {
-                city: d.city,
-                age: d.age,
-                gender: d.gender,
-                overweight_since: d.overweight,
-                language: d.language,
-                reffered_by: d.refferedBy,
-                weight: d.weight,
-                height: d.height,
-                whatsapp_number: d.whatsapp,
-              },
-              client_id: res.data?.client_id,
-            }
-          )
-          .then((res) => {
-            console.log(res);
-            // navigate("../user-questions", {
-            //   state: { email: res.data?.user?.user?.email },
-            // });
+    axios.get(`/api/v1/users/app_creds`).then((res) => {
+      console.log(res);
+      axios
+        .post("/api/v1/users", {
+          user: {
+            first_name: d.firstname,
+            last_name: d.lastname,
+            email: d.email,
+            phone_number: d.mobile,
+            address: d.address,
+          },
+          personal_detail: {
+            city: d.city,
+            age: d.age,
+            gender: d.gender,
+            overweight_since: d.overweight,
+            language: d.language,
+            reffered_by: d.refferedBy,
+            weight: d.weight,
+            height: d.height,
+            whatsapp_number: d.whatsapp,
+          },
+          client_id: res.data?.client_id,
+        })
+        .then((res) => {
+          console.log(res);
+          navigate("../user-questions", {
+            state: { email: res.data?.user?.user?.email },
           });
-      });
+        });
+    });
     reset();
   };
 
-  console.log(context);
-
   return (
-    <div className=" flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2 ">
-      <div className="w-full sm:flex items-end">
-        <div className="sm:flex-grow flex justify-end ">
-          <button
-            onClick={context[0]}
-            type="button"
-            className="block sm:hidden hover:scale-110"
-          >
-            <img
-              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
-              alt=""
-              className="w-full h-full"
-            />
-          </button>
-        </div>
-        <div className="w-full flex-grow gap-1 overflow-auto flex rounded-lg bg-card h-[94vh] bg-white flex-wrap content-start p-2 px-4">
+    <div className="w-full p-2">
+      <div className="rounded-lg bg-card h-[90vh] bg-white">
+        <div className="flex p-4 h-full flex-col space-y-4">
           <div className="text-xl font-semibold">General Details :-</div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <form
@@ -259,4 +227,4 @@ function QueGeneralDetails() {
   );
 }
 
-export default QueGeneralDetails;
+export default CustomerGeneralDetails;

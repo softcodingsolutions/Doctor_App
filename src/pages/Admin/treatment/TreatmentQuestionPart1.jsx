@@ -7,6 +7,7 @@ import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import { MenuItem, Option, Select } from "@mui/joy";
 
 function TreatmentQuestionPart1() {
   const context = useOutletContext();
@@ -144,6 +145,9 @@ function TreatmentQuestionPart1() {
   }, [context]);
 
   useEffect(() => {
+    axios.get(`/api/v1/packages/find_packages?id=${15}`).then((res)=>{
+        console.log(res);
+    })
     handleGetQuestionsPart1();
     context[1]();
   }, []);
@@ -167,6 +171,17 @@ function TreatmentQuestionPart1() {
 
             <div className="font-bold text-lg">
               No. of questions to be answered: {defaultDropdownValue}
+              <Select required placeholder="Select">
+                {[...Array(selectedCheckboxes.length).keys()].map((index) => (
+                  <MenuItem
+                    key={index}
+                    value={index + 1}
+                    onClick={handleSendQuestionToBeAnswered}
+                  >
+                    {index + 1}
+                  </MenuItem>
+                ))}
+              </Select>
               <select
                 className="border border-gray-400 p-1 font-normal ml-1 rounded-sm justify-center"
                 onChange={handleSendQuestionToBeAnswered}

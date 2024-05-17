@@ -1,4 +1,3 @@
-import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
@@ -7,17 +6,21 @@ import axios from "axios";
 
 function CustomerAllUsers() {
   const navigate = useNavigate();
-  const [getCustomers, setGetCustomers] = useState([1]);
+  const [getCustomers, setGetCustomers] = useState([]);
 
   const handleGetAllUsers = () => {
-    axios.get('/api/v1/users').then((res)=>{
-        console.log(res.data.users);
-        setGetCustomers(res.data.users);
-    })
+    axios.get("/api/v1/users").then((res) => {
+      console.log(res.data.users);
+      setGetCustomers(res.data.users);
+    });
   };
 
   const handleDiagnosis = (val) => {
-    navigate("../user-diagnosis", { state: {id: val}});
+    navigate("../user-diagnosis", { state: { id: val } });
+  };
+
+  const handleAddUsers = () => {
+    navigate("../../new-user/general-details");
   };
 
   useEffect(() => {
@@ -27,7 +30,15 @@ function CustomerAllUsers() {
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-8">
+        <div className="flex p-4 h-full flex-col space-y-4">
+          <div>
+            <button
+              onClick={handleAddUsers}
+              className="border border-gray-300 p-1 rounded-md bg-green-600 text-white hover:scale-105"
+            >
+              Add New
+            </button>
+          </div>
           <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[99%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
@@ -61,10 +72,14 @@ function CustomerAllUsers() {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">{val.case_number}</div>
+                          <div className="flex items-center">
+                            {val.case_number}
+                          </div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.first_name + " " + val.last_name} />
+                          <TdComponent
+                            things={val.first_name + " " + val.last_name}
+                          />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.phone_number} />
@@ -89,18 +104,6 @@ function CustomerAllUsers() {
                                 className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
                               >
                                 Diagnosis
-                              </button>
-                            }
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => console.log("delete")}
-                                className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
-                              >
-                                <MdDelete size={18} />
                               </button>
                             }
                           />

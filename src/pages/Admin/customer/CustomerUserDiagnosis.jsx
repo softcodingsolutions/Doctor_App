@@ -41,15 +41,23 @@ function CustomerUserDiagnosis() {
               <div>Case Number: {getCustomer.case_number}</div>
             </div>
             <div className="flex justify-between">
-              <div>Gender: {getCustomer.personal_detail?.gender[0].toUpperCase() + getCustomer.personal_detail?.gender?.substring(1)}</div>
+              <div>
+                Gender:{" "}
+                {getCustomer.personal_detail?.gender[0].toUpperCase() +
+                  getCustomer.personal_detail?.gender?.substring(1)}
+              </div>
               <div>Customer Type:</div>
             </div>
             <div className="flex justify-between">
               <div>Age: {getCustomer.personal_detail?.age}</div>
-              <div>Date: {getCustomer.personal_detail?.created_at.slice(0, 10)}</div>
+              <div>
+                Date: {getCustomer.personal_detail?.created_at.slice(0, 10)}
+              </div>
             </div>
             <div className="flex justify-between">
-              <div>Current Weight:{getCustomer.personal_detail?.weight} kg</div>
+              <div>
+                Current Weight: {getCustomer.personal_detail?.weight} kg
+              </div>
               <div>Height: {getCustomer.personal_detail?.height} cm</div>
             </div>
             <div className="flex justify-between">

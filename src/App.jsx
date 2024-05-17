@@ -42,6 +42,10 @@ import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
 import CustomerAllUsers from "./pages/Admin/customer/CustomerAllUsers";
 import CustomerUserDiagnosis from "./pages/Admin/customer/CustomerUserDiagnosis";
 import CustomerGenerateReport from "./pages/Admin/customer/CustomerGenerateReport";
+import CustomerGeneralDetails from "./pages/Admin/customer/new_customer/CustomerGeneralDetails";
+import NewCustomer from "./pages/Admin/customer/NewCustomer";
+import CustomerQuestionsPart1 from "./pages/Admin/customer/new_customer/CustomerQuestionsPart1";
+import CustomerQuestionsPart2 from "./pages/Admin/customer/new_customer/CustomerQuestionsPart2";
 
 function App() {
   return (
@@ -66,13 +70,16 @@ function App() {
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="new-user">
-            <Route path="general-details" element={<QueGeneralDetails />} />
+          <Route path="new-user" element={<NewCustomer />}>
+            <Route
+              path="general-details"
+              element={<CustomerGeneralDetails />}
+            />
             <Route path="current-diet" element={<QueCurrentDiet />} />
             <Route path="family-history" element={<QueFamilyHistory />} />
             <Route path="complains" element={<QueComplains />} />
-            <Route path="user-questions" element={<QueUserQuestions />} />
-            <Route path="diagnosis" element={<QueDiagnosis />} />
+            <Route path="user-questions" element={<CustomerQuestionsPart1 />} />
+            <Route path="diagnosis" element={<CustomerQuestionsPart2 />} />
             <Route path="checkout" element={<QueCheckout />} />
           </Route>
 
