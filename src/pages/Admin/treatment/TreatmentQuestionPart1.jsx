@@ -145,9 +145,9 @@ function TreatmentQuestionPart1() {
   }, [context]);
 
   useEffect(() => {
-    axios.get(`/api/v1/packages/find_packages?id=${15}`).then((res)=>{
-        console.log(res);
-    })
+    axios.get(`/api/v1/packages/find_packages?id=${15}`).then((res) => {
+      console.log(res);
+    });
     handleGetQuestionsPart1();
     context[1]();
   }, []);
