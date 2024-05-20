@@ -1,12 +1,7 @@
-import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 
 function AdminCustomers() {
   const context = useOutletContext();
-  const navigate = useNavigate();
-
-  const handleAddUsers = () => {
-    navigate("../new-user/general-details");
-  };
 
   return (
     <div className="flex w-full">
@@ -15,12 +10,6 @@ function AdminCustomers() {
       </div>
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-fit p-1">
-          <button
-            onClick={handleAddUsers}
-            className="border border-gray-300 p-1 rounded-md bg-green-600 text-white hover:scale-105"
-          >
-            Add New
-          </button>
           <button
             onClick={context[0]}
             type="button"
