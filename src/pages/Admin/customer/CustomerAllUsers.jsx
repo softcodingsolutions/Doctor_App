@@ -16,7 +16,7 @@ function CustomerAllUsers() {
   };
 
   const handleDiagnosis = (val) => {
-    navigate("../user-diagnosis", { state: { id: val } });
+    navigate(`../user-diagnosis`, { state: { id: val } });
   };
 
   const handleAddUsers = () => {

@@ -21,7 +21,7 @@ function CustomerUserDiagnosis() {
   };
 
   const handleGenerateReport = () => {
-    navigate("./generate-report");
+    navigate(`../generate-report`, { state: { id: id } });
   };
 
   useEffect(() => {
@@ -67,7 +67,7 @@ function CustomerUserDiagnosis() {
             <div className="flex justify-center mt-3">
               <button
                 onClick={handleGenerateReport}
-                className="p-1 border border-gray-400 rounded-md hover:bg-green-600 hover:text-white"
+                className="p-1 border border-gray-400 rounded-md bg-gray-600 text-white hover:scale-105"
               >
                 Generate Report
               </button>

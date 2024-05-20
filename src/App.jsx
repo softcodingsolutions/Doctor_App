@@ -46,6 +46,11 @@ import CustomerGeneralDetails from "./pages/Admin/customer/new_customer/Customer
 import NewCustomer from "./pages/Admin/customer/NewCustomer";
 import CustomerQuestionsPart1 from "./pages/Admin/customer/new_customer/CustomerQuestionsPart1";
 import CustomerQuestionsPart2 from "./pages/Admin/customer/new_customer/CustomerQuestionsPart2";
+import ReportPackage from "./pages/Admin/customer/generate_report/ReportPackage";
+import ReportPastHistory from "./pages/Admin/customer/generate_report/ReportPastHistory";
+import ReportProfile from "./pages/Admin/customer/generate_report/ReportProfile";
+import ReportQuestions from "./pages/Admin/customer/generate_report/ReportQuestions";
+import ReportProgress from "./pages/Admin/customer/generate_report/ReportProgress";
 
 function App() {
   return (
@@ -86,11 +91,17 @@ function App() {
           {/* customers */}
           <Route path="customers" element={<AdminCustomers />}>
             <Route path="all-users" element={<CustomerAllUsers />} />
-            <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
+            <Route path="user-diagnosis" element={<CustomerUserDiagnosis />} />
+            <Route path="generate-report" element={<CustomerGenerateReport />}>
+              <Route path="profile" element={<ReportProfile />} />
+              <Route path="questions" element={<ReportQuestions />} />
+              <Route path="past-history" element={<ReportPastHistory />} />
               <Route
-                path="generate-report"
-                element={<CustomerGenerateReport />}
-              />
+                path="treatment"
+                element={<CustomerUserDiagnosis />}
+              ></Route>
+              <Route path="progress-report" element={<ReportProgress />} />
+              <Route path="package" element={<ReportPackage />} />
             </Route>
           </Route>
           {/* master */}

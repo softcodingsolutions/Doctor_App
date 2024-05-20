@@ -29,20 +29,6 @@ function QueGeneralDetails() {
       )
       .then(async (res) => {
         console.log(res);
-        await axios.put(
-          `/api/v1/users/update_profile?access_token=${localStorage.getItem(
-            "access_token"
-          )}`,
-          {
-            user: {
-              first_name: d.firstname,
-              last_name: d.lastname,
-              email: d.email,
-              phone_number: d.mobile,
-              address: d.address,
-            },
-          }
-        );
 
         await axios
           .put(
@@ -67,6 +53,25 @@ function QueGeneralDetails() {
             // navigate("../user-questions", {
             //   state: { email: res.data?.user?.user?.email },
             // });
+          });
+
+        await axios
+          .put(
+            `/api/v1/users/update_profile?access_token=${localStorage.getItem(
+              "access_token"
+            )}`,
+            {
+              user: {
+                first_name: d.firstname,
+                last_name: d.lastname,
+                email: d.email,
+                phone_number: d.mobile,
+                address: d.address,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
           });
       });
     reset();
