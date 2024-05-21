@@ -4,9 +4,8 @@ import ThComponent from "../../../../components/ThComponent";
 import { useOutletContext } from "react-router-dom";
 
 function ReportQuestions() {
-  const [getQuestions, setGetQuestions] = useState([]);
   const context = useOutletContext();
-  console.log(context[0]);
+  console.log(context[1]);
 
   return (
     <div className="w-full p-2">
@@ -20,13 +19,17 @@ function ReportQuestions() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="No."
                   />
-                  <ThComponent name="Questions" />
-                  <ThComponent />
-                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
+                  <ThComponent name="In English" />
+                  <ThComponent name="In Hindi" />
+                  <ThComponent
+                    name="In Gujarati"
+                    moreClasses={"rounded-tr-md rounded-br-md"}
+                  />
                 </tr>
               </thead>
               <tbody>
-                {getQuestions.length === 0 ? (
+                {context[1]?.personal_detail?.user_selected_questions_one
+                  ?.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -36,18 +39,26 @@ function ReportQuestions() {
                     </th>
                   </tr>
                 ) : (
-                  getQuestions.map((val, index) => {
-                    return (
-                      <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">{index + 1}</div>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details} />
-                        </td>
-                      </tr>
-                    );
-                  })
+                  context[1]?.personal_detail?.user_selected_questions_one?.map(
+                    (val, index) => {
+                      return (
+                        <tr key={val.id}>
+                          <td className="py-2 px-4 border-b border-b-gray-50">
+                            <div className="flex items-center">{index + 1}</div>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.question_in_english} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.question_in_hindi} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.question_in_gujarati} />
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )
                 )}
               </tbody>
             </table>

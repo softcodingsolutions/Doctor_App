@@ -118,3 +118,60 @@ export const reportButtons = [
     to: "package",
   },
 ];
+
+export const reportTreatmentButtons = [
+  {
+    id: "1",
+    name: "Medicines",
+    icons: <AiOutlineMedicineBox size={18} />,
+    to: "medicine",
+  },
+  {
+    id: "2",
+    name: "Diet",
+    icons: <MdFoodBank size={18} />,
+    to: "diet",
+  },
+  {
+    id: "3",
+    name: "Nutrition / Supplements",
+    icons: <LiaCapsulesSolid size={18} />,
+    to: "nutrition",
+  },
+  {
+    id: "4",
+    name: "Exercise / Yoga",
+    icons: <GrYoga size={18} />,
+    to: "exercise",
+  },
+  {
+    id: "5",
+    name: "Dos",
+    icons: <BsNintendoSwitch size={18} />,
+    to: "dos",
+  },
+  {
+    id: "6",
+    name: "Don'ts",
+    icons: <BsNintendoSwitch size={18} />,
+    to: "donts",
+  },
+  {
+    id: "7",
+    name: "Family Reason",
+    icons: <MdFamilyRestroom size={18} />,
+    to: "family-reason",
+  },
+  {
+    id: "8",
+    name: "Complains",
+    icons: <MdError size={18} />,
+    to: "complains",
+  },
+  {
+    id: "9",
+    name: "Lab Tests",
+    icons: <GrTest size={18} />,
+    to: "lab-tests",
+  },
+];

@@ -4,6 +4,7 @@ import ThComponent from "../../../../components/ThComponent";
 import { useOutletContext } from "react-router-dom";
 
 function ReportPackage() {
+  const [getPackage, setGetPackage] = useState([]);
   const context = useOutletContext();
   console.log(context[0]);
 

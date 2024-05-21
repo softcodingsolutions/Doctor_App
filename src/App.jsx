@@ -41,7 +41,6 @@ import QueDiagnosis from "./pages/User/Questions/QueDiagnosis";
 import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
 import CustomerAllUsers from "./pages/Admin/customer/CustomerAllUsers";
 import CustomerUserDiagnosis from "./pages/Admin/customer/CustomerUserDiagnosis";
-import CustomerGenerateReport from "./pages/Admin/customer/CustomerGenerateReport";
 import CustomerGeneralDetails from "./pages/Admin/customer/new_customer/CustomerGeneralDetails";
 import NewCustomer from "./pages/Admin/customer/NewCustomer";
 import CustomerQuestionsPart1 from "./pages/Admin/customer/new_customer/CustomerQuestionsPart1";
@@ -51,6 +50,16 @@ import ReportPastHistory from "./pages/Admin/customer/generate_report/ReportPast
 import ReportProfile from "./pages/Admin/customer/generate_report/ReportProfile";
 import ReportQuestions from "./pages/Admin/customer/generate_report/ReportQuestions";
 import ReportProgress from "./pages/Admin/customer/generate_report/ReportProgress";
+import ReportTreatment from "./pages/Admin/customer/generate_report/ReportTreatment";
+import RTreatmentMedicine from "./pages/Admin/customer/generate_report/treatment/RTreatmentMedicine";
+import RTreatmentNutrition from "./pages/Admin/customer/generate_report/treatment/RTreatmentNutrition";
+import RTreatmentDos from "./pages/Admin/customer/generate_report/treatment/RTreatmentDos";
+import RTreatmentDont from "./pages/Admin/customer/generate_report/treatment/RTreatmentDont";
+import RTreatmentExercise from "./pages/Admin/customer/generate_report/treatment/RTreatmentExercise";
+import RTreatmentLabTest from "./pages/Admin/customer/generate_report/treatment/RTreatmentLabTest";
+import RTreatmentDiet from "./pages/Admin/customer/generate_report/treatment/RTreatmentDiet";
+import RTreatmentComplain from "./pages/Admin/customer/generate_report/treatment/RTreatmentComplain";
+import RTreatmentFamilyReason from "./pages/Admin/customer/generate_report/treatment/RTreatmentFamilyReason";
 
 function App() {
   return (
@@ -91,15 +100,21 @@ function App() {
           {/* customers */}
           <Route path="customers" element={<AdminCustomers />}>
             <Route path="all-users" element={<CustomerAllUsers />} />
-            <Route path="user-diagnosis" element={<CustomerUserDiagnosis />} />
-            <Route path="generate-report" element={<CustomerGenerateReport />}>
+            <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
               <Route path="profile" element={<ReportProfile />} />
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
-              <Route
-                path="treatment"
-                element={<CustomerUserDiagnosis />}
-              ></Route>
+              <Route path="treatment" element={<ReportTreatment />}>
+                <Route path="medicine" element={<RTreatmentMedicine />} />
+                <Route path="diet" element={<RTreatmentDiet />} />
+                <Route path="nutrition" element={<RTreatmentNutrition />} />
+                <Route path="exercise" element={<RTreatmentExercise />} />
+                <Route path="dos" element={<RTreatmentDos />} />
+                <Route path="donts" element={<RTreatmentDont />} />
+                <Route path="lab-tests" element={<RTreatmentLabTest />} />
+                <Route path="complains" element={<RTreatmentComplain />} />
+                <Route path="family-reason" element={<RTreatmentFamilyReason />} />
+              </Route>
               <Route path="progress-report" element={<ReportProgress />} />
               <Route path="package" element={<ReportPackage />} />
             </Route>

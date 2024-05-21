@@ -16,7 +16,8 @@ function CustomerAllUsers() {
   };
 
   const handleDiagnosis = (val) => {
-    navigate(`../user-diagnosis`, { state: { id: val } });
+    localStorage.setItem("userId", val);
+    navigate(`../user-diagnosis`);
   };
 
   const handleAddUsers = () => {
@@ -70,45 +71,47 @@ function CustomerAllUsers() {
                 ) : (
                   getCustomers.map((val) => {
                     return (
-                      <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">
-                            {val.case_number}
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={val.first_name + " " + val.last_name}
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.phone_number} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.personal_detail?.city} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => handleDiagnosis(val.id)}
-                                className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
-                              >
-                                Diagnosis
-                              </button>
-                            }
-                          />
-                        </td>
-                      </tr>
+                      val.role === "patient" && (
+                        <tr key={val.id}>
+                          <td className="py-2 px-4 border-b border-b-gray-50">
+                            <div className="flex items-center">
+                              {val.case_number}
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent
+                              things={val.first_name + " " + val.last_name}
+                            />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.phone_number} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.personal_detail?.city} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.medicine_content? val.medicine_content : "null"} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.medicine_content? val.medicine_content : "null"} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.medicine_content? val.medicine_content : "null"} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent
+                              things={
+                                <button
+                                  onClick={() => handleDiagnosis(val.id)}
+                                  className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
+                                >
+                                  Diagnosis
+                                </button>
+                              }
+                            />
+                          </td>
+                        </tr>
+                      )
                     );
                   })
                 )}
