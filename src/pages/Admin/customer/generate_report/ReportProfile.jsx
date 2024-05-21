@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import TdComponent from "../../../../components/TdComponent";
 import ThComponent from "../../../../components/ThComponent";
-import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 
 function ReportProfile() {
   const [getProfile, setGetProfile] = useState([]);
-  const context = useOutletContext();
-  console.log(context[0]);
 
   const handleGetUser = () => {
     // axios.get(`/api/v1/users/find_user?=`)
