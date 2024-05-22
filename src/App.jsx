@@ -60,6 +60,7 @@ import RTreatmentLabTest from "./pages/Admin/customer/generate_report/treatment/
 import RTreatmentDiet from "./pages/Admin/customer/generate_report/treatment/RTreatmentDiet";
 import RTreatmentComplain from "./pages/Admin/customer/generate_report/treatment/RTreatmentComplain";
 import RTreatmentFamilyReason from "./pages/Admin/customer/generate_report/treatment/RTreatmentFamilyReason";
+import SurveyReport from "./pages/Survey/SurveyReport";
 
 function App() {
   return (
@@ -153,6 +154,8 @@ function App() {
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
         </Route>
 
+        {/* Survey */}
+        <Route path="survey" element={<SurveyReport/>} />
         {/* Error */}
         <Route path="*" element={<div>Not Found!</div>} />
       </Routes>
