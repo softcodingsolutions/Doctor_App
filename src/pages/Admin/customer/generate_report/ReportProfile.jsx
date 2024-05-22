@@ -1,18 +1,11 @@
-import { useEffect, useState } from "react";
 import TdComponent from "../../../../components/TdComponent";
 import ThComponent from "../../../../components/ThComponent";
-import axios from "axios";
+import { useOutletContext } from "react-router-dom";
 
 function ReportProfile() {
-  const [getProfile, setGetProfile] = useState([]);
+  const context = useOutletContext();
+  console.log("User", context[1]);
 
-  const handleGetUser = () => {
-    // axios.get(`/api/v1/users/find_user?=`)
-  };
-
-  useEffect(() => {
-    handleGetUser();
-  }, []);
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">

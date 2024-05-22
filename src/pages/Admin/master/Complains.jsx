@@ -45,9 +45,36 @@ function Complains() {
       });
   };
 
-  const editComplain = () => {};
+  const editComplain = (val) => {};
 
-  const deleteComplain = () => {};
+  const deleteComplain = (val) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/complaints/${val}`)
+          .then((res) => {
+            console.log(res);
+            handleGetComplain();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your complain has been deleted.",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
 
   useEffect(() => {
     handleGetComplain();

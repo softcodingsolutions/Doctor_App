@@ -9,21 +9,18 @@ import {
   ModalClose,
   ModalDialog,
   Stack,
-  Textarea,
-  Select,
-  Option,
 } from "@mui/joy";
 import Add from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 
-function AddLabTest(props) {
+function AddNewPackage(props) {
   const [open, setOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm();
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi(d.test_name, d.gender, d.test_comments);
+    props.handleApi(d.package_name, d.package_days, d.price);
     reset();
   };
 
@@ -55,38 +52,34 @@ function AddLabTest(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.test_name} :-</FormLabel>
+                <FormLabel>{props.package_name} :-</FormLabel>
                 <Input
                   placeholder="Name..."
-                  name={`test_name`}
-                  {...register(`test_name`)}
+                  name={`package_name`}
+                  {...register(`package_name`)}
                   autoFocus
                   required
                 />
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.gender} :-</FormLabel>
-                <Select
-                  placeholder="Choose gender..."
+                <FormLabel>{props.package_days} :-</FormLabel>
+                <Input
+                  placeholder="No. of days"
+                  name={`package_days`}
+                  {...register(`package_days`)}
+                  autoFocus
                   required
-                  name={`gender`}
-                  {...register(`gender`)}
-                >
-                  <Option value="female">Female</Option>
-                  <Option value="male">Male</Option>
-                  <Option value="both">Both</Option>
-                </Select>
+                />
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.test_comments} :-</FormLabel>
-                <Textarea
-                  placeholder="Name..."
-                  name={`test_comments`}
-                  {...register(`test_comments`)}
+                <FormLabel>{props.price} :-</FormLabel>
+                <Input
+                  placeholder="₹₹₹"
+                  name={`price`}
+                  {...register(`price`)}
                   autoFocus
-                  minRows={3}
                   required
                 />
               </FormControl>
@@ -100,4 +93,4 @@ function AddLabTest(props) {
   );
 }
 
-export default AddLabTest;
+export default AddNewPackage;
