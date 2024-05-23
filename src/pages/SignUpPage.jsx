@@ -59,10 +59,12 @@ function SignUpPage() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

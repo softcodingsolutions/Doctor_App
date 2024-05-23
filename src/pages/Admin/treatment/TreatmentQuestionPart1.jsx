@@ -27,6 +27,7 @@ function TreatmentQuestionPart1() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -66,6 +67,7 @@ function TreatmentQuestionPart1() {
         })
         .catch((err) => {
           console.log(err);
+          alert(err.message);
         });
     } catch (err) {
       console.error(err);
@@ -169,8 +171,9 @@ function TreatmentQuestionPart1() {
               </div>
             )}
 
-            <div className="font-bold text-lg">
-              No. of questions to be answered: {defaultDropdownValue}
+            <div className="flex items-center gap-2 font-bold text-lg">
+              <span>No. of questions to be answered:</span>{" "}
+              {defaultDropdownValue}
               <Select required placeholder="Select">
                 {[...Array(selectedCheckboxes.length).keys()].map((index) => (
                   <MenuItem
@@ -182,21 +185,6 @@ function TreatmentQuestionPart1() {
                   </MenuItem>
                 ))}
               </Select>
-              <select
-                className="border border-gray-400 p-1 font-normal ml-1 rounded-sm justify-center"
-                onChange={handleSendQuestionToBeAnswered}
-              >
-                <option value="" disabled selected>
-                  Select questions
-                </option>
-                {[...Array(selectedCheckboxes.length).keys()].map((index) => {
-                  return (
-                    <option key={index + 1} value={index + 1}>
-                      {index + 1}
-                    </option>
-                  );
-                })}
-              </select>
             </div>
 
             {!showCheckboxes && (

@@ -32,6 +32,7 @@ function DietMaster() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -44,6 +45,7 @@ function DietMaster() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -118,6 +120,7 @@ function DietMaster() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       }
     });

@@ -18,6 +18,7 @@ function FamilyReason() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -44,6 +45,7 @@ function FamilyReason() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -71,6 +73,7 @@ function FamilyReason() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       }
     });

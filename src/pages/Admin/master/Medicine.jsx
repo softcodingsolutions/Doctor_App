@@ -18,6 +18,7 @@ function Medicine() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -44,6 +45,7 @@ function Medicine() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -115,6 +117,7 @@ function Medicine() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       }
     });

@@ -26,6 +26,7 @@ function DosDonts() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -43,6 +44,7 @@ function DosDonts() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -71,6 +73,7 @@ function DosDonts() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -100,6 +103,7 @@ function DosDonts() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       }
     });

@@ -18,6 +18,7 @@ function AdminTreatment() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -30,6 +31,7 @@ function AdminTreatment() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

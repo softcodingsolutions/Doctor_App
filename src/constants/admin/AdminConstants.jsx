@@ -97,7 +97,7 @@ export const reportButtons = [
   {
     id: "2",
     name: "Questions",
-    icons: <CiViewList size={18} />,
+    icons: <FaRegQuestionCircle size={18} />,
     to: "questions",
   },
   {
@@ -110,19 +110,25 @@ export const reportButtons = [
     id: "4",
     name: "Treatment",
     icons: <CiViewList size={18} />,
-    to: "treatment",
+    to: "treatment/medicine",
   },
   {
     id: "5",
-    name: "Progress Report",
-    icons: <CiViewList size={18} />,
-    to: "progress-report",
+    name: "Lab Tests",
+    icons: <GrTest size={18} />,
+    to: "lab-tests",
   },
   {
     id: "6",
     name: "Package",
     icons: <CiViewList size={18} />,
     to: "package",
+  },
+  {
+    id: "7",
+    name: "Progress Report",
+    icons: <CiViewList size={18} />,
+    to: "progress-report",
   },
 ];
 
@@ -162,23 +168,5 @@ export const reportTreatmentButtons = [
     name: "Don'ts",
     icons: <BsNintendoSwitch size={18} />,
     to: "donts",
-  },
-  {
-    id: "7",
-    name: "Family Reason",
-    icons: <MdFamilyRestroom size={18} />,
-    to: "family-reason",
-  },
-  {
-    id: "8",
-    name: "Complains",
-    icons: <MdError size={18} />,
-    to: "complains",
-  },
-  {
-    id: "9",
-    name: "Lab Tests",
-    icons: <GrTest size={18} />,
-    to: "lab-tests",
-  },
+  }, 
 ];

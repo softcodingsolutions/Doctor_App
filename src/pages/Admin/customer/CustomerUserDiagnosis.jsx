@@ -18,6 +18,7 @@ function CustomerUserDiagnosis() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
