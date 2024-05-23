@@ -16,7 +16,7 @@ export const UserSchema = yup.object().shape({
     .required("Whatsapp Number is required."),
   city: yup.string().required("City is required."),
   age: yup.string().required("Age is required"),
-  height: yup.string().required("Height is required").min(2).max(3),
-  weight: yup.string().required("Weight is required").min(2),
+  height: yup.string().required("Height is required").min(3).max(3),
+  weight: yup.string().required("Weight is required").min(2).max(3),
   gender: yup.string().oneOf(["male", "female"]).required("Gender is required"),
 });

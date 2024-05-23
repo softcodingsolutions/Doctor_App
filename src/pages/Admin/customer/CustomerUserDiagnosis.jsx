@@ -13,7 +13,7 @@ function CustomerUserDiagnosis() {
     axios
       .get(`/api/v2/users/${id}`)
       .then((res) => {
-        console.log(res.data.user);
+        console.log("User to diagnos",res.data.user);
         setGetCustomer(res.data?.user);
       })
       .catch((err) => {

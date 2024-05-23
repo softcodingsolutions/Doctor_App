@@ -14,7 +14,7 @@ function ReportTreatment() {
     axios
       .get("/api/v1/weight_reasons")
       .then((res) => {
-        console.log(res.data);
+        console.log("Weight Reasons",res.data?.weight_reasons);
         setGetWeightReason(res.data?.weight_reasons);
       })
       .catch((err) => {

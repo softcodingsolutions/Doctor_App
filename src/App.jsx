@@ -61,6 +61,8 @@ import RTreatmentDiet from "./pages/Admin/customer/generate_report/treatment/RTr
 import RTreatmentComplain from "./pages/Admin/customer/generate_report/treatment/RTreatmentComplain";
 import RTreatmentFamilyReason from "./pages/Admin/customer/generate_report/treatment/RTreatmentFamilyReason";
 import SurveyReport from "./pages/Survey/SurveyReport";
+import Packages from "./pages/Admin/master/Packages";
+
 
 function App() {
   return (
@@ -132,6 +134,7 @@ function App() {
             <Route path="family-reason" element={<FamilyReason />} />
             <Route path="exercise-yoga" element={<ExerciseYoga />} />
             <Route path="lab-tests" element={<LabTest />} />
+            <Route path="packages" element={<Packages />} />
             <Route
               path="nutrition-supplements"
               element={<NutritionSupplements />}

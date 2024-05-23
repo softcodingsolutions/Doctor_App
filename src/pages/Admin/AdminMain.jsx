@@ -20,7 +20,7 @@ function AdminMain() {
         )}`
       )
       .then((res) => {
-        console.log(res.data?.user);
+        console.log("Admin",res.data?.user);
         setAdmin(res.data?.user);
       })
       .catch((err) => {
