@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { masterButtons } from "../../constants/admin/AdminConstants";
 
-const TRANSLATE_AMOUNT = 200;
+const TRANSLATE_AMOUNT = 250;
 
 function AdminMaster() {
   const context = useOutletContext();
@@ -96,8 +96,7 @@ function AdminMaster() {
                       const edge = containerRef.current.scrollWidth;
                       const width = containerRef.current.clientWidth;
                       if (newTranslate + width >= edge) {
-                        // console.log(edge - width);
-                        return edge - width + 200;
+                        return edge - width + 250;
                       }
                       return newTranslate;
                     });

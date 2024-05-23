@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
-import TdComponent from "../../../../components/TdComponent";
-import ThComponent from "../../../../components/ThComponent";
+import { MdDelete, MdEdit } from "react-icons/md";
+import TdComponent from "../../../components/TdComponent";
+import ThComponent from "../../../components/ThComponent";
+import Swal from "sweetalert2";
 import axios from "axios";
-import { useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
+import AddNewPackage from "../../../components/Admin/AddNewPackage";
 
-function ReportPackage() {
+function Packages() {
   const [getPackages, setGetPackages] = useState([]);
-  const context = useOutletContext();
-  console.log("User",context[1]);
+
   const handleGetPackages = () => {
     axios
       .get("/api/v1/user_packages")
       .then((res) => {
-        console.log("Packages to be given to users",res.data?.user_packages);
+        console.log(res.data);
         setGetPackages(res.data?.user_packages);
       })
       .catch((err) => {
@@ -20,9 +21,35 @@ function ReportPackage() {
       });
   };
 
-  const handleGiveUserPackage = (val) => {
-    console.log(val);
+  const handleAddPackage = (package_name, package_days, price) => {
+    const formData = new FormData();
+    formData.append("user_package[package_name]", package_name);
+    formData.append("user_package[no_of_days]", package_days);
+    formData.append("user_package[package_price]", price);
+    axios
+      .post("api/v1/user_packages", formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: "Your package has been added.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetPackages();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  const editPackage = (val) => {};
+
+  const deletePackage = (val) => {};
 
   useEffect(() => {
     handleGetPackages();
@@ -32,6 +59,18 @@ function ReportPackage() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="font-semibold text-xl">Packages List</div>
+            <AddNewPackage
+              handleApi={handleAddPackage}
+              name="Add New Package"
+              title="Add Package"
+              package_name="Name"
+              package_days="Days"
+              price="Price"
+            />
+          </div>
+
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
@@ -43,6 +82,7 @@ function ReportPackage() {
                   <ThComponent name="Package Name" />
                   <ThComponent name="Number of days" />
                   <ThComponent name="Price" />
+                  <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -73,12 +113,28 @@ function ReportPackage() {
                           <TdComponent things={val.package_price} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <button
-                            onClick={() => handleGiveUserPackage(val.id)}
-                            className="border border-gray-300 hover:text-white hover:bg-green-500 p-1 rounded-md"
-                          >
-                            Select
-                          </button>
+                          <TdComponent
+                            things={
+                              <button
+                                onClick={() => editPackage(val.id)}
+                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
+                              >
+                                <MdEdit size={20} />
+                              </button>
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <button
+                                onClick={() => deletePackage(val.id)}
+                                className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
+                              >
+                                <MdDelete size={20} />
+                              </button>
+                            }
+                          />
                         </td>
                       </tr>
                     );
@@ -93,4 +149,4 @@ function ReportPackage() {
   );
 }
 
-export default ReportPackage;
+export default Packages;

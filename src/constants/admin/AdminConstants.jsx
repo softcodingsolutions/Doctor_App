@@ -4,6 +4,7 @@ import { CiViewList } from "react-icons/ci";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { GrTest, GrYoga } from "react-icons/gr";
 import { LiaCapsulesSolid } from "react-icons/lia";
+import { LuPackagePlus } from "react-icons/lu";
 import {
   MdError,
   MdFamilyRestroom,
@@ -77,6 +78,12 @@ export const masterButtons = [
     name: "Lab Tests",
     icons: <GrTest size={18} />,
     to: "lab-tests",
+  },
+  {
+    id: "12",
+    name: "Packages",
+    icons: <LuPackagePlus size={18} />,
+    to: "packages",
   },
 ];
 
