@@ -62,6 +62,7 @@ import RTreatmentComplain from "./pages/Admin/customer/generate_report/treatment
 import RTreatmentFamilyReason from "./pages/Admin/customer/generate_report/treatment/RTreatmentFamilyReason";
 import SurveyReport from "./pages/Survey/SurveyReport";
 import Packages from "./pages/Admin/master/Packages";
+import SurveyForm from "./pages/Survey/SurveyForm";
 
 
 function App() {
@@ -159,6 +160,7 @@ function App() {
 
         {/* Survey */}
         <Route path="survey" element={<SurveyReport/>} />
+        <Route path="surveyform" element={<SurveyForm/>} />
         {/* Error */}
         <Route path="*" element={<div>Not Found!</div>} />
       </Routes>
