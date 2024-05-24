@@ -60,6 +60,8 @@ import RTreatmentDiet from "./pages/Admin/customer/generate_report/treatment/RTr
 import SurveyReport from "./pages/Survey/SurveyReport";
 import Packages from "./pages/Admin/master/Packages";
 import SurveyForm from "./pages/Survey/SurveyForm";
+import SurveyForm2 from "./pages/Survey/SurveyForm2";
+import SurveyForm3 from "./pages/Survey/SurveyForm3";
 
 function App() {
   return (
@@ -155,8 +157,8 @@ function App() {
 
         <Route path="survey" element={<SurveyReport/>} />
         <Route path="surveyform" element={<SurveyForm/>} />
-
-        <Route path="survey" element={<SurveyReport />} />
+        <Route path="surveyform2" element={<SurveyForm2 />} />
+        <Route path="surveyform3" element={<SurveyForm3 />} />
 
         {/* Error */}
         <Route path="*" element={<div>Not Found!</div>} />
