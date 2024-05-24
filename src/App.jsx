@@ -56,14 +56,10 @@ import RTreatmentNutrition from "./pages/Admin/customer/generate_report/treatmen
 import RTreatmentDos from "./pages/Admin/customer/generate_report/treatment/RTreatmentDos";
 import RTreatmentDont from "./pages/Admin/customer/generate_report/treatment/RTreatmentDont";
 import RTreatmentExercise from "./pages/Admin/customer/generate_report/treatment/RTreatmentExercise";
-import RTreatmentLabTest from "./pages/Admin/customer/generate_report/treatment/RTreatmentLabTest";
 import RTreatmentDiet from "./pages/Admin/customer/generate_report/treatment/RTreatmentDiet";
-import RTreatmentComplain from "./pages/Admin/customer/generate_report/treatment/RTreatmentComplain";
-import RTreatmentFamilyReason from "./pages/Admin/customer/generate_report/treatment/RTreatmentFamilyReason";
 import SurveyReport from "./pages/Survey/SurveyReport";
 import Packages from "./pages/Admin/master/Packages";
 import SurveyForm from "./pages/Survey/SurveyForm";
-
 
 function App() {
   return (
@@ -115,10 +111,8 @@ function App() {
                 <Route path="exercise" element={<RTreatmentExercise />} />
                 <Route path="dos" element={<RTreatmentDos />} />
                 <Route path="donts" element={<RTreatmentDont />} />
-                <Route path="lab-tests" element={<RTreatmentLabTest />} />
-                <Route path="complains" element={<RTreatmentComplain />} />
-                <Route path="family-reason" element={<RTreatmentFamilyReason />} />
               </Route>
+              <Route path="lab-tests" element={<TreatmentLabTests />} />
               <Route path="progress-report" element={<ReportProgress />} />
               <Route path="package" element={<ReportPackage />} />
             </Route>
@@ -153,14 +147,17 @@ function App() {
             <Route path="donts" element={<TreatmentDonts />} />
             <Route path="family-reason" element={<TreatmentFamilyReason />} />
             <Route path="complains" element={<TreatmentComplains />} />
-            <Route path="lab-tests" element={<TreatmentLabTests />} />
           </Route>
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
         </Route>
 
         {/* Survey */}
+
         <Route path="survey" element={<SurveyReport/>} />
         <Route path="surveyform" element={<SurveyForm/>} />
+
+        <Route path="survey" element={<SurveyReport />} />
+
         {/* Error */}
         <Route path="*" element={<div>Not Found!</div>} />
       </Routes>

@@ -24,6 +24,7 @@ function QueUserQuestions() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

@@ -18,6 +18,7 @@ function ExerciseYoga() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -43,6 +44,7 @@ function ExerciseYoga() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -114,6 +116,7 @@ function ExerciseYoga() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       }
     });

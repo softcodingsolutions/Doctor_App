@@ -15,7 +15,7 @@ function ReportQuestions() {
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Questions List</div>
-            <div className="space-x-1">
+            <div className="space-x-2.5">
               <button
                 onClick={() => {
                   setShowPart2(false);

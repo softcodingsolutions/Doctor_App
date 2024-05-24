@@ -7,12 +7,47 @@ import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import { Option, Select } from "@mui/joy";
 
 function TreatmentLabTests() {
   const context = useOutletContext();
   const [getTests, setGetTests] = useState([]);
+  const [getWeightReason, setGetWeightReason] = useState([]);
+  const [sendWeightReason, setSendWeightReason] = useState(null);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [getPackages, setPackages] = useState([]);
+
+  const handleGetWeightReason = () => {
+    axios
+      .get("/api/v1/weight_reasons")
+      .then((res) => {
+        console.log("Weight Reasons", res.data?.weight_reasons);
+        setGetWeightReason(res.data?.weight_reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handlegetPackages = () => {
+    axios
+      .get("/api/v1/packages")
+      .then((res) => {
+        console.log("Packages", res.data?.packages);
+        setPackages(res.data?.packages);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handleSendWeightReason = (val) => {
+    setSendWeightReason(val);
+    console.log(val);
+  };
 
   const handleGetTests = () => {
     axios
@@ -23,6 +58,7 @@ function TreatmentLabTests() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -61,7 +97,7 @@ function TreatmentLabTests() {
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
-      context[0] === "null" ? null : context[0]
+      sendWeightReason === "null" ? null : sendWeightReason
     );
     formData.append("package[lab_test]", JSON.stringify(selectedTests));
 
@@ -78,7 +114,7 @@ function TreatmentLabTests() {
         });
       }
       handleGetTests();
-      context[1]();
+      handlegetPackages();
     } catch (err) {
       console.error(err);
     } finally {
@@ -88,17 +124,19 @@ function TreatmentLabTests() {
   };
 
   useEffect(() => {
-    const preSelectedTest = context[2]?.reduce((acc, packages) => {
-      if (context[0] === packages.weight_reason) {
+    const preSelectedTest = getPackages?.reduce((acc, packages) => {
+      if (sendWeightReason === packages.weight_reason) {
         acc = [...acc, ...packages.lab_test.map((q) => String(q.id))];
       }
       return acc;
     }, []);
     setSelectedCheckboxes(preSelectedTest);
-  }, [context]);
+  }, [sendWeightReason]);
 
   useEffect(() => {
     handleGetTests();
+    handlegetPackages();
+    handleGetWeightReason();
   }, []);
 
   return (
@@ -106,6 +144,23 @@ function TreatmentLabTests() {
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
           <div className="flex gap-5 text-center items-center justify-between">
+            <div className="flex items-center w-fit mb-2">
+              <span className="mr-2 font-semibold">Select Weight Reason: </span>
+              <Select required placeholder="Select">
+                {getWeightReason.map((res) => {
+                  return (
+                    <Option
+                      key={res.id}
+                      value={res.name}
+                      onClick={() => handleSendWeightReason(res.name)}
+                    >
+                      {res.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </div>
+
             {!showCheckboxes && (
               <SelectTreatmentButton
                 name="Select Lab Tests"
@@ -115,7 +170,7 @@ function TreatmentLabTests() {
 
             {showCheckboxes && (
               <div className="font-[550] text-lg">
-                No. of tests checked: {selectedCheckboxes.length}
+                No. of tests checked: {selectedCheckboxes?.length}
               </div>
             )}
 
@@ -165,9 +220,9 @@ function TreatmentLabTests() {
                     return (
                       <tr
                         className={`${
-                          context[2]?.some(
+                          getPackages?.some(
                             (packages) =>
-                              context[0] === packages.weight_reason &&
+                              sendWeightReason === packages.weight_reason &&
                               packages.lab_test?.some(
                                 (test) => test.id === val.id
                               )
@@ -183,9 +238,9 @@ function TreatmentLabTests() {
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
-                              defaultChecked={context[2]?.some(
+                              defaultChecked={getPackages?.some(
                                 (packages) =>
-                                  context[0] === packages.weight_reason &&
+                                  sendWeightReason === packages.weight_reason &&
                                   packages.lab_test?.some(
                                     (test) => test.id === val.id
                                   )
@@ -216,7 +271,7 @@ function TreatmentLabTests() {
           </div>
 
           {!showCheckboxes && (
-            <div className="flex justify-center">
+            <div className="flex justify-between">
               <PrevPageButton to="../complains" />
             </div>
           )}

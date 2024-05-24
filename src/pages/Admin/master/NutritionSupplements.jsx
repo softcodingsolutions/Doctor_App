@@ -30,6 +30,7 @@ function NutritionSupplements() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -42,6 +43,7 @@ function NutritionSupplements() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -69,6 +71,7 @@ function NutritionSupplements() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       }
     });

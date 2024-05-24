@@ -18,6 +18,7 @@ function LabTest() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -44,6 +45,7 @@ function LabTest() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -73,6 +75,7 @@ function LabTest() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       }
     });
