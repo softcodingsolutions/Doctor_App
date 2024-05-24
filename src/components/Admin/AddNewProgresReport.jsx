@@ -30,6 +30,7 @@ function AddNewProgresReport(props) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

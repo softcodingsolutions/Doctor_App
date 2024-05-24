@@ -18,6 +18,7 @@ function Packages() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -44,12 +45,42 @@ function Packages() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
   const editPackage = (val) => {};
 
-  const deletePackage = (val) => {};
+  const deletePackage = (val) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/user_packages/${val}`)
+          .then((res) => {
+            console.log(res);
+            handleGetPackages();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your package has been deleted.",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            alert(err.message)
+            console.log(err);
+            alert(err.message);
+          });
+      }
+    });
+  };
 
   useEffect(() => {
     handleGetPackages();

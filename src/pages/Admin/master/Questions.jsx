@@ -21,6 +21,7 @@ function Questions() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -33,6 +34,7 @@ function Questions() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -184,6 +186,7 @@ function Questions() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       }
     });

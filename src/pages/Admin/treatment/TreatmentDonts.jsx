@@ -29,6 +29,7 @@ function TreatmentDonts() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -224,7 +225,6 @@ function TreatmentDonts() {
           {!showCheckboxes && (
             <div className="flex justify-between">
               <PrevPageButton to="../dos" />
-              <NextPageButton name="Family Reason" to="../family-reason" />
             </div>
           )}
           {showCheckboxes && (

@@ -24,6 +24,7 @@ function TreatmentFamilyReason() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

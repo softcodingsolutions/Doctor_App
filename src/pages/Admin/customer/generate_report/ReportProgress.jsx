@@ -20,6 +20,7 @@ function ReportProgress() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -46,6 +47,7 @@ function ReportProgress() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

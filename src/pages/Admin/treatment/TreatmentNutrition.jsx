@@ -25,6 +25,7 @@ function TreatmentNutrition() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -215,7 +216,7 @@ function TreatmentNutrition() {
             </div>
           )}
           {showCheckboxes && (
-            <div className="flex justify-nutrition">
+            <div className="flex justify-center">
               <SaveTreatmentButtons function={handleSave} />{" "}
             </div>
           )}
