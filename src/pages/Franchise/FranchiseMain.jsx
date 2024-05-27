@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FranchiseSidebar from "./FranchiseSidebar";
 import axios from "axios";
 import { Outlet, useNavigate } from "react-router-dom";

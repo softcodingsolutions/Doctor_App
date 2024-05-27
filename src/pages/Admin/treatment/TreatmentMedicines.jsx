@@ -96,6 +96,7 @@ function TreatmentMedicines() {
       }
       return acc;
     }, []);
+    console.log("pre", preSelectedMedicine);
     setSelectedCheckboxes(preSelectedMedicine);
   }, [context]);
 
