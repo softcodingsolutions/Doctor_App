@@ -1,7 +1,7 @@
 import { AiOutlineMedicineBox } from "react-icons/ai";
 import { BsNintendoSwitch } from "react-icons/bs";
 import { CiViewList } from "react-icons/ci";
-import { FaRegQuestionCircle } from "react-icons/fa";
+import { FaRegQuestionCircle, FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import { GrTest, GrYoga } from "react-icons/gr";
 import { LiaCapsulesSolid } from "react-icons/lia";
 import { LuPackagePlus } from "react-icons/lu";
@@ -160,13 +160,13 @@ export const reportTreatmentButtons = [
   {
     id: "5",
     name: "Dos",
-    icons: <BsNintendoSwitch size={18} />,
+    icons: <FaRegThumbsUp size={18} />,
     to: "dos",
   },
   {
     id: "6",
     name: "Don'ts",
-    icons: <BsNintendoSwitch size={18} />,
+    icons: <FaRegThumbsDown size={18} />,
     to: "donts",
   }, 
 ];

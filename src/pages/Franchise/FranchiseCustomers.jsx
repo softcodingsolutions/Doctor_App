@@ -1,7 +1,7 @@
 import { Outlet, useOutletContext } from "react-router-dom";
 
-function AdminCustomers() {
-    const context = useOutletContext();
+function FranchiseCustomers() {
+  const context = useOutletContext();
 
   return (
     <div className="flex w-full">
@@ -27,4 +27,4 @@ function AdminCustomers() {
   );
 }
 
-export default AdminCustomers;
+export default FranchiseCustomers;
