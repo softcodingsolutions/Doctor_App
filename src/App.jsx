@@ -62,6 +62,10 @@ import Packages from "./pages/Admin/master/Packages";
 import SurveyForm from "./pages/Survey/SurveyForm";
 import SurveyForm2 from "./pages/Survey/SurveyForm2";
 import SurveyForm3 from "./pages/Survey/SurveyForm3";
+import FranchiseMain from "./pages/Franchise/FranchiseMain";
+import FranchiseDashboard from "./pages/Franchise/FranchiseDashboard";
+import FranchiseCustomers from "./pages/Franchise/FranchiseCustomers";
+import FranchiseAllCustomers from "./pages/Franchise/customer/FranchiseAllCustomers";
 
 function App() {
   return (
@@ -154,11 +158,18 @@ function App() {
         </Route>
 
         {/* Survey */}
-
-        <Route path="survey" element={<SurveyReport/>} />
-        <Route path="surveyform" element={<SurveyForm/>} />
+        <Route path="survey" element={<SurveyReport />} />
+        <Route path="surveyform" element={<SurveyForm />} />
         <Route path="surveyform2" element={<SurveyForm2 />} />
         <Route path="surveyform3" element={<SurveyForm3 />} />
+
+        {/* Franchise */}
+        <Route path="franchise" element={<FranchiseMain />}>
+          <Route path="dashboard" element={<FranchiseDashboard />} />
+          <Route path="customers" element={<FranchiseCustomers />}>
+            <Route path="all-users" element={<FranchiseAllCustomers />} />
+          </Route>
+        </Route>
 
         {/* Error */}
         <Route path="*" element={<div>Not Found!</div>} />
