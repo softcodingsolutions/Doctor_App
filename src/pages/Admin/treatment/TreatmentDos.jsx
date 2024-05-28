@@ -128,7 +128,7 @@ function TreatmentDos() {
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
-                Checked Dons -{" "}
+                Checked Dos -{" "}
                 <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
               </div>
             )}

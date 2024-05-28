@@ -185,7 +185,15 @@ function DietMaster() {
                           <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.chart_english} />
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.chart_english,
+                                }}
+                              />
+                            }
+                          />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
