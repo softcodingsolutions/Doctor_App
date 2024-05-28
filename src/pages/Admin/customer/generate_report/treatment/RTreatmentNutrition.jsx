@@ -77,7 +77,6 @@ function RTreatmentNutrition() {
       JSON.stringify(selectedNutrition)
     );
 
-    // axios.post(`/api/`)
   };
 
   useEffect(() => {
