@@ -69,10 +69,15 @@ function RTreatmentNutrition() {
     setShowCheckboxes(false);
     const formData = new FormData();
     formData.append(
-      "package[weight_reason]",
+      "treatment_package[weight_reason]",
       context[0] === "null" ? null : context[0]
     );
-    formData.append("package[medicines]", JSON.stringify(selectedNutrition));
+    formData.append(
+      "treatment_package[nutrition]",
+      JSON.stringify(selectedNutrition)
+    );
+
+    // axios.post(`/api/`)
   };
 
   useEffect(() => {
@@ -89,7 +94,7 @@ function RTreatmentNutrition() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[70vh] bg-white ">
+      <div className="rounded-lg bg-card h-[75vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (

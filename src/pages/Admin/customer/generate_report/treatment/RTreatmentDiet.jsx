@@ -87,7 +87,7 @@ function RTreatmentDiet() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[70vh] bg-white ">
+      <div className="rounded-lg bg-card h-[75vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (
@@ -179,7 +179,15 @@ function RTreatmentDiet() {
                           <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.chart_english} />
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.chart_english,
+                                }}
+                              />
+                            }
+                          />
                         </td>
                       </tr>
                     );

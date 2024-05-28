@@ -203,7 +203,15 @@ function TreatmentExercise() {
                           <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details} />
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.details,
+                                }}
+                              />
+                            }
+                          />
                         </td>
                       </tr>
                     );
