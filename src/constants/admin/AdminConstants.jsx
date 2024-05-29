@@ -1,9 +1,14 @@
 import { AiOutlineMedicineBox } from "react-icons/ai";
 import { BsNintendoSwitch } from "react-icons/bs";
 import { CiViewList } from "react-icons/ci";
-import { FaRegQuestionCircle, FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
+import {
+  FaRegQuestionCircle,
+  FaRegThumbsDown,
+  FaRegThumbsUp,
+} from "react-icons/fa";
+import { GoHistory } from "react-icons/go";
 import { GrTest, GrYoga } from "react-icons/gr";
-import { LiaCapsulesSolid } from "react-icons/lia";
+import { LiaCapsulesSolid, LiaProceduresSolid } from "react-icons/lia";
 import { LuPackagePlus } from "react-icons/lu";
 import {
   MdError,
@@ -11,6 +16,7 @@ import {
   MdFoodBank,
   MdOutlinePostAdd,
 } from "react-icons/md";
+import { TbReport } from "react-icons/tb";
 
 export const masterButtons = [
   {
@@ -103,13 +109,13 @@ export const reportButtons = [
   {
     id: "3",
     name: "Past History",
-    icons: <CiViewList size={18} />,
+    icons: <GoHistory size={18} />,
     to: "past-history",
   },
   {
     id: "4",
     name: "Treatment",
-    icons: <CiViewList size={18} />,
+    icons: <LiaProceduresSolid size={18} />,
     to: "treatment/medicine",
   },
   {
@@ -121,13 +127,13 @@ export const reportButtons = [
   {
     id: "6",
     name: "Package",
-    icons: <CiViewList size={18} />,
+    icons: <LuPackagePlus size={18} />,
     to: "package",
   },
   {
     id: "7",
     name: "Progress Report",
-    icons: <CiViewList size={18} />,
+    icons: <TbReport size={18} />,
     to: "progress-report",
   },
 ];
@@ -168,5 +174,5 @@ export const reportTreatmentButtons = [
     name: "Don'ts",
     icons: <FaRegThumbsDown size={18} />,
     to: "donts",
-  }, 
+  },
 ];
