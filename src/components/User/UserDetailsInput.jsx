@@ -15,7 +15,7 @@ function UserDetailsInput(props) {
         />
       </div>
       {props.errors && (
-        <span className="text-sm  text-red-500 -mt-2.5">
+        <span className="text-sm  text-red-500 ">
           {props.errors?.message}
         </span>
       )}

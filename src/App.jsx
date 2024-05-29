@@ -66,6 +66,10 @@ import FranchiseMain from "./pages/Franchise/FranchiseMain";
 import FranchiseDashboard from "./pages/Franchise/FranchiseDashboard";
 import FranchiseCustomers from "./pages/Franchise/FranchiseCustomers";
 import FranchiseAllCustomers from "./pages/Franchise/customer/FranchiseAllCustomers";
+import FranchiseNewcustomer from "./pages/Franchise/customer/FranchiseNewcustomer";
+import FranchiesCurrentdiet from "./pages/Franchise/customer/FranchiesCurrentdiet";
+import FranchiesGeneraldetails from "./pages/Franchise/customer/FranchiesGeneraldetails";
+import FranchiesFamilyhistory from "./pages/Franchise/customer/FranchiesFamilyhistory";
 
 function App() {
   return (
@@ -168,6 +172,19 @@ function App() {
           <Route path="dashboard" element={<FranchiseDashboard />} />
           <Route path="customers" element={<FranchiseCustomers />}>
             <Route path="all-users" element={<FranchiseAllCustomers />} />
+          </Route>
+
+          <Route path="new-user" element={<FranchiseNewcustomer />}>
+            <Route
+              path="general-details"
+              element={<FranchiesGeneraldetails />}
+            />
+            <Route path="current-diet" element={<FranchiesCurrentdiet />} />
+            <Route path="family-history" element={<FranchiesFamilyhistory />} />
+            <Route path="complains" element={<QueComplains />} />
+            <Route path="user-questions" element={<CustomerQuestionsPart1 />} />
+            <Route path="diagnosis" element={<CustomerQuestionsPart2 />} />
+            <Route path="checkout" element={<QueCheckout />} />
           </Route>
         </Route>
 
