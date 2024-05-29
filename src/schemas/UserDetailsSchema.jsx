@@ -20,3 +20,9 @@ export const UserSchema = yup.object().shape({
   weight: yup.string().required("Weight is required").min(2).max(3),
   gender: yup.string().oneOf(["male", "female"]).required("Gender is required"),
 });
+
+export const CurrentDietSchema  = yup.object().shape({
+  morning:yup.string().required("morning diet is required."),
+  lunch:yup.string().required("lunch diet is required."),
+  dinner:yup.string().required("dinner diet is required.")
+})
