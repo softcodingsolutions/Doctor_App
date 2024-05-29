@@ -70,6 +70,8 @@ import FranchiseNewcustomer from "./pages/Franchise/customer/FranchiseNewcustome
 import FranchiesCurrentdiet from "./pages/Franchise/customer/FranchiesCurrentdiet";
 import FranchiesGeneraldetails from "./pages/Franchise/customer/FranchiesGeneraldetails";
 import FranchiesFamilyhistory from "./pages/Franchise/customer/FranchiesFamilyhistory";
+import FranchiesComplains from "./pages/Franchise/customer/FranchiesComplains";
+import FranchiesQuestions from "./pages/Franchise/customer/FranchiesQuestions";
 
 function App() {
   return (
@@ -181,8 +183,8 @@ function App() {
             />
             <Route path="current-diet" element={<FranchiesCurrentdiet />} />
             <Route path="family-history" element={<FranchiesFamilyhistory />} />
-            <Route path="complains" element={<QueComplains />} />
-            <Route path="user-questions" element={<CustomerQuestionsPart1 />} />
+            <Route path="complains" element={<FranchiesComplains />} />
+            <Route path="user-questions" element={<FranchiesQuestions />} />
             <Route path="diagnosis" element={<CustomerQuestionsPart2 />} />
             <Route path="checkout" element={<QueCheckout />} />
           </Route>

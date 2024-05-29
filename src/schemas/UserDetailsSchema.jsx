@@ -22,7 +22,7 @@ export const UserSchema = yup.object().shape({
 });
 
 export const CurrentDietSchema  = yup.object().shape({
-  morning:yup.string().required("morning diet is required."),
-  lunch:yup.string().required("lunch diet is required."),
-  dinner:yup.string().required("dinner diet is required.")
+  Morning:yup.string().required("morning diet is required."),
+  Lunch:yup.string().required("lunch diet is required."),
+  Dinner:yup.string().required("dinner diet is required.")
 })
