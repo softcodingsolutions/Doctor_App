@@ -1,24 +1,23 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate,} from "react-router-dom";
 import Swal from "sweetalert2";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
+import axios from "axios";
+import { useLocation, useNavigate, } from "react-router-dom";
 
-function FranchiesQuestions() {
-  const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
+function FranchiesDiagnosis() {
+  const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem('client_email');
   const navigate = useNavigate();
-  console.log("id of the user", email);
 
-  const handleGetQuestionsPart1 = () => {
+  const handleGetQuestionsPart2 = () => {
     axios
-      .get("/api/v1/questions/part1")
+      .get("/api/v1/questions/part2")
       .then((res) => {
         console.log(res.data);
-        setGetQuestionsPart1(res.data);
+        setGetQuestionsPart2(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -42,7 +41,7 @@ function FranchiesQuestions() {
   const handleSave = async () => {
     const selectedQuestions = selectedCheckboxes
       .map((id) =>
-        getQuestionsPart1.find((question) => question.id === Number(id))
+        getQuestionsPart2.find((question) => question.id === Number(id))
       )
       .filter((question) => question);
 
@@ -62,7 +61,7 @@ function FranchiesQuestions() {
         `/api/v2/users/update_personal_details?email=${email}`,
         {
           personal_detail: {
-            user_selected_questions_one: JSON.stringify(selectedQuestions),
+            user_selected_questions_two: JSON.stringify(selectedQuestions),
           },
         }
       );
@@ -70,8 +69,8 @@ function FranchiesQuestions() {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Added!",
-          text: `Your question has been added.`,
+          title: "Saved!",
+          text: `Your questions has been saved.`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -79,26 +78,25 @@ function FranchiesQuestions() {
     } catch (err) {
       console.error(err);
     } finally {
-
+      navigate("../checkout");
       setSelectedCheckboxes([]);
     }
-    navigate("../diagnosis");
   };
 
   useEffect(() => {
-    handleGetQuestionsPart1();
+    handleGetQuestionsPart2();
   }, []);
-  const handleBack =() =>{
-    navigate('../complains')
-  }
 
+  const handleBack =() =>{
+    navigate("../user-questions")
+  }
   return (
     <div className="w-full gap-2 overflow-auto flex rounded-lg bg-card h-[92vh] bg-white flex-wrap content-start p-2 px-4">
-      <div className="text-xl font-semibold">User Questions:-</div>
+      <div className="text-xl font-semibold">User Diagnosis:-</div>
       <div className="flex flex-col rounded-lg bg-card h-[85vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
-          <div className="animate-fade-left w-full min-h-[500px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
-            <table className="w-full z-0 ">
+          <div className="animate-fade-left w-full animate-delay-75 shadow-gray-400 min-h-[500px]shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
+            <table className="w-full z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent
@@ -114,7 +112,7 @@ function FranchiesQuestions() {
                 </tr>
               </thead>
               <tbody>
-                {getQuestionsPart1.length === 0 ? (
+                {getQuestionsPart2.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -124,7 +122,7 @@ function FranchiesQuestions() {
                     </th>
                   </tr>
                 ) : (
-                  getQuestionsPart1.map((val) => {
+                  getQuestionsPart2.map((val) => {
                     return (
                       <tr key={val.id}>
                         <td className="py-3 px-4 border-b border-b-gray-50">
@@ -164,4 +162,4 @@ function FranchiesQuestions() {
   );
 }
 
-export default FranchiesQuestions;
+export default FranchiesDiagnosis;

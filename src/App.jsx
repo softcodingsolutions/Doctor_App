@@ -72,6 +72,8 @@ import FranchiesGeneraldetails from "./pages/Franchise/customer/FranchiesGeneral
 import FranchiesFamilyhistory from "./pages/Franchise/customer/FranchiesFamilyhistory";
 import FranchiesComplains from "./pages/Franchise/customer/FranchiesComplains";
 import FranchiesQuestions from "./pages/Franchise/customer/FranchiesQuestions";
+import FranchiesDiagnosis from "./pages/Franchise/customer/FranchiesDiagnosis";
+import FranchiesDropdown from "./pages/Franchise/customer/FranchiesDropdown";
 
 function App() {
   return (
@@ -185,8 +187,8 @@ function App() {
             <Route path="family-history" element={<FranchiesFamilyhistory />} />
             <Route path="complains" element={<FranchiesComplains />} />
             <Route path="user-questions" element={<FranchiesQuestions />} />
-            <Route path="diagnosis" element={<CustomerQuestionsPart2 />} />
-            <Route path="checkout" element={<QueCheckout />} />
+            <Route path="diagnosis" element={<FranchiesDiagnosis />} />
+            <Route path="checkout" element={<FranchiesDropdown />} />
           </Route>
         </Route>
 

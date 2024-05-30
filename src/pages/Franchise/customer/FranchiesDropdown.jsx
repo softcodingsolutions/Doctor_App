@@ -6,7 +6,7 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 
-function FranchiesGeneraldetails() {
+function FranchiesDropdown() {
   const context = useOutletContext();
   const navigate = useNavigate();
   const {
@@ -66,75 +66,61 @@ function FranchiesGeneraldetails() {
               method="post"
             >
               <div className="md:flex w-full justify-between">
-                <UserDetailsInput
-                  errors={errors.firstname}
-                  name="firstname"
-                  type="text"
-                  label="First Name"
-                  placeholder="firstname"
-                  hook={register("firstname", {
-                    required: true,
-                    minLength: 2,
-                  })}
+              <label className="text-lg text-end w-1/8 mr-2">Package:</label>
+                  <select
+                    name="gender"
+                    defaultValue="select"
+                    className="py-1 px-2 rounded-md border border-black w-full"
+                  >
+                    <option value="select" disabled>
+                      Select One
+                    </option>
+                    <option value="Franchisee_package">FRANCHISEE PACKAGE</option>
+                    <option value="mh-b-2">MH-B-2</option>
+                    <option value="mh-c-3">MH-C-3</option>
+                    <option value="mh-f-6">MH-F-6</option>
+                    <option value="anand 30">Anand 30</option>
+                    <option value="anand 60">Anand 60</option>
+                    <option value="anand 120">Anand 120</option>
+                    <option value="anand od">Anand OD</option>
+                    <option value="mh-outdoor">MH-OUTDOOR</option>
+                    <option value="mh-a-1">MH-A-1</option>
+                </select>
+              </div>
+              <div className="md:flex w-full justify-between">
+              <UserDetailsInput
+                  name="FromDate"
+                  type="date"
+                  label="From Date"
+                  placeholder="From date"
+                  hook={register("fromdate")}
                 />
-                <UserDetailsInput
-                  errors={errors.lastname}
-                  name="lastname"
-                  type="text"
-                  label="Last Name"
-                  placeholder="lastname"
-                  hook={register("lastname", {
-                    required: true,
-                    minLength: 2,
-                  })}
+            <label>Validate</label>
+            <div className="border-2 w-20 rounded border-black"></div>
+            <UserDetailsInput
+                  name="ToDate"
+                  type="date"
+                  label="To Date"
+                  placeholder="To date"
+                  hook={register("todate")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  errors={errors.email}
-                  name="email"
-                  type="email"
-                  label="Email"
-                  placeholder="name@email.com"
-                  hook={register("email", {
-                    required: true,
-                  })}
-                />
-                <UserDetailsInput
-                  errors={errors.mobile}
-                  name="mobile"
+                  name="possibilitygroup"
                   type="text"
-                  label="Phone Number"
-                  placeholder="phone number"
-                  hook={register("mobile", {
-                    required: true,
-                  })}
+                  label="Possibility Group"
+                  placeholder="NaN"
+                  hook={register("possibilitygroup")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="address"
+                  name="packagevalue"
                   type="text"
-                  label="Address"
-                  placeholder="address"
-                  hook={register("address")}
-                />
-                <UserDetailsInput
-                  errors={errors.city}
-                  name="city"
-                  type="text"
-                  label="City"
-                  placeholder="city"
-                  hook={register("city")}
-                />
-              </div>
-              <div className="md:flex w-full justify-between">
-                <UserDetailsInput
-                  name="refferedBy"
-                  type="text"
-                  label="Reffered By"
-                  placeholder="reffered by"
-                  hook={register("refferedBy")}
+                  label="Package Value"
+                  placeholder="0"
+                  hook={register("packagevalue")}
                 />
                 <UserDetailsInput
                   name="language"
@@ -226,4 +212,4 @@ function FranchiesGeneraldetails() {
   );
 }
 
-export default FranchiesGeneraldetails;
+export default FranchiesDropdown;
