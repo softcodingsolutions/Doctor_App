@@ -17,7 +17,7 @@ function CustomerAllUsers() {
 
   const handleDiagnosis = (val) => {
     localStorage.setItem("userId", val);
-    navigate(`../user-diagnosis`);
+    navigate(`../user-diagnosis/profile`);
   };
 
   const handleAddUsers = () => {

@@ -5,7 +5,7 @@ import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { reportButtons } from "../../../constants/admin/AdminConstants";
 
 function CustomerUserDiagnosis() {
-  const [selectedId, setSelectedId] = useState();
+  const [selectedId, setSelectedId] = useState("1");
   const [getCustomer, setGetCustomer] = useState([]);
   const id = localStorage.getItem("userId");
 
@@ -13,7 +13,7 @@ function CustomerUserDiagnosis() {
     axios
       .get(`/api/v2/users/${id}`)
       .then((res) => {
-        console.log("User to diagnos",res.data.user);
+        console.log("User to diagnos", res.data.user);
         setGetCustomer(res.data?.user);
       })
       .catch((err) => {
@@ -92,7 +92,7 @@ function CustomerUserDiagnosis() {
                 </div>
                 <div className="flex justify-center mt-3">
                   <button
-                    onClick={() => console.log('Generate Report')}
+                    onClick={() => console.log("Generate Report")}
                     className="p-1 border border-gray-400 rounded-md bg-gray-600 text-white hover:scale-105"
                   >
                     Generate Report
@@ -102,8 +102,8 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
         )}
-        {selectedId && <Outlet context={[id, getCustomer]} />}
       </div>
+      {selectedId && <Outlet context={[id, getCustomer]} />}
     </>
   );
 }

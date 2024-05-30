@@ -1,54 +1,58 @@
-import TdComponent from "../../../../components/TdComponent";
-import ThComponent from "../../../../components/ThComponent";
 import { useOutletContext } from "react-router-dom";
 
 function ReportProfile() {
-  const context = useOutletContext();
-  console.log("User", context[1]);
-
+  const getCustomer = useOutletContext();
+  console.log("Customer details: ", getCustomer[1]);
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
-        <div className="flex px-4 py-3 h-full flex-col space-y-4">
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
-            <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase ">
-                <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="No."
-                  />
-                  <ThComponent name="Complain Details" />
-                  <ThComponent />
-                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
-                </tr>
-              </thead>
-              <tbody>
-                {getProfile.length === 0 ? (
-                  <tr>
-                    <th
-                      className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
-                      colSpan={8}
-                    >
-                      No Profile Found!
-                    </th>
-                  </tr>
-                ) : (
-                  getProfile.map((val, index) => {
-                    return (
-                      <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">{index + 1}</div>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details} />
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+      <div className="rounded-lg bg-card h-[82vh] bg-white">
+        <div className="flex p-5 h-full flex-col items-center space-y-8">
+          <div className="flex flex-col text-lg font-bold justify-center w-5/6 gap-3 mt-1">
+            <div className="flex justify-between">
+              <div>
+                Patient Name:{" "}
+                {getCustomer[1]?.first_name + " " + getCustomer[1]?.last_name}
+              </div>
+              <div>Case Number: {getCustomer[1]?.case_number}</div>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                Gender:{" "}
+                {getCustomer[1].personal_detail &&
+                  getCustomer[1].personal_detail?.gender[0]?.toUpperCase() +
+                    getCustomer[1].personal_detail?.gender?.substring(1)}
+              </div>
+              <div>Customer Type: null</div>
+            </div>
+            <div className="flex justify-between">
+              <div>Age: {getCustomer[1].personal_detail?.age}</div>
+              <div>
+                Date: {getCustomer[1].personal_detail?.created_at?.slice(0, 10)}
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                Current Weight: {getCustomer[1].personal_detail?.weight} kg
+              </div>
+              <div>Height: {getCustomer[1].personal_detail?.height} cm</div>
+            </div>
+            <div className="flex justify-between">
+              <div>Package: null</div>
+              <div>Treatment Code: null</div>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                Address: {getCustomer[1]?.personal_detail?.address ?? "null"}
+              </div>
+              <div>Email: {getCustomer[1]?.email}</div>
+            </div>
+            <div className="flex justify-between">
+              <div>Phone Number: {getCustomer[1]?.phone_number}</div>
+              <div>
+                Whatsapp Number:{" "}
+                {getCustomer[1]?.personal_detail?.whatsapp_number}
+              </div>
+            </div>
           </div>
         </div>
       </div>

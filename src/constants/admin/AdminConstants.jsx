@@ -14,6 +14,7 @@ import {
   MdError,
   MdFamilyRestroom,
   MdFoodBank,
+  MdOutlinePictureAsPdf,
   MdOutlinePostAdd,
 } from "react-icons/md";
 import { TbReport } from "react-icons/tb";
@@ -134,6 +135,12 @@ export const reportButtons = [
     id: "7",
     name: "Progress Report",
     icons: <TbReport size={18} />,
+    to: "progress-report",
+  },
+  {
+    id: "8",
+    name: "Generate Report",
+    icons: <MdOutlinePictureAsPdf size={18} />,
     to: "progress-report",
   },
 ];
