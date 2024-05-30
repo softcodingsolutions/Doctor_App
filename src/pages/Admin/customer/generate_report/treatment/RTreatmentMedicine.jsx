@@ -6,6 +6,7 @@ import axios from "axios";
 import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
 import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentButtons";
 import Swal from "sweetalert2";
+import { Box, Chip, Option, Select } from "@mui/joy";
 
 function RTreatmentMedicine() {
   const context = useOutletContext();
@@ -150,11 +151,7 @@ function RTreatmentMedicine() {
                     />
                   )}
                   <ThComponent name="Name" />
-                  <ThComponent name="Content" />
-                  <ThComponent
-                    name="Quantity"
-                    moreClasses={"rounded-tr-md rounded-br-md"}
-                  />
+                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
               <tbody>
@@ -195,15 +192,57 @@ function RTreatmentMedicine() {
                             <div className="flex items-center">{index + 1}</div>
                           </td>
                         )}
-
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.medicine_name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_quantity} />
+                          <Select
+                            multiple
+                            defaultValue={["dog", "cat"]}
+                            renderValue={(selected) => (
+                              <Box sx={{ display: "flex", gap: "0.25rem" }}>
+                                {selected.map((selectedOption, index) => (
+                                  <Chip
+                                    key={index + "1"}
+                                    variant="soft"
+                                    color="primary"
+                                  >
+                                    {selectedOption.label}
+                                  </Chip>
+                                ))}
+                              </Box>
+                            )}
+                            sx={{
+                              minWidth: "15rem",
+                            }}
+                            slotProps={{
+                              listbox: {
+                                sx: {
+                                  width: "100%",
+                                },
+                              },
+                            }}
+                          >
+                            <Option
+                              disabled
+                              style={{ color: "gray", fontWeight: 500 }}
+                            >
+                              DOSAGE
+                            </Option>
+                            <Option value="0.5">½</Option>
+                            <Option value="1">1</Option>
+                            <Option value="1.5">1½</Option>
+                            <Option value="2">2</Option>
+                            <Option
+                              disabled
+                              style={{ color: "gray", fontWeight: 500 }}
+                            >
+                              Frequency
+                            </Option>
+                            <Option value="morning">Morning</Option>
+                            <Option value="lunch">Lunch</Option>
+                            <Option value="dinner">Dinner</Option>
+                          </Select>
                         </td>
                       </tr>
                     );
