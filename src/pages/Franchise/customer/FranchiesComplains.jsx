@@ -72,7 +72,7 @@ function FranchiesComplains() {
             <div>
               <label>Other Complain</label>
               <textarea rows={3} className='border-2 w-full'/>
-              <h2 className='font-semibold text-md'>If your complain is not mentioned, write it in box and Click "Add Complain"</h2>
+              <h2 className='font-semibold text-md'>If your complain is not mentioned, write it in box.</h2>
             </div>
            </div>
             <div className="flex w-full justify-center gap-3">
