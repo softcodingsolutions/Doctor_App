@@ -95,7 +95,7 @@ function FranchiesDiagnosis() {
       <div className="text-xl font-semibold">User Diagnosis:-</div>
       <div className="flex flex-col rounded-lg bg-card h-[85vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
-          <div className="animate-fade-left w-full animate-delay-75 shadow-gray-400 min-h-[500px]shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
+          <div className="animate-fade-left w-full min-h-[500px] animate-delay-75 shadow-gray-400 min-h-[500px]shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
             <table className="w-full z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -149,7 +149,7 @@ function FranchiesDiagnosis() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-2">
           <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={handleBack}>Back</button>
             <SaveUserDetailsButton
               function={handleSave}

@@ -18,41 +18,40 @@ function FranchiesGeneraldetails() {
     resolver: yupResolver(UserSchema),
   });
 
-  const submittedData = (d) => {
+  
+  const submittedData = async (d) => {
     console.log(d);
-    navigate("../current-diet")
-    axios.get(`/api/v1/users/app_creds`).then((res) => {
-      console.log(res);
-      axios
-        .post("/api/v1/users", {
-          user: {
-            first_name: d.firstname,
-            last_name: d.lastname,
-            email: d.email,
-            phone_number: d.mobile,
-            address: d.address,
-          },
-          personal_detail: {
-            city: d.city,
-            age: d.age,
-            gender: d.gender,
-            overweight_since: d.overweight,
-            language: d.language,
-            reffered_by: d.refferedBy,
-            weight: d.weight,
-            height: d.height,
-            whatsapp_number: d.whatsapp,
-          },
-          client_id: res.data?.client_id,
-        })
-        .then((res) => {
-          console.log(res);
-          localStorage.setItem("client_email", res.data?.user?.user?.email)
-          navigate("../current-diet");
-        });
-    });
-    reset();
+    try {
+      const res = await axios.get(`/api/v1/users/app_creds`);
+      await axios.post("/api/v1/users", {
+        user: {
+          first_name: d.firstname,
+          last_name: d.lastname,
+          email: d.email,
+          phone_number: d.mobile,
+          address: d.address,
+        },
+        personal_detail: {
+          city: d.city,
+          age: d.age,
+          gender: d.gender,
+          overweight_since: d.overweight,
+          language: d.language,
+          reffered_by: d.refferedBy,
+          weight: d.weight,
+          height: d.height,
+          whatsapp_number: d.whatsapp,
+        },
+        client_id: res.data?.client_id,
+      });
+      localStorage.setItem("client_email", d.email);
+      reset();
+      onNext();
+    } catch (error) {
+      console.error(error);
+    }
   };
+
 
   return (
     <div className="w-full p-2">
