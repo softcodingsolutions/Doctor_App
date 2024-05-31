@@ -17,11 +17,15 @@ function FranchiesCurrentdiet() {
   } = useForm({
     resolver: yupResolver(CurrentDietSchema),
   });
-
-  const submittedData = (d) => {
+  const submittedData = async (d) => {
     console.log(d);
     navigate("../family-history");
-    reset();
+    try {
+      // Add API call to save diet details
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleBack = () => {

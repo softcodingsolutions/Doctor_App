@@ -151,7 +151,7 @@ function FranchiesQuestions() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-2">
           <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={handleBack}>Back</button>
             <SaveUserDetailsButton
               function={handleSave}
