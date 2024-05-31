@@ -12,6 +12,17 @@ function ReportTreatment() {
   const [mappingPackages, setMappingPackages] = useState([]);
   const context = useOutletContext();
 
+  const handleGetTreatmentPackages = () => {
+    axios
+      .get(`/api/v1/treatment_packages`)
+      .then((res) => {
+        console.log("Treatment Packages: ", res.data?.treatment_packages);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleGetWeightReason = () => {
     console.log(context[1]);
     axios
@@ -40,6 +51,7 @@ function ReportTreatment() {
   };
 
   useEffect(() => {
+    handleGetTreatmentPackages();
     handleGetWeightReason();
   }, []);
 

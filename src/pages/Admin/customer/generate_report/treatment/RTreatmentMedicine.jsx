@@ -73,7 +73,7 @@ function RTreatmentMedicine() {
       "package[weight_reason]",
       context[0] === "null" ? null : context[0]
     );
-    formData.append("package[medicines]", JSON.stringify(selectedMedicine));
+    formData.append("treatment_package[weight_reason]", JSON.stringify(selectedMedicine));
 
     // try {
     //   const response = await axios.post("/api/v1/packages", formData);
@@ -198,7 +198,7 @@ function RTreatmentMedicine() {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <Select
                             multiple
-                            defaultValue={["dog", "cat"]}
+                            placeholder="Select Dosage, Frequency"
                             renderValue={(selected) => (
                               <Box sx={{ display: "flex", gap: "0.25rem" }}>
                                 {selected.map((selectedOption, index) => (
@@ -237,7 +237,7 @@ function RTreatmentMedicine() {
                               disabled
                               style={{ color: "gray", fontWeight: 500 }}
                             >
-                              Frequency
+                              FREQUENCY
                             </Option>
                             <Option value="morning">Morning</Option>
                             <Option value="lunch">Lunch</Option>
