@@ -4,7 +4,7 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 
-function FranchiesCheckout() {
+function FranchiesCheckout({onBack}) {
   const context = useOutletContext();
 //   const [packages,setPackages] = useState([]);
   const navigate = useNavigate();
@@ -167,7 +167,7 @@ function FranchiesCheckout() {
                   <textarea rows={3} className='border-2 border-black w-full p-2'/>
                </div>
               <div className="flex w-full justify-center gap-2">
-              <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={handleBack}>Back</button>
+              <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={onBack}>Back</button>
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

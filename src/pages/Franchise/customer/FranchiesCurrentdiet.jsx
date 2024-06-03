@@ -6,7 +6,7 @@ import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 
-function FranchiesCurrentdiet() {
+function FranchiesCurrentdiet({ onNext,onBack}) {
   const context = useOutletContext();
   const navigate = useNavigate();
   const {
@@ -17,20 +17,17 @@ function FranchiesCurrentdiet() {
   } = useForm({
     resolver: yupResolver(CurrentDietSchema),
   });
+  
   const submittedData = async (d) => {
     console.log(d);
-    navigate("../family-history");
     try {
-      // Add API call to save diet details
       reset();
+      onNext();
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleBack = () => {
-    navigate("../general-details");
-  };
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -130,7 +127,7 @@ function FranchiesCurrentdiet() {
                 <button
                   type="button"
                   className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                  onClick={handleBack}
+                  onClick={onBack}
                 >
                   Back
                 </button>

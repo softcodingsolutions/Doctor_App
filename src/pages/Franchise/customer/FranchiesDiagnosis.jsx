@@ -6,7 +6,7 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import axios from "axios";
 import { useLocation, useNavigate, } from "react-router-dom";
 
-function FranchiesDiagnosis() {
+function FranchiesDiagnosis({ onNext,onBack}) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem('client_email');
@@ -78,7 +78,7 @@ function FranchiesDiagnosis() {
     } catch (err) {
       console.error(err);
     } finally {
-      navigate("../checkout");
+      onNext();
       setSelectedCheckboxes([]);
     }
   };
@@ -87,9 +87,7 @@ function FranchiesDiagnosis() {
     handleGetQuestionsPart2();
   }, []);
 
-  const handleBack =() =>{
-    navigate("../user-questions")
-  }
+
   return (
     <div className="w-full gap-2 overflow-auto flex rounded-lg bg-card h-[92vh] bg-white flex-wrap content-start p-2 px-4">
       <div className="text-xl font-semibold">User Diagnosis:-</div>
@@ -150,7 +148,7 @@ function FranchiesDiagnosis() {
             </table>
           </div>
           <div className="flex justify-center gap-2">
-          <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={handleBack}>Back</button>
+          <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={onBack}>Back</button>
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"
