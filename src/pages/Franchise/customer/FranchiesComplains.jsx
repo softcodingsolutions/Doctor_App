@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,20 +6,38 @@ import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
+import axios from 'axios';
 function FranchiesComplains({onNext,onBack}) {
-  const context = useOutletContext();
-  const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm();
-  const submittedData = (d)=>{
-    reset;
-    onNext();
+  const email = localStorage.getItem('client_email');
+
+  const { register, handleSubmit, reset, setValue } = useForm();
+  const [selectedDiseases, setSelectedDiseases] = useState([]);
+  
+  const submittedData = async(d)=>{
+    console.log(d);
+    try {
+      await axios.put(
+        `/api/v2/users/update_personal_details?email=${email}`,
+        {
+          personal_detail: {
+            complaints: JSON.stringify(d),
+          },
+        }
+      ).then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        console.log(err);
+      });
+      reset();
+      onNext();
+    } catch (error) {
+      console.error(error);
+    }
   }
   const handleChange=(event,newValue)=>{
-    console.log(newValue)
+    setSelectedDiseases(newValue);
+    setValue('Complain', newValue); // register selected diseases with react-hook-form
+    console.log(newValue);
   }
   return (
     <div className="w-full p-2">
@@ -69,7 +87,7 @@ function FranchiesComplains({onNext,onBack}) {
                 </Select>
             <div>
               <label>Other Complain</label>
-              <textarea rows={3} className='border-2 w-full'/>
+              <textarea rows={3} className='border-2 w-full' {...register('additional_complains')}/>
               <h2 className='font-semibold text-md'>If your complain is not mentioned, write it in box.</h2>
             </div>
            </div>

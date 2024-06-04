@@ -62,6 +62,21 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     },
   ];
 
+  const appointmentItems = [
+    {
+      id: "6",
+      title: "Data Entry",
+      to: `appointment/data-entry`,
+      icons: <FaLightbulb size={18} />,
+    },
+    {
+      id: "7",
+      title: "Data Mapping",
+      to: "appointment/data-mapping",
+      icons: <MdOutlineGppGood size={18} />,
+    },
+  ]
+
   const handleLogoutClick = () => {
     localStorage.clear();
     navigate("/");
@@ -129,6 +144,28 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
           onChange={handleSelectChange}
         >
           {masterItems.map((res) => (
+            <Option key={res.id} value={res.id}>
+              {" "}
+              <Link
+                to={res.to}
+                key={res.id}
+                className={"w-full flex items-center space-x-2"}
+                onClick={() => setSelected(res.id)}
+              >
+                <div>{res.icons}</div>
+                <div>{res.title}</div>
+              </Link>
+            </Option>
+          ))}
+        </Select>
+        <Select
+          style={{ backgroundColor: "transparent", color: "white" }}
+          className={clsx("xl:mt-4 mt-6 mx-1")}
+          value={selected}
+          placeholder="Appointment"
+          onChange={handleSelectChange}
+        >
+          {appointmentItems.map((res) => (
             <Option key={res.id} value={res.id}>
               {" "}
               <Link

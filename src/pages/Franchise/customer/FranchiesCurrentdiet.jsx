@@ -5,10 +5,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
+import axios from "axios";
 
 function FranchiesCurrentdiet({ onNext,onBack}) {
   const context = useOutletContext();
   const navigate = useNavigate();
+  const email = localStorage.getItem('client_email');
   const {
     register,
     handleSubmit,
@@ -21,6 +23,18 @@ function FranchiesCurrentdiet({ onNext,onBack}) {
   const submittedData = async (d) => {
     console.log(d);
     try {
+      await axios.put(
+        `/api/v2/users/update_personal_details?email=${email}`,
+        {
+          personal_detail: {
+            current_diet: JSON.stringify(d),
+          },
+        }
+      ).then((res) => {
+        console.log("Current_diet",res);
+      }).catch((err) => {
+        console.log(err);
+      });
       reset();
       onNext();
     } catch (error) {
