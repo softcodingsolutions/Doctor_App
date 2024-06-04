@@ -2,10 +2,26 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Stepper from '@mui/joy/Stepper';
 import Step from '@mui/joy/Step';
+import StepButton from '@mui/joy/StepButton';
 import StepIndicator from '@mui/joy/StepIndicator';
 import Check from '@mui/icons-material/Check';
 import FranchiesGeneraldetails from "./FranchiesGeneraldetails";
 import FranchiesCurrentdiet from "./FranchiesCurrentdiet";
+import FranchiesFamilyhistory from './FranchiesFamilyhistory';
+import FranchiesComplains from './FranchiesComplains';
+import FranchiesQuestions from './FranchiesQuestions';
+import FranchiesDiagnosis from './FranchiesDiagnosis';
+import FranchiesCheckout from './FranchiesCheckout';
+
+const steps = [
+  'General Details',
+  'Current Diet',
+  'Family History',
+  'Complains',
+  'Questions',
+  'Diagnosis',
+  'Checkout'
+];
 
 function FranchiseNewcustomer() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -15,7 +31,11 @@ function FranchiseNewcustomer() {
   };
 
   const handleNextStep = () => {
-    setCurrentStep(prevStep => prevStep + 1);
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const handleBackStep = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
   };
 
   return (
@@ -23,40 +43,51 @@ function FranchiseNewcustomer() {
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-  
-      <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-5">
-      <Stepper activeStep={currentStep}>
-          <Step 
-            orientation="vertical"
-            onClick={() => handleStepClick(0)}
-            completed={currentStep > 0}
-            active={currentStep === 0}
-          >
-            <StepIndicator variant="solid" color="primary">
-              {currentStep > 0 ? <Check /> : '1'}
-            </StepIndicator>
-            <div>General Details</div>
-          </Step>
-          <Step 
-            orientation="vertical"
-            onClick={() => handleStepClick(1)}
-            completed={currentStep > 1}
-            active={currentStep === 1}
-          >
-            <StepIndicator variant="solid" color="primary">
-              {currentStep > 1 ? <Check /> : '2'}
-            </StepIndicator>
-            <div>Current Diet</div>
-          </Step>
+
+      <div className="flex-grow overflow-auto justify-center flex flex-wrap content-start p-5">
+        <Stepper sx={{ width: '80%' }}>
+          {steps.map((step, index) => (
+            <Step
+              key={step}
+              orientation="vertical"
+              indicator={
+                <StepIndicator
+                  variant={currentStep <= index ? 'outlined' : 'solid'}
+                  color={currentStep < index ? 'success' : 'success'}
+                >
+                  {currentStep <= index ? index + 1 : <Check />}
+                </StepIndicator>
+              }
+              sx={{
+                '&::after': {
+                  ...(currentStep > index && index !== steps.length - 1 && {
+                    bgcolor: 'success.solidBg',
+                  }),
+                },
+              }}
+            >
+              <StepButton onClick={() => handleStepClick(index)}>
+                {step}
+              </StepButton>
+            </Step>
+          ))}
         </Stepper>
-        
+
         {currentStep === 0 && <FranchiesGeneraldetails onNext={handleNextStep} />}
-        {currentStep === 1 && <FranchiesCurrentdiet onBack={handleBackStep} />}
-        
+        {currentStep === 1 && <FranchiesCurrentdiet onNext={handleNextStep} onBack={handleBackStep} />}
+        {currentStep === 2 && <FranchiesFamilyhistory onNext={handleNextStep} onBack={handleBackStep} />}
+        {currentStep === 3 && <FranchiesComplains onNext={handleNextStep} onBack={handleBackStep} />}
+        {currentStep === 4 && <FranchiesQuestions onNext={handleNextStep} onBack={handleBackStep} />}
+        {currentStep === 5 && <FranchiesDiagnosis onNext={handleNextStep} onBack={handleBackStep} />}
+        {currentStep === 6 && <FranchiesCheckout onBack={handleBackStep} />}
+      </div>
+
+      <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <Outlet />
       </div>
     </div>
   );
 }
+
 
 export default FranchiseNewcustomer;

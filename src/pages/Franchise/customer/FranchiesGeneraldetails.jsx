@@ -6,7 +6,7 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 
-function FranchiesGeneraldetails() {
+function FranchiesGeneraldetails({ onNext }) {
   const context = useOutletContext();
   const navigate = useNavigate();
   const {
@@ -46,7 +46,7 @@ function FranchiesGeneraldetails() {
       });
       localStorage.setItem("client_email", d.email);
       reset();
-      onNext();
+      onNext(); // Move to next step only after successful API call
     } catch (error) {
       console.error(error);
     }

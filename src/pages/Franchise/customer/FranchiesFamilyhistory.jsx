@@ -6,7 +6,7 @@ import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
-function FranchiesFamilyhistory() {
+function FranchiesFamilyhistory({onNext,onBack}) {
   const context = useOutletContext();
   const navigate = useNavigate();
   const {
@@ -15,10 +15,8 @@ function FranchiesFamilyhistory() {
     reset,
   } = useForm();
   const submittedData = (d)=>{
-    navigate('../complains')
-  }
-  const handleBack = () =>{
-    navigate("../current-diet")
+    reset();
+    onNext();
   }
   const handleChange=(event,newValue)=>{
     console.log(newValue)
@@ -65,7 +63,7 @@ function FranchiesFamilyhistory() {
             </div>
            </div>
             <div className="flex w-full justify-center gap-3">
-              <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={handleBack}>Back</button>
+              <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={onBack}>Back</button>
                <SaveUserDetailsButton name="Save & Continue" />
             </div>
           </form>
