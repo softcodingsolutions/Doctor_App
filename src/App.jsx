@@ -74,6 +74,8 @@ import FranchiesComplains from "./pages/Franchise/customer/FranchiesComplains";
 import FranchiesQuestions from "./pages/Franchise/customer/FranchiesQuestions";
 import FranchiesDiagnosis from "./pages/Franchise/customer/FranchiesDiagnosis";
 import FranchiesCheckout from "./pages/Franchise/customer/FranchiesCheckout";
+import DataEntry from "./pages/Admin/appointment/DataEntry";
+import AdminAppointment from "./pages/Admin/AdminAppointment";
 
 function App() {
   return (
@@ -163,6 +165,11 @@ function App() {
             <Route path="complains" element={<TreatmentComplains />} />
           </Route>
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
+          {/* appointment */}
+          <Route path="appointment" element={<AdminAppointment/>}>
+            <Route path="data-entry" element={<DataEntry />} />
+            <Route path="data-mapping" element={<FranchiseNewcustomer />} />
+          </Route>
         </Route>
 
         {/* Survey */}
@@ -177,11 +184,9 @@ function App() {
           <Route path="customers" element={<FranchiseCustomers />}>
             <Route path="all-users" element={<FranchiseAllCustomers />} />
           </Route>
-
           <Route path="new-user" element={<FranchiseNewcustomer />}>
             <Route
-              path="general-details"
-              
+              path="general-details"   
             />
             <Route path="current-diet" element={<FranchiesCurrentdiet />} />
             <Route path="family-history" element={<FranchiesFamilyhistory />} />
