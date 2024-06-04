@@ -1,5 +1,6 @@
 import { Add } from "@mui/icons-material";
 import {
+    Box,
   Button,
   DialogTitle,
   FormControl,
@@ -18,13 +19,22 @@ import "react-quill/dist/quill.snow.css";
 function AddNewExercise(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
-  const [value, setValue] = useState("");
+  const [text, setText] = useState({
+    hindi: "",
+    gujarati: "",
+    english: "",
+  });
 
   const submittedData = (d) => {
+    console.log(text);
     console.log(d);
-    props.handleApi(d.exercise_name, value);
+    props.handleApi(d.exercise_name, text.english, text.hindi, text.gujarati);
     reset();
-    setValue("");
+    setText({
+        hindi: "",
+        gujarati: "",
+        english: "",
+      });
   };
 
   return (
@@ -66,16 +76,53 @@ function AddNewExercise(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.exercise_describe} :-</FormLabel>
-                <ReactQuill
-                  className="w-96 min-h-fit max-h-36 overflow-auto"
-                  placeholder="Describe..."
-                  theme="snow"
-                  name={`exercise_describe`}
-                  value={value}
-                  onChange={setValue}
-                  required
-                />
+                <FormLabel>{props.exercise_describe_english} :-</FormLabel>
+                <Box className="flex flex-col items-center w-full gap-2">
+                  <ReactQuill
+                    className="w-96 min-h-fit max-h-36 overflow-auto"
+                    placeholder="Describe in English..."
+                    theme="snow"
+                    name={`exercise_describe_english`}
+                    value={text.english}
+                    onChange={(value) => {
+                      setText((prev) => ({
+                        ...prev,
+                        english: value,
+                      }));
+                    }}
+                    required
+                  />
+
+                  <ReactQuill
+                    className="w-96 min-h-fit max-h-36 overflow-auto"
+                    placeholder="Describe in Hindi..."
+                    theme="snow"
+                    name={`exercise_describe_hindi`}
+                    value={text.hindi}
+                    onChange={(value) => {
+                      setText((prev) => ({
+                        ...prev,
+                        hindi: value,
+                      }));
+                    }}
+                    required
+                  />
+
+                  <ReactQuill
+                    className="w-96 min-h-fit max-h-36 overflow-auto"
+                    placeholder="Describe in Gujarati..."
+                    theme="snow"
+                    name={`exercise_describe_gujarati`}
+                    value={text.gujarati}
+                    onChange={(value) => {
+                      setText((prev) => ({
+                        ...prev,
+                        gujarati: value,
+                      }));
+                    }}
+                    required
+                  />
+                </Box>
               </FormControl>
 
               <Button type="submit">Submit</Button>

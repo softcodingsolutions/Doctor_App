@@ -137,7 +137,7 @@ function ExerciseYoga() {
               name="Add Exercise/Yoga"
               title="Add New Exercise/Yoga"
               exercise_name="Exercise/Yoga Name"
-              exercise_describe="Details"
+              exercise_describe_english="Details"
             />
           </div>
 

@@ -9,11 +9,13 @@ import Swal from "sweetalert2";
 function DietMaster() {
   const [getDiet, setGetDiet] = useState([]);
 
-  const handleAddDiet = (diet_code, diet_name, diet_describe) => {
+  const handleAddDiet = (diet_code, diet_name, diet_english, diet_hindi, diet_gujarati) => {
     const formData = new FormData();
     formData.append("diet[name]", diet_name);
     formData.append("diet[code]", diet_code);
-    formData.append("diet[chart_english]", diet_describe);
+    formData.append("diet[chart_english]", diet_english);
+    formData.append("diet[chart_hindi]", diet_hindi);
+    formData.append("diet[chart_gujarati]", diet_gujarati);
     axios
       .post("/api/v1/diets", formData)
       .then((res) => {
@@ -142,7 +144,7 @@ function DietMaster() {
               title="Add New Diet"
               diet_code="Diet Code"
               diet_name="Diet Name"
-              diet_describe="Details"
+              diet_describe_english="Details"
             />
           </div>
 
