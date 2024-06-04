@@ -15,13 +15,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import "react-transliterate/dist/index.css";
-import { ReactTransliterate } from "react-transliterate";
 
 function AddNewMedicine(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
-  const [value, setValue] = useState("");
   const [text, setText] = useState({
     hindi: "",
     gujarati: "",
@@ -29,12 +26,21 @@ function AddNewMedicine(props) {
   });
 
   const submittedData = (d) => {
-    console.log("text: ",text);
-    console.log("Value: ", value);
+    console.log("text: ", text);
     console.log(d);
-    props.handleApi(d.diet_code, d.diet_name, value);
+    props.handleApi(
+      d.diet_code,
+      d.diet_name,
+      text.english,
+      text.hindi,
+      text.gujarati
+    );
     reset();
-    setValue("");
+    setText({
+      hindi: "",
+      gujarati: "",
+      english: "",
+    });
   };
 
   return (
@@ -63,7 +69,7 @@ function AddNewMedicine(props) {
               setOpen(false);
             }}
           >
-            <Stack spacing={3}>
+            <Stack spacing={3} width={500}>
               <FormControl>
                 <FormLabel>{props.diet_code} :-</FormLabel>
                 <Input
@@ -85,75 +91,51 @@ function AddNewMedicine(props) {
                 />
               </FormControl>
 
-              {/* <FormControl>
-                <FormLabel>{props.diet_describe} :-</FormLabel>
-                <ReactQuill
-                  className="w-96 min-h-fit max-h-36 overflow-auto"
-                  placeholder="Describe..."
-                  theme="snow"
-                  name={`diet_describe`}
-                  value={value}
-                  onChange={setValue}
-                  required
-                />
-              </FormControl> */}
-
               <FormControl>
-                <FormLabel>{props.diet_describe} :-</FormLabel>
+                <FormLabel>{props.diet_describe_english} :-</FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
                   <ReactQuill
-                    className="w-96 min-h-fit max-h-36 overflow-auto"
-                    placeholder="Describe..."
+                    className="w-full min-h-fit max-h-36 overflow-auto"
+                    placeholder="Describe in English..."
                     theme="snow"
-                    name={`diet_describe`}
-                    value={value}
-                    onChange={setValue}
+                    name={`diet_describe_english`}
+                    value={text.english}
+                    onChange={(value) => {
+                      setText((prev) => ({
+                        ...prev,
+                        english: value,
+                      }));
+                    }}
                     required
                   />
 
-                  <ReactTransliterate
-                    name={`describe_hindi`}
-                    {...register(`describe_hindi`)}
+                  <ReactQuill
+                    className="w-full min-h-fit max-h-36 overflow-auto"
+                    placeholder="Describe in Hindi..."
+                    theme="snow"
+                    name={`diet_describe_hindi`}
                     value={text.hindi}
-                    lang="hi"
-                    onChangeText={(value) => {
-                      setText((prev) => {
-                        return {
-                          ...prev,
-                          hindi: value,
-                        };
-                      });
+                    onChange={(value) => {
+                      setText((prev) => ({
+                        ...prev,
+                        hindi: value,
+                      }));
                     }}
-                    renderComponent={(props) => {
-                      return <textarea {...props} placeholder="In Hindi..." />;
-                    }}
-                    className="p-1 border border-gray-400 rounded-sm"
-                    rows={4}
-                    cols={30}
                     required
                   />
 
-                  <ReactTransliterate
-                    name={`describe_gujarati`}
-                    {...register(`describe_gujarati`)}
+                  <ReactQuill
+                    className="w-full min-h-fit max-h-36 overflow-auto"
+                    placeholder="Describe in Gujarati..."
+                    theme="snow"
+                    name={`diet_describe_gujarati`}
                     value={text.gujarati}
-                    lang="gu"
-                    onChangeText={(value) => {
-                      setText((prev) => {
-                        return {
-                          ...prev,
-                          gujarati: value,
-                        };
-                      });
+                    onChange={(value) => {
+                      setText((prev) => ({
+                        ...prev,
+                        gujarati: value,
+                      }));
                     }}
-                    renderComponent={(props) => {
-                      return (
-                        <textarea {...props} placeholder="In Gujarati..." />
-                      );
-                    }}
-                    className="p-1 border border-gray-400 rounded-sm"
-                    rows={4}
-                    cols={30}
                     required
                   />
                 </Box>
