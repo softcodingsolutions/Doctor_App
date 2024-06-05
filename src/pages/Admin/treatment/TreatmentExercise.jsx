@@ -145,9 +145,11 @@ function TreatmentExercise() {
                     />
                   )}
                   <ThComponent name="Exercise Name" />
+                  <ThComponent name="In English" />
+                  <ThComponent name="In Hindi" />
                   <ThComponent
                     moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="Exercise Details"
+                    name="In Gujarati"
                   />
                 </tr>
               </thead>
@@ -208,6 +210,28 @@ function TreatmentExercise() {
                               <div
                                 dangerouslySetInnerHTML={{
                                   __html: val.details,
+                                }}
+                              />
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.details_hindi,
+                                }}
+                              />
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.details_gujarati,
                                 }}
                               />
                             }

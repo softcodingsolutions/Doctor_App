@@ -128,9 +128,11 @@ function RTreatmentDiet() {
                   )}
                   <ThComponent name="Diet Code" />
                   <ThComponent name="Diet Name" />
+                  <ThComponent name="In English" />
+                  <ThComponent name="In Hindi" />
                   <ThComponent
                     moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="Diet Description"
+                    name="In Gujarati"
                   />
                 </tr>
               </thead>
@@ -184,6 +186,28 @@ function RTreatmentDiet() {
                               <div
                                 dangerouslySetInnerHTML={{
                                   __html: val.chart_english,
+                                }}
+                              />
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.chart_hindi,
+                                }}
+                              />
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.chart_gujarati,
                                 }}
                               />
                             }

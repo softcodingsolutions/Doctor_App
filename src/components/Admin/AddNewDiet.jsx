@@ -95,7 +95,7 @@ function AddNewMedicine(props) {
                 <FormLabel>{props.diet_describe_english} :-</FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
                   <ReactQuill
-                    className="w-full min-h-fit max-h-36 overflow-auto"
+                    className="w-full min-h-fit max-h-28 overflow-auto"
                     placeholder="Describe in English..."
                     theme="snow"
                     name={`diet_describe_english`}
@@ -110,7 +110,7 @@ function AddNewMedicine(props) {
                   />
 
                   <ReactQuill
-                    className="w-full min-h-fit max-h-36 overflow-auto"
+                    className="w-full min-h-fit max-h-28 overflow-auto"
                     placeholder="Describe in Hindi..."
                     theme="snow"
                     name={`diet_describe_hindi`}
@@ -125,7 +125,7 @@ function AddNewMedicine(props) {
                   />
 
                   <ReactQuill
-                    className="w-full min-h-fit max-h-36 overflow-auto"
+                    className="w-full min-h-fit max-h-28 overflow-auto"
                     placeholder="Describe in Gujarati..."
                     theme="snow"
                     name={`diet_describe_gujarati`}

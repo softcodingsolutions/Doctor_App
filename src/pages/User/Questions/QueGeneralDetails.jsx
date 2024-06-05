@@ -50,9 +50,7 @@ function QueGeneralDetails() {
           )
           .then((res) => {
             console.log(res);
-            // navigate("../user-questions", {
-            //   state: { email: res.data?.user?.user?.email },
-            // });
+            navigate("../current-diet");
           });
 
         await axios

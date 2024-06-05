@@ -9,7 +9,13 @@ import Swal from "sweetalert2";
 function DietMaster() {
   const [getDiet, setGetDiet] = useState([]);
 
-  const handleAddDiet = (diet_code, diet_name, diet_english, diet_hindi, diet_gujarati) => {
+  const handleAddDiet = (
+    diet_code,
+    diet_name,
+    diet_english,
+    diet_hindi,
+    diet_gujarati
+  ) => {
     const formData = new FormData();
     formData.append("diet[name]", diet_name);
     formData.append("diet[code]", diet_code);
@@ -158,7 +164,9 @@ function DietMaster() {
                   />
                   <ThComponent name="Diet Code" />
                   <ThComponent name="Diet Name" />
-                  <ThComponent name="Diet Description" />
+                  <ThComponent name="In English" />
+                  <ThComponent name="In Hindi" />
+                  <ThComponent name="In Gujarati" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -192,6 +200,28 @@ function DietMaster() {
                               <div
                                 dangerouslySetInnerHTML={{
                                   __html: val.chart_english,
+                                }}
+                              />
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.chart_hindi,
+                                }}
+                              />
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.chart_gujarati,
                                 }}
                               />
                             }
