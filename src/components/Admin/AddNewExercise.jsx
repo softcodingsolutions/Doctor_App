@@ -1,6 +1,6 @@
 import { Add } from "@mui/icons-material";
 import {
-    Box,
+  Box,
   Button,
   DialogTitle,
   FormControl,
@@ -31,10 +31,10 @@ function AddNewExercise(props) {
     props.handleApi(d.exercise_name, text.english, text.hindi, text.gujarati);
     reset();
     setText({
-        hindi: "",
-        gujarati: "",
-        english: "",
-      });
+      hindi: "",
+      gujarati: "",
+      english: "",
+    });
   };
 
   return (
@@ -79,7 +79,7 @@ function AddNewExercise(props) {
                 <FormLabel>{props.exercise_describe_english} :-</FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
                   <ReactQuill
-                    className="w-96 min-h-fit max-h-36 overflow-auto"
+                    className="w-96 min-h-fit max-h-28 overflow-auto"
                     placeholder="Describe in English..."
                     theme="snow"
                     name={`exercise_describe_english`}
@@ -94,7 +94,7 @@ function AddNewExercise(props) {
                   />
 
                   <ReactQuill
-                    className="w-96 min-h-fit max-h-36 overflow-auto"
+                    className="w-96 min-h-fit max-h-28 overflow-auto"
                     placeholder="Describe in Hindi..."
                     theme="snow"
                     name={`exercise_describe_hindi`}
@@ -109,7 +109,7 @@ function AddNewExercise(props) {
                   />
 
                   <ReactQuill
-                    className="w-96 min-h-fit max-h-36 overflow-auto"
+                    className="w-96 min-h-fit max-h-28 overflow-auto"
                     placeholder="Describe in Gujarati..."
                     theme="snow"
                     name={`exercise_describe_gujarati`}

@@ -1,5 +1,3 @@
-import React from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
@@ -8,8 +6,6 @@ import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 
 function FranchiesCurrentdiet({ onNext,onBack}) {
-  const context = useOutletContext();
-  const navigate = useNavigate();
   const email = localStorage.getItem('client_email');
   const {
     register,

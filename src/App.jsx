@@ -83,6 +83,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="signup" element={<SignUpPage />} />
+
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="dashboard" element={<UserDashboard />} />
@@ -133,6 +134,7 @@ function App() {
               <Route path="package" element={<ReportPackage />} />
             </Route>
           </Route>
+
           {/* master */}
           <Route path="master" element={<AdminMaster />}>
             <Route path="list-franchise" element={<ListFranchise />} />
@@ -151,6 +153,7 @@ function App() {
               element={<NutritionSupplements />}
             />
           </Route>
+
           {/* treatment */}
           <Route path="treatment" element={<AdminTreatment />}>
             <Route path="question-part1" element={<TreatmentQuestionPart1 />} />
@@ -165,8 +168,9 @@ function App() {
             <Route path="complains" element={<TreatmentComplains />} />
           </Route>
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
+
           {/* appointment */}
-          <Route path="appointment" element={<AdminAppointment/>}>
+          <Route path="appointment" element={<AdminAppointment />}>
             <Route path="data-entry" element={<DataEntry />} />
             <Route path="data-mapping" element={<FranchiseNewcustomer />} />
           </Route>
@@ -185,9 +189,7 @@ function App() {
             <Route path="all-users" element={<FranchiseAllCustomers />} />
           </Route>
           <Route path="new-user" element={<FranchiseNewcustomer />}>
-            <Route
-              path="general-details"   
-            />
+            <Route path="general-details" />
             <Route path="current-diet" element={<FranchiesCurrentdiet />} />
             <Route path="family-history" element={<FranchiesFamilyhistory />} />
             <Route path="complains" element={<FranchiesComplains />} />

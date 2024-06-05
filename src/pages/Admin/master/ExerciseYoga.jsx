@@ -22,10 +22,12 @@ function ExerciseYoga() {
       });
   };
 
-  const handleAddExercise = (exercise_name, exercise_describe) => {
+  const handleAddExercise = (exercise_name, describe_eng, describe_hindi, describe_gujarati) => {
     const formData = new FormData();
     formData.append("exercise[name]", exercise_name);
-    formData.append("exercise[details]", exercise_describe);
+    formData.append("exercise[details]", describe_eng);
+    formData.append("exercise[details_hindi]", describe_hindi);
+    formData.append("exercise[details_gujarati]", describe_gujarati);
     axios
       .post("/api/v1/exercises", formData)
       .then((res) => {
@@ -150,7 +152,9 @@ function ExerciseYoga() {
                     name="No."
                   />
                   <ThComponent name="Exercise Name" />
-                  <ThComponent name="Exercise Details" />
+                  <ThComponent name="In English" />
+                  <ThComponent name="In Hindi" />
+                  <ThComponent name="In Gujarati" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -181,6 +185,28 @@ function ExerciseYoga() {
                               <div
                                 dangerouslySetInnerHTML={{
                                   __html: val.details,
+                                }}
+                              />
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.details_hindi,
+                                }}
+                              />
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: val.details_gujarati,
                                 }}
                               />
                             }
