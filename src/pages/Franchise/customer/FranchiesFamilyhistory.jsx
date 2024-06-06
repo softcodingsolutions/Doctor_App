@@ -1,36 +1,32 @@
-import React, { useState } from 'react';
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
-import axios from 'axios';
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+import axios from "axios";
 
 function FranchiesFamilyhistory({ onNext, onBack }) {
-  const context = useOutletContext();
-  const navigate = useNavigate();
-  const email = localStorage.getItem('client_email');
-  
+  const email = localStorage.getItem("client_email");
+
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedDiseases, setSelectedDiseases] = useState([]);
 
   const submittedData = async (d) => {
-    d.family_reasons = selectedDiseases; // include selected diseases in form data
+    d.family_reasons = selectedDiseases;
     console.log(d);
     try {
-      await axios.put(
-        `/api/v2/users/update_personal_details?email=${email}`,
-        {
+      await axios
+        .put(`/api/v2/users/update_personal_details?email=${email}`, {
           personal_detail: {
             family_reasons: JSON.stringify(d),
           },
-        }
-      ).then((res) => {
-        console.log("family history", res);
-      }).catch((err) => {
-        console.log(err);
-      });
+        })
+        .then((res) => {
+          console.log("family history", res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       reset();
       onNext();
     } catch (error) {
@@ -40,7 +36,7 @@ function FranchiesFamilyhistory({ onNext, onBack }) {
 
   const handleChange = (event, newValue) => {
     setSelectedDiseases(newValue);
-    setValue('family_reasons', newValue); // register selected diseases with react-hook-form
+    setValue("family_reasons", newValue);
     console.log(newValue);
   };
 
@@ -54,20 +50,23 @@ function FranchiesFamilyhistory({ onNext, onBack }) {
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center justify-between"
               method="post"
-            > 
-              <div className='flex flex-col gap-10 justify-between w-full'>
-                <h2 className=''>Choose the disease if any of your family member has or had that disease</h2>
+            >
+              <div className="flex flex-col gap-2 justify-between w-full">
+                <h2 className="">
+                  Choose the disease if any of your family member has or had
+                  that disease
+                </h2>
                 <Select
-                  defaultValue={['over_weight']}
                   multiple
+                  placeholder="Choose..."
                   onChange={handleChange}
                   sx={{
-                    minWidth: '13rem',
+                    minWidth: "13rem",
                   }}
                   slotProps={{
                     listbox: {
                       sx: {
-                        width: '100%',
+                        width: "100%",
                       },
                     },
                   }}
@@ -79,14 +78,29 @@ function FranchiesFamilyhistory({ onNext, onBack }) {
                   <Option value="heart_problem">Heart Problem</Option>
                   <Option value="over_weight">Over Weight</Option>
                 </Select>
-                <div>
+                <div className="flex flex-col gap-2 mt-10">
                   <label>Family Disease</label>
-                  <textarea rows={3} className='border-2 w-full' {...register('additional_family_reasons')}/>
-                  <h2 className='font-semibold text-md'>If the disease is not mentioned above, please write them in the box separated by comma (e.g., Diabetes, Heart Problem,...)</h2>
+                  <textarea
+                    rows={3}
+                    className="border-2 w-full rounded-md p-2"
+                    {...register("additional_family_reasons")}
+                  />
+                  <h2 className="font-semibold text-md">
+                    If the disease is not mentioned above, please write them in
+                    the box separated by comma (e.g., Diabetes, Heart
+                    Problem,...)
+                  </h2>
                 </div>
               </div>
               <div className="flex w-full justify-center gap-3">
-                <button type="button" name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={onBack}>Back</button>
+                <button
+                  type="button"
+                  name="Back"
+                  className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+                  onClick={onBack}
+                >
+                  Back
+                </button>
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

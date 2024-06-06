@@ -4,14 +4,13 @@ import ThComponent from "../../../../components/ThComponent";
 import TdComponent from "../../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
 import axios from "axios";
-import { useLocation, useNavigate, } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function CustomerQuestionsPart2() {
-  const { state } = useLocation();
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const navigate = useNavigate();
-  const { email } = state;
+  const email = localStorage.getItem("client_email");
 
   const handleGetQuestionsPart2 = () => {
     axios
