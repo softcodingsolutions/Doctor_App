@@ -1,68 +1,80 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
+import Switch from "@mui/joy/Switch";
 
-export default function DoctorList() {
-  const [inputName, setInputName] = useState("");
-  const [inputSpecification, setInputSpecification] = useState("");
-  const [inputEmail, setInputEmail] = useState("");
-  const [doctors, setDoctors] = useState([]);
-  const [editedName, setEditedName] = useState("");
-  const [editedSpecification, setEditedSpecification] = useState("");
-  const [editedEmail, setEditedEmail] = useState("");
+export default function MachineDetails() {
+  const [inputMachineName, setInputMachineName] = useState("");
+  const [inputQuantity, setInputQuantity] = useState("");
+  const [inputBrief, setInputBrief] = useState("");
+  const [machines, setMachines] = useState([]);
+  const [editedMachineName, setEditedMachineName] = useState("");
+  const [editedQuantity, setEditedQuantity] = useState("");
+  const [editedBrief, setEditedBrief] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [inputVisible, setInputVisible] = useState(false);
 
-  function handleNameChange(e) {
-    setInputName(e.target.value);
+  function handleMachineNameChange(e) {
+    setInputMachineName(e.target.value);
   }
 
-  function handleSpecificationChange(e) {
-    setInputSpecification(e.target.value);
-  }
-
-  function handleEmailChange(e) {
-    setInputEmail(e.target.value);
-  }
-
-  function handleAddDoctor() {
-    if (inputName && inputSpecification && inputEmail) {
-      const newDoctor = {
-        name: inputName,
-        specification: inputSpecification,
-        email: inputEmail,
-      };
-      setDoctors([...doctors, newDoctor]);
-      setInputName("");
-      setInputSpecification("");
-      setInputEmail("");
+  function handleQuantityChange(e) {
+    const value = e.target.value;
+    if (value >= 0) {
+      setInputQuantity(value);
     }
   }
 
-  const handleRemoveDoctor = (index) => {
-    const updatedDoctors = doctors.filter((_, i) => i !== index);
-    setDoctors(updatedDoctors);
+  function handleBriefChange(e) {
+    setInputBrief(e.target.value);
+  }
+
+  function handleAddMachine() {
+    if (inputMachineName && inputQuantity && inputBrief) {
+      const newMachine = {
+        machineName: inputMachineName,
+        quantity: inputQuantity,
+        brief: inputBrief,
+        enabled: true,
+      };
+      setMachines([...machines, newMachine]);
+      setInputMachineName("");
+      setInputQuantity("");
+      setInputBrief("");
+    }
+  }
+
+  const handleRemoveMachine = (index) => {
+    const updatedMachines = machines.filter((_, i) => i !== index);
+    setMachines(updatedMachines);
   };
 
-  const handleEditDoctor = (index, name, specification, email) => {
+  const handleEditMachine = (index, machineName, quantity, brief) => {
     setEditIndex(index);
-    setEditedName(name);
-    setEditedSpecification(specification);
-    setEditedEmail(email);
+    setEditedMachineName(machineName);
+    setEditedQuantity(quantity);
+    setEditedBrief(brief);
   };
 
-  const handleUpdateDoctor = () => {
-    const updatedDoctors = [...doctors];
-    updatedDoctors[editIndex] = {
-      name: editedName,
-      specification: editedSpecification,
-      email: editedEmail,
+  const handleUpdateMachine = () => {
+    const updatedMachines = [...machines];
+    updatedMachines[editIndex] = {
+      ...updatedMachines[editIndex],
+      machineName: editedMachineName,
+      quantity: editedQuantity,
+      brief: editedBrief,
     };
-    setDoctors(updatedDoctors);
+    setMachines(updatedMachines);
     setEditIndex(null);
-    setEditedName("");
-    setEditedSpecification("");
-    setEditedEmail("");
+    setEditedMachineName("");
+    setEditedQuantity("");
+    setEditedBrief("");
+  };
+
+  const handleToggleEnable = (index) => {
+    const updatedMachines = [...machines];
+    updatedMachines[index].enabled = !updatedMachines[index].enabled;
+    setMachines(updatedMachines);
   };
 
   const handleShowInput = () => {
@@ -72,11 +84,11 @@ export default function DoctorList() {
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
-        <div className="flex flex-col  px-4 py-3 h-full space-y-4">
+        <div className="flex flex-col px-4 py-3 h-full space-y-4">
           <div className="">
             <button
               onClick={handleShowInput}
-              className="min-w-fit  border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
+              className="min-w-fit border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
             >
               Add Machine Details
             </button>
@@ -85,27 +97,28 @@ export default function DoctorList() {
                 <input
                   type="text"
                   className="border-2 rounded-md p-2"
-                  onChange={handleNameChange}
-                  value={inputName}
-                  placeholder="Name"
+                  onChange={handleMachineNameChange}
+                  value={inputMachineName}
+                  placeholder="Machine Name"
+                />
+                <input
+                  className="border-2 rounded-md p-2"
+                  type="number"
+                  onChange={handleQuantityChange}
+                  value={inputQuantity}
+                  placeholder="Quantity"
+                  min="0"
                 />
                 <input
                   className="border-2 rounded-md p-2"
                   type="text"
-                  onChange={handleSpecificationChange}
-                  value={inputSpecification}
-                  placeholder="Specification"
-                />
-                <input
-                  className="border-2 rounded-md p-2"
-                  type="text"
-                  onChange={handleEmailChange}
-                  value={inputEmail}
-                  placeholder="Email"
+                  onChange={handleBriefChange}
+                  value={inputBrief}
+                  placeholder="Brief"
                 />
                 <button
                   className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
-                  onClick={handleAddDoctor}
+                  onClick={handleAddMachine}
                 >
                   ADD
                 </button>
@@ -118,13 +131,13 @@ export default function DoctorList() {
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                    Name
+                    Machine Name
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                    Specification
+                    Quantity
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                    Email
+                    Brief
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
@@ -132,80 +145,104 @@ export default function DoctorList() {
                 </tr>
               </thead>
               <tbody>
-                {doctors.map((doctor, index) => (
+                {machines.map((machine, index) => (
                   <tr key={index} className="map">
                     {editIndex === index ? (
                       <>
                         <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                           <input
                             type="text"
-                            value={editedName}
-                            onChange={(e) => setEditedName(e.target.value)}
-                            placeholder="Name"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedSpecification}
+                            value={editedMachineName}
                             onChange={(e) =>
-                              setEditedSpecification(e.target.value)
+                              setEditedMachineName(e.target.value)
                             }
-                            placeholder="Specification"
+                            placeholder="Machine Name"
                             className="border-2 rounded-md p-2"
                           />
                         </td>
                         <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                           <input
+                            type="number"
+                            value={editedQuantity}
+                            onChange={(e) => setEditedQuantity(e.target.value)}
+                            placeholder="Quantity"
+                            className="border-2 rounded-md p-2"
+                            min="0"
+                          />
+                        </td>
+                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          <input
                             type="text"
-                            value={editedEmail}
-                            onChange={(e) => setEditedEmail(e.target.value)}
-                            placeholder="Email"
+                            value={editedBrief}
+                            onChange={(e) => setEditedBrief(e.target.value)}
+                            placeholder="Brief"
                             className="border-2 rounded-md p-2"
                           />
                         </td>
                         <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <button onClick={handleUpdateDoctor} className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md">Update</button>
-                          <button onClick={() => setEditIndex(null)} className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md">Cancel</button>
+                          <button
+                            onClick={handleUpdateMachine}
+                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                          >
+                            Update
+                          </button>
+                          <button
+                            onClick={() => setEditIndex(null)}
+                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                          >
+                            Cancel
+                          </button>
                         </td>
                       </>
                     ) : (
                       <>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <span className="text-black text-sm font-medium ml-1">
-                            {doctor.name}
+                            {machine.machineName}
                           </span>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <span className="text-black text-sm font-medium ml-1">
-                            {doctor.specification}
+                            {machine.quantity}
                           </span>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <span className="text-black text-sm font-medium ml-1">
-                            {doctor.email}
+                            {machine.brief}
                           </span>
                         </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <button
-                            onClick={() => handleRemoveDoctor(index)}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <AiOutlineDelete />
-                          </button>
+                        <td className="py-3 px-4 border-b border-b-gray-50 flex items-center gap-2">
+                          <Switch
+                            checked={machine.enabled}
+                            onChange={() => handleToggleEnable(index)}
+                            color={machine.enabled ? "success" : "neutral"}
+                            variant={machine.enabled ? "solid" : "solid"}
+                            slotProps={{
+                              endDecorator: {
+                                sx: {
+                                  minWidth: 24,
+                                },
+                              },
+                            }}
+                          />
                           <button
                             onClick={() =>
-                              handleEditDoctor(
+                              handleEditMachine(
                                 index,
-                                doctor.name,
-                                doctor.specification,
-                                doctor.email
+                                machine.machineName,
+                                machine.quantity,
+                                machine.brief
                               )
                             }
                             className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
                           >
                             <MdOutlineEdit />
+                          </button>
+                          <button
+                            onClick={() => handleRemoveMachine(index)}
+                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                          >
+                            <AiOutlineDelete />
                           </button>
                         </td>
                       </>
