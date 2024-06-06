@@ -1,4 +1,4 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
+    import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSchema } from "../../../../schemas/UserDetailsSchema";
@@ -7,7 +7,6 @@ import UserDetailsInput from "../../../../components/User/UserDetailsInput";
 import axios from "axios";
 
 function CustomerGeneralDetails() {
-  const context = useOutletContext();
   const navigate = useNavigate();
   const {
     register,
@@ -23,6 +22,7 @@ function CustomerGeneralDetails() {
 
     axios.get(`/api/v1/users/app_creds`).then((res) => {
       console.log(res);
+      localStorage.setItem("client_email", d.email);
       axios
         .post("/api/v1/users", {
           user: {
@@ -46,10 +46,8 @@ function CustomerGeneralDetails() {
           client_id: res.data?.client_id,
         })
         .then((res) => {
-          console.log(res);
-          navigate("../user-questions", {
-            state: { email: res.data?.user?.user?.email },
-          });
+          console.log("New User", res);
+          navigate("../current-diet");
         });
     });
     reset();

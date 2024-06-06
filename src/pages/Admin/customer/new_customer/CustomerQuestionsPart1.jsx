@@ -1,16 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate,} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ThComponent from "../../../../components/ThComponent";
 import TdComponent from "../../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
 
 function CustomerQuestionsPart1() {
-  const { state } = useLocation();
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const { email } = state;
+  const email = localStorage.getItem("client_email");
   const navigate = useNavigate();
   console.log("id of the user", email);
 

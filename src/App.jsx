@@ -188,7 +188,7 @@ function App() {
           <Route path="customers" element={<FranchiseCustomers />}>
             <Route path="all-users" element={<FranchiseAllCustomers />} />
           </Route>
-          <Route path="new-user" element={<FranchiseNewcustomer />}>
+          <Route path="new-user" element={<FranchiseNewcustomer />}
             <Route path="general-details" element={<FranchiesGeneraldetails />}/>
             <Route path="current-diet" element={<FranchiesCurrentdiet />} />
             <Route path="family-history" element={<FranchiesFamilyhistory />} />

@@ -15,7 +15,7 @@ function ReportProgress() {
   const context = useOutletContext();
   console.log("asdasd", context[1]);
 
-  const handleGetQues = () => { 
+  const handleGetQues = () => {
     const data =
       context[1].personal_detail?.user_selected_questions_one?.concat(
         context[1].personal_detail?.user_selected_questions_two
@@ -24,7 +24,6 @@ function ReportProgress() {
     setGetQues(data);
   };
 
-  console.log(getQues);
   //   const handleGetProgress = () => {
   //     axios
   //       .get("/api/v1/progress")
@@ -61,7 +60,7 @@ function ReportProgress() {
             timer: 1500,
           });
         }
-        handleGetProgress();
+        // handleGetProgress();
       })
       .catch((err) => {
         console.log(err);
@@ -200,7 +199,8 @@ function ReportProgress() {
                   </tr>
                 </thead>
                 <tbody>
-                  {context[1].personal_detail?.complaints?.length === 0 ? (
+                  {context[1].personal_detail?.complaints?.selected_complains
+                    ?.length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -210,7 +210,7 @@ function ReportProgress() {
                       </th>
                     </tr>
                   ) : (
-                    context[1].personal_detail?.complaints?.map(
+                    context[1].personal_detail?.complaints?.selected_complains?.map(
                       (val, index) => {
                         return (
                           <tr key={val.id}>
