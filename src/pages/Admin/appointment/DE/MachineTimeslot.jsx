@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
 
-export default function ConsultingTime() {
+export default function MachineTimeslot() {
   const [inputTime, setInputTime] = useState("");
   const [inputSlot, setInputSlot] = useState("select");
+  const [inputMachine, setInputMachine] = useState("select");
   const [doctors, setDoctors] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editedTime, setEditedTime] = useState("");
   const [editedSlot, setEditedSlot] = useState("");
+  const [editedMachine, setEditedMachine] = useState("");
   const [inputVisible, setInputVisible] = useState(false);
 
   function handleTimeChange(e) {
@@ -19,6 +21,10 @@ export default function ConsultingTime() {
     setInputSlot(e.target.value);
   }
 
+  function handleMachineChange(e) {
+    setInputMachine(e.target.value);
+  }
+
   function formatTime(time) {
     const [hours, minutes] = time.split(":");
     const date = new Date(0, 0, 0, hours, minutes);
@@ -26,14 +32,16 @@ export default function ConsultingTime() {
   }
 
   function handleAddDoctor() {
-    if (inputTime && inputSlot !== "select") {
+    if (inputTime && inputSlot !== "select" && inputMachine !== "select") {
       const newDoctor = {
         time: formatTime(inputTime),
         slot: inputSlot,
+        machine: inputMachine,
       };
       setDoctors([...doctors, newDoctor]);
       setInputTime("");
       setInputSlot("select");
+      setInputMachine("select");
     }
   }
 
@@ -46,6 +54,7 @@ export default function ConsultingTime() {
     setEditIndex(index);
     setEditedTime(doctor.time);
     setEditedSlot(doctor.slot);
+    setEditedMachine(doctor.machine);
   };
 
   const handleUpdateDoctor = () => {
@@ -53,11 +62,13 @@ export default function ConsultingTime() {
     updatedDoctors[editIndex] = {
       time: formatTime(editedTime),
       slot: editedSlot,
+      machine: editedMachine,
     };
     setDoctors(updatedDoctors);
     setEditIndex(null);
     setEditedTime("");
     setEditedSlot("");
+    setEditedMachine("");
   };
 
   const handleShowInput = () => {
@@ -73,15 +84,29 @@ export default function ConsultingTime() {
               onClick={handleShowInput}
               className="min-w-fit flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
             >
-              Add Consulting Time
+              Add Machine Time
             </button>
             {inputVisible && (
               <div className="flex gap-5 m-2">
                 <select
+                  name="machine"
+                  value={inputMachine}
+                  onChange={handleMachineChange}
+                  className="py-1 px-2 rounded-md border border-black"
+                >
+                  <option value="select" disabled>
+                    Select Machine
+                  </option>
+                  <option value="machine1">Machine 1</option>
+                  <option value="machine2">Machine 2</option>
+                  <option value="machine3">Machine 3</option>
+                </select>
+
+                <select
                   name="slot"
                   value={inputSlot}
                   onChange={handleSlotChange}
-                  className="py-1 px-2 rounded-md border border-black "
+                  className="py-1 px-2 rounded-md border border-black"
                 >
                   <option value="select" disabled>
                     Select Slot
@@ -113,6 +138,9 @@ export default function ConsultingTime() {
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Machine
+                  </th>
+                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Slot
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
@@ -130,10 +158,25 @@ export default function ConsultingTime() {
                       <>
                         <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                           <select
+                            name="machine"
+                            value={editedMachine}
+                            onChange={(e) => setEditedMachine(e.target.value)}
+                            className="py-1 px-2 rounded-md border border-black"
+                          >
+                            <option value="select" disabled>
+                              Select Machine
+                            </option>
+                            <option value="machine1">Machine 1</option>
+                            <option value="machine2">Machine 2</option>
+                            <option value="machine3">Machine 3</option>
+                          </select>
+                        </td>
+                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          <select
                             name="slot"
                             value={editedSlot}
                             onChange={(e) => setEditedSlot(e.target.value)}
-                            className="py-1 px-2 rounded-md border border-black "
+                            className="py-1 px-2 rounded-md border border-black"
                           >
                             <option value="select" disabled>
                               Select Slot
@@ -169,6 +212,11 @@ export default function ConsultingTime() {
                       </>
                     ) : (
                       <>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <span className="text-black text-sm font-medium ml-1">
+                            {doctor.machine}
+                          </span>
+                        </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <span className="text-black text-sm font-medium ml-1">
                             {doctor.slot}
