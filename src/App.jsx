@@ -76,6 +76,9 @@ import FranchiesDiagnosis from "./pages/Franchise/customer/FranchiesDiagnosis";
 import FranchiesCheckout from "./pages/Franchise/customer/FranchiesCheckout";
 import DataEntry from "./pages/Admin/appointment/DataEntry";
 import AdminAppointment from "./pages/Admin/AdminAppointment";
+import RecepsitnistMain from "./pages/Recepsitnist/RecepsitnistMain";
+import CreateRole from "./pages/Recepsitnist/CreateRole";
+import RoleAssign from "./pages/Recepsitnist/Role/RoleAssign";
 
 function App() {
   return (
@@ -113,7 +116,9 @@ function App() {
             <Route path="diagnosis" element={<CustomerQuestionsPart2 />} />
             <Route path="checkout" element={<QueCheckout />} />
           </Route>
-
+          <Route path="create-role" element={<CreateRole />}>
+            <Route path="role-assign" element={<RoleAssign />} />
+          </Route> 
           {/* customers */}
           <Route path="customers" element={<AdminCustomers />}>
             <Route path="all-users" element={<CustomerAllUsers />} />
@@ -176,6 +181,10 @@ function App() {
           </Route>
         </Route>
 
+        {/* Recepsitnist */}
+        <Route path="recepsitnist" element={<RecepsitnistMain />}>
+        </Route>
+
         {/* Survey */}
         <Route path="survey" element={<SurveyReport />} />
         <Route path="surveyform" element={<SurveyForm />} />
@@ -188,8 +197,11 @@ function App() {
           <Route path="customers" element={<FranchiseCustomers />}>
             <Route path="all-users" element={<FranchiseAllCustomers />} />
           </Route>
-          <Route path="new-user" element={<FranchiseNewcustomer />}
-            <Route path="general-details" element={<FranchiesGeneraldetails />}/>
+          <Route path="new-user" element={<FranchiseNewcustomer />}>
+            <Route
+              path="general-details"
+              element={<FranchiesGeneraldetails />}
+            />
             <Route path="current-diet" element={<FranchiesCurrentdiet />} />
             <Route path="family-history" element={<FranchiesFamilyhistory />} />
             <Route path="complains" element={<FranchiesComplains />} />

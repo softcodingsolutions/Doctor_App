@@ -5,12 +5,9 @@ import { IoMdHome } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { MdOutlineGppGood } from "react-icons/md";
-import { Option, Select } from "@mui/joy";
-import { MdManageAccounts } from "react-icons/md";
 import { masterButtons } from "../../constants/admin/AdminConstants";
 
-function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
+function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
   const [selected, setSelected] = useState(
@@ -30,8 +27,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const sidebarItems = [
     {
       id: "1",
-      title: "Dashboard",
-      to: "dashboard",
+      title: "Create Role",
+      to: "create-role/role-assign",
       icons: <IoMdHome size={18} />,
     },
     {
@@ -46,43 +43,9 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "list-follow-up",
       icons: <FaWpforms size={18} />,
     },
-    {
-      id: "8",
-      title: "Create Role",
-      to: "create-role/role-assign",
-      icons: <MdManageAccounts size={18} />,
-    },
   ];
 
-  const masterItems = [
-    {
-      id: "3",
-      title: "Master",
-      to: `master/${save ? save : "list-franchise"}`,
-      icons: <FaLightbulb size={18} />,
-    },
-    {
-      id: "5",
-      title: "Treatment",
-      to: "treatment/question-part1",
-      icons: <MdOutlineGppGood size={18} />,
-    },
-  ];
-
-  const appointmentItems = [
-    {
-      id: "6",
-      title: "Data Entry",
-      to: `appointment/data-entry`,
-      icons: <FaLightbulb size={18} />,
-    },
-    {
-      id: "7",
-      title: "Data Mapping",
-      to: "appointment/data-mapping",
-      icons: <MdOutlineGppGood size={18} />,
-    },
-  ]
+  
 
   const handleLogoutClick = () => {
     localStorage.clear();
@@ -143,50 +106,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
           </Link>
         ))}
 
-        <Select
-          style={{ backgroundColor: "transparent", color: "white" }}
-          className={clsx("xl:mt-4 mt-6 mx-1")}
-          value={selected}
-          placeholder="Select"
-          onChange={handleSelectChange}
-        >
-          {masterItems.map((res) => (
-            <Option key={res.id} value={res.id}>
-              {" "}
-              <Link
-                to={res.to}
-                key={res.id}
-                className={"w-full flex items-center space-x-2"}
-                onClick={() => setSelected(res.id)}
-              >
-                <div>{res.icons}</div>
-                <div>{res.title}</div>
-              </Link>
-            </Option>
-          ))}
-        </Select>
-        <Select
-          style={{ backgroundColor: "transparent", color: "white" }}
-          className={clsx("xl:mt-4 mt-6 mx-1")}
-          value={selected}
-          placeholder="Appointment"
-          onChange={handleSelectChange}
-        >
-          {appointmentItems.map((res) => (
-            <Option key={res.id} value={res.id}>
-              {" "}
-              <Link
-                to={res.to}
-                key={res.id}
-                className={"w-full flex items-center space-x-2"}
-                onClick={() => setSelected(res.id)}
-              >
-                <div>{res.icons}</div>
-                <div>{res.title}</div>
-              </Link>
-            </Option>
-          ))}
-        </Select>
+       
         <div className="flex-grow" />
       </div>
 
@@ -231,4 +151,4 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   );
 }
 
-export default AdminSidebar;
+export default RecepsitnistSidebar;
