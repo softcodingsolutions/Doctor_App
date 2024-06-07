@@ -5,6 +5,7 @@ import TdComponent from "../../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import PrevPageButton from "../../../../components/Admin/PrevPageButton";
 
 function CustomerQuestionsPart2() {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
@@ -78,7 +79,7 @@ function CustomerQuestionsPart2() {
     } catch (err) {
       console.error(err);
     } finally {
-      navigate("../../customers/all-users");
+      navigate("../checkout");
       setSelectedCheckboxes([]);
     }
   };
@@ -146,7 +147,8 @@ function CustomerQuestionsPart2() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-center">
+          <div className="flex w-full justify-center gap-3">
+            <PrevPageButton to="../diagnosis" />
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"

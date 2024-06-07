@@ -80,7 +80,7 @@ function QueDiagnosis() {
     } catch (err) {
       console.error(err);
     } finally {
-        navigate("../../customers/all-users");
+      navigate("../checkout");
       setSelectedCheckboxes([]);
     }
   };
