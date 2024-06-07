@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import ThComponent from "../../../../components/ThComponent";
 import TdComponent from "../../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
+import PrevPageButton from "../../../../components/Admin/PrevPageButton";
 
 function CustomerQuestionsPart1() {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
@@ -148,7 +149,8 @@ function CustomerQuestionsPart1() {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-center">
+          <div className="flex w-full justify-center gap-3">
+            <PrevPageButton to="../complains" />
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"

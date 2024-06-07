@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 
 function QueUserQuestions() {
-  const context = useOutletContext();
   const { state } = useLocation();
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);

@@ -1,23 +1,15 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 
-function FranchiesCheckout({onBack}) {
-  const context = useOutletContext();
-//   const [packages,setPackages] = useState([]);
+function FranchiesCheckout({ onBack }) {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const submittedData = (d) => {
     console.log(d);
-    // navigate("../current-diet")
     axios.get(`/api/v1/users/app_creds`).then((res) => {
       console.log(res);
       axios
@@ -44,16 +36,13 @@ function FranchiesCheckout({onBack}) {
         })
         .then((res) => {
           console.log(res);
-          localStorage.setItem("client_email", res.data?.user?.user?.email)
-          // navigate("../current-diet");
+          localStorage.setItem("client_email", res.data?.user?.user?.email);
+          navigate("../../all-users");
         });
     });
     reset();
   };
 
-  const handleBack = () =>{
-    navigate('../diagnosis')
-  }
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -66,38 +55,38 @@ function FranchiesCheckout({onBack}) {
               method="post"
             >
               <div className="md:flex w-full justify-between">
-              <label className="text-lg text-end w-1/8 mr-2">Package:</label>
-                  <select
-                    name="package"
-                    defaultValue="select"
-                    className="py-1 px-2 rounded-md border border-black w-full"
-                  >
-                    <option value="select" disabled>
-                      Select One
-                    </option>
-                    <option value="Franchisee_package">FRANCHISEE PACKAGE</option>
-                    <option value="mh-b-2">MH-B-2</option>
-                    <option value="mh-c-3">MH-C-3</option>
-                    <option value="mh-f-6">MH-F-6</option>
-                    <option value="anand 30">Anand 30</option>
-                    <option value="anand 60">Anand 60</option>
-                    <option value="anand 120">Anand 120</option>
-                    <option value="anand od">Anand OD</option>
-                    <option value="mh-outdoor">MH-OUTDOOR</option>
-                    <option value="mh-a-1">MH-A-1</option>
+                <label className="text-lg text-end w-1/8 mr-2">Package:</label>
+                <select
+                  name="package"
+                  defaultValue="select"
+                  className="py-1 px-2 rounded-md border border-black w-full"
+                >
+                  <option value="select" disabled>
+                    Select One
+                  </option>
+                  <option value="Franchisee_package">FRANCHISEE PACKAGE</option>
+                  <option value="mh-b-2">MH-B-2</option>
+                  <option value="mh-c-3">MH-C-3</option>
+                  <option value="mh-f-6">MH-F-6</option>
+                  <option value="anand 30">Anand 30</option>
+                  <option value="anand 60">Anand 60</option>
+                  <option value="anand 120">Anand 120</option>
+                  <option value="anand od">Anand OD</option>
+                  <option value="mh-outdoor">MH-OUTDOOR</option>
+                  <option value="mh-a-1">MH-A-1</option>
                 </select>
               </div>
               <div className="md:flex w-full  justify-between">
-              <UserDetailsInput
+                <UserDetailsInput
                   name="FromDate"
                   type="date"
                   label="From Date"
                   placeholder="From date"
                   hook={register("fromdate")}
                 />
-            <label>Validate</label>
-            <div className="border-2 w-20 rounded border-black"></div>
-            <UserDetailsInput
+                <label>Validate</label>
+                <div className="border-2 w-20 rounded border-black"></div>
+                <UserDetailsInput
                   name="ToDate"
                   type="date"
                   label="To Date"
@@ -124,7 +113,7 @@ function FranchiesCheckout({onBack}) {
                 />
               </div>
               <div className="md:flex w-full justify-between">
-              <UserDetailsInput
+                <UserDetailsInput
                   name="packagetotal"
                   type="text"
                   label="Package Total"
@@ -151,23 +140,34 @@ function FranchiesCheckout({onBack}) {
                 />
               </div>
               <div className="md:flex w-full justify-between">
-              <label className="text-lg text-end w-1/8 mr-2">Payment Method:</label>
-                  <select
-                    name="method"
-                    defaultValue="online"
-                    className="py-1 px-2 rounded-md border border-black w-full"
-                  >
-                    <option value="online">Online</option>
-                    <option value="cash">Cash</option>
-                    <option value="cheque">Cheque</option>
+                <label className="text-lg text-end w-1/8 mr-2">
+                  Payment Method:
+                </label>
+                <select
+                  name="method"
+                  defaultValue="online"
+                  className="py-1 px-2 rounded-md border border-black w-full"
+                >
+                  <option value="online">Online</option>
+                  <option value="cash">Cash</option>
+                  <option value="cheque">Cheque</option>
                 </select>
               </div>
               <div className="md:flex w-full justify-between gap-2">
-                  <label>Note</label>
-                  <textarea rows={3} className='border-2 border-black w-full p-2'/>
-               </div>
+                <label>Note</label>
+                <textarea
+                  rows={3}
+                  className="border-2 border-black w-full p-2"
+                />
+              </div>
               <div className="flex w-full justify-center gap-2">
-              <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={onBack}>Back</button>
+                <button
+                  name="Back"
+                  className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+                  onClick={onBack}
+                >
+                  Back
+                </button>
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>
