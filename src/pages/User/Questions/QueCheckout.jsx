@@ -46,7 +46,7 @@ function QueCheckout() {
       console.error(error);
     }
     reset();
-    // navigate("../../all-users");
+    navigate("../../customers/all-users");
   };
 
   useEffect(() => {

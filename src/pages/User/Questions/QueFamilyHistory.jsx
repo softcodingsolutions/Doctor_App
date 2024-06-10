@@ -4,10 +4,12 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function QueFamilyHistory() {
-  const email = localStorage.getItem("client_email");
   const navigate = useNavigate();
+  const [getFamily, setGetFamily] = useState([]);
+  const email = localStorage.getItem("client_email");
   const { register, handleSubmit, reset, setValue } = useForm();
 
   const submittedData = async (d) => {
@@ -36,6 +38,23 @@ function QueFamilyHistory() {
     setValue("selected_family_reasons", newValue);
     console.log(newValue);
   };
+
+  const handleGetFamily = () => {
+    axios
+      .get("/api/v1/family_reasons")
+      .then((res) => {
+        console.log("Family Reason: ", res.data?.family_reasons);
+        setGetFamily(res.data?.family_reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  useEffect(() => {
+    handleGetFamily();
+  }, []);
 
   return (
     <div className="w-full p-2">
@@ -68,12 +87,13 @@ function QueFamilyHistory() {
                     },
                   }}
                 >
-                  <Option value="hypertension">Hypertension</Option>
-                  <Option value="diabetes">Diabetes</Option>
-                  <Option value="hypo_throdism">Hypo Throdism</Option>
-                  <Option value="pcod">PCOD</Option>
-                  <Option value="heart_problem">Heart Problem</Option>
-                  <Option value="over_weight">Over Weight</Option>
+                  {getFamily.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.details_in_english}>
+                        {res.details_in_english}
+                      </Option>
+                    );
+                  })}
                 </Select>
                 <div className="flex flex-col gap-2 mt-10">
                   <label>Family Disease</label>
