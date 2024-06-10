@@ -79,6 +79,10 @@ import AdminAppointment from "./pages/Admin/AdminAppointment";
 import RecepsitnistMain from "./pages/Recepsitnist/RecepsitnistMain";
 import CreateRole from "./pages/Recepsitnist/CreateRole";
 import RoleAssign from "./pages/Recepsitnist/Role/RoleAssign";
+import Appointment from "./pages/Recepsitnist/Appointment";
+import CreateAppointment from "./pages/Recepsitnist/Pages/CreateAppointment";
+import MedicalInventory from "./pages/Recepsitnist/Pages/MedicalInventory";
+import AddCustomer from "./pages/Recepsitnist/Pages/AddCustomer";
 
 function App() {
   return (
@@ -183,6 +187,11 @@ function App() {
 
         {/* Recepsitnist */}
         <Route path="recepsitnist" element={<RecepsitnistMain />}>
+          <Route path="appointment" element={<Appointment />}>
+            <Route path="create-appointment" element={<CreateAppointment />} />
+            <Route path="medical-inventory" element={<MedicalInventory />}/>
+            <Route path="add-customer" element={<AddCustomer />} />
+          </Route>
         </Route>
 
         {/* Survey */}
