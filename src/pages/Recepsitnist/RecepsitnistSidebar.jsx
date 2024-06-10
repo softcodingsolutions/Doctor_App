@@ -1,7 +1,8 @@
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import { FaLightbulb, FaWpforms } from "react-icons/fa";
+import { IoIosPaper } from "react-icons/io";
+import { FaClinicMedical } from "react-icons/fa";
+import { BsPersonFillAdd } from "react-icons/bs";
 import { IoPersonSharp, IoCloseOutline } from "react-icons/io5";
-import { IoMdHome } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
@@ -27,21 +28,21 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const sidebarItems = [
     {
       id: "1",
-      title: "Create Role",
-      to: "create-role/role-assign",
-      icons: <IoMdHome size={18} />,
+      title: "Appointment",
+      to: "appointment/create-appointment",
+      icons: <IoIosPaper size={18} />,
     },
     {
       id: "2",
-      title: "Customers",
-      to: "customers/all-users",
-      icons: <IoPersonSharp size={18} />,
+      title: "Medical Inventory",
+      to: "appointment/medical-inventory",
+      icons: <FaClinicMedical size={18} />,
     },
     {
-      id: "4",
-      title: "List Follow Up",
-      to: "list-follow-up",
-      icons: <FaWpforms size={18} />,
+      id: "3",
+      title: "Add Customer",
+      to: "appointment/add-customer",
+      icons: <BsPersonFillAdd size={18} />,
     },
   ];
 

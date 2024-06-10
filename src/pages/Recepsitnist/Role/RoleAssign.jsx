@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
 
@@ -13,6 +14,18 @@ export default function RoleAssign() {
   const [editedEmail, setEditedEmail] = useState("");
   const [editedRole, setEditedRole] = useState("");
   const [editIndex, setEditIndex] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`api/v1/users`)
+      .then((res) => {
+        console.log(res);
+        setDoctors(res.data.users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   function handleNameChange(e) {
     setInputName(e.target.value);
@@ -43,6 +56,30 @@ export default function RoleAssign() {
       setInputMobile("");
       setInputEmail("");
       setInputRole("");
+
+      axios
+        .get(`/api/v1/users/app_creds`)
+        .then((res) => {
+          console.log(res);
+          const formdata = new FormData();
+          formdata.append("user[first_name]", inputName);
+          formdata.append("user[last_name]", inputName);
+          formdata.append("user[phone_number]", inputMobile);
+          formdata.append("user[email]", inputEmail);
+          formdata.append("user[role]", inputRole);
+          formdata.append("client_id", res.data?.client_id);
+          axios
+            .post(`/api/v1/users`, formdata)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
@@ -57,6 +94,29 @@ export default function RoleAssign() {
     setEditedMobile(mobile);
     setEditedEmail(email);
     setEditedRole(role);
+    axios
+      .get(`/api/v1/users/app_creds`)
+      .then((res) => {
+        console.log(res);
+        const formdata = new FormData();
+        formdata.append("user[first_name]", editedName);
+        formdata.append("user[last_name]", editedName);
+        formdata.append("user[phone_number]", editedMobile);
+        formdata.append("user[email]", editedEmail);
+        formdata.append("user[role]", editedRole);
+        formdata.append("client_id", res.data?.client_id);
+        axios
+          .put(`/api/v1/users/update_profile`, formdata)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleUpdateDoctor = () => {
@@ -75,58 +135,58 @@ export default function RoleAssign() {
     setEditedRole("");
   };
 
-
   return (
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4">
           <div className="">
             <div>
-                <h2 className="flex gap-5 m-2 text-xl font-semibold">Create Role</h2>
+              <h2 className="flex gap-5 m-2 text-xl font-semibold">
+                Create Role
+              </h2>
             </div>
-              <div className="flex gap-5 m-2">
-                <input
-                  type="text"
-                  className="border-2 rounded-md p-2"
-                  onChange={handleNameChange}
-                  value={inputName}
-                  placeholder="Name"
-                />
-                <input
-                  className="border-2 rounded-md p-2"
-                  type="text"
-                  onChange={handleMobileChange}
-                  value={inputMobile}
-                  placeholder="Mobile Number"
-                />
-                <input
-                  className="border-2 rounded-md p-2"
-                  type="text"
-                  onChange={handleEmailChange}
-                  value={inputEmail}
-                  placeholder="Email"
-                />
-                <select
-                  className="border-2 rounded-md p-2"
-                  onChange={handleRoleChange}
-                  value={inputRole}
-                >
-                  <option value="" disabled>
-                    Select Role
-                  </option>
-                  <option value="Doctor">Doctor</option>
-                  <option value="Nurse">Nurse</option>
-                  <option value="Technician">Technician</option>
-                  <option value="Administrator">Administrator</option>
-                </select>
-                <button
-                  className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
-                  onClick={handleAddDoctor}
-                >
-                  ADD
-                </button>
-              </div>
-            
+            <div className="flex gap-5 m-2">
+              <input
+                type="text"
+                className="border-2 rounded-md p-2"
+                onChange={handleNameChange}
+                value={inputName}
+                placeholder="Name"
+              />
+              <input
+                className="border-2 rounded-md p-2"
+                type="text"
+                onChange={handleMobileChange}
+                value={inputMobile}
+                placeholder="Mobile Number"
+              />
+              <input
+                className="border-2 rounded-md p-2"
+                type="text"
+                onChange={handleEmailChange}
+                value={inputEmail}
+                placeholder="Email"
+              />
+              <select
+                className="border-2 rounded-md p-2"
+                onChange={handleRoleChange}
+                value={inputRole}
+              >
+                <option value="" disabled>
+                  Select Role
+                </option>
+                <option value="Doctor">Doctor</option>
+                <option value="Nurse">Nurse</option>
+                <option value="Technician">Technician</option>
+                <option value="Administrator">Administrator</option>
+              </select>
+              <button
+                className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
+                onClick={handleAddDoctor}
+              >
+                ADD
+              </button>
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -151,104 +211,119 @@ export default function RoleAssign() {
                 </tr>
               </thead>
               <tbody>
-                {doctors.map((doctor, index) => (
-                  <tr key={index} className="map">
-                    {editIndex === index ? (
-                      <>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedName}
-                            onChange={(e) => setEditedName(e.target.value)}
-                            placeholder="Name"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedMobile}
-                            onChange={(e) =>
-                              setEditedMobile(e.target.value)
-                            }
-                            placeholder="Mobile Number"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedEmail}
-                            onChange={(e) => setEditedEmail(e.target.value)}
-                            placeholder="Email"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <select
-                            className="border-2 rounded-md p-2"
-                            value={editedRole}
-                            onChange={(e) => setEditedRole(e.target.value)}
-                          >
-                            <option value="Doctor">Doctor</option>
-                            <option value="Nurse">Nurse</option>
-                            <option value="Technician">Technician</option>
-                            <option value="Administrator">Administrator</option>
-                          </select>
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <button onClick={handleUpdateDoctor} className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md">Update</button>
-                          <button onClick={() => setEditIndex(null)} className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md">Cancel</button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.name}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.mobile}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.email}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.role}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <button
-                            onClick={() => handleRemoveDoctor(index)}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <AiOutlineDelete />
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleEditDoctor(
-                                index,
-                                doctor.name,
-                                doctor.mobile,
-                                doctor.email,
-                                doctor.role
-                              )
-                            }
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <MdOutlineEdit />
-                          </button>
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))}
+                {doctors
+                  .filter(
+                    (doctor) =>
+                      doctor.role !== "patient" && doctor.role !== "super_admin"
+                  )
+                  .map((doctor, index) => (
+                    <tr key={index} className="map">
+                      {editIndex === index ? (
+                        <>
+                          <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <input
+                              type="text"
+                              value={editedName}
+                              onChange={(e) => setEditedName(e.target.value)}
+                              placeholder="Name"
+                              className="border-2 rounded-md p-2"
+                            />
+                          </td>
+                          <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <input
+                              type="text"
+                              value={editedMobile}
+                              onChange={(e) => setEditedMobile(e.target.value)}
+                              placeholder="Mobile Number"
+                              className="border-2 rounded-md p-2"
+                            />
+                          </td>
+                          <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <input
+                              type="text"
+                              value={editedEmail}
+                              onChange={(e) => setEditedEmail(e.target.value)}
+                              placeholder="Email"
+                              className="border-2 rounded-md p-2"
+                            />
+                          </td>
+                          <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <select
+                              className="border-2 rounded-md p-2"
+                              value={editedRole}
+                              onChange={(e) => setEditedRole(e.target.value)}
+                            >
+                              <option value="Doctor">Doctor</option>
+                              <option value="Nurse">Nurse</option>
+                              <option value="Technician">Technician</option>
+                              <option value="Administrator">
+                                Administrator
+                              </option>
+                            </select>
+                          </td>
+                          <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <button
+                              onClick={handleUpdateDoctor}
+                              className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            >
+                              Update
+                            </button>
+                            <button
+                              onClick={() => setEditIndex(null)}
+                              className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            >
+                              Cancel
+                            </button>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-sm font-medium ml-1">
+                              {doctor.first_name}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-sm font-medium ml-1">
+                              {doctor.phone_number}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-sm font-medium ml-1">
+                              {doctor.email}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-sm font-medium ml-1">
+                              {doctor.role}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <button
+                              onClick={() => handleRemoveDoctor(index)}
+                              className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            >
+                              <AiOutlineDelete />
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleEditDoctor(
+                                  index,
+                                  doctor.name,
+                                  doctor.mobile,
+                                  doctor.email,
+                                  doctor.role
+                                )
+                              }
+                              className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            >
+                              <MdOutlineEdit />
+                            </button>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

@@ -14,10 +14,7 @@ function RecepsitnistMain() {
 
   const handleGetAdmin = () => {
     axios
-      .get(
-        `/api/v1/users/find_user?access_token=${localStorage.getItem(
-          "access_token"
-        )}`
+      .get(`/api/v1/users/find_user?access_token=${localStorage.getItem("access_token")}`
       )
       .then((res) => {
         console.log("Admin",res.data?.user);
