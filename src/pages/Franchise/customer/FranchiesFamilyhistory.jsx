@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import Select from "@mui/joy/Select";
@@ -7,7 +7,7 @@ import axios from "axios";
 
 function FranchiesFamilyhistory({ onNext, onBack }) {
   const email = localStorage.getItem("client_email");
-
+  const [getFamily, setGetFamily] = useState([]);
   const { register, handleSubmit, reset, setValue } = useForm();
   const [selectedDiseases, setSelectedDiseases] = useState([]);
 
@@ -40,6 +40,23 @@ function FranchiesFamilyhistory({ onNext, onBack }) {
     console.log(newValue);
   };
 
+  const handleGetFamily = () => {
+    axios
+      .get("/api/v1/family_reasons")
+      .then((res) => {
+        console.log("Family Reason: ", res.data?.family_reasons);
+        setGetFamily(res.data?.family_reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  useEffect(() => {
+    handleGetFamily();
+  }, []);
+
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -71,12 +88,13 @@ function FranchiesFamilyhistory({ onNext, onBack }) {
                     },
                   }}
                 >
-                  <Option value="hypertension">Hypertension</Option>
-                  <Option value="diabetes">Diabetes</Option>
-                  <Option value="hypo_throdism">Hypo Throdism</Option>
-                  <Option value="pcod">PCOD</Option>
-                  <Option value="heart_problem">Heart Problem</Option>
-                  <Option value="over_weight">Over Weight</Option>
+                  {getFamily.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.details_in_english}>
+                        {res.details_in_english}
+                      </Option>
+                    );
+                  })}
                 </Select>
                 <div className="flex flex-col gap-2 mt-10">
                   <label>Family Disease</label>

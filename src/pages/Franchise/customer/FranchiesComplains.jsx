@@ -3,8 +3,11 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import axios from "axios";
+import { useEffect, useState } from "react";
+
 function FranchiesComplains({ onNext, onBack }) {
   const email = localStorage.getItem("client_email");
+  const [getComplain, setGetComplain] = useState([]);
   const { register, handleSubmit, reset, setValue } = useForm();
 
   const submittedData = async (d) => {
@@ -33,6 +36,23 @@ function FranchiesComplains({ onNext, onBack }) {
     setValue("selected_complains", newValue);
     console.log(newValue);
   };
+
+  const handleGetComplain = () => {
+    axios
+      .get("/api/v1/complaints")
+      .then((res) => {
+        console.log("Complain: ", res.data);
+        setGetComplain(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  useEffect(() => {
+    handleGetComplain();
+  }, []);
 
   return (
     <div className="w-full p-2">
@@ -65,25 +85,13 @@ function FranchiesComplains({ onNext, onBack }) {
                     },
                   }}
                 >
-                  <Option value="Constipation">Constipation (H/S)</Option>
-                  <Option value="Acidity">Acidity</Option>
-                  <Option value="Gas">Gas</Option>
-                  <Option value="Loose Motion">Ioose Motion</Option>
-                  <Option value="Piles">Piles</Option>
-                  <Option value="Ulcer">Ulcer</Option>
-                  <Option value="Anemia">Anemia</Option>
-                  <Option value="Heart Disease">Heart Disease</Option>
-                  <Option value="Hypertension">Hypertension</Option>
-                  <Option value="D.M">D.M</Option>
-                  <Option value="Thyroid">Thyroid</Option>
-                  <Option value="Depression">Depression</Option>
-                  <Option value="Allergy">Allergy</Option>
-                  <Option value="High Cholesterol">High Cholesterol</Option>
-                  <Option value="Joint Pain">Joint Pain</Option>
-                  <Option value="Backache">Backache</Option>
-                  <Option value="Swelling of face/hands/feet">
-                    Swelling of Face-Hands-Feet
-                  </Option>
+                  {getComplain.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.details}>
+                        {res.details}
+                      </Option>
+                    );
+                  })}
                 </Select>
                 <div className="flex flex-col gap-2 mt-10">
                   <label>Other Complain:</label>
