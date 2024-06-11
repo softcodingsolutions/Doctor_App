@@ -6,7 +6,6 @@ import { useOutletContext } from "react-router-dom";
 function ReportPastHistory() {
   const context = useOutletContext();
   const [showPart1, setShowPart1] = useState(true);
-  const [showPart2, setShowPart2] = useState(false);
 
   return (
     <div className="w-full p-2">
@@ -17,7 +16,6 @@ function ReportPastHistory() {
             <div className="space-x-2.5">
               <button
                 onClick={() => {
-                  setShowPart2(false);
                   setShowPart1(true);
                 }}
                 className={`px-3 py-1.5 border-[1.5px] rounded-md ${
@@ -25,17 +23,6 @@ function ReportPastHistory() {
                 } hover:scale-105 border-x-gray-300`}
               >
                 Family Reason
-              </button>
-              <button
-                onClick={() => {
-                  setShowPart1(false);
-                  setShowPart2(true);
-                }}
-                className={`px-3 py-1.5 rounded-md ${
-                  showPart2 ? "scale-105 bg-gray-700 text-white" : "bg-gray-50"
-                } hover:scale-105  border-x-gray-300 border-[1.5px]`}
-              >
-                Complains
               </button>
             </div>
           </div>
@@ -49,19 +36,9 @@ function ReportPastHistory() {
                   />
                   {showPart1 && (
                     <>
-                      <ThComponent name="In English" />
-                      <ThComponent name="In Hindi" />
                       <ThComponent
                         moreClasses={"rounded-tr-md rounded-br-md"}
-                        name="In Gujarati"
-                      />{" "}
-                    </>
-                  )}
-                  {showPart2 && (
-                    <>
-                      <ThComponent
-                        moreClasses={"rounded-tr-md rounded-br-md"}
-                        name="Complain Details"
+                        name="Details"
                       />{" "}
                     </>
                   )}
@@ -69,7 +46,8 @@ function ReportPastHistory() {
               </thead>
               <tbody>
                 {showPart1 ? (
-                  context[1]?.personal_detail?.family_reasons.length === 0 ? (
+                  context[1]?.personal_detail?.family_reasons
+                    ?.selected_family_reasons?.length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -79,7 +57,7 @@ function ReportPastHistory() {
                       </th>
                     </tr>
                   ) : (
-                    context[1]?.personal_detail?.family_reasons.map(
+                    context[1]?.personal_detail?.family_reasons?.selected_family_reasons?.map(
                       (val, index) => {
                         return (
                           <tr key={val.id}>
@@ -89,42 +67,7 @@ function ReportPastHistory() {
                               </div>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.details_in_english} />
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.details_in_hindi} />
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.details_in_gujarati} />
-                            </td>
-                          </tr>
-                        );
-                      }
-                    )
-                  )
-                ) : null}
-                {showPart2 ? (
-                  context[1]?.personal_detail?.complaints.length === 0 ? (
-                    <tr>
-                      <th
-                        className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
-                        colSpan={8}
-                      >
-                        No Complains Found!
-                      </th>
-                    </tr>
-                  ) : (
-                    context[1]?.personal_detail?.complaints.map(
-                      (val, index) => {
-                        return (
-                          <tr key={val.id}>
-                            <td className="py-2 px-4 border-b border-b-gray-50">
-                              <div className="flex items-center">
-                                {index + 1}
-                              </div>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.details} />
+                              <TdComponent things={val} />
                             </td>
                           </tr>
                         );

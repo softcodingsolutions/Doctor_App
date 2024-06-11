@@ -31,7 +31,7 @@ function QueCheckout() {
       await axios
         .put(`/api/v2/users/update_personal_details?email=${email}`, {
           personal_detail: {
-            family_reasons: JSON.stringify(d),
+            checkout: JSON.stringify(d),
           },
         })
         .then((res) => {

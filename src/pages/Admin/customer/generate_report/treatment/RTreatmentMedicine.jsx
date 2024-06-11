@@ -73,7 +73,10 @@ function RTreatmentMedicine() {
       "package[weight_reason]",
       context[0] === "null" ? null : context[0]
     );
-    formData.append("treatment_package[weight_reason]", JSON.stringify(selectedMedicine));
+    formData.append(
+      "treatment_package[weight_reason]",
+      JSON.stringify(selectedMedicine)
+    );
 
     // try {
     //   const response = await axios.post("/api/v1/packages", formData);
@@ -195,10 +198,10 @@ function RTreatmentMedicine() {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.medicine_name} />
                         </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
+                        <td className="py-3 px-4 border-b border-b-gray-50 flex gap-4">
                           <Select
                             multiple
-                            placeholder="Select Dosage, Frequency"
+                            placeholder="Select Dose"
                             renderValue={(selected) => (
                               <Box sx={{ display: "flex", gap: "0.25rem" }}>
                                 {selected.map((selectedOption, index) => (
@@ -227,12 +230,38 @@ function RTreatmentMedicine() {
                               disabled
                               style={{ color: "gray", fontWeight: 500 }}
                             >
-                              DOSAGE
+                              Dose
                             </Option>
-                            <Option value="0.5">½</Option>
-                            <Option value="1">1</Option>
-                            <Option value="1.5">1½</Option>
-                            <Option value="2">2</Option>
+                            <Option value="before-meal">Before Meal</Option>
+                            <Option value="after-meal">After Meal</Option>
+                          </Select>
+                          <Select
+                            multiple
+                            placeholder="Select Frequency"
+                            renderValue={(selected) => (
+                              <Box sx={{ display: "flex", gap: "0.25rem" }}>
+                                {selected.map((selectedOption, index) => (
+                                  <Chip
+                                    key={index + "1"}
+                                    variant="soft"
+                                    color="primary"
+                                  >
+                                    {selectedOption.label}
+                                  </Chip>
+                                ))}
+                              </Box>
+                            )}
+                            sx={{
+                              minWidth: "15rem",
+                            }}
+                            slotProps={{
+                              listbox: {
+                                sx: {
+                                  width: "100%",
+                                },
+                              },
+                            }}
+                          >
                             <Option
                               disabled
                               style={{ color: "gray", fontWeight: 500 }}
@@ -241,7 +270,46 @@ function RTreatmentMedicine() {
                             </Option>
                             <Option value="morning">Morning</Option>
                             <Option value="lunch">Lunch</Option>
+                            <Option value="evening">Evening</Option>
                             <Option value="dinner">Dinner</Option>
+                          </Select>
+                          <Select
+                            multiple
+                            placeholder="Select Quantity"
+                            renderValue={(selected) => (
+                              <Box sx={{ display: "flex", gap: "0.25rem" }}>
+                                {selected.map((selectedOption, index) => (
+                                  <Chip
+                                    key={index + "1"}
+                                    variant="soft"
+                                    color="primary"
+                                  >
+                                    {selectedOption.label}
+                                  </Chip>
+                                ))}
+                              </Box>
+                            )}
+                            sx={{
+                              minWidth: "15rem",
+                            }}
+                            slotProps={{
+                              listbox: {
+                                sx: {
+                                  width: "100%",
+                                },
+                              },
+                            }}
+                          >
+                            <Option
+                              disabled
+                              style={{ color: "gray", fontWeight: 500 }}
+                            >
+                              Quantity
+                            </Option>
+                            <Option value="0.5">½</Option>
+                            <Option value="1">1</Option>
+                            <Option value="1.5">1½</Option>
+                            <Option value="2">2</Option>
                           </Select>
                         </td>
                       </tr>

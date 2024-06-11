@@ -40,7 +40,7 @@ function CustomerAllUsers() {
               Add New
             </button>
           </div>
-          <div className="animate-fade-left animate-delay-75-100 animate-once animate-ease-out overflow-auto h-[99%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -90,13 +90,31 @@ function CustomerAllUsers() {
                             <TdComponent things={val.personal_detail?.city} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.medicine_content? val.medicine_content : "null"} />
+                            <TdComponent
+                              things={
+                                val.medicine_content
+                                  ? val.medicine_content
+                                  : "null"
+                              }
+                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.medicine_content? val.medicine_content : "null"} />
+                            <TdComponent
+                              things={
+                                val.medicine_content
+                                  ? val.medicine_content
+                                  : "null"
+                              }
+                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.medicine_content? val.medicine_content : "null"} />
+                            <TdComponent
+                              things={
+                                val.medicine_content
+                                  ? val.medicine_content
+                                  : "null"
+                              }
+                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
