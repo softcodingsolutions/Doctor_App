@@ -82,7 +82,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "appointment/data-mapping",
       icons: <MdOutlineGppGood size={18} />,
     },
-  ]
+  ];
 
   const handleLogoutClick = () => {
     localStorage.clear();
@@ -147,7 +147,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
           style={{ backgroundColor: "transparent", color: "white" }}
           className={clsx("xl:mt-4 mt-6 mx-1")}
           value={selected}
-          placeholder="Select"
+          placeholder="Treatment"
           onChange={handleSelectChange}
         >
           {masterItems.map((res) => (
@@ -165,6 +165,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             </Option>
           ))}
         </Select>
+
         <Select
           style={{ backgroundColor: "transparent", color: "white" }}
           className={clsx("xl:mt-4 mt-6 mx-1")}

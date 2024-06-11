@@ -5,6 +5,8 @@ import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import AddNewProgresReport from "../../../../components/Admin/AddNewProgresReport";
+import { FaRegThumbsUp } from "react-icons/fa";
+import { FaRegThumbsDown } from "react-icons/fa6";
 
 function ReportProgress() {
   const [getProgess, setGetProgress] = useState([]);
@@ -13,13 +15,14 @@ function ReportProgress() {
   const [showComplain, setShowComplain] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
   const context = useOutletContext();
-  console.log("asdasd", context[1]);
 
-  const handleGetQues = () => {
+  const handleGetQues = async () => {
     const data =
-      context[1].personal_detail?.user_selected_questions_one?.concat(
+      await context[1].personal_detail?.user_selected_questions_one?.concat(
         context[1].personal_detail?.user_selected_questions_two
       );
+
+    console.log("User Questions: ", data);
 
     setGetQues(data);
   };
@@ -68,6 +71,14 @@ function ReportProgress() {
       });
   };
 
+  const feedbackQuestions = (val) => {
+    console.log(val);
+  };
+
+  const feedbackComplains = (val) => {
+    console.log(val);
+  };
+
   useEffect(() => {
     // handleGetProgress();
     handleGetQues();
@@ -79,6 +90,9 @@ function ReportProgress() {
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">
+              <div className="font-semibold text-xl">Progress Report</div>
+            </div>
+            <div className="flex gap-2">
               <button
                 onClick={() => {
                   setShowQues(false);
@@ -91,10 +105,8 @@ function ReportProgress() {
                     : "bg-gray-50"
                 } hover:scale-105 border-x-gray-300`}
               >
-                Progess Report List
+                Report
               </button>
-            </div>
-            <div className="flex gap-2">
               <button
                 onClick={() => {
                   setShowQues(true);
@@ -144,7 +156,6 @@ function ReportProgress() {
                     <ThComponent name="Date" />
                     <ThComponent name="Weight" />
                     <ThComponent name="Package Assigned" />
-                    <ThComponent />
                     <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                   </tr>
                 </thead>
@@ -174,6 +185,22 @@ function ReportProgress() {
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.comments} />
                           </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
+                            <TdComponent
+                              things={
+                                <button className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
+                                  <FaRegThumbsUp size={20} />
+                                </button>
+                              }
+                            />
+                            <TdComponent
+                              things={
+                                <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
+                                  <FaRegThumbsDown size={20} />
+                                </button>
+                              }
+                            />
+                          </td>
                         </tr>
                       );
                     })
@@ -192,15 +219,12 @@ function ReportProgress() {
                       moreClasses={"rounded-tl-md rounded-bl-md"}
                       name="No."
                     />
-                    <ThComponent
-                      name="Complain Details"
-                      moreClasses={"rounded-tr-md rounded-br-md"}
-                    />
+                    <ThComponent name="Complain Details" />
+                    <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                   </tr>
                 </thead>
                 <tbody>
-                  {context[1].personal_detail?.complaints?.selected_complains
-                    ?.length === 0 ? (
+                  {context[1].personal_detail?.complaints?.length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -220,7 +244,23 @@ function ReportProgress() {
                               </div>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.details} />
+                              <TdComponent things={val} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
+                              <TdComponent
+                                things={
+                                  <button className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
+                                    <FaRegThumbsUp size={20} />
+                                  </button>
+                                }
+                              />
+                              <TdComponent
+                                things={
+                                  <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
+                                    <FaRegThumbsDown size={20} />
+                                  </button>
+                                }
+                              />
                             </td>
                           </tr>
                         );
@@ -248,7 +288,7 @@ function ReportProgress() {
                   </tr>
                 </thead>
                 <tbody>
-                  {getQues.length === 0 ? (
+                  {getQues?.length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -258,7 +298,7 @@ function ReportProgress() {
                       </th>
                     </tr>
                   ) : (
-                    getQues.map((val, index) => {
+                    getQues?.map((val, index) => {
                       return (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
@@ -272,6 +312,22 @@ function ReportProgress() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.question_in_gujarati} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
+                            <TdComponent
+                              things={
+                                <button className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
+                                  <FaRegThumbsUp size={20} />
+                                </button>
+                              }
+                            />
+                            <TdComponent
+                              things={
+                                <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
+                                  <FaRegThumbsDown size={20} />
+                                </button>
+                              }
+                            />
                           </td>
                         </tr>
                       );
