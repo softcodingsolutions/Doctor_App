@@ -83,12 +83,14 @@ import Appointment from "./pages/Recepsitnist/Appointment";
 import CreateAppointment from "./pages/Recepsitnist/Pages/CreateAppointment";
 import MedicalInventory from "./pages/Recepsitnist/Pages/MedicalInventory";
 import AddCustomer from "./pages/Recepsitnist/Pages/AddCustomer";
+import LandingPage from "./pages/LandingPage/LandingPage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="login" element={<LoginPage />} />
         <Route path="signup" element={<SignUpPage />} />
 
         {/* User */}
