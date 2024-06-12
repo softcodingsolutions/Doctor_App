@@ -16,6 +16,8 @@
     "@mui/icons-material": "^5.15.15",
     "@mui/joy": "^5.0.0-beta.32",
     "axios": "^1.6.8",
+    "framer-motion": "^11.2.10",
+    "lenis": "^1.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
