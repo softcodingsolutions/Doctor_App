@@ -5,11 +5,15 @@ import { MdOutlineEdit } from "react-icons/md";
 export default function ConsultingTime() {
   const [inputTime, setInputTime] = useState("");
   const [inputSlot, setInputSlot] = useState("select");
+  const [inputDoctor, setInputDoctor] = useState("select");
   const [doctors, setDoctors] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editedTime, setEditedTime] = useState("");
   const [editedSlot, setEditedSlot] = useState("");
+  const [editedDoctor, setEditedDoctor] = useState("");
   const [inputVisible, setInputVisible] = useState(false);
+
+  const doctorNames = ["Dr. Smith", "Dr. Jones", "Dr. Williams"]; // Replace with actual doctor names
 
   function handleTimeChange(e) {
     setInputTime(e.target.value);
@@ -19,6 +23,10 @@ export default function ConsultingTime() {
     setInputSlot(e.target.value);
   }
 
+  function handleDoctorChange(e) {
+    setInputDoctor(e.target.value);
+  }
+
   function formatTime(time) {
     const [hours, minutes] = time.split(":");
     const date = new Date(0, 0, 0, hours, minutes);
@@ -26,14 +34,16 @@ export default function ConsultingTime() {
   }
 
   function handleAddDoctor() {
-    if (inputTime && inputSlot !== "select") {
+    if (inputTime && inputSlot !== "select" && inputDoctor !== "select") {
       const newDoctor = {
         time: formatTime(inputTime),
         slot: inputSlot,
+        name: inputDoctor,
       };
       setDoctors([...doctors, newDoctor]);
       setInputTime("");
       setInputSlot("select");
+      setInputDoctor("select");
     }
   }
 
@@ -46,6 +56,7 @@ export default function ConsultingTime() {
     setEditIndex(index);
     setEditedTime(doctor.time);
     setEditedSlot(doctor.slot);
+    setEditedDoctor(doctor.name);
   };
 
   const handleUpdateDoctor = () => {
@@ -53,11 +64,13 @@ export default function ConsultingTime() {
     updatedDoctors[editIndex] = {
       time: formatTime(editedTime),
       slot: editedSlot,
+      name: editedDoctor,
     };
     setDoctors(updatedDoctors);
     setEditIndex(null);
     setEditedTime("");
     setEditedSlot("");
+    setEditedDoctor("");
   };
 
   const handleShowInput = () => {
@@ -78,6 +91,21 @@ export default function ConsultingTime() {
             {inputVisible && (
               <div className="flex gap-5 m-2">
                 <select
+                  name="doctor"
+                  value={inputDoctor}
+                  onChange={handleDoctorChange}
+                  className="py-1 px-2 rounded-md border border-black "
+                >
+                  <option value="select" disabled>
+                    Select Doctor
+                  </option>
+                  {doctorNames.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+                <select
                   name="slot"
                   value={inputSlot}
                   onChange={handleSlotChange}
@@ -90,7 +118,6 @@ export default function ConsultingTime() {
                   <option value="afternoon">Afternoon</option>
                   <option value="evening">Evening</option>
                 </select>
-
                 <input
                   className="border-2 rounded-md p-2"
                   type="time"
@@ -113,6 +140,9 @@ export default function ConsultingTime() {
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Doctor
+                  </th>
+                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Slot
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
@@ -128,6 +158,23 @@ export default function ConsultingTime() {
                   <tr key={index} className="map">
                     {editIndex === index ? (
                       <>
+                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          <select
+                            name="doctor"
+                            value={editedDoctor}
+                            onChange={(e) => setEditedDoctor(e.target.value)}
+                            className="py-1 px-2 rounded-md border border-black "
+                          >
+                            <option value="select" disabled>
+                              Select Doctor
+                            </option>
+                            {doctorNames.map((name) => (
+                              <option key={name} value={name}>
+                                {name}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
                         <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                           <select
                             name="slot"
@@ -169,6 +216,11 @@ export default function ConsultingTime() {
                       </>
                     ) : (
                       <>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <span className="text-black text-sm font-medium ml-1">
+                            {doctor.name}
+                          </span>
+                        </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <span className="text-black text-sm font-medium ml-1">
                             {doctor.slot}

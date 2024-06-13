@@ -15,17 +15,18 @@ export default function Oldcase() {
 
           <div>
             <form>
-                <div>
-                    <label>Enter Case Number: </label>
+                <div className="flex gap-5 m-2">
+                    <label className="text-lg text-end w-1/3 mr-2">Enter Case Number/Mobile Number: </label>
                     <input type='text' onChange={handleCaseNumber}
-                    className="border-2 rounded-md p-2"
+                    className="py-1 px-2 rounded-md border border-black w-[40vh] "
                     placeholder='Enter Case number' 
                     required/>
+                    
                 </div>
                 <div className="flex gap-5 m-2">
-                    <label>Select Choice: </label>
+                    <label className="text-lg text-end w-1/3 mr-2">Select Choice: </label>
                     <select
-                        className="border-2 rounded-md p-2"
+                        className="py-1 px-2 rounded-md border border-black w-[40vh]"
                         onChange={handleChoice}
                         value={choice}
                         required

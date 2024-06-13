@@ -7,7 +7,7 @@ import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function QueCurrentDiet() {
+function QueCurrentDiet({onNext,onBack}) {
   const navigate = useNavigate();
   const email = localStorage.getItem("client_email");
   const {
@@ -35,7 +35,7 @@ function QueCurrentDiet() {
           console.log(err);
         });
       reset();
-      navigate("../family-history");
+      onNext();
     } catch (error) {
       console.error(error);
     }
@@ -43,10 +43,10 @@ function QueCurrentDiet() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
           <div className="text-xl font-semibold">Current Diet</div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center justify-between"
@@ -137,7 +137,7 @@ function QueCurrentDiet() {
                 </div>
               </div>
               <div className="flex w-full justify-center gap-3">
-                <PrevPageButton to="../general-details" />
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

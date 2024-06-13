@@ -14,20 +14,18 @@ export default function CreateAppointment() {
   return (
     <div className="w-full p-5">
     <div className="rounded-lg bg-card h-[90vh] bg-white">
-      <div className="flex flex-col px-4 py-3 h-full space-y-4  text-center items-center">
-          <div>
-            <h2 className="flex gap-5 m-2 text-xl font-semibold">
+      <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
+          <div className="text-xl font-semibold">
               Create Appointment
-            </h2>
           </div>
-          <div>
+          <div  className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <form >
-              <div className="flex gap-5 m-2">
-                <label>Select Doctor </label>
+              <div className="flex gap-5 m-5">
+                <label className="text-lg text-end w-1/3 mr-2">Select Doctor </label>
                   <select
-                      className="border-2 rounded-md p-2"
                       onChange={handleDoctorList}
                       value={doctorList}
+                      className="py-1 px-2 rounded-md border border-black w-[40vh]"
                     >
                       <option value="" disabled>Doctor</option>
                       <option value="Doctor">ABC</option>
@@ -36,10 +34,10 @@ export default function CreateAppointment() {
                       <option value="Administrator">Administrator</option>
                   </select>
                 </div>
-                <div className="flex gap-5 m-2">
-                  <label>Case </label>
+                <div className="flex gap-5 m-5">
+                  <label className="text-lg text-end w-1/3 mr-2">Case </label>
                     <select
-                        className="border-2 rounded-md p-2"
+                        className="py-1 px-2 rounded-md border border-black w-[40vh]"
                         onChange={handleCase}
                         value={Case}
                       >
@@ -47,7 +45,7 @@ export default function CreateAppointment() {
                         <option value="new" >New</option>
                     </select>
                 </div>
-                <div className="flex gap-5 m-2">
+                <div className="flex gap-5 m-5">
                  {Case === "old" ? <Oldcase /> : <Newcase />}
                 </div>
             </form>

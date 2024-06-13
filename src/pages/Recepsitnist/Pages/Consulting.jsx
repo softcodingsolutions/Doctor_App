@@ -15,18 +15,18 @@ export default function Consulting() {
     <div>
       <form>
         <div >
-          <h2 className="text-md font-semibold">Consulting Time Slot</h2>
+          <h2 className="text-lg font-semibold text-center mt-5">Consulting Time Slot</h2>
         </div>
         <div className="flex gap-5 m-2">
-            <label>Select the Date: </label>
+            <label className="text-lg text-end w-1/3 mr-2">Select the Date: </label>
             <input type="date" placeholder="select date" 
-            className="border-2 rounded-md p-2"
+            className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleConsulting}/>
         </div>
         <div className="flex gap-5 m-2">
-            <label>Select the Slot: </label>
+            <label className="text-lg text-end w-1/3 mr-2">Select the Slot: </label>
                 <select
-                className="border-2 rounded-md p-2"
+                className="py-1 px-2 rounded-md border border-black w-[40vh]"
                 onChange={handleSlot}
                 value={slot}>
                     <option value="" disabled>
@@ -36,7 +36,7 @@ export default function Consulting() {
                     <option value="new">New</option>
                 </select>
         </div>
-        <div className="flex w-full justify-start mt-10">
+        <div className="flex w-full justify-center mt-10">
             <button type="submit" className="w-[20rem]  text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105" name="Save & Continue"  style={{ backgroundColor: "black" }} onClick={handleSubmit}>Submit</button>
         </div>
       </form>

@@ -6,7 +6,7 @@ import { Option, Select } from "@mui/joy";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import { useEffect, useState } from "react";
 
-function QueComplains() {
+function QueComplains({onNext,onBack}) {
   const email = localStorage.getItem("client_email");
   const [getComplain, setGetComplain] = useState([]);
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function QueComplains() {
           console.log(err);
         });
       reset();
-      navigate("../user-questions");
+      onNext();
     } catch (error) {
       console.error(error);
     }
@@ -58,10 +58,10 @@ function QueComplains() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
           <div className="text-xl font-semibold">Complains</div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center justify-between"
@@ -109,7 +109,7 @@ function QueComplains() {
                 </div>
               </div>
               <div className="flex w-full justify-center gap-3">
-                <PrevPageButton to="../family-history" />
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

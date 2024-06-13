@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
 import Stepper from '@mui/joy/Stepper';
 import Step from '@mui/joy/Step';
 import StepButton from '@mui/joy/StepButton';
@@ -44,8 +43,8 @@ function FranchiseNewcustomer() {
         .
       </div>
 
-      <div className="flex-grow overflow-auto justify-center flex flex-wrap content-start p-5">
-        <Stepper sx={{ width: '80%' }}>
+      <div className="flex-grow  overflow-auto justify-center flex flex-wrap content-start p-2">
+        <Stepper sx={{ width: '80%', height:"7%"}}>
           {steps.map((step, index) => (
             <Step
               key={step}
@@ -80,10 +79,6 @@ function FranchiseNewcustomer() {
         {currentStep === 4 && <FranchiesQuestions onNext={handleNextStep} onBack={handleBackStep} />}
         {currentStep === 5 && <FranchiesDiagnosis onNext={handleNextStep} onBack={handleBackStep} />}
         {currentStep === 6 && <FranchiesCheckout onBack={handleBackStep} />}
-      </div>
-
-      <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
-        <Outlet />
       </div>
     </div>
   );

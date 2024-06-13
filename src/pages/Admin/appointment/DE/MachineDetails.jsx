@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
-import Switch from "@mui/joy/Switch";
+import axios from "axios";
 
 export default function MachineDetails() {
   const [inputMachineName, setInputMachineName] = useState("");
@@ -13,6 +13,21 @@ export default function MachineDetails() {
   const [editedBrief, setEditedBrief] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [inputVisible, setInputVisible] = useState(false);
+
+  useEffect(() => {
+    handleShow();
+  }, []);
+
+  const handleShow = () => {
+    axios
+      .get(`/api/v1/machine_details`)
+      .then((res) => {
+        setMachines(res.data.machine_details);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   function handleMachineNameChange(e) {
     setInputMachineName(e.target.value);
@@ -35,18 +50,39 @@ export default function MachineDetails() {
         machineName: inputMachineName,
         quantity: inputQuantity,
         brief: inputBrief,
-        enabled: true,
       };
       setMachines([...machines, newMachine]);
       setInputMachineName("");
       setInputQuantity("");
       setInputBrief("");
     }
+
+    axios
+      .get(`/api/v1/users/app_creds`)
+      .then((res) => {
+        const formdata = new FormData();
+        formdata.append("machine_detail[name]", inputMachineName);
+        formdata.append("machine_detail[quantity]", inputQuantity);
+        formdata.append("machine_detail[brief]", inputBrief);
+        formdata.append("client_id", res.data?.client_id);
+        axios.post(`/api/v1/machine_details`, formdata).then((res) => {
+          handleShow();
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  const handleRemoveMachine = (index) => {
-    const updatedMachines = machines.filter((_, i) => i !== index);
-    setMachines(updatedMachines);
+  const handleRemoveMachine = (id) => {
+    axios
+      .delete(`/api/v1/machine_details/${id}`)
+      .then((res) => {
+        handleShow();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleEditMachine = (index, machineName, quantity, brief) => {
@@ -57,24 +93,25 @@ export default function MachineDetails() {
   };
 
   const handleUpdateMachine = () => {
-    const updatedMachines = [...machines];
-    updatedMachines[editIndex] = {
-      ...updatedMachines[editIndex],
-      machineName: editedMachineName,
+    const machine = machines[editIndex];
+    const updatedMachine = {
+      name: editedMachineName,
       quantity: editedQuantity,
       brief: editedBrief,
     };
-    setMachines(updatedMachines);
-    setEditIndex(null);
-    setEditedMachineName("");
-    setEditedQuantity("");
-    setEditedBrief("");
-  };
 
-  const handleToggleEnable = (index) => {
-    const updatedMachines = [...machines];
-    updatedMachines[index].enabled = !updatedMachines[index].enabled;
-    setMachines(updatedMachines);
+    axios
+      .put(`/api/v1/machine_details/${machine.id}`, updatedMachine)
+      .then((res) => {
+        handleShow();
+        setEditIndex(null);
+        setEditedMachineName("");
+        setEditedQuantity("");
+        setEditedBrief("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleShowInput = () => {
@@ -198,7 +235,7 @@ export default function MachineDetails() {
                       <>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <span className="text-black text-sm font-medium ml-1">
-                            {machine.machineName}
+                            {machine.name}
                           </span>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
@@ -212,24 +249,11 @@ export default function MachineDetails() {
                           </span>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50 flex items-center gap-2">
-                          <Switch
-                            checked={machine.enabled}
-                            onChange={() => handleToggleEnable(index)}
-                            color={machine.enabled ? "success" : "neutral"}
-                            variant={machine.enabled ? "solid" : "solid"}
-                            slotProps={{
-                              endDecorator: {
-                                sx: {
-                                  minWidth: 24,
-                                },
-                              },
-                            }}
-                          />
                           <button
                             onClick={() =>
                               handleEditMachine(
                                 index,
-                                machine.machineName,
+                                machine.name,
                                 machine.quantity,
                                 machine.brief
                               )
@@ -239,7 +263,7 @@ export default function MachineDetails() {
                             <MdOutlineEdit />
                           </button>
                           <button
-                            onClick={() => handleRemoveMachine(index)}
+                            onClick={() => handleRemoveMachine(machine.id)}
                             className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
                           >
                             <AiOutlineDelete />

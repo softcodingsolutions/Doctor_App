@@ -7,7 +7,7 @@ import TdComponent from "../../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../../components/Admin/PrevPageButton";
 
-function CustomerQuestionsPart1() {
+function CustomerQuestionsPart1({onNext,onBack}) {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem("client_email");
@@ -80,10 +80,9 @@ function CustomerQuestionsPart1() {
     } catch (err) {
       console.error(err);
     } finally {
-      //   navigate("./diagnosis");
       setSelectedCheckboxes([]);
     }
-    navigate("../diagnosis", { state: { email: email } });
+    navigate(onNext(), { state: { email: email } });
   };
 
   useEffect(() => {
@@ -91,12 +90,12 @@ function CustomerQuestionsPart1() {
   }, []);
 
   return (
-    <div className="w-full gap-2 overflow-auto flex rounded-lg bg-card h-[92vh] bg-white flex-wrap content-start p-2 px-4">
+    <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
       <div className="text-xl font-semibold">User Questions:-</div>
-      <div className="flex flex-col rounded-lg bg-card h-[85vh] w-full">
+      <div className="flex flex-col rounded-lg bg-card h-[70vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
-          <div className="animate-fade-left w-full animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
-            <table className="w-full z-0">
+          <div className="animate-fade-left w-full min-h-[450px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
+            <table className="w-full z-0 ">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent
@@ -150,7 +149,7 @@ function CustomerQuestionsPart1() {
             </table>
           </div>
           <div className="flex w-full justify-center gap-3">
-            <PrevPageButton to="../complains" />
+            <PrevPageButton back={onBack} />
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"

@@ -28,33 +28,33 @@ export default function Newcase() {
     <div>
     <form>
         <div className="flex gap-5 m-2">
-            <label>Name </label>
+            <label className="text-lg text-end w-1/3 mr-2">Name </label>
             <input type="text" placeholder="enter name" 
-            className="border-2 rounded-md p-2"
+            className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleName}/>
         </div>
         <div className="flex gap-5 m-2">
-            <label>Mobile Number </label>
+            <label className="text-lg text-end w-1/3 mr-2">Mobile Number </label>
             <input type="text" placeholder="enter number" 
-            className="border-2 rounded-md p-2"
+            className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleMobile}/>
         </div>
         <div className="flex gap-5 m-2">
-            <label>Email id </label>
+            <label className="text-lg text-end w-1/3 mr-2">Email id </label>
             <input type="email" placeholder="enter email" 
-            className="border-2 rounded-md p-2"
+            className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleEmail}/>
         </div>
         <div className="flex gap-5 m-2">
-            <label>Select the Date </label>
+            <label className="text-lg text-end w-1/3 mr-2">Select the Date </label>
             <input type="date" placeholder="select date" 
-            className="border-2 rounded-md p-2"
+            className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleConsulting}/>
         </div>
         <div className="flex gap-5 m-2">
-            <label>Select the Slot </label>
+            <label className="text-lg text-end w-1/3 mr-2">Select the Slot </label>
                 <select
-                className="border-2 rounded-md p-2"
+                className="py-1 px-2 rounded-md border border-black w-[40vh]"
                 onChange={handleSlot}
                 value={slot}>
                     <option value="" disabled>
@@ -64,7 +64,7 @@ export default function Newcase() {
                     <option value="new">New</option>
                 </select>
         </div>
-      <div className="flex w-full justify-start mt-10">
+      <div className="flex w-full justify-center mt-10">
           <button type="submit" className="w-[20rem]  text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105" name="Save & Continue"  style={{ backgroundColor: "black" }} onClick={handleSubmit}>Submit</button>
       </div>
     </form>
