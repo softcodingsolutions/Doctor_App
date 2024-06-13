@@ -1,13 +1,22 @@
+const withMT = require("@material-tailwind/react/utils/withMT");
+const tailwindcssAnimated = require("tailwindcss-animated");
+
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = withMT({
     content: [
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                'architects': ['"Architects Daughter"', 'cursive'],
+                'poppins': ["Poppins", "sans-serif"],
+                'teachers': ["Teachers", "sans-serif"],
+            },
+        },
     },
     plugins: [
-        require("tailwindcss-animated")
+        tailwindcssAnimated,
     ],
-}
+});
