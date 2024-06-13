@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function QueFamilyHistory() {
-  const navigate = useNavigate();
+function QueFamilyHistory({onNext,onBack}) {
   const [getFamily, setGetFamily] = useState([]);
   const email = localStorage.getItem("client_email");
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -28,7 +27,7 @@ function QueFamilyHistory() {
           console.log(err);
         });
       reset();
-      navigate("../complains");
+      onNext();
     } catch (error) {
       console.error(error);
     }
@@ -58,10 +57,10 @@ function QueFamilyHistory() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
           <div className="text-xl font-semibold">Family History</div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center justify-between"
@@ -110,7 +109,7 @@ function QueFamilyHistory() {
                 </div>
               </div>
               <div className="flex w-full justify-center gap-3">
-                <PrevPageButton to="../current-diet" />
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

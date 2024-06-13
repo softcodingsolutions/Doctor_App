@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { MdOutlineEdit } from "react-icons/md";
+import axios from "axios";
 
 export default function DoctorList() {
   const [inputName, setInputName] = useState("");
   const [inputSpecification, setInputSpecification] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [doctors, setDoctors] = useState([]);
-  const [editedName, setEditedName] = useState("");
-  const [editedSpecification, setEditedSpecification] = useState("");
-  const [editedEmail, setEditedEmail] = useState("");
-  const [editIndex, setEditIndex] = useState(null);
   const [inputVisible, setInputVisible] = useState(false);
+  const [role,setRole] = useState('doctor')
+  useEffect(() => {
+    handleShow();
+  }, []);
+
+  const handleShow = () => {
+    axios
+      .get(`api/v1/users`)
+      .then((res) => {
+        console.log(res);
+        setDoctors(res.data.users);
+        console.log(res.data.users,"USERs");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   function handleNameChange(e) {
     setInputName(e.target.value);
@@ -36,33 +49,44 @@ export default function DoctorList() {
       setInputName("");
       setInputSpecification("");
       setInputEmail("");
+
     }
-  }
+     axios
+        .get(`/api/v1/users/app_creds`)
+        .then((res) => {
+          console.log(res);
+          const formdata = new FormData();
+          formdata.append("user[first_name]", inputName);
+          formdata.append("user[last_name]", inputName);
+          formdata.append("user[email]", inputEmail);
+          formdata.append("user[specification]", inputSpecification);
+          formdata.append("user[role]",role);
+          formdata.append("client_id", res.data?.client_id);
+          axios
+            .post(`/api/v1/users`, formdata)
+            .then((res) => {
+              console.log(res);
+              handleShow();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  
 
   const handleRemoveDoctor = (index) => {
     const updatedDoctors = doctors.filter((_, i) => i !== index);
     setDoctors(updatedDoctors);
-  };
-
-  const handleEditDoctor = (index, name, specification, email) => {
-    setEditIndex(index);
-    setEditedName(name);
-    setEditedSpecification(specification);
-    setEditedEmail(email);
-  };
-
-  const handleUpdateDoctor = () => {
-    const updatedDoctors = [...doctors];
-    updatedDoctors[editIndex] = {
-      name: editedName,
-      specification: editedSpecification,
-      email: editedEmail,
-    };
-    setDoctors(updatedDoctors);
-    setEditIndex(null);
-    setEditedName("");
-    setEditedSpecification("");
-    setEditedEmail("");
+    axios.delete(`/api/v1/users/${index}`).then((res)=>{
+      console.log(res,"Successfully delete the data");
+      handleShow();
+    }).catch((err)=>{
+      console.log(err)
+    })
   };
 
   const handleShowInput = () => {
@@ -72,11 +96,11 @@ export default function DoctorList() {
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
-        <div className="flex flex-col  px-4 py-3 h-full space-y-4">
-          <div className="">
+        <div className="flex flex-col px-4 py-3 h-full space-y-4">
+          <div>
             <button
               onClick={handleShowInput}
-              className="min-w-fit  border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
+              className="min-w-fit border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
             >
               Add Doctor
             </button>
@@ -132,86 +156,35 @@ export default function DoctorList() {
                 </tr>
               </thead>
               <tbody>
-                {doctors.map((doctor, index) => (
-                  <tr key={index} className="map">
-                    {editIndex === index ? (
-                      <>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedName}
-                            onChange={(e) => setEditedName(e.target.value)}
-                            placeholder="Name"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedSpecification}
-                            onChange={(e) =>
-                              setEditedSpecification(e.target.value)
-                            }
-                            placeholder="Specification"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedEmail}
-                            onChange={(e) => setEditedEmail(e.target.value)}
-                            placeholder="Email"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <button onClick={handleUpdateDoctor} className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md">Update</button>
-                          <button onClick={() => setEditIndex(null)} className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md">Cancel</button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.name}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.specification}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.email}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <button
-                            onClick={() => handleRemoveDoctor(index)}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <AiOutlineDelete />
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleEditDoctor(
-                                index,
-                                doctor.name,
-                                doctor.specification,
-                                doctor.email
-                              )
-                            }
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <MdOutlineEdit />
-                          </button>
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))}
+                {doctors
+                  .filter((doctor) => doctor.role === "doctor")
+                  .map((doctor, index) => (
+                    <tr key={index} className="map">
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
+                          {doctor.first_name}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
+                          {doctor.specification}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
+                          {doctor.email}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <button
+                          onClick={() => handleRemoveDoctor(doctor.id)}
+                          className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                        >
+                          <AiOutlineDelete />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

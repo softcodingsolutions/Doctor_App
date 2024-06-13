@@ -6,13 +6,18 @@ export default function MachineTimeslot() {
   const [inputTime, setInputTime] = useState("");
   const [inputSlot, setInputSlot] = useState("select");
   const [inputMachine, setInputMachine] = useState("select");
+  const [inputDoctor, setInputDoctor] = useState("select");
   const [doctors, setDoctors] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editedTime, setEditedTime] = useState("");
   const [editedSlot, setEditedSlot] = useState("");
   const [editedMachine, setEditedMachine] = useState("");
+  const [editedDoctor, setEditedDoctor] = useState("");
   const [inputVisible, setInputVisible] = useState(false);
+  const [doctorName,setDoctorNames] = useState([]);
+  const doctorNames = ["Dr. Smith", "Dr. Jones", "Dr. Williams"]; // Replace with actual doctor names
 
+  
   function handleTimeChange(e) {
     setInputTime(e.target.value);
   }
@@ -25,6 +30,10 @@ export default function MachineTimeslot() {
     setInputMachine(e.target.value);
   }
 
+  function handleDoctorChange(e) {
+    setInputDoctor(e.target.value);
+  }
+
   function formatTime(time) {
     const [hours, minutes] = time.split(":");
     const date = new Date(0, 0, 0, hours, minutes);
@@ -32,16 +41,18 @@ export default function MachineTimeslot() {
   }
 
   function handleAddDoctor() {
-    if (inputTime && inputSlot !== "select" && inputMachine !== "select") {
+    if (inputTime && inputSlot !== "select" && inputMachine !== "select" && inputDoctor !== "select") {
       const newDoctor = {
         time: formatTime(inputTime),
         slot: inputSlot,
         machine: inputMachine,
+        doctor: inputDoctor,
       };
       setDoctors([...doctors, newDoctor]);
       setInputTime("");
       setInputSlot("select");
       setInputMachine("select");
+      setInputDoctor("select");
     }
   }
 
@@ -55,6 +66,7 @@ export default function MachineTimeslot() {
     setEditedTime(doctor.time);
     setEditedSlot(doctor.slot);
     setEditedMachine(doctor.machine);
+    setEditedDoctor(doctor.doctor);
   };
 
   const handleUpdateDoctor = () => {
@@ -63,12 +75,14 @@ export default function MachineTimeslot() {
       time: formatTime(editedTime),
       slot: editedSlot,
       machine: editedMachine,
+      doctor: editedDoctor,
     };
     setDoctors(updatedDoctors);
     setEditIndex(null);
     setEditedTime("");
     setEditedSlot("");
     setEditedMachine("");
+    setEditedDoctor("");
   };
 
   const handleShowInput = () => {
@@ -100,6 +114,22 @@ export default function MachineTimeslot() {
                   <option value="machine1">Machine 1</option>
                   <option value="machine2">Machine 2</option>
                   <option value="machine3">Machine 3</option>
+                </select>
+
+                <select
+                  name="doctor"
+                  value={inputDoctor}
+                  onChange={handleDoctorChange}
+                  className="py-1 px-2 rounded-md border border-black"
+                >
+                  <option value="select" disabled>
+                    Select Doctor
+                  </option>
+                  {doctorNames.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
                 </select>
 
                 <select
@@ -141,6 +171,9 @@ export default function MachineTimeslot() {
                     Machine
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Doctor
+                  </th>
+                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Slot
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
@@ -169,6 +202,23 @@ export default function MachineTimeslot() {
                             <option value="machine1">Machine 1</option>
                             <option value="machine2">Machine 2</option>
                             <option value="machine3">Machine 3</option>
+                          </select>
+                        </td>
+                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          <select
+                            name="doctor"
+                            value={editedDoctor}
+                            onChange={(e) => setEditedDoctor(e.target.value)}
+                            className="py-1 px-2 rounded-md border border-black"
+                          >
+                            <option value="select" disabled>
+                              Select Doctor
+                            </option>
+                            {doctorNames.map((name) => (
+                              <option key={name} value={name}>
+                                {name}
+                              </option>
+                            ))}
                           </select>
                         </td>
                         <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
@@ -215,6 +265,11 @@ export default function MachineTimeslot() {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <span className="text-black text-sm font-medium ml-1">
                             {doctor.machine}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <span className="text-black text-sm font-medium ml-1">
+                            {doctor.doctor}
                           </span>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

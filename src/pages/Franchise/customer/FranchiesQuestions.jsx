@@ -90,11 +90,11 @@ function FranchiesQuestions({onNext,onBack}) {
   }, []);
  
   return (
-    <div className="w-full gap-2 overflow-auto flex rounded-lg bg-card h-[92vh] bg-white flex-wrap content-start p-2 px-4">
+    <div className="w-full gap-2 m-3 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
       <div className="text-xl font-semibold">User Questions:-</div>
-      <div className="flex flex-col rounded-lg bg-card h-[85vh] w-full">
+      <div className="flex flex-col rounded-lg bg-card h-[70vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
-          <div className="animate-fade-left w-full min-h-[500px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
+          <div className="animate-fade-left w-full min-h-[450px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
             <table className="w-full z-0 ">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">

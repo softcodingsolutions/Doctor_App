@@ -7,7 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PrevPageButton from "../../../../components/Admin/PrevPageButton";
 
-function CustomerQuestionsPart2() {
+function CustomerQuestionsPart2({onNext,onBack}) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const navigate = useNavigate();
@@ -78,8 +78,9 @@ function CustomerQuestionsPart2() {
       }
     } catch (err) {
       console.error(err);
+      onNext();
     } finally {
-      navigate("../checkout");
+      onNext();
       setSelectedCheckboxes([]);
     }
   };
@@ -89,11 +90,11 @@ function CustomerQuestionsPart2() {
   }, []);
 
   return (
-    <div className="w-full gap-2 overflow-auto flex rounded-lg bg-card h-[92vh] bg-white flex-wrap content-start p-2 px-4">
+    <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
       <div className="text-xl font-semibold">User Diagnosis:-</div>
-      <div className="flex flex-col rounded-lg bg-card h-[85vh] w-full">
+      <div className="flex flex-col rounded-lg bg-card h-[70vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
-          <div className="animate-fade-left w-full animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
+          <div className="animate-fade-left w-full min-h-[450px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
             <table className="w-full z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -148,7 +149,7 @@ function CustomerQuestionsPart2() {
             </table>
           </div>
           <div className="flex w-full justify-center gap-3">
-            <PrevPageButton to="../diagnosis" />
+            <PrevPageButton back={onBack}/>
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"

@@ -56,10 +56,10 @@ function FranchiesComplains({ onNext, onBack }) {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
           <div className="text-xl font-semibold">Complains</div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center justify-between"

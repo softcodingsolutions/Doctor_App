@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import { useForm } from "react-hook-form";
@@ -7,7 +6,6 @@ import axios from "axios";
 import { FormLabel, Option, Select } from "@mui/joy";
 
 function QueCheckout() {
-  const navigate = useNavigate();
   const email = localStorage.getItem("client_email");
   const { register, handleSubmit, reset } = useForm();
   const [getPackages, setGetPackages] = useState([]);
@@ -55,10 +53,10 @@ function QueCheckout() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
           <div className="text-xl font-semibold">Checkout:-</div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center justify-between"
