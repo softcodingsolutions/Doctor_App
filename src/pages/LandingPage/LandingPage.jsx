@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import Section1 from "./Section1";
 import Section2 from "./Section2";
 import Lenis from "lenis";
+import { StickyNavbar } from "./StickyNavbar";
 
 function LandingPage() {
   const container = useRef();
@@ -23,10 +24,15 @@ function LandingPage() {
   }, []);
 
   return (
-    <main ref={container} className="relative h-[200vh]">
-      <Section1 scrollYProgress={scrollYProgress} />
-      <Section2 scrollYProgress={scrollYProgress} />
-    </main>
+    <>
+      <header>
+        <StickyNavbar />
+      </header>
+      <main ref={container} className="relative">
+        <Section1 scrollYProgress={scrollYProgress} />
+        <Section2 scrollYProgress={scrollYProgress} />
+      </main>
+    </>
   );
 }
 

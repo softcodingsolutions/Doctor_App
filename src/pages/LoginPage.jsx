@@ -7,9 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../schemas/LoginSchema";
 import axios from "axios";
 import Swal from "sweetalert2";
+import icons_slime from "../assets/images/icons_slime.png";
 
 function LoginPage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,40 +23,43 @@ function LoginPage() {
   const submittedData = (d) => {
     console.log(d);
 
-    axios.get("/api/v1/users/app_creds").then((res) => {
-      const formData = new FormData();
-      formData.append("email", d.email);
-      formData.append("password", d.password);
-      formData.append("client_id", res.data?.client_id);
-      axios.post("/api/v1/users/login", formData).then((res) => {
-        console.log(res);
-        localStorage.setItem("access_token", res.data?.user?.access_token);
-        localStorage.setItem("role", res.data?.user?.role);
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
+    axios
+      .get("/api/v1/users/app_creds")
+      .then((res) => {
+        const formData = new FormData();
+        formData.append("email", d.email);
+        formData.append("password", d.password);
+        formData.append("client_id", res.data?.client_id);
+        axios.post("/api/v1/users/login", formData).then((res) => {
+          console.log(res);
+          localStorage.setItem("access_token", res.data?.user?.access_token);
+          localStorage.setItem("role", res.data?.user?.role);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: `Welcome ${res.data?.user?.email}!`,
+          });
+          if (res.data?.user?.role === "super_admin") {
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/user/dashboard");
+          }
+          reset();
         });
-        Toast.fire({
-          icon: "success",
-          title: `Welcome ${res.data?.user?.email}!`,
-        });
-        if (res.data?.user?.role === "super_admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/user/dashboard");
-        }
-        reset();
-      });
-    }).catch((err)=>{
+      })
+      .catch((err) => {
         alert(err.message);
-    });
+      });
   };
 
   return (
@@ -63,7 +67,7 @@ function LoginPage() {
       <div className="my-10 flex items-center justify-center  w-[35vh] h-[15vh] shadow-sm bg-white rounded-md">
         <img
           className="w-50 h-24"
-          src="https://slimandsmile.com/assets/admin/global/img/logo.jpg"
+          src={icons_slime}
           alt=""
         />
       </div>
