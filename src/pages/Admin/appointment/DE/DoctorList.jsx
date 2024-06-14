@@ -5,6 +5,7 @@ import axios from "axios";
 export default function DoctorList() {
   const [inputName, setInputName] = useState("");
   const [inputSpecification, setInputSpecification] = useState("");
+  const [inputLastName,setLastName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [inputVisible, setInputVisible] = useState(false);
@@ -29,7 +30,9 @@ export default function DoctorList() {
   function handleNameChange(e) {
     setInputName(e.target.value);
   }
-
+  function handleLastName(e){
+    setLastName(e.target.value);
+  }
   function handleSpecificationChange(e) {
     setInputSpecification(e.target.value);
   }
@@ -57,7 +60,7 @@ export default function DoctorList() {
           console.log(res);
           const formdata = new FormData();
           formdata.append("user[first_name]", inputName);
-          formdata.append("user[last_name]", inputName);
+          formdata.append("user[last_name]", inputLastName);
           formdata.append("user[email]", inputEmail);
           formdata.append("user[specification]", inputSpecification);
           formdata.append("user[role]",role);
@@ -111,7 +114,14 @@ export default function DoctorList() {
                   className="border-2 rounded-md p-2"
                   onChange={handleNameChange}
                   value={inputName}
-                  placeholder="Name"
+                  placeholder="First Name"
+                />
+                <input
+                  type="text"
+                  className="border-2 rounded-md p-2"
+                  onChange={handleLastName}
+                  value={inputLastName}
+                  placeholder="Last Name"
                 />
                 <input
                   className="border-2 rounded-md p-2"

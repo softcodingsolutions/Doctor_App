@@ -1,7 +1,12 @@
-import React, { useState } from "react";
-export default function Consulting() {
+import React, { useState,useEffect } from "react";
+import axios from "axios";
+export default function Consulting(props) {
     const [consultingTime,setConsultingTime] = useState(new Date());
+    const [data,setData] = useState([]);
     const [slot,setSlot] = useState('');
+    useEffect(() => {
+      handleData();
+    }, [props.doctor]);
     const handleConsulting = (e) =>{
         setConsultingTime(e.target.value);
     }
@@ -10,6 +15,28 @@ export default function Consulting() {
     }
     const handleSubmit = (e) =>{
         alert("Yeee")
+    }
+    const handleData = () => {
+      axios
+        .get(`/api/v1/consulting_times/user/${props.doctor}`)
+        .then((res) => {
+          console.log(res.data.consulting_times, "ConsultingTime");
+          setData(res.data.consulting_times);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    function formatTime(time) {
+      try {
+        const date = new Date(time);
+        const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
+        const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedTime;
+      } catch (error) {
+        console.error("Error formatting time:", error);
+        return "Invalid time";
+      }
     }
   return (
     <div>
@@ -32,8 +59,11 @@ export default function Consulting() {
                     <option value="" disabled>
                         Select
                     </option>
-                    <option value="old">Old</option>
-                    <option value="new">New</option>
+                    {data.map((timeSlot)=>(
+                      <option key={timeSlot.id} value={timeSlot.time}>
+                      {formatTime(timeSlot.time)}
+                    </option>
+                    ))}
                 </select>
         </div>
         <div className="flex w-full justify-center mt-10">

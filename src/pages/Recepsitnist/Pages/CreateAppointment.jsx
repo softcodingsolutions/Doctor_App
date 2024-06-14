@@ -1,16 +1,34 @@
 import React,{useState,useEffect} from 'react';
 import Oldcase from './Oldcase';
 import Newcase from './Newcase';
-
+import axios from 'axios';
 export default function CreateAppointment() {
   const [doctorList,setDoctorList] = useState('');
   const [Case,setCase] = useState('new');
+  const [doctorName, setDoctorNames] = useState({});
   const handleDoctorList = (e) =>{
     setDoctorList(e.target.value);
+    console.log(e.target.value)
   }
   const handleCase = (e) =>{
     setCase(e.target.value);
   }
+  useEffect(() => {
+    handleShow();
+  }, []);
+
+  const handleShow = () => {
+    axios
+      .get(`api/v1/users`)
+      .then((res) => {
+        console.log(res);
+        setDoctorNames(res.data.users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="w-full p-5">
     <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -27,11 +45,16 @@ export default function CreateAppointment() {
                       value={doctorList}
                       className="py-1 px-2 rounded-md border border-black w-[40vh]"
                     >
-                      <option value="" disabled>Doctor</option>
-                      <option value="Doctor">ABC</option>
-                      <option value="Nurse">DEF</option>
-                      <option value="Technician">Technician</option>
-                      <option value="Administrator">Administrator</option>
+                    <option value="select" disabled>
+                    Select Doctor
+                  </option>
+                  {Object.values(doctorName)
+                    .filter((doctor) => doctor.role === "doctor")
+                    .map((name) => (
+                      <option key={name.id} value={name.id}>
+                        {name.first_name} {name.last_name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="flex gap-5 m-5">
@@ -46,7 +69,7 @@ export default function CreateAppointment() {
                     </select>
                 </div>
                 <div className="flex gap-5 m-5">
-                 {Case === "old" ? <Oldcase /> : <Newcase />}
+                 {Case === "old" ? <Oldcase doctor={doctorList}/> : <Newcase doctor={doctorList}/>}
                 </div>
             </form>
           </div>

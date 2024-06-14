@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { MdOutlineEdit } from "react-icons/md";
+import axios from "axios";
 
 export default function MachineTimeslot() {
   const [inputTime, setInputTime] = useState("");
@@ -8,16 +8,53 @@ export default function MachineTimeslot() {
   const [inputMachine, setInputMachine] = useState("select");
   const [inputDoctor, setInputDoctor] = useState("select");
   const [doctors, setDoctors] = useState([]);
-  const [editIndex, setEditIndex] = useState(null);
-  const [editedTime, setEditedTime] = useState("");
-  const [editedSlot, setEditedSlot] = useState("");
-  const [editedMachine, setEditedMachine] = useState("");
-  const [editedDoctor, setEditedDoctor] = useState("");
   const [inputVisible, setInputVisible] = useState(false);
-  const [doctorName,setDoctorNames] = useState([]);
-  const doctorNames = ["Dr. Smith", "Dr. Jones", "Dr. Williams"]; // Replace with actual doctor names
+  const [doctorName, setDoctorNames] = useState({});
+  const [machineName, setMachineNames] = useState({});
+  const [data, setData] = useState([]);
 
-  
+  useEffect(() => {
+    handleShow();
+    handleMachineShow();
+    handleData();
+  }, []);
+
+  const handleShow = () => {
+    axios
+      .get(`api/v1/users`)
+      .then((res) => {
+        console.log(res);
+        setDoctorNames(res.data.users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleData = () => {
+    axios
+      .get(`/api/v1/machine_consulting_times`)
+      .then((res) => {
+        console.log(res, "Dataa");
+        setData(res.data.machine_consulting_times);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleMachineShow = () => {
+    axios
+      .get(`/api/v1/machine_details`)
+      .then((res) => {
+        console.log(res.data.machine_details);
+        setMachineNames(res.data.machine_details);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   function handleTimeChange(e) {
     setInputTime(e.target.value);
   }
@@ -35,13 +72,24 @@ export default function MachineTimeslot() {
   }
 
   function formatTime(time) {
-    const [hours, minutes] = time.split(":");
-    const date = new Date(0, 0, 0, hours, minutes);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    try {
+      const date = new Date(time);
+      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
+      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+      return formattedTime;
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return "Invalid time";
+    }
   }
 
   function handleAddDoctor() {
-    if (inputTime && inputSlot !== "select" && inputMachine !== "select" && inputDoctor !== "select") {
+    if (
+      inputTime &&
+      inputSlot !== "select" &&
+      inputMachine !== "select" &&
+      inputDoctor !== "select"
+    ) {
       const newDoctor = {
         time: formatTime(inputTime),
         slot: inputSlot,
@@ -54,35 +102,30 @@ export default function MachineTimeslot() {
       setInputMachine("select");
       setInputDoctor("select");
     }
+    const formdata = new FormData();
+    formdata.append("machine_consulting_time[slot]", inputSlot);
+    formdata.append("machine_consulting_time[time]", inputTime);
+    formdata.append("machine_consulting_time[machine_detail_id]", inputMachine);
+    formdata.append("machine_consulting_time[doctor_id]", inputDoctor);
+    axios
+      .post(`/api/v1/machine_consulting_times?id=${inputDoctor}`, formdata)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const handleRemoveDoctor = (index) => {
     const updatedDoctors = doctors.filter((_, i) => i !== index);
     setDoctors(updatedDoctors);
-  };
-
-  const handleEditDoctor = (index, doctor) => {
-    setEditIndex(index);
-    setEditedTime(doctor.time);
-    setEditedSlot(doctor.slot);
-    setEditedMachine(doctor.machine);
-    setEditedDoctor(doctor.doctor);
-  };
-
-  const handleUpdateDoctor = () => {
-    const updatedDoctors = [...doctors];
-    updatedDoctors[editIndex] = {
-      time: formatTime(editedTime),
-      slot: editedSlot,
-      machine: editedMachine,
-      doctor: editedDoctor,
-    };
-    setDoctors(updatedDoctors);
-    setEditIndex(null);
-    setEditedTime("");
-    setEditedSlot("");
-    setEditedMachine("");
-    setEditedDoctor("");
+    axios.delete(`/api/v1/machine_consulting_times/${index}`).then((res)=>{
+      console.log(res,"DELETE");
+      handleData();
+    }).catch((err)=>{
+      console.log(err);
+    })
   };
 
   const handleShowInput = () => {
@@ -111,9 +154,11 @@ export default function MachineTimeslot() {
                   <option value="select" disabled>
                     Select Machine
                   </option>
-                  <option value="machine1">Machine 1</option>
-                  <option value="machine2">Machine 2</option>
-                  <option value="machine3">Machine 3</option>
+                  {Object.values(machineName).map((name) => (
+                    <option key={name.id} value={name.id}>
+                      {name.name}
+                    </option>
+                  ))}
                 </select>
 
                 <select
@@ -125,11 +170,13 @@ export default function MachineTimeslot() {
                   <option value="select" disabled>
                     Select Doctor
                   </option>
-                  {doctorNames.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
+                  {Object.values(doctorName)
+                    .filter((doctor) => doctor.role === "doctor")
+                    .map((name) => (
+                      <option key={name.id} value={name.id}>
+                        {name.first_name}{name.last_name}
+                      </option>
+                    ))}
                 </select>
 
                 <select
@@ -185,119 +232,36 @@ export default function MachineTimeslot() {
                 </tr>
               </thead>
               <tbody>
-                {doctors.map((doctor, index) => (
+                {data.map((doctor, index) => (
                   <tr key={index} className="map">
-                    {editIndex === index ? (
-                      <>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <select
-                            name="machine"
-                            value={editedMachine}
-                            onChange={(e) => setEditedMachine(e.target.value)}
-                            className="py-1 px-2 rounded-md border border-black"
-                          >
-                            <option value="select" disabled>
-                              Select Machine
-                            </option>
-                            <option value="machine1">Machine 1</option>
-                            <option value="machine2">Machine 2</option>
-                            <option value="machine3">Machine 3</option>
-                          </select>
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <select
-                            name="doctor"
-                            value={editedDoctor}
-                            onChange={(e) => setEditedDoctor(e.target.value)}
-                            className="py-1 px-2 rounded-md border border-black"
-                          >
-                            <option value="select" disabled>
-                              Select Doctor
-                            </option>
-                            {doctorNames.map((name) => (
-                              <option key={name} value={name}>
-                                {name}
-                              </option>
-                            ))}
-                          </select>
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <select
-                            name="slot"
-                            value={editedSlot}
-                            onChange={(e) => setEditedSlot(e.target.value)}
-                            className="py-1 px-2 rounded-md border border-black"
-                          >
-                            <option value="select" disabled>
-                              Select Slot
-                            </option>
-                            <option value="morning">Morning</option>
-                            <option value="afternoon">Afternoon</option>
-                            <option value="evening">Evening</option>
-                          </select>
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="time"
-                            value={editedTime}
-                            onChange={(e) => setEditedTime(e.target.value)}
-                            placeholder="Time"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <button
-                            onClick={handleUpdateDoctor}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            Update
-                          </button>
-                          <button
-                            onClick={() => setEditIndex(null)}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            Cancel
-                          </button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.machine}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.doctor}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.slot}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
-                            {doctor.time}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <button
-                            onClick={() => handleRemoveDoctor(index)}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <AiOutlineDelete />
-                          </button>
-                          <button
-                            onClick={() => handleEditDoctor(index, doctor)}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <MdOutlineEdit />
-                          </button>
-                        </td>
-                      </>
-                    )}
+                    <td className="py-3 px-4 border-b border-b-gray-50">
+                      <span className="text-black text-sm font-medium ml-1">
+                        {doctor.machine_detail.name}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 border-b border-b-gray-50">
+                      <span className="text-black text-sm font-medium ml-1">
+                        {doctor.doctor.first_name} {doctor.doctor.last_name}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 border-b border-b-gray-50">
+                      <span className="text-black text-sm font-medium ml-1">
+                        {doctor.slot}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 border-b border-b-gray-50">
+                      <span className="text-black text-sm font-medium ml-1">
+                        {formatTime(doctor.time)}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 border-b border-b-gray-50">
+                      <button
+                        onClick={() => handleRemoveDoctor(doctor.id)}
+                        className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                      >
+                        <AiOutlineDelete />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

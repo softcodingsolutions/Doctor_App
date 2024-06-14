@@ -1,10 +1,15 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react';
+import axios from 'axios';
 
-export default function Indooractivity() {
+export default function Indooractivity(props) {
     const [consultingTime,setConsultingTime] = useState(new Date());
     const [slot,setSlot] = useState('');
     const [machine,setMachine] = useState('');
     const [machinetime,setMachineTime] = useState('');
+    const [machineName, setMachineNames] = useState({});
+    useEffect(()=>{
+        handleMachineShow();
+    },[])
     const handleConsulting = (e) =>{
         setConsultingTime(e.target.value);
     }
@@ -20,6 +25,19 @@ export default function Indooractivity() {
     const handleSubmit = (e) =>{
         alert("Yeee")
     }
+
+    const handleMachineShow = () => {
+        axios
+          .get(`/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`)
+          .then((res) => {
+            console.log(res)
+            console.log(res.data.machine_details);
+            setMachineNames(res.data.machine_details);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
   return (
     <div>
       <form>
@@ -35,8 +53,11 @@ export default function Indooractivity() {
                     <option value="" disabled>
                         Select
                     </option>
-                    <option value="old">Old</option>
-                    <option value="new">New</option>
+                    {Object.values(machineName).map((name) => (
+                    <option key={name.id} value={name.id}>
+                      {name.name}
+                    </option>
+                  ))}
                 </select>
         </div>
         <div className="flex gap-5 m-2">
