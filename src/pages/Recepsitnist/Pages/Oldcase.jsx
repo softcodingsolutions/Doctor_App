@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Consulting from './Consulting';
 import Indooractivity from './Indooractivity';
 
-export default function Oldcase() {
+export default function Oldcase(props) {
     const [caseNumber,setCaseNumber] = useState ('');
     const [choice,setChoice] = useState('');
     const handleCaseNumber = (e) =>{
@@ -39,8 +39,8 @@ export default function Oldcase() {
                     </select>
                 </div>
                 <div>
-                    {choice === 'consulting' && <Consulting />}
-                    {choice === 'indooractivity' && <Indooractivity />}
+                    {choice === 'consulting' && <Consulting doctor={props.doctor}/>}
+                    {choice === 'indooractivity' && <Indooractivity doctor={props.doctor}/>}
                 </div>
             </form>
           </div>
