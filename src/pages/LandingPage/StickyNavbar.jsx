@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import {
   Navbar,
-  MobileNav,
   Typography,
   Button,
   IconButton,
+  Collapse,
 } from "@material-tailwind/react";
 import icons_slime from "../../assets/images/icons_slime.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,7 +28,10 @@ export function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <Link to="#" className="flex items-center text-base">
+        <Link
+          to="#"
+          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+        >
           Home
         </Link>
       </Typography>
@@ -38,7 +41,10 @@ export function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <Link to="#" className="flex items-center text-base">
+        <Link
+          to="#"
+          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+        >
           About Us
         </Link>
       </Typography>
@@ -48,7 +54,10 @@ export function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <Link to="#" className="flex items-center text-base">
+        <Link
+          to="#"
+          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+        >
           Weight Loss Treatment
         </Link>
       </Typography>
@@ -58,7 +67,10 @@ export function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <Link to="#" className="flex items-center text-base">
+        <Link
+          to="/"
+          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+        >
           Hair & Beauty Treatment
         </Link>
       </Typography>
@@ -68,7 +80,10 @@ export function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <Link to="#" className="flex items-center text-base">
+        <Link
+          to="#"
+          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+        >
           Contact Us
         </Link>
       </Typography>
@@ -88,7 +103,7 @@ export function StickyNavbar() {
               }}
               variant="gradient"
               size="sm"
-              className="hidden lg:inline-block"
+              className="hidden lg:inline-block hover:scale-105"
             >
               <span className="text-sm">Sign in</span>
             </Button>
@@ -132,14 +147,14 @@ export function StickyNavbar() {
           </IconButton>
         </div>
       </div>
-      <MobileNav open={openNav}>
+      <Collapse open={openNav}>
         {navList}
         <div className="flex items-center gap-x-1">
           <Button fullWidth variant="gradient" size="sm">
             <span className="text-sm">Sign in</span>
           </Button>
         </div>
-      </MobileNav>
+      </Collapse>
     </Navbar>
   );
 }
