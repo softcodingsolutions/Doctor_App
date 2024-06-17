@@ -45,7 +45,7 @@ export default function CreateAppointment() {
                       value={doctorList}
                       className="py-1 px-2 rounded-md border border-black w-[40vh]"
                     >
-                    <option value="select" disabled>
+                    <option value="select" selected>
                     Select Doctor
                   </option>
                   {Object.values(doctorName)
