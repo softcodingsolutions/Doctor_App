@@ -14,7 +14,17 @@ export default function Consulting(props) {
         setSlot(e.target.value);
     }
     const handleSubmit = (e) =>{
-        alert("Yeee")
+        e.preventDefault();
+        const formdata = new FormData();
+        formdata.append('appointment[case_number]',props.case);
+        formdata.append('appointment[date]',consultingTime);
+        formdata.append('appointment[doctor_id]',props.doctor);
+        formdata.append('appointment[time]',slot);
+        axios.post(`/api/v1/appointments`, formdata).then((res)=>{
+          console.log(res);
+        }).catch((err)=>{
+          console.log(err);
+        })
     }
     const handleData = () => {
       axios

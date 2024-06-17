@@ -36,10 +36,22 @@ export default function Newcase(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Yeee");
+    const formdata = new FormData();
+    formdata.append('appointment[patient_name]',name);
+    formdata.append('appointment[patient_phone]',mobileNumber);
+    formdata.append('appointment[patient_email]',email);
+    formdata.append('appointment[date]',consultingTime);
+    formdata.append('appointment[doctor_id]',props.doctor);
+    formdata.append('appointment[time]',slot);
+    axios.post(`/api/v1/appointments`, formdata).then((res)=>{
+      console.log(res);
+    }).catch((err)=>{
+      console.log(err);
+    })
   };
 
   const handleData = () => {
+    if(props.doctor != 0){
     axios
       .get(`/api/v1/consulting_times/user/${props.doctor}`)
       .then((res) => {
@@ -49,6 +61,7 @@ export default function Newcase(props) {
       .catch((err) => {
         console.log(err);
       });
+    }
   };
   function formatTime(time) {
     try {
