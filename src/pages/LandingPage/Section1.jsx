@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Carousel, IconButton } from "@material-tailwind/react";
 import { motion, useTransform } from "framer-motion";
 import image1 from "./../../assets/images/image1.jpg";
@@ -8,12 +7,11 @@ import image4 from "./../../assets/images/image4.jpg";
 import image5 from "./../../assets/images/image5.jpg";
 
 function Section1({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, -2]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
 
   const renderContent = (image, text1, text2, text3, text4, key) => (
     <div key={key} className="relative h-full">
-      <img src={image} alt={key} className="object-cover h-full w-full" />
+      <img src={image} alt={key} className="object-cover h-full w-screen" />
       <div className="absolute text-white top-72 right-20 bg-opacity-50 space-y-8">
         <div
           key={`${key}-1`}
@@ -35,7 +33,7 @@ function Section1({ scrollYProgress }) {
 
   return (
     <motion.div
-      style={{ scale, rotate }}
+      style={{ scale }}
       className="sticky top-0 h-screen flex flex-col items-center justify-center text-white"
     >
       <Carousel
