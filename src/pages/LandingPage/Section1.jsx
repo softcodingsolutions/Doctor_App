@@ -8,10 +8,8 @@ import image4 from "./../../assets/images/image4.jpg";
 import image5 from "./../../assets/images/image5.jpg";
 
 function Section1({ scrollYProgress }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, -5]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, -2]);
 
   const renderContent = (image, text1, text2, text3, text4, key) => (
     <div key={key} className="relative h-full">
@@ -40,11 +38,9 @@ function Section1({ scrollYProgress }) {
       style={{ scale, rotate }}
       className="sticky top-0 h-screen flex flex-col items-center justify-center text-white"
     >
-      
       <Carousel
         autoplay={true}
         loop={true}
-        onChange={(newIndex) => setActiveIndex(newIndex)}
         prevArrow={({ handlePrev }) => (
           <IconButton
             variant="text"
@@ -112,40 +108,35 @@ function Section1({ scrollYProgress }) {
           "Weight",
           "Loss",
           "Ayurvedic Treatments",
-          "We provide 100% Ayurvedic FDA Approved Medicines for Weight Loss.",
-          `${activeIndex}-1`
+          "We provide 100% Ayurvedic FDA Approved Medicines for Weight Loss."
         )}
         {renderContent(
           image2,
           "Personalized ",
           "Diet",
           "Just For You",
-          "Make your own Password to Lose your Own Weight - Because you are different!",
-          `${activeIndex}-2`
+          "Make your own Password to Lose your Own Weight - Because you are different!"
         )}
         {renderContent(
           image3,
           "Experienced ",
           "Experts",
           "To Help You",
-          "We have been helping patients loose weight using authentic methods with no side effects!",
-          `${activeIndex}-3`
+          "We have been helping patients loose weight using authentic methods with no side effects!"
         )}
         {renderContent(
           image4,
           "Successful ",
           "Results",
           "For 21 Years",
-          "Till date we have helped over 10,000 patients to successfully lose weight, with 57 Kgs being maximum weight lose in a single patient.",
-          `${activeIndex}-3`
+          "Till date we have helped over 10,000 patients to successfully lose weight, with 57 Kgs being maximum weight lose in a single patient."
         )}
         {renderContent(
           image5,
           "Our ",
           "Presence",
           "Across Gujarat",
-          "We have 6 clinics across Gujarat providing online consultation across the world to help overweight patients.",
-          `${activeIndex}-3`
+          "We have 6 clinics across Gujarat providing online consultation across the world to help overweight patients."
         )}
       </Carousel>
     </motion.div>

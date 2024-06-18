@@ -2,6 +2,10 @@ import { useScroll } from "framer-motion";
 import { useEffect, useRef } from "react";
 import Section1 from "./Section1";
 import Section2 from "./Section2";
+import Section3 from "./Section3";
+import Section4 from "./Section4";
+import Section5 from "./Section5";
+import Section6 from "./Section6";
 import Lenis from "lenis";
 import { StickyNavbar } from "./StickyNavbar";
 
@@ -28,9 +32,13 @@ function LandingPage() {
       <header>
         <StickyNavbar />
       </header>
-      <main ref={container} className="relative">
+      <main ref={container} className="relative h-[600vh]">
         <Section1 scrollYProgress={scrollYProgress} />
         <Section2 scrollYProgress={scrollYProgress} />
+        <Section3 scrollYProgress={scrollYProgress} />
+        <Section4 scrollYProgress={scrollYProgress} />
+        <Section5 scrollYProgress={scrollYProgress} />
+        <Section6 scrollYProgress={scrollYProgress} />
       </main>
     </>
   );
