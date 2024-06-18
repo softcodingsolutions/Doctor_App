@@ -30,7 +30,7 @@ export function StickyNavbar() {
       >
         <Link
           to="#"
-          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           Home
         </Link>
@@ -43,7 +43,7 @@ export function StickyNavbar() {
       >
         <Link
           to="#"
-          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           About Us
         </Link>
@@ -56,7 +56,7 @@ export function StickyNavbar() {
       >
         <Link
           to="#"
-          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           Weight Loss Treatment
         </Link>
@@ -69,7 +69,7 @@ export function StickyNavbar() {
       >
         <Link
           to="/"
-          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           Hair & Beauty Treatment
         </Link>
@@ -82,7 +82,7 @@ export function StickyNavbar() {
       >
         <Link
           to="#"
-          className="flex hover:scale-105 border-black border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           Contact Us
         </Link>
@@ -92,11 +92,11 @@ export function StickyNavbar() {
 
   return (
     <Navbar className="absolute top-0 z-10 h-max max-w-full rounded-none px-2 py-1.5 lg:px-8 lg:py-2.5">
-      <div className="flex items-center justify-between text-blue-gray-900">
+      <div className="flex items-center justify-between  text-blue-gray-900">
         <img src={icons_slime} />
         <div className="flex items-center gap-4">
           <div className="mr-4 hidden lg:block">{navList}</div>
-          <div className="flex items-center gap-x-1">
+          <div className="flex items-center gap-x-1 font-poppins">
             <Button
               onClick={() => {
                 navigate("/login");
