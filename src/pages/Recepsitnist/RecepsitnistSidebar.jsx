@@ -64,7 +64,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   return (
     <div
       className={clsx(
-        "fixed inset-y-0 left-0 bg-card w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-gray-800 text-gray-100",
+        "fixed inset-y-0 left-0 bg-card w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-[#1F2937] text-gray-100",
         showSidebar ? "flex" : "hidden"
       )}
     >
