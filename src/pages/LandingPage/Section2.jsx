@@ -1,7 +1,7 @@
 import { motion, useTransform } from "framer-motion";
 
 function Section2({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
 
   return (
     <motion.div
