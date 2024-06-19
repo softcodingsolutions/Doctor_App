@@ -7,12 +7,11 @@ import TdComponent from "../../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../../components/Admin/PrevPageButton";
 
-function CustomerQuestionsPart1({onNext,onBack}) {
+function CustomerQuestionsPart1({ onNext, onBack }) {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem("client_email");
   const navigate = useNavigate();
-  console.log("id of the user", email);
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -92,7 +91,7 @@ function CustomerQuestionsPart1({onNext,onBack}) {
   return (
     <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
       <div className="text-xl font-semibold">User Questions:-</div>
-      <div className="flex flex-col rounded-lg bg-card h-[70vh] w-full">
+      <div className="flex flex-col rounded-lg bg-card h-[72vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
           <div className="animate-fade-left w-full min-h-[450px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
             <table className="w-full z-0 ">
@@ -148,7 +147,7 @@ function CustomerQuestionsPart1({onNext,onBack}) {
               </tbody>
             </table>
           </div>
-          <div className="flex w-full justify-center gap-3">
+          <div className="flex w-full justify-center gap-3 ">
             <PrevPageButton back={onBack} />
             <SaveUserDetailsButton
               function={handleSave}

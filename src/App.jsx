@@ -110,6 +110,8 @@ function App() {
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>
           <Route path="dashboard" element={<AdminDashboard />} />
+
+          {/* new user */}
           <Route path="new-user" element={<NewCustomer />}>
             <Route
               path="general-details"
@@ -122,9 +124,12 @@ function App() {
             <Route path="diagnosis" element={<CustomerQuestionsPart2 />} />
             <Route path="checkout" element={<QueCheckout />} />
           </Route>
+
+          {/* create role */}
           <Route path="create-role" element={<CreateRole />}>
             <Route path="role-assign" element={<RoleAssign />} />
-          </Route> 
+          </Route>
+
           {/* customers */}
           <Route path="customers" element={<AdminCustomers />}>
             <Route path="all-users" element={<CustomerAllUsers />} />
@@ -132,6 +137,8 @@ function App() {
               <Route path="profile" element={<ReportProfile />} />
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
+
+              {/* customer treatment */}
               <Route path="treatment" element={<ReportTreatment />}>
                 <Route path="medicine" element={<RTreatmentMedicine />} />
                 <Route path="diet" element={<RTreatmentDiet />} />
@@ -140,6 +147,7 @@ function App() {
                 <Route path="dos" element={<RTreatmentDos />} />
                 <Route path="donts" element={<RTreatmentDont />} />
               </Route>
+
               <Route path="lab-tests" element={<TreatmentLabTests />} />
               <Route path="progress-report" element={<ReportProgress />} />
               <Route path="package" element={<ReportPackage />} />
@@ -178,6 +186,8 @@ function App() {
             <Route path="family-reason" element={<TreatmentFamilyReason />} />
             <Route path="complains" element={<TreatmentComplains />} />
           </Route>
+
+          {/* list follow up */}
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
 
           {/* appointment */}
@@ -191,7 +201,7 @@ function App() {
         <Route path="recepsitnist" element={<RecepsitnistMain />}>
           <Route path="appointment" element={<Appointment />}>
             <Route path="create-appointment" element={<CreateAppointment />} />
-            <Route path="medical-inventory" element={<MedicalInventory />}/>
+            <Route path="medical-inventory" element={<MedicalInventory />} />
             <Route path="add-customer" element={<AddCustomer />} />
           </Route>
         </Route>
@@ -209,7 +219,10 @@ function App() {
             <Route path="all-users" element={<FranchiseAllCustomers />} />
           </Route>
           <Route path="new-user" element={<FranchiseNewcustomer />}>
-            <Route path="general-details" element={<FranchiesGeneraldetails />}/>
+            <Route
+              path="general-details"
+              element={<FranchiesGeneraldetails />}
+            />
             <Route path="current-diet" element={<FranchiesCurrentdiet />} />
             <Route path="family-history" element={<FranchiesFamilyhistory />} />
             <Route path="complains" element={<FranchiesComplains />} />

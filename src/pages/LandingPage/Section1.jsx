@@ -7,12 +7,16 @@ import image4 from "./../../assets/images/image4.jpg";
 import image5 from "./../../assets/images/image5.jpg";
 
 function Section1({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.45]);
 
   const renderContent = (image, text1, text2, text3, text4, key) => (
     <div key={key} className="relative h-full">
       <img src={image} alt={key} className="object-cover h-full w-screen" />
-      <div className="absolute text-white top-72 right-20 bg-opacity-50 space-y-8">
+      <div
+        className={`absolute text-white top-72 ${
+          text1 === "Our " || text1 === "Successful " || text1 === "Personalized " ? "left-28" : "right-10"
+        } bg-opacity-50 space-y-8`}
+      >
         <div
           key={`${key}-1`}
           className="animate-fade-down animate-normal animate-once animate-ease-out animate-delay-300 text-7xl font-semibold font-architects"

@@ -1,42 +1,7 @@
-import { Link, Outlet, useOutletContext } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useEffect, useRef, useState } from "react";
-import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import { masterButtons } from "../../constants/admin/AdminConstants";
-
-const TRANSLATE_AMOUNT = 250;
+import { Outlet, useOutletContext } from "react-router-dom";
 
 function AdminAppointment() {
   const context = useOutletContext();
-  const [selectedId, setSelectedId] = useState(
-    localStorage.getItem("selectedMaster_id")
-      ? localStorage.getItem("selectedMaster_id")
-      : "1"
-  );
-  const [translate, setTranslate] = useState(0);
-  const [isLeftVisible, setIsLeftVisible] = useState(false);
-  const [isRightVisible, setIsRightVisible] = useState(true);
-  const containerRef = useRef();
-
-  useEffect(() => {
-    if (containerRef == null) return;
-
-    const observer = new ResizeObserver((entries) => {
-      const container = entries[0]?.target;
-      if (container == null) return;
-
-      setIsLeftVisible(translate > 0);
-      setIsRightVisible(
-        translate + container.clientWidth < container.scrollWidth
-      );
-    });
-
-    observer.observe(containerRef.current);
-    localStorage.setItem("selectedMaster_id", selectedId);
-    return () => {
-      observer.disconnect();
-    };
-  }, [translate, selectedId]);
 
   return (
     <div className="flex w-full">
@@ -45,16 +10,16 @@ function AdminAppointment() {
       </div>
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-full sm:flex p-2 items-end">
-          <div
-            ref={containerRef}
-            className="sm:flex-grow flex justify-between overflow-x-hidden"
+          <button
+            onClick={context[0]}
+            type="button"
+            className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
           >
-            <div
-              style={{ transform: `translateX(-${translate}px)` }}
-              className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"
-            >
-            </div>
-          </div>
+            <img
+              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+              alt=""
+            />
+          </button>
         </div>
         <Outlet />
       </div>
@@ -62,4 +27,4 @@ function AdminAppointment() {
   );
 }
 
-export default AdminAppointment ;
+export default AdminAppointment;
