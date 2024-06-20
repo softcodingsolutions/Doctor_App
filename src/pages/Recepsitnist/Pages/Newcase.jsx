@@ -3,9 +3,6 @@ import axios from 'axios';
 
 export default function Newcase(props) {
   console.log(props.doctor);
-  const [name, setName] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [email, setEmail] = useState('');
   const [consultingTime, setConsultingTime] = useState(new Date());
   const [data, setData] = useState([]);
   const [slot, setSlot] = useState('');
@@ -22,29 +19,19 @@ export default function Newcase(props) {
     setSlot(e.target.value);
   };
 
-  const handleName = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleMobile = (e) => {
-    setMobileNumber(e.target.value);
-  };
-
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    formdata.append('appointment[patient_name]',name);
-    formdata.append('appointment[patient_phone]',mobileNumber);
-    formdata.append('appointment[patient_email]',email);
     formdata.append('appointment[date]',consultingTime);
     formdata.append('appointment[doctor_id]',props.doctor);
     formdata.append('appointment[time]',slot);
+    formdata.append('appointment[user_id]',props.user);
     axios.post(`/api/v1/appointments`, formdata).then((res)=>{
       console.log(res);
+      alert("Successfully created Your Appointment!");
+      setConsultingTime();
+      setSlot('');
     }).catch((err)=>{
       console.log(err);
     })
@@ -81,19 +68,19 @@ export default function Newcase(props) {
           <label className="text-lg text-end w-1/3 mr-2">Name </label>
           <input type="text" placeholder="enter name"
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            onChange={handleName} />
+            value={props.name} />
         </div>
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">Mobile Number </label>
           <input type="text" placeholder="enter number"
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            onChange={handleMobile} />
+            value={props.number} />
         </div>
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">Email id </label>
           <input type="email" placeholder="enter email"
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            onChange={handleEmail} />
+            value={props.email} />
         </div>
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">Select the Date </label>
