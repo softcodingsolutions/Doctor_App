@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 export default function Consulting(props) {
+  console.log(props.user);
   const [consultingTime, setConsultingTime] = useState(new Date());
   const [data, setData] = useState([]);
   const [slot, setSlot] = useState("");
@@ -12,7 +13,7 @@ export default function Consulting(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    formdata.append("appointment[case_number]", props.case);
+    formdata.append("appointment[user_id]",props.user);
     formdata.append("appointment[date]", consultingTime);
     formdata.append("appointment[doctor_id]", props.doctor);
     formdata.append("appointment[time]", slot);
@@ -20,6 +21,7 @@ export default function Consulting(props) {
       .post(`/api/v1/appointments`, formdata)
       .then((res) => {
         console.log(res);
+        alert("Successfully created Appointment!");
       })
       .catch((err) => {
         console.log(err);

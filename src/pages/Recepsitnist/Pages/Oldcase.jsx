@@ -28,8 +28,8 @@ export default function Oldcase(props) {
                     </select>
                 </div>
                 <div>
-                    {choice === 'consulting' && <Consulting doctor={props.doctor} />}
-                    {choice === 'indooractivity' && <Indooractivity doctor={props.doctor} />}
+                    {choice === 'consulting' && <Consulting doctor={props.doctor} user={props.user} />}
+                    {choice === 'indooractivity' && <Indooractivity doctor={props.doctor} user={props.user}/>}
                 </div>
             </form>
         </div>

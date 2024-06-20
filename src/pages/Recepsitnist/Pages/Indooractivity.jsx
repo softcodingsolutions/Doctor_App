@@ -28,7 +28,24 @@ export default function Indooractivity(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Yeee");
+    const formdata = new FormData();
+    formdata.append("appointment[user_id]",props.user);
+    formdata.append("appointment[date]", consultingTime);
+    formdata.append("appointment[doctor_id]", props.doctor);
+    formdata.append("appointment[time]", slot);
+    formdata.append("appointment[machine_id]",machine);
+    axios
+      .post(`/api/v1/appointments`, formdata)
+      .then((res) => {
+        console.log(res);
+        alert("Successfully created Appointment!");
+        setMachine('');
+        setConsultingTime(new Date());
+        setSlot('');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleMachineShow = () => {
@@ -37,6 +54,7 @@ export default function Indooractivity(props) {
       .then((res) => {
         const machineDetails = res.data.consulting_times.map(item => item.machine_detail);
         setMachineDetails(machineDetails);
+        console.log(res,"Machine details")
       })
       .catch((err) => {
         console.log(err);
@@ -116,6 +134,7 @@ export default function Indooractivity(props) {
         <div className="flex w-full justify-center mt-10">
           <button
             type="submit"
+            onClick={handleSubmit}
             className="w-[20rem] text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
             style={{ backgroundColor: "black" }}>
             Submit
