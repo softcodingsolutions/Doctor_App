@@ -3,26 +3,15 @@ import Consulting from './Consulting';
 import Indooractivity from './Indooractivity';
 
 export default function Oldcase(props) {
-    const [caseNumber,setCaseNumber] = useState ('');
-    const [choice,setChoice] = useState('');
-    const handleCaseNumber = (e) =>{
-        setCaseNumber(e.target.value);
-    }
-    const handleChoice = (e) =>{
+    const [choice, setChoice] = useState('');
+    
+    const handleChoice = (e) => {
         setChoice(e.target.value);
     }
-  return (
 
-          <div>
+    return (
+        <div>
             <form>
-                <div className="flex gap-5 m-2">
-                    <label className="text-lg text-end w-1/3 mr-2">Enter Case Number/Mobile Number: </label>
-                    <input type='text' onChange={handleCaseNumber}
-                    className="py-1 px-2 rounded-md border border-black w-[40vh] "
-                    placeholder='Enter Case number' 
-                    required/>
-                    
-                </div>
                 <div className="flex gap-5 m-2">
                     <label className="text-lg text-end w-1/3 mr-2">Select Choice: </label>
                     <select
@@ -30,19 +19,19 @@ export default function Oldcase(props) {
                         onChange={handleChoice}
                         value={choice}
                         required
-                      >
+                    >
                         <option value="" disabled>
                           Select
                         </option>
-                        <option value="consulting">Cosulting</option>
+                        <option value="consulting">Consulting</option>
                         <option value="indooractivity">Indoor Activity</option>
                     </select>
                 </div>
                 <div>
-                    {choice === 'consulting' && <Consulting doctor={props.doctor} case={caseNumber}/>}
-                    {choice === 'indooractivity' && <Indooractivity doctor={props.doctor}/>}
+                    {choice === 'consulting' && <Consulting doctor={props.doctor} />}
+                    {choice === 'indooractivity' && <Indooractivity doctor={props.doctor} />}
                 </div>
             </form>
-          </div>
-  )
+        </div>
+    )
 }
