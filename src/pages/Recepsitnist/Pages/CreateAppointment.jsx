@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
+
 export default function CreateAppointment() {
   const [doctorList, setDoctorList] = useState("");
   const [Case, setCase] = useState("new");
