@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 
 export default function DoctorList() {
   const [inputName, setInputName] = useState("");
   const [inputSpecification, setInputSpecification] = useState("");
-  const [inputLastName,setLastName] = useState("");
+  const [inputLastName, setLastName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [inputVisible, setInputVisible] = useState(false);
-  const [role,setRole] = useState('doctor')
-  useEffect(() => {
-    handleShow();
-  }, []);
+  const [role, setRole] = useState("doctor");
 
   const handleShow = () => {
     axios
@@ -20,7 +17,7 @@ export default function DoctorList() {
       .then((res) => {
         console.log(res);
         setDoctors(res.data.users);
-        console.log(res.data.users,"USERs");
+        console.log(res.data.users, "USERs");
       })
       .catch((err) => {
         console.log(err);
@@ -30,9 +27,11 @@ export default function DoctorList() {
   function handleNameChange(e) {
     setInputName(e.target.value);
   }
-  function handleLastName(e){
+
+  function handleLastName(e) {
     setLastName(e.target.value);
   }
+
   function handleSpecificationChange(e) {
     setInputSpecification(e.target.value);
   }
@@ -52,49 +51,54 @@ export default function DoctorList() {
       setInputName("");
       setInputSpecification("");
       setInputEmail("");
-
     }
-     axios
-        .get(`/api/v1/users/app_creds`)
-        .then((res) => {
-          console.log(res);
-          const formdata = new FormData();
-          formdata.append("user[first_name]", inputName);
-          formdata.append("user[last_name]", inputLastName);
-          formdata.append("user[email]", inputEmail);
-          formdata.append("user[specification]", inputSpecification);
-          formdata.append("user[role]",role);
-          formdata.append("client_id", res.data?.client_id);
-          axios
-            .post(`/api/v1/users`, formdata)
-            .then((res) => {
-              console.log(res);
-              handleShow();
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  
+    axios
+      .get(`/api/v1/users/app_creds`)
+      .then((res) => {
+        console.log(res);
+        const formdata = new FormData();
+        formdata.append("user[first_name]", inputName);
+        formdata.append("user[last_name]", inputLastName);
+        formdata.append("user[email]", inputEmail);
+        formdata.append("user[specification]", inputSpecification);
+        formdata.append("user[role]", role);
+        formdata.append("client_id", res.data?.client_id);
+        axios
+          .post(`/api/v1/users`, formdata)
+          .then((res) => {
+            console.log(res);
+            handleShow();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const handleRemoveDoctor = (index) => {
     const updatedDoctors = doctors.filter((_, i) => i !== index);
     setDoctors(updatedDoctors);
-    axios.delete(`/api/v1/users/${index}`).then((res)=>{
-      console.log(res,"Successfully delete the data");
-      handleShow();
-    }).catch((err)=>{
-      console.log(err)
-    })
+    axios
+      .delete(`/api/v1/users/${index}`)
+      .then((res) => {
+        console.log(res, "Successfully delete the data");
+        handleShow();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleShowInput = () => {
     setInputVisible(!inputVisible);
   };
+
+  useEffect(() => {
+    handleShow();
+  }, []);
 
   return (
     <div className="w-full p-2">

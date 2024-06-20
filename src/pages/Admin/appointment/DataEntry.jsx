@@ -48,7 +48,7 @@ export default function DataEntry() {
     setSelectedId("4");
   };
 
-  const buttons = () => [
+  const buttons = [
     {
       id: "1",
       name: "Doctor List",
@@ -77,8 +77,8 @@ export default function DataEntry() {
 
   return (
     <div className="w-full ">
-      <div className="grid grid-cols-4  transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-10 p-1 min-w-fit xl:flex">
-        {buttons().map((res) => (
+      <div className="flex transition-transform gap-10 p-1 min-w-fit items-center justify-evenly">
+        {buttons.map((res) => (
           <button
             key={res.id}
             onClick={res.function}
@@ -97,7 +97,7 @@ export default function DataEntry() {
         {doctorlist && <DoctorList />}
         {timeslot && <ConsultingTime />}
         {machines && <MachineDetails />}
-        {machinestime && <MachineTimeslot/>}
+        {machinestime && <MachineTimeslot />}
       </div>
     </div>
   );

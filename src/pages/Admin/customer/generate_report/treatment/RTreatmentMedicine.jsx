@@ -311,6 +311,42 @@ function RTreatmentMedicine() {
                             <Option value="1.5">1½</Option>
                             <Option value="2">2</Option>
                           </Select>
+                          <Select
+                            multiple
+                            placeholder="Select with milk"
+                            renderValue={(selected) => (
+                              <Box sx={{ display: "flex", gap: "0.25rem" }}>
+                                {selected.map((selectedOption, index) => (
+                                  <Chip
+                                    key={index + "1"}
+                                    variant="soft"
+                                    color="primary"
+                                  >
+                                    {selectedOption.label}
+                                  </Chip>
+                                ))}
+                              </Box>
+                            )}
+                            sx={{
+                              minWidth: "15rem",
+                            }}
+                            slotProps={{
+                              listbox: {
+                                sx: {
+                                  width: "100%",
+                                },
+                              },
+                            }}
+                          >
+                            <Option
+                              disabled
+                              style={{ color: "gray", fontWeight: 500 }}
+                            >
+                              With Milk
+                            </Option>
+                            <Option value="yes">Yes</Option>
+                            <Option value="no">No </Option>
+                          </Select>
                         </td>
                       </tr>
                     );
