@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Box from '@mui/joy/Box';
+import Checkbox from '@mui/joy/Checkbox';
 
 export default function Indooractivity(props) {
   const [consultingTime, setConsultingTime] = useState(new Date());
@@ -7,13 +9,26 @@ export default function Indooractivity(props) {
   const [machine, setMachine] = useState('');
   const [machineDetails, setMachineDetails] = useState([]);
   const [filteredTimeSlots, setFilteredTimeSlots] = useState([]);
+  const [machineQuantity, setMachineQuantity] = useState(0); 
+  const [allocatedMachines, setAllocatedMachines] = useState([]);
 
   useEffect(() => {
     handleMachineShow();
+    handleAppointmentCount();
   }, [props.doctor]);
 
   const handleConsulting = (e) => {
     setConsultingTime(e.target.value);
+  };
+
+  const handleAppointmentCount = () => {
+    axios.get(`/api/v1/appointments`).then((res) => {
+      console.log(res, "AppointmentCount");
+      const allocatedMachines = res.data.appointments.map((data) => data.machine_consulting_time_id);
+      setAllocatedMachines(allocatedMachines);
+    }).catch((err) => {
+      console.log(err);
+    });
   };
 
   const handleSlot = (e) => {
@@ -29,11 +44,11 @@ export default function Indooractivity(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    formdata.append("appointment[user_id]",props.user);
+    formdata.append("appointment[user_id]", props.user);
     formdata.append("appointment[date]", consultingTime);
     formdata.append("appointment[doctor_id]", props.doctor);
     formdata.append("appointment[time]", slot);
-    formdata.append("appointment[machine_id]",machine);
+    formdata.append("appointment[machine_consulting_time_id]", machine);
     axios
       .post(`/api/v1/appointments`, formdata)
       .then((res) => {
@@ -52,9 +67,10 @@ export default function Indooractivity(props) {
     axios
       .get(`/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`)
       .then((res) => {
+        console.log(res);
         const machineDetails = res.data.consulting_times.map(item => item.machine_detail);
         setMachineDetails(machineDetails);
-        console.log(res,"Machine details")
+        console.log(res, "Machine details");
       })
       .catch((err) => {
         console.log(err);
@@ -65,8 +81,11 @@ export default function Indooractivity(props) {
     axios
       .get(`/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`)
       .then((res) => {
+        console.log(res,"Filter Time Slots");
         const filteredSlots = res.data.consulting_times.filter(slot => slot.machine_detail.id === parseInt(machineId));
+        const machine = filteredSlots.map(slot => slot.machine_detail.quantity);
         setFilteredTimeSlots(filteredSlots);
+        setMachineQuantity(machine.length > 0 ? machine[0] : 0); 
       })
       .catch((err) => {
         console.log(err);
@@ -130,6 +149,17 @@ export default function Indooractivity(props) {
               </option>
             ))}
           </select>
+        </div>
+        <div className="flex w-full justify-center mt-10">
+          <Box sx={{ display: 'flex', gap: 3 }}>
+            {[...Array(machineQuantity)].map((_, index) => (
+              <Checkbox
+                key={index}
+                variant="solid"
+                defaultChecked={filteredTimeSlots[index] && allocatedMachines.includes(filteredTimeSlots[index].id)}
+              />
+            ))}
+          </Box>
         </div>
         <div className="flex w-full justify-center mt-10">
           <button
