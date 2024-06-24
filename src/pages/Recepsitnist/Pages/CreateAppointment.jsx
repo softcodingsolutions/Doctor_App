@@ -3,8 +3,9 @@ import { useDebounce } from 'use-debounce';
 import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
-
+import { Navigate, useNavigate } from "react-router-dom";
 export default function CreateAppointment() {
+  const navigate = useNavigate();
   const [doctorList, setDoctorList] = useState("");
   const [Case, setCase] = useState("new");
   const [doctorName, setDoctorNames] = useState([]);
@@ -86,6 +87,9 @@ export default function CreateAppointment() {
     handleShow();
   }, []);
 
+  const handleMove = () =>{
+    navigate('../new-user/general-details');
+  }
   return (
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -104,6 +108,7 @@ export default function CreateAppointment() {
               type="button"
               className="w-[10rem] text-white rounded-md border border-gray-500 font-medium text-lg  hover:scale-105"
               name="Save & Continue"
+              onClick={handleMove}
               style={{ backgroundColor: "black" }}
             >
               NEW USER
