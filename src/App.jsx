@@ -84,6 +84,14 @@ import CreateAppointment from "./pages/Recepsitnist/Pages/CreateAppointment";
 import MedicalInventory from "./pages/Recepsitnist/Pages/MedicalInventory";
 import AddCustomer from "./pages/Recepsitnist/Pages/AddCustomer";
 import LandingPage from "./pages/LandingPage/LandingPage";
+import NewUser from "./pages/Recepsitnist/Newuser/NewUser";
+import UserGeneralDetails from "./pages/Recepsitnist/Newuser/UserGeneralDetails";
+import UserCurrentDiet from "./pages/Recepsitnist/Newuser/UserCurrentDiet";
+import UserFamilyHistory from "./pages/Recepsitnist/Newuser/UserFamilyHistory";
+import UserComplains from "./pages/Recepsitnist/Newuser/UserComplains";
+import UserQuestionsPart1 from "./pages/Recepsitnist/Newuser/UserQuestionsPart1";
+import UserQuestionsPart2 from "./pages/Recepsitnist/Newuser/UserQuestionsPart2";
+import UserCheckout from "./pages/Recepsitnist/Newuser/UserCheckout";
 
 function App() {
   return (
@@ -200,9 +208,21 @@ function App() {
         {/* Recepsitnist */}
         <Route path="recepsitnist" element={<RecepsitnistMain />}>
           <Route path="appointment" element={<Appointment />}>
-            <Route path="create-appointment" element={<CreateAppointment />} />
+            <Route path="new-user" element={<NewUser />}>
+                  <Route
+                    path="general-details"
+                    element={<UserGeneralDetails />}
+                  />
+                  <Route path="current-diet" element={<UserCurrentDiet />} />
+                  <Route path="family-history" element={<UserFamilyHistory />} />
+                  <Route path="complains" element={<UserComplains />} />
+                  <Route path="user-questions" element={<UserQuestionsPart1 />} />
+                  <Route path="diagnosis" element={<UserQuestionsPart2 />} />
+                  <Route path="checkout" element={<UserCheckout />} />
+              </Route>
+            <Route path="create-appointment" element={<CreateAppointment />} >
+            </Route>
             <Route path="medical-inventory" element={<MedicalInventory />} />
-            <Route path="add-customer" element={<AddCustomer />} />
           </Route>
         </Route>
 

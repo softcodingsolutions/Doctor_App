@@ -38,12 +38,6 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "appointment/medical-inventory",
       icons: <FaClinicMedical size={18} />,
     },
-    {
-      id: "3",
-      title: "Add Customer",
-      to: "appointment/add-customer",
-      icons: <BsPersonFillAdd size={18} />,
-    },
   ];
 
   

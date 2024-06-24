@@ -74,8 +74,15 @@ export default function MachineTimeslot() {
   function formatTime(time) {
     try {
       const date = new Date(time);
-      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
-      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
       return formattedTime;
     } catch (error) {
       console.error("Error formatting time:", error);
@@ -111,6 +118,7 @@ export default function MachineTimeslot() {
       .post(`/api/v1/machine_consulting_times?id=${inputDoctor}`, formdata)
       .then((res) => {
         console.log(res);
+        handleData();
       })
       .catch((err) => {
         console.log(err);
@@ -120,12 +128,15 @@ export default function MachineTimeslot() {
   const handleRemoveDoctor = (index) => {
     const updatedDoctors = doctors.filter((_, i) => i !== index);
     setDoctors(updatedDoctors);
-    axios.delete(`/api/v1/machine_consulting_times/${index}`).then((res)=>{
-      console.log(res,"DELETE");
-      handleData();
-    }).catch((err)=>{
-      console.log(err);
-    })
+    axios
+      .delete(`/api/v1/machine_consulting_times/${index}`)
+      .then((res) => {
+        console.log(res, "DELETE");
+        handleData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleShowInput = () => {
@@ -174,7 +185,8 @@ export default function MachineTimeslot() {
                     .filter((doctor) => doctor.role === "doctor")
                     .map((name) => (
                       <option key={name.id} value={name.id}>
-                        {name.first_name}{name.last_name}
+                        {name.first_name}
+                        {name.last_name}
                       </option>
                     ))}
                 </select>
@@ -251,7 +263,7 @@ export default function MachineTimeslot() {
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
                       <span className="text-black text-sm font-medium ml-1">
-                        {formatTime(doctor.time)}
+                        {doctor.time}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
