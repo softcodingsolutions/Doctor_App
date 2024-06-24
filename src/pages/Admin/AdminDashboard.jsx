@@ -1,12 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import ThComponent from "../../components/ThComponent";
 import TdComponent from "../../components/TdComponent";
+import axios from "axios";
 
 function AdminDashboard() {
   const [getConsultingTime, setGetConsultingTime] = useState([]);
   const [getMachineTime, setGetMachineTime] = useState([]);
   const context = useOutletContext();
+
+  const handleGetConsultingTime = () => {
+    axios
+      .get(`/api/v1/consulting_times`)
+      .then((res) => {
+        console.log("Consulting Time: ", res.data?.consulting_times);
+        setGetConsultingTime(res.data?.consulting_times);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleGetMachineTime = () => {
+    axios
+      .get(`/api/v1/machine_consulting_times`)
+      .then((res) => {
+        console.log(
+          "Machine Consulting Time: ",
+          res.data?.machine_consulting_times
+        );
+        setGetMachineTime(res.data?.machine_consulting_times);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const formatTime = (isoString) => {
+    const date = new Date(isoString);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+    const strMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+    return `${hours}:${strMinutes} ${ampm}`;
+  };
+
+  useEffect(() => {
+    handleGetConsultingTime();
+    handleGetMachineTime();
+  }, []);
 
   return (
     <div className="flex w-full">
@@ -29,9 +75,9 @@ function AdminDashboard() {
               />
             </button>
           </div>
-          <div className="flex w-full h-full items-center justify-center flex-col gap-1">
+          <div className="flex w-full h-full items-center justify-center gap-1">
             {/* consulting time table */}
-            <div className="flex w-full flex-col items-center p-1 h-1/2">
+            <div className="flex w-full flex-col items-center p-1 h-full">
               <div className="text-2xl font-semibold tracking-wide">
                 Consulting Time Slot
               </div>
@@ -71,7 +117,13 @@ function AdminDashboard() {
                               </div>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.details} />
+                              <TdComponent things={val.user_name} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.slot} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={formatTime(val.time)} />
                             </td>
                           </tr>
                         );
@@ -83,7 +135,7 @@ function AdminDashboard() {
             </div>
 
             {/* machine time table */}
-            <div className="flex w-full flex-col items-center p-1 h-1/2">
+            <div className="flex w-full flex-col items-center p-1 h-full">
               <div className="text-2xl font-semibold tracking-wide">
                 Machine Time Slot
               </div>
@@ -124,7 +176,16 @@ function AdminDashboard() {
                               </div>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.details} />
+                              <TdComponent things={val.doctor?.first_name} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.machine_detail?.name} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.slot} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={formatTime(val.time)} />
                             </td>
                           </tr>
                         );
