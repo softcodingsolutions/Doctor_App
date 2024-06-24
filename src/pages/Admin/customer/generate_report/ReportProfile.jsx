@@ -18,23 +18,23 @@ function ReportProfile() {
             <div className="flex justify-between">
               <div>
                 Gender:{" "}
-                {getCustomer[1].personal_detail &&
-                  getCustomer[1].personal_detail?.gender[0]?.toUpperCase() +
+                {getCustomer[1]?.personal_detail &&
+                  getCustomer[1]?.personal_detail?.gender[0]?.toUpperCase() +
                     getCustomer[1].personal_detail?.gender?.substring(1)}
               </div>
               <div>Customer Type: null</div>
             </div>
             <div className="flex justify-between">
-              <div>Age: {getCustomer[1].personal_detail?.age}</div>
+              <div>Age: {getCustomer[1]?.personal_detail?.age}</div>
               <div>
-                Date: {getCustomer[1].personal_detail?.created_at?.slice(0, 10)}
+                Date: {getCustomer[1]?.personal_detail?.created_at?.slice(0, 10)}
               </div>
             </div>
             <div className="flex justify-between">
               <div>
-                Current Weight: {getCustomer[1].personal_detail?.weight} kg
+                Current Weight: {getCustomer[1]?.personal_detail?.weight} kg
               </div>
-              <div>Height: {getCustomer[1].personal_detail?.height} cm</div>
+              <div>Height: {getCustomer[1]?.personal_detail?.height} cm</div>
             </div>
             <div className="flex justify-between">
               <div>Package: null</div>

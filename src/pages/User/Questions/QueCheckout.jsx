@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FormLabel, Option, Select } from "@mui/joy";
+import { useNavigate } from "react-router-dom";
 
 function QueCheckout() {
+  const navigate = useNavigate();
   const email = localStorage.getItem("client_email");
   const { register, handleSubmit, reset } = useForm();
   const [getPackages, setGetPackages] = useState([]);
@@ -43,8 +45,8 @@ function QueCheckout() {
     } catch (error) {
       console.error(error);
     }
+    navigate("../../admin/customers/all-users");
     reset();
-    navigate("../../customers/all-users");
   };
 
   useEffect(() => {

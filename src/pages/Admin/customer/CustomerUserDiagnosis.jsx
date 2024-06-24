@@ -11,9 +11,9 @@ function CustomerUserDiagnosis() {
 
   const handlegetUser = () => {
     axios
-      .get(`/api/v2/users/${id}`)
+      .get(`/api/v2/users/search?id=${id}`)
       .then((res) => {
-        console.log("User to diagnos", res.data.user);
+        console.log("User to diagnos", res.data);
         setGetCustomer(res.data?.user);
       })
       .catch((err) => {
