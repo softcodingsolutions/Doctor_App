@@ -92,6 +92,7 @@ import UserComplains from "./pages/Recepsitnist/Newuser/UserComplains";
 import UserQuestionsPart1 from "./pages/Recepsitnist/Newuser/UserQuestionsPart1";
 import UserQuestionsPart2 from "./pages/Recepsitnist/Newuser/UserQuestionsPart2";
 import UserCheckout from "./pages/Recepsitnist/Newuser/UserCheckout";
+import GenerateBill from "./pages/Recepsitnist/Pages/GenerateBill";
 
 function App() {
   return (
@@ -208,6 +209,7 @@ function App() {
         {/* Recepsitnist */}
         <Route path="recepsitnist" element={<RecepsitnistMain />}>
           <Route path="appointment" element={<Appointment />}>
+          <Route path="generatebill" element={<GenerateBill />} />
             <Route path="new-user" element={<NewUser />}>
                   <Route
                     path="general-details"

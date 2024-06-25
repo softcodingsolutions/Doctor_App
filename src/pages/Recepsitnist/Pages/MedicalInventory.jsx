@@ -8,9 +8,11 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import MedicalTable from './MedicalTable';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function MedicalInventory() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [bill, setBill] = useState(false);
   const [name, setName] = useState('');
@@ -39,8 +41,7 @@ export default function MedicalInventory() {
   };
 
   const handleBill = () =>{
-    const formdata = new FormData();
-    formdata.append('')
+    navigate(`../generatebill`)
   }
   const handleQuantityChange = (e) => {
     setInputQuantity(e.target.value);
@@ -100,7 +101,7 @@ export default function MedicalInventory() {
               <Button
                 variant="outlined"
                 color="neutral"
-                onClick={() => setBill(true)}
+                onClick={handleBill}
               >
                 Generate Bill
               </Button>
@@ -161,48 +162,6 @@ export default function MedicalInventory() {
                 <Input placeholder='Content' value={content} onChange={handleContent} autoFocus required />
               </FormControl>
               <Button onClick={handleSubmit}>Add</Button>
-            </Stack>
-          </form>
-        </ModalDialog>
-      </Modal>
-      <Modal open={bill} onClose={() => setBill(false)}>
-        <ModalDialog>
-          <form>
-            <Stack spacing={2}>
-              <FormControl>
-                <FormLabel>Case Number</FormLabel>
-                <Input placeholder='Enter CaseNumber' onChange={(e) => setCase(e.target.value)} autoFocus required />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Select Medicine</FormLabel>
-                <select
-                  className="py-1 px-2 rounded-md border border-black"
-                  onChange={(e) => setMedicine(e.target.value)}
-                  value={medicine}
-                  required
-                >
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  {data.map(item => (
-                    <option key={item.id} value={item.id}>{item.name}</option>
-                  ))}
-                </select>
-              </FormControl>
-              <FormControl>
-                <div className="flex gap-3">
-                  <FormLabel>Quantity</FormLabel>
-                  <input
-                    className="border-2 rounded-md p-2"
-                    type="number"
-                    onChange={(e) => setQuantityBill(e.target.value)}
-                    value={quantityBill}
-                    placeholder="Quantity"
-                    min="0"
-                  />
-                </div>
-              </FormControl>
-              <Button onClick={handleBill}>Submit</Button>
             </Stack>
           </form>
         </ModalDialog>

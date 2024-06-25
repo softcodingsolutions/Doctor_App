@@ -114,16 +114,6 @@ export default function Indooractivity(props) {
     return `${year}-${month}-${day}`;
   };
 
-  function formatTime(time) {
-    try {
-      const date = new Date(time);
-      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
-      return new Intl.DateTimeFormat('en-US', options).format(date);
-    } catch (error) {
-      console.error("Error formatting time:", error);
-      return "Invalid time";
-    }
-  }
 
   const renderBoxes = (count, isChecked) => {
     const boxes = [];
