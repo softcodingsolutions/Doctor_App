@@ -20,7 +20,16 @@ function ListFranchise() {
               handleApi={handleAddDiet}
               name="Add Franchise"
               title="Add New Franchise"
-              franchise_name="Franchise Name"
+              first_name="First Name"
+              last_name="Last Name"
+              email="Email"
+              mobile="Mobile"
+              city="City"
+              state="State"
+              pincode="Pincode"
+              language="Language"
+              password="Password"
+              
             />
           </div>
 
@@ -33,6 +42,11 @@ function ListFranchise() {
                     name="No."
                   />
                   <ThComponent name="Franchise Name" />
+                  <ThComponent name="Email" />
+                  <ThComponent name="Mobile No." />
+                  <ThComponent name="Language" />
+                  {/* <ThComponent name="Possibility Group" /> */}
+                  <ThComponent name="City" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -53,6 +67,18 @@ function ListFranchise() {
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
                           <div className="flex items-center">{index + 1}</div>
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.medicine_content} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.medicine_content} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.medicine_content} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.medicine_content} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.medicine_content} />

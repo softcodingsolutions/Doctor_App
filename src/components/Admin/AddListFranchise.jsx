@@ -1,5 +1,6 @@
 import { Add } from "@mui/icons-material";
 import {
+  Box,
   Button,
   DialogTitle,
   FormControl,
@@ -50,17 +51,28 @@ function AddListFranchise(props) {
             }}
           >
             <Stack spacing={3}>
-              <FormControl>
-                <FormLabel>{props.franchise_name} :-</FormLabel>
-                <Input
-                  placeholder="Name..."
-                  name={`franchise_name`}
-                  {...register(`franchise_name`)}
-                  autoFocus
-                  required
-                />
-              </FormControl>
-
+              <Box className="flex space-x-4">
+                <FormControl>
+                  <FormLabel>{props.first_name} :-</FormLabel>
+                  <Input
+                    placeholder="Name..."
+                    name={`first_name`}
+                    {...register(`first_name`)}
+                    autoFocus
+                    required
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>{props.last_name} :-</FormLabel>
+                  <Input
+                    placeholder="Name..."
+                    name={`last_name`}
+                    {...register(`last_name`)}
+                    autoFocus
+                    required
+                  />
+                </FormControl>
+              </Box>
               <Button type="submit">Submit</Button>
             </Stack>
           </form>
