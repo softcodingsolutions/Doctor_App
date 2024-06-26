@@ -66,19 +66,19 @@ function AddNewWeight(props) {
               </FormControl>
 
               <FormControl className="w-1/2">
-                  <FormLabel>{props.reason_for} :-</FormLabel>
-                  <Select
-                    sx={{ width: '200%'}}
-                    required
-                    placeholder="Choose gender..."
-                    name={`reason_for`}
-                    {...register(`reason_for`)}
-                  >
-                    <Option value="female">Female</Option>
-                    <Option value="male">Male</Option>
-                    <Option value="both">Both</Option>
-                  </Select>
-                </FormControl>
+                <FormLabel>{props.reason_for} :-</FormLabel>
+                <Select
+                  sx={{ width: "200%" }}
+                  required
+                  placeholder="Choose gender..."
+                  name={`reason_for`}
+                  {...register(`reason_for`)}
+                >
+                  <Option value="female">Female</Option>
+                  <Option value="male">Male</Option>
+                  <Option value="both">Both</Option>
+                </Select>
+              </FormControl>
 
               <FormControl>
                 <FormLabel>{props.reason_comments} :-</FormLabel>

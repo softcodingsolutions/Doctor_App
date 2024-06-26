@@ -2,12 +2,62 @@ import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import AddListFranchise from "../../../components/Admin/AddListFranchise";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function ListFranchise() {
   const [getFranchise, setGetFranchise] = useState([]);
 
-  const handleAddDiet = () => {};
+  const handleAddFranchise = async (d) => {
+    console.log(d);
+    await axios
+      .get("/api/v1/users/app_creds")
+      .then((res) => {
+        axios.post("/api/v1/users", {
+          user: {
+            first_name: d.first_name,
+            last_name: d.last_name,
+            email: d.email,
+            phone_number: d.mobile,
+            address: d.address,
+            password: d.password,
+            pincode: d.pincode,
+            state: d.state,
+            amount: d.amount,
+            commission: d.commission,
+            possibility_group: d.possibility_group,
+            role: d.type_of_admin,
+          },
+          personal_detail: {
+            city: d.city,
+          },
+          client_id: res.data?.client_id,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleGetFranchise = () => {
+    axios
+      .get("/api/v1/users")
+      .then((res) => {
+        // console.log(res?.data?.users);
+        const filterUser = res?.data?.users.filter((user) => {
+          return user.commission != null;
+        });
+        console.log(filterUser);
+        setGetFranchise(filterUser);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    handleGetFranchise();
+  }, []);
 
   return (
     <div className="w-full p-2">
@@ -17,7 +67,7 @@ function ListFranchise() {
             <div className="font-semibold text-xl">Franchise List</div>
             <div className="flex-grow" />
             <AddListFranchise
-              handleApi={handleAddDiet}
+              handleApi={handleAddFranchise}
               name="Add Franchise"
               title="Add New Franchise"
               first_name="First Name"
@@ -29,7 +79,10 @@ function ListFranchise() {
               pincode="Pincode"
               language="Language"
               password="Password"
-              
+              amount="Amount"
+              commission="Commission"
+              type_of_admin="Admin Type"
+              possibility_group="Possibility Group"
             />
           </div>
 
@@ -43,10 +96,13 @@ function ListFranchise() {
                   />
                   <ThComponent name="Franchise Name" />
                   <ThComponent name="Email" />
+                  <ThComponent name="Password" />
                   <ThComponent name="Mobile No." />
-                  <ThComponent name="Language" />
-                  {/* <ThComponent name="Possibility Group" /> */}
                   <ThComponent name="City" />
+                  <ThComponent name="Possibility Group" />
+                  <ThComponent name="Amount" />
+                  <ThComponent />
+                  <ThComponent />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -56,7 +112,7 @@ function ListFranchise() {
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
-                      colSpan={8}
+                      colSpan={10}
                     >
                       No Franchise Found!
                     </th>
@@ -69,19 +125,43 @@ function ListFranchise() {
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
+                          <TdComponent
+                            things={val.first_name + " " + val.last_name}
+                          />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
+                          <TdComponent things={val.email} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
+                          <TdComponent things={val.password} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
+                          <TdComponent things={val.phone_number} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.medicine_content} />
+                          <TdComponent things={val.personal_detail?.city} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={val.possibility_group ? "Yes" : "No"}
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={val.amount}
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <button
+                                onClick={() => console.log("view details")}
+                                className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-[#33a92b] hover:text-white"
+                              >
+                                View Details
+                              </button>
+                            }
+                          />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
