@@ -27,12 +27,16 @@ function ListFranchise() {
             commission: d.commission,
             possibility_group: d.possibility_group,
             role: d.type_of_admin,
+            show_password: d.password,
           },
           personal_detail: {
             city: d.city,
           },
           client_id: res.data?.client_id,
-        });
+        }).then((res)=>{
+            console.log(res);
+            handleGetFranchise(); 
+        })
       })
       .catch((err) => {
         console.log(err);
@@ -133,7 +137,7 @@ function ListFranchise() {
                           <TdComponent things={val.email} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.password} />
+                          <TdComponent things={val.show_password} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.phone_number} />
@@ -147,9 +151,7 @@ function ListFranchise() {
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={val.amount}
-                          />
+                          <TdComponent things={val.amount} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent

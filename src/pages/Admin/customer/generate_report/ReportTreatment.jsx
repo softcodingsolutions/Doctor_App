@@ -10,6 +10,15 @@ function ReportTreatment() {
   const [getWeightReason, setGetWeightReason] = useState([]);
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [mappingPackages, setMappingPackages] = useState([]);
+  const [storeData, setStoreData] = useState({
+    medicine: [],
+    diet: [],
+    nutrition: [],
+    exercise: [],
+    dos: [],
+    donts: [],
+  });
+
   const context = useOutletContext();
 
   const handleGetTreatmentPackages = () => {
@@ -53,7 +62,7 @@ function ReportTreatment() {
   useEffect(() => {
     handleGetTreatmentPackages();
     handleGetWeightReason();
-  }, []);
+  }, [selectedId]);
 
   return (
     <div className="w-full p-2">
@@ -104,11 +113,13 @@ function ReportTreatment() {
                 })}
               </div>
               <Outlet
-                context={[
+                context={{
                   sendWeightReason,
                   mappingPackages,
                   handleGetWeightReason,
-                ]}
+                  setStoreData,
+                  storeData,
+                }}
               />
             </div>
           </div>

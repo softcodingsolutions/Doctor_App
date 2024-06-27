@@ -9,19 +9,20 @@ import Swal from "sweetalert2";
 import { Box, Chip, Option, Select } from "@mui/joy";
 
 function RTreatmentMedicine() {
-  const context = useOutletContext();
+  const { sendWeightReason, mappingPackages, setStoreData, storeData } =
+    useOutletContext();
   const [getPredictionMedicine, setGetPredictionMedicine] = useState([]);
   const [getMedicines, setGetMedicines] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
 
   const handleGetMedicines = () => {
-    if (context[0]) {
-      const data = context[1].filter((pack) => {
-        return context[0][0] === pack.package.weight_reason;
+    if (sendWeightReason) {
+      const data = mappingPackages.filter((pack) => {
+        return sendWeightReason[0] === pack.package.weight_reason;
       });
-      setGetPredictionMedicine(data[0]?.package?.medicines);
       console.log("Predicted Medicines:", data[0]?.package?.medicines);
+      setGetPredictionMedicine(data[0]?.package?.medicines);
     }
 
     axios
@@ -68,15 +69,21 @@ function RTreatmentMedicine() {
 
     console.log("Selected Medicine: ", selectedMedicine);
     setShowCheckboxes(false);
+
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
-      context[0] === "null" ? null : context[0]
+      sendWeightReason === "null" ? null : sendWeightReason
     );
     formData.append(
       "treatment_package[weight_reason]",
       JSON.stringify(selectedMedicine)
     );
+
+    setStoreData((prev) => ({
+      ...prev,
+      medicine: selectedMedicine,
+    }));
 
     // try {
     //   const response = await axios.post("/api/v1/packages", formData);
@@ -109,8 +116,12 @@ function RTreatmentMedicine() {
   }, [getPredictionMedicine]);
 
   useEffect(() => {
+    console.log("Updated storeData: ", storeData);
+  }, [storeData]);
+
+  useEffect(() => {
     handleGetMedicines();
-  }, [context]);
+  }, [sendWeightReason]);
 
   return (
     <div className="w-full">
@@ -172,7 +183,9 @@ function RTreatmentMedicine() {
                     return (
                       <tr
                         className={`${
-                          getPredictionMedicine.some((med) => med.id === val.id)
+                          getPredictionMedicine?.some(
+                            (med) => med.id === val.id
+                          )
                             ? "bg-gray-400 "
                             : ""
                         } w-full`}
