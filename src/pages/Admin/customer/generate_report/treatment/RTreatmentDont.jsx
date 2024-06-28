@@ -8,18 +8,17 @@ import ThComponent from "../../../../../components/ThComponent";
 import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
 
 function RTreatmentDont() {
-  const context = useOutletContext();
+  const { sendWeightReason, mappingPackages, setStoreData, storeData } =
+    useOutletContext();
   const [getPredictionDonts, setGetPredictionDonts] = useState([]);
   const [getDonts, setGetDonts] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
 
-  console.log(context[1]);
-
   const handleGetDonts = () => {
-    if (context[0]) {
-      const data = context[1].filter((pack) => {
-        return context[0][0] === pack.package.weight_reason;
+    if (sendWeightReason) {
+      const data = mappingPackages.filter((pack) => {
+        return sendWeightReason[0] === pack.package.weight_reason;
       });
       console.log("Predicted Donts:", data[0]);
       setGetPredictionDonts(data[0]?.package?.dont);
@@ -77,10 +76,19 @@ function RTreatmentDont() {
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
-      context[0] === "null" ? null : context[0]
+      sendWeightReason === "null" ? null : sendWeightReason
     );
     formData.append("package[medicines]", JSON.stringify(selectedDonts));
+    
+    setStoreData((prev) => ({
+      ...prev,
+      donts: selectedDonts,
+    }));
   };
+
+  useEffect(() => {
+    console.log("Updated storeData: ", storeData);
+  }, [storeData]);
 
   useEffect(() => {
     const preSelectedDonts = getPredictionDonts.map((val) => val.id.toString());
@@ -90,7 +98,7 @@ function RTreatmentDont() {
 
   useEffect(() => {
     handleGetDonts();
-  }, [context]);
+  }, [sendWeightReason]);
 
   return (
     <div className="w-full">
@@ -152,7 +160,7 @@ function RTreatmentDont() {
                     </th>
                   </tr>
                 ) : (
-                    getDonts.map((val, index) => {
+                  getDonts.map((val, index) => {
                     return (
                       <tr
                         className={`${

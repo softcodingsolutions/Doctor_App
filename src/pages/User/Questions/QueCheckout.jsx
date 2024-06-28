@@ -31,7 +31,7 @@ function QueCheckout() {
       await axios
         .put(`/api/v2/users/update_personal_details?email=${email}`, {
           personal_detail: {
-            checkout: JSON.stringify(d),
+            package: JSON.stringify(d),
           },
         })
         .then((res) => {
@@ -75,8 +75,8 @@ function QueCheckout() {
                   Package:
                 </FormLabel>
                 <Select
-                  {...register("package")}
-                  name="package"
+                  {...register("package_name")}
+                  name="package_name"
                   defaultValue="select"
                   sx={{
                     paddingY: 1,
@@ -98,45 +98,45 @@ function QueCheckout() {
               </div>
               <div className="md:flex w-full  justify-between">
                 <UserDetailsInput
-                  name="FromDate"
+                  name="from_date"
                   type="date"
                   label="From Date"
                   placeholder="From date"
-                  hook={register("FromDate")}
+                  hook={register("from_date")} 
                 />
                 <UserDetailsInput
-                  name="ToDate"
+                  name="to_date"
                   type="date"
                   label="To Date"
                   placeholder="To date"
-                  hook={register("ToDate")}
+                  hook={register("to_date")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="possibilitygroup"
+                  name="possibility_group"
                   type="text"
                   label="Possibility Group"
                   placeholder="NaN"
-                  hook={register("possibilitygroup")}
+                  hook={register("possibility_group")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="packagevalue"
+                  name="package_value"
                   type="text"
                   label="Package Value"
                   placeholder="0"
-                  hook={register("packagevalue")}
+                  hook={register("package_value")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="packagetotal"
+                  name="package_total"
                   type="text"
                   label="Package Total"
                   placeholder="0"
-                  hook={register("packagetotal")}
+                  hook={register("package_total")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
@@ -150,11 +150,11 @@ function QueCheckout() {
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="grandtotal"
+                  name="grand_total"
                   type="number"
                   label="Grand Total"
                   placeholder="NaN"
-                  hook={register("grandtotal")}
+                  hook={register("grand_total")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
@@ -178,7 +178,6 @@ function QueCheckout() {
                   </Option>
                   <Option value="online">Online</Option>
                   <Option value="cash">Cash</Option>
-                  <Option value="cheque">Select</Option>
                 </Select>
               </div>
               <div className="md:flex w-full justify-between gap-2">

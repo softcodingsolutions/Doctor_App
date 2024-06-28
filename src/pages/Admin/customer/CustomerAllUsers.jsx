@@ -91,28 +91,26 @@ function CustomerAllUsers() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
+                              things={val.medicine_content ?? "null"}
+                            />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent
                               things={
-                                val.medicine_content
-                                  ? val.medicine_content
-                                  : "null"
+                                val.personal_detail?.package?.payment_method
+                                  ?.charAt(0)
+                                  .toUpperCase() +
+                                  val.personal_detail?.package?.payment_method?.slice(
+                                    1
+                                  ) ?? "null"
                               }
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
                               things={
-                                val.medicine_content
-                                  ? val.medicine_content
-                                  : "null"
-                              }
-                            />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                val.medicine_content
-                                  ? val.medicine_content
-                                  : "null"
+                                val.role?.charAt(0).toUpperCase() +
+                                  val.role?.slice(1) ?? "null"
                               }
                             />
                           </td>

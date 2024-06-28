@@ -7,12 +7,13 @@ import { useOutletContext } from "react-router-dom";
 function ReportPackage() {
   const [getPackages, setGetPackages] = useState([]);
   const context = useOutletContext();
-  console.log("User",context[1]);
+  console.log("User", context[1]);
+
   const handleGetPackages = () => {
     axios
       .get("/api/v1/user_packages")
       .then((res) => {
-        console.log("Packages to be given to users",res.data?.user_packages);
+        console.log("Packages to be given to users", res.data?.user_packages);
         setGetPackages(res.data?.user_packages);
       })
       .catch((err) => {
@@ -21,8 +22,30 @@ function ReportPackage() {
       });
   };
 
-  const handleGiveUserPackage = (val) => {
-    console.log(val);
+  const handleGiveUserPackage = async (name) => {
+    console.log(name);
+    try {
+      await axios
+        .put(
+          `/api/v2/users/update_personal_details?email=${context[1]?.email}`,
+          {
+            personal_detail: {
+              package: {
+                package_name: name,
+              },
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          handleGetPackages();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -59,8 +82,16 @@ function ReportPackage() {
                   </tr>
                 ) : (
                   getPackages.map((val, index) => {
+                    const isUserPackage =
+                      context[1]?.personal_detail?.package?.package_name ===
+                      val.package_name;
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${
+                          isUserPackage ? "bg-gray-400" : ""
+                        } w-full`}
+                        key={val.id}
+                      >
                         <td className="py-2 px-4 border-b border-b-gray-50">
                           <div className="flex items-center">{index + 1}</div>
                         </td>
@@ -73,14 +104,20 @@ function ReportPackage() {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.package_price} />
                         </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <button
-                            onClick={() => handleGiveUserPackage(val.id)}
-                            className="border border-gray-300 hover:text-white hover:bg-green-500 p-1 rounded-md"
-                          >
-                            Select
-                          </button>
-                        </td>
+                        {!isUserPackage ? (
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <button
+                              onClick={() =>
+                                handleGiveUserPackage(val.package_name)
+                              }
+                              className="border border-gray-300 hover:text-white hover:bg-green-500 p-1 rounded-md"
+                            >
+                              Select
+                            </button>
+                          </td>
+                        ) : (
+                          <td className="py-3 px-4 border-b border-b-gray-50"></td>
+                        )}
                       </tr>
                     );
                   })

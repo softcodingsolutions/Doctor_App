@@ -4,6 +4,7 @@ import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { reportTreatmentButtons } from "../../../../constants/admin/AdminConstants";
 import { Option, Select } from "@mui/joy";
 import axios from "axios";
+import { IoIosCheckmarkCircle } from "react-icons/io";
 
 function ReportTreatment() {
   const [selectedId, setSelectedId] = useState("1");
@@ -18,6 +19,10 @@ function ReportTreatment() {
     dos: [],
     donts: [],
   });
+
+  const submitDataToCreateTreatmentPackage = () => {
+    console.log(storeData);
+  };
 
   const context = useOutletContext();
 
@@ -111,6 +116,12 @@ function ReportTreatment() {
                     </Link>
                   );
                 })}
+                <button
+                  onClick={submitDataToCreateTreatmentPackage}
+                  className="min-w-fit flex text-green-500 font-semibold items-center justify-center border shadow-md cursor-pointer hover:bg-[#17da21] hover:text-white py-2 px-3.5 rounded-md"
+                >
+                  <IoIosCheckmarkCircle size={20} /> Submit
+                </button>
               </div>
               <Outlet
                 context={{
