@@ -7,6 +7,7 @@ import axios from "axios";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
 function ReportTreatment() {
+  const context = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
   const [getWeightReason, setGetWeightReason] = useState([]);
   const [sendWeightReason, setSendWeightReason] = useState(null);
@@ -20,11 +21,37 @@ function ReportTreatment() {
     donts: [],
   });
 
+  console.log(context[1]);
+
   const submitDataToCreateTreatmentPackage = () => {
     console.log(storeData);
-  };
+    const formData = new FormData();
+    formData.append("treatment_package[weight_reason]", sendWeightReason[0]);
+    formData.append(
+      "treatment_package[medicines]",
+      JSON.stringify(storeData.medicine)
+    );
+    formData.append("treatment_package[diet]", JSON.stringify(storeData.diet));
+    formData.append(
+      "treatment_package[exercise]",
+      JSON.stringify(storeData.exercise)
+    );
+    formData.append(
+      "treatment_package[nutrition]",
+      JSON.stringify(storeData.nutrition)
+    );
+    formData.append("treatment_package[dos]", JSON.stringify(storeData.dos));
+    formData.append("treatment_package[dont]", JSON.stringify(storeData.donts));
 
-  const context = useOutletContext();
+    axios
+      .post("/api/v1/treatment_packages", formData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleGetTreatmentPackages = () => {
     axios
@@ -51,7 +78,6 @@ function ReportTreatment() {
         const data = res.data?.matching_packages.map((pack) => {
           return [pack.package.weight_reason, pack.meets_requirements];
         });
-
         setGetWeightReason(data);
       })
       .catch((err) => {
