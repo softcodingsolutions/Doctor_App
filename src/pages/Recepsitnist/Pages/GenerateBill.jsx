@@ -1,14 +1,40 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useDebounce } from "use-debounce";
 
 export default function GenerateBill() {
-  const [medicine, setMedicine] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
 
-  const handleMedicineList = () => {};
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
   };
+  
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      axios
+        .get(
+          `/api/v2/users/search?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}`
+        )
+        .then((res) => {
+          console.log("search", res);
+          const userId = res.data.user.id;
+          axios
+            .get(`/api/v1/appointments/user_appointments_count/${userId}`)
+            .then((res) => {
+              console.log(res, "COUNTT");
+              const count = res.data.appointments_count;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("USER NOT FOUND");
+        });
+    }
+  }, [debouncedSearchTerm]);
   return (
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
