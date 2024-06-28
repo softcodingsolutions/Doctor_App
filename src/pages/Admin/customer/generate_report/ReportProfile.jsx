@@ -2,7 +2,7 @@ import { useOutletContext } from "react-router-dom";
 
 function ReportProfile() {
   const getCustomer = useOutletContext();
-  console.log("Customer details: ", getCustomer[1]);
+
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[82vh] bg-white">
@@ -22,12 +22,17 @@ function ReportProfile() {
                   getCustomer[1]?.personal_detail?.gender[0]?.toUpperCase() +
                     getCustomer[1].personal_detail?.gender?.substring(1)}
               </div>
-              <div>Customer Type: null</div>
+              <div>
+                Customer Type:{" "}
+                {getCustomer[1]?.role?.charAt(0).toUpperCase() +
+                  getCustomer[1]?.role?.slice(1) ?? "null"}
+              </div>
             </div>
             <div className="flex justify-between">
               <div>Age: {getCustomer[1]?.personal_detail?.age}</div>
               <div>
-                Date: {getCustomer[1]?.personal_detail?.created_at?.slice(0, 10)}
+                Date:{" "}
+                {getCustomer[1]?.personal_detail?.created_at?.slice(0, 10)}
               </div>
             </div>
             <div className="flex justify-between">
@@ -37,12 +42,15 @@ function ReportProfile() {
               <div>Height: {getCustomer[1]?.personal_detail?.height} cm</div>
             </div>
             <div className="flex justify-between">
-              <div>Package: null</div>
+              <div>
+                Package:{" "}
+                {getCustomer[1]?.personal_detail?.package?.package_name}
+              </div>
               <div>Treatment Code: null</div>
             </div>
             <div className="flex justify-between">
               <div>
-                Address: {getCustomer[1]?.personal_detail?.address ?? "null"}
+                Address: {getCustomer[1]?.address ?? "null"}
               </div>
               <div>Email: {getCustomer[1]?.email}</div>
             </div>

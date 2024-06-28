@@ -1,5 +1,4 @@
 import TdComponent from "../../../components/TdComponent";
-import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -270,11 +269,6 @@ function TreatmentLabTests() {
             </table>
           </div>
 
-          {!showCheckboxes && (
-            <div className="flex justify-between">
-              <PrevPageButton to="../complains" />
-            </div>
-          )}
           {showCheckboxes && (
             <div className="flex justify-center">
               <SaveTreatmentButtons function={handleSave} />{" "}

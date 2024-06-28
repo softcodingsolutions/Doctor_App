@@ -8,16 +8,17 @@ import ThComponent from "../../../../../components/ThComponent";
 import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
 
 function RTreatmentDos() {
-  const context = useOutletContext();
+  const { sendWeightReason, mappingPackages, setStoreData, storeData } =
+    useOutletContext();
   const [getPredictionDos, setGetPredictionDos] = useState([]);
   const [getDos, setGetDos] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
 
   const handleGetDos = () => {
-    if (context[0]) {
-      const data = context[1].filter((pack) => {
-        return context[0][0] === pack.package.weight_reason;
+    if (sendWeightReason) {
+      const data = mappingPackages.filter((pack) => {
+        return sendWeightReason[0] === pack.package.weight_reason;
       });
       console.log("Predicted Dos:", data[0]);
       setGetPredictionDos(data[0]?.package?.dos);
@@ -75,10 +76,19 @@ function RTreatmentDos() {
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
-      context[0] === "null" ? null : context[0]
+      sendWeightReason === "null" ? null : sendWeightReason
     );
     formData.append("package[medicines]", JSON.stringify(selectedDos));
+
+    setStoreData((prev) => ({
+      ...prev,
+      dos: selectedDos,
+    }));
   };
+
+  useEffect(() => {
+    console.log("Updated storeData: ", storeData);
+  }, [storeData]);
 
   useEffect(() => {
     const preSelectedDos = getPredictionDos.map((val) => val.id.toString());
@@ -88,7 +98,7 @@ function RTreatmentDos() {
 
   useEffect(() => {
     handleGetDos();
-  }, [context]);
+  }, [sendWeightReason]);
 
   return (
     <div className="w-full">

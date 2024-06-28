@@ -82,7 +82,6 @@ import RoleAssign from "./pages/Recepsitnist/Role/RoleAssign";
 import Appointment from "./pages/Recepsitnist/Appointment";
 import CreateAppointment from "./pages/Recepsitnist/Pages/CreateAppointment";
 import MedicalInventory from "./pages/Recepsitnist/Pages/MedicalInventory";
-import AddCustomer from "./pages/Recepsitnist/Pages/AddCustomer";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import NewUser from "./pages/Recepsitnist/Newuser/NewUser";
 import UserGeneralDetails from "./pages/Recepsitnist/Newuser/UserGeneralDetails";
@@ -146,7 +145,10 @@ function App() {
               <Route path="profile" element={<ReportProfile />} />
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
-
+              <Route path="lab-tests" element={<TreatmentLabTests />} />
+              <Route path="progress-report" element={<ReportProgress />} />
+              <Route path="package" element={<ReportPackage />} />
+              
               {/* customer treatment */}
               <Route path="treatment" element={<ReportTreatment />}>
                 <Route path="medicine" element={<RTreatmentMedicine />} />
@@ -156,10 +158,6 @@ function App() {
                 <Route path="dos" element={<RTreatmentDos />} />
                 <Route path="donts" element={<RTreatmentDont />} />
               </Route>
-
-              <Route path="lab-tests" element={<TreatmentLabTests />} />
-              <Route path="progress-report" element={<ReportProgress />} />
-              <Route path="package" element={<ReportPackage />} />
             </Route>
           </Route>
 
@@ -209,21 +207,20 @@ function App() {
         {/* Recepsitnist */}
         <Route path="recepsitnist" element={<RecepsitnistMain />}>
           <Route path="appointment" element={<Appointment />}>
-          <Route path="generatebill" element={<GenerateBill />} />
+            <Route path="generatebill" element={<GenerateBill />} />
             <Route path="new-user" element={<NewUser />}>
-                  <Route
-                    path="general-details"
-                    element={<UserGeneralDetails />}
-                  />
-                  <Route path="current-diet" element={<UserCurrentDiet />} />
-                  <Route path="family-history" element={<UserFamilyHistory />} />
-                  <Route path="complains" element={<UserComplains />} />
-                  <Route path="user-questions" element={<UserQuestionsPart1 />} />
-                  <Route path="diagnosis" element={<UserQuestionsPart2 />} />
-                  <Route path="checkout" element={<UserCheckout />} />
-              </Route>
-            <Route path="create-appointment" element={<CreateAppointment />} >
+              <Route path="general-details" element={<UserGeneralDetails />} />
+              <Route path="current-diet" element={<UserCurrentDiet />} />
+              <Route path="family-history" element={<UserFamilyHistory />} />
+              <Route path="complains" element={<UserComplains />} />
+              <Route path="user-questions" element={<UserQuestionsPart1 />} />
+              <Route path="diagnosis" element={<UserQuestionsPart2 />} />
+              <Route path="checkout" element={<UserCheckout />} />
             </Route>
+            <Route
+              path="create-appointment"
+              element={<CreateAppointment />}
+            ></Route>
             <Route path="medical-inventory" element={<MedicalInventory />} />
           </Route>
         </Route>
