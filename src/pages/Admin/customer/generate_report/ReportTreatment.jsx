@@ -7,6 +7,7 @@ import axios from "axios";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
 function ReportTreatment() {
+  const context = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
   const [getWeightReason, setGetWeightReason] = useState([]);
   const [sendWeightReason, setSendWeightReason] = useState(null);
@@ -23,8 +24,6 @@ function ReportTreatment() {
   const submitDataToCreateTreatmentPackage = () => {
     console.log(storeData);
   };
-
-  const context = useOutletContext();
 
   const handleGetTreatmentPackages = () => {
     axios
