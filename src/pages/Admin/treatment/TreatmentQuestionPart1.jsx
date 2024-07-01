@@ -145,7 +145,7 @@ function TreatmentQuestionPart1() {
     setSelectedCheckboxes(preSelectedQuestions);
     setQuestionsToBeAnswered(selectedCheckboxes.length);
   }, [context]);
-
+  console.log("Contex From Treatments", context);
   useEffect(() => {
     axios.get(`/api/v1/packages/find_packages?id=${15}`).then((res) => {
       console.log(res);
