@@ -12,6 +12,7 @@ function ReportTreatment() {
   const [getWeightReason, setGetWeightReason] = useState([]);
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [mappingPackages, setMappingPackages] = useState([]);
+  const user_id = localStorage.getItem("userId");
   const [storeData, setStoreData] = useState({
     medicine: [],
     diet: [],
@@ -21,7 +22,7 @@ function ReportTreatment() {
     donts: [],
   });
 
-  console.log(context[1]);
+  console.log("Context From Report", context[1]);
 
   const submitDataToCreateTreatmentPackage = () => {
     console.log(storeData);
@@ -65,9 +66,8 @@ function ReportTreatment() {
   };
 
   const handleGetWeightReason = () => {
-    console.log(context[1]);
     axios
-      .get(`/api/v1/packages/find_packages?id=${context[1]?.id}`)
+      .get(`/api/v1/packages/find_packages?id=${user_id}`)
       .then((res) => {
         console.log(
           "Got weight reason of the user",
