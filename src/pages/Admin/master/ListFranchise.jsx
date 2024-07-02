@@ -13,30 +13,32 @@ function ListFranchise() {
     await axios
       .get("/api/v1/users/app_creds")
       .then((res) => {
-        axios.post("/api/v1/users", {
-          user: {
-            first_name: d.first_name,
-            last_name: d.last_name,
-            email: d.email,
-            phone_number: d.mobile,
-            address: d.address,
-            password: d.password,
-            pincode: d.pincode,
-            state: d.state,
-            amount: d.amount,
-            commission: d.commission,
-            possibility_group: d.possibility_group,
-            role: d.type_of_admin,
-            show_password: d.password,
-          },
-          personal_detail: {
-            city: d.city,
-          },
-          client_id: res.data?.client_id,
-        }).then((res)=>{
+        axios
+          .post("/api/v1/users", {
+            user: {
+              first_name: d.first_name,
+              last_name: d.last_name,
+              email: d.email,
+              phone_number: d.mobile,
+              address: d.address,
+              password: d.password,
+              pincode: d.pincode,
+              state: d.state,
+              amount: d.amount,
+              commission: d.commission,
+              possibility_group: d.possibility_group,
+              role: d.type_of_admin,
+              show_password: d.password,
+            },
+            personal_detail: {
+              city: d.city,
+            },
+            client_id: res.data?.client_id,
+          })
+          .then((res) => {
             console.log(res);
-            handleGetFranchise(); 
-        })
+            handleGetFranchise();
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -108,6 +110,7 @@ function ListFranchise() {
                   <ThComponent />
                   <ThComponent />
                   <ThComponent />
+                  <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -157,8 +160,20 @@ function ListFranchise() {
                           <TdComponent
                             things={
                               <button
-                                onClick={() => console.log("view details")}
+                                onClick={() => console.log("add amount")}
                                 className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-[#33a92b] hover:text-white"
+                              >
+                                Add Amount
+                              </button>
+                            }
+                          />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              <button
+                                onClick={() => console.log("view details")}
+                                className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-blue-600 hover:text-white"
                               >
                                 View Details
                               </button>
@@ -170,7 +185,7 @@ function ListFranchise() {
                             things={
                               <button
                                 onClick={() => console.log("edit")}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
+                                className="font-semibold text-brown-800 border border-gray-300 p-1 rounded-md hover:bg-brown-800 hover:text-white"
                               >
                                 <MdEdit size={20} />
                               </button>
