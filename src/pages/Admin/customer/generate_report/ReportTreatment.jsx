@@ -46,8 +46,22 @@ function ReportTreatment() {
 
     axios
       .post("/api/v1/treatment_packages", formData)
-      .then((res) => {
-        console.log(res);
+      .then(async (res) => {
+        console.log(res.data);
+        const newData = new FormData();
+        newData.append("treatment[user_id]", user_id);
+        newData.append(
+          "treatment[treatment_package_id]",
+          res.data?.treatment_package?.id
+        ); 
+        await axios
+          .post("/api/v1/user_treatments", newData)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
