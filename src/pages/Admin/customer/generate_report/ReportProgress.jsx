@@ -140,10 +140,9 @@ function ReportProgress() {
               title="Add Report"
               progress_weight="Weight"
               progress_date="Date"
-              progress_package="Package Assigned"
+              weight_reason="Weight Reason"
             />
           </div>
-
           {showProgress && (
             <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
               <table className="w-full min-w-[460px] z-0">
