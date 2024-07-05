@@ -110,7 +110,7 @@ function ListFranchise() {
                   <ThComponent />
                   <ThComponent />
                   <ThComponent />
-                  <ThComponent />
+                  {/* <ThComponent /> */}
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -168,7 +168,7 @@ function ListFranchise() {
                             }
                           />
                         </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
+                        {/* <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
                             things={
                               <button
@@ -179,7 +179,7 @@ function ListFranchise() {
                               </button>
                             }
                           />
-                        </td>
+                        </td> */}
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
                             things={
