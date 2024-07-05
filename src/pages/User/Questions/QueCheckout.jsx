@@ -11,6 +11,7 @@ function QueCheckout() {
   const email = localStorage.getItem("client_email");
   const { register, handleSubmit, reset } = useForm();
   const [getPackages, setGetPackages] = useState([]);
+  const [getPackageDetail, setGetPackageDetail] = useState([]);
 
   const handleGetPackages = () => {
     axios
@@ -23,6 +24,14 @@ function QueCheckout() {
         console.log(err);
         alert(err.message);
       });
+  };
+
+  const handleGetPrice = (name) => {
+    setGetPackageDetail(
+      getPackages.find((pack) => {
+        return pack.package_name === name;
+      })
+    );
   };
 
   const submittedData = async (d) => {
@@ -57,7 +66,7 @@ function QueCheckout() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
-          <div className="text-xl font-semibold">Checkout:-</div>
+          <div className="text-xl font-semibold">Checkout:- </div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
@@ -77,7 +86,7 @@ function QueCheckout() {
                 <Select
                   {...register("package_name")}
                   name="package_name"
-                  defaultValue="select"
+                  placeholder="Select Package"
                   sx={{
                     paddingY: 1,
                     paddingX: 2,
@@ -86,11 +95,12 @@ function QueCheckout() {
                     width: "100%",
                   }}
                 >
-                  <Option value="select" disabled>
-                    Select One
-                  </Option>
                   {getPackages.map((pkg) => (
-                    <Option key={pkg.value} value={pkg.package_name}>
+                    <Option
+                      key={pkg.value}
+                      onClick={() => handleGetPrice(pkg.package_name)}
+                      value={pkg.package_name}
+                    >
                       {pkg.package_name}
                     </Option>
                   ))}
@@ -102,7 +112,7 @@ function QueCheckout() {
                   type="date"
                   label="From Date"
                   placeholder="From date"
-                  hook={register("from_date")} 
+                  hook={register("from_date")}
                 />
                 <UserDetailsInput
                   name="to_date"
@@ -125,8 +135,9 @@ function QueCheckout() {
                 <UserDetailsInput
                   name="package_value"
                   type="text"
+                  defaultValue={getPackageDetail.package_price}
                   label="Package Value"
-                  placeholder="0"
+                  placeholder="NaN"
                   hook={register("package_value")}
                 />
               </div>
@@ -134,8 +145,9 @@ function QueCheckout() {
                 <UserDetailsInput
                   name="package_total"
                   type="text"
+                  defaultValue={getPackageDetail.package_price}
                   label="Package Total"
-                  placeholder="0"
+                  placeholder="NaN"
                   hook={register("package_total")}
                 />
               </div>
@@ -144,7 +156,7 @@ function QueCheckout() {
                   name="discount"
                   type="number"
                   label="Discount"
-                  placeholder="0"
+                  placeholder="In Percentage"
                   hook={register("discount")}
                 />
               </div>
@@ -153,6 +165,7 @@ function QueCheckout() {
                   name="grand_total"
                   type="number"
                   label="Grand Total"
+                  defaultValue={getPackageDetail.package_price}
                   placeholder="NaN"
                   hook={register("grand_total")}
                 />
@@ -164,7 +177,7 @@ function QueCheckout() {
                 <Select
                   {...register("payment_method")}
                   name="payment_method"
-                  defaultValue="select"
+                  placeholder="Select Method"
                   sx={{
                     paddingY: 1,
                     paddingX: 2,
@@ -173,9 +186,6 @@ function QueCheckout() {
                     width: "100%",
                   }}
                 >
-                  <Option value="select" disabled>
-                    Select One
-                  </Option>
                   <Option value="online">Online</Option>
                   <Option value="cash">Cash</Option>
                 </Select>

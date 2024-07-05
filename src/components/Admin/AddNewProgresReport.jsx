@@ -50,7 +50,7 @@ function AddNewProgresReport(props) {
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi(d.progress_weight, d.progress_date, d.progress_package);
+    props.handleApi(d.package_id);
     reset();
   };
 
@@ -130,6 +130,7 @@ function AddNewProgresReport(props) {
                     })}
                   </Select>
                 </FormControl>
+
                 {getPackage.length > 0 && (
                   <FormControl>
                     <FormLabel>Select Packages:-</FormLabel>
@@ -137,12 +138,12 @@ function AddNewProgresReport(props) {
                       className="w-full"
                       required
                       placeholder="Choose any one..."
-                      name={`progress_package`}
-                      {...register(`progress_package`)}
+                      name={`package_id`}
+                      {...register(`package_id`)}
                     >
                       {getPackage?.map((res) => {
                         return (
-                          <Option key={res.id} value={res.package_name}>
+                          <Option key={res.id} value={res.id}>
                             {res.package_name}
                           </Option>
                         );

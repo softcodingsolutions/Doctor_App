@@ -6,6 +6,7 @@ function UserDetailsInput(props) {
           {...props.hook}
           type={props.type}
           name={props.name}
+          defaultValue={props.defaultValue}
           placeholder={props.placeholder}
           autoComplete="off"
           id={props.name}

@@ -15,6 +15,7 @@ function ReportProgress() {
   const [showComplain, setShowComplain] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
   const context = useOutletContext();
+  console.log(context);
 
   const handleGetQues = async () => {
     const data =
@@ -40,17 +41,14 @@ function ReportProgress() {
   //       });
   //   };
 
-  const handleAddProgress = (
-    progress_name,
-    progress_date,
-    progress_package
-  ) => {
+  const handleAddProgress = (package_id) => {
     const formData = new FormData();
-    formData.append("package[weight]", progress_name);
-    formData.append("package[date]", progress_date);
-    formData.append("package[package]", progress_package);
+
+    formData.append("treatment[user_id]", context[0]);
+    formData.append("treatment[treatment_package_id]", package_id);
+    
     axios
-      .post("api/v1/progress", formData)
+      .post("api/v1/user_treatments", formData)
       .then((res) => {
         console.log(res);
         if (res.data) {
