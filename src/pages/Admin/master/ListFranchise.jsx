@@ -107,6 +107,7 @@ function ListFranchise() {
                   <ThComponent name="City" />
                   <ThComponent name="Possibility Group" />
                   <ThComponent name="Amount" />
+                  <ThComponent name="Commission (in %)" />
                   <ThComponent />
                   <ThComponent />
                   <ThComponent />
@@ -155,6 +156,9 @@ function ListFranchise() {
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.amount} />
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <TdComponent things={val.commission} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent

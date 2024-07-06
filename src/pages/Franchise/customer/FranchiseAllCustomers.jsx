@@ -26,6 +26,7 @@ function FranchiseAllCustomers() {
 
   useEffect(() => {
     handleGetAllUsers();
+    localStorage.removeItem("userId");
   }, []);
   return (
     <div className="w-full p-2">

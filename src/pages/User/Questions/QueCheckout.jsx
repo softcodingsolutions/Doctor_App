@@ -9,9 +9,8 @@ import { useNavigate } from "react-router-dom";
 function QueCheckout() {
   const navigate = useNavigate();
   const email = localStorage.getItem("client_email");
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, setValue, watch } = useForm();
   const [getPackages, setGetPackages] = useState([]);
-  const [getPackageDetail, setGetPackageDetail] = useState([]);
 
   const handleGetPackages = () => {
     axios
@@ -27,12 +26,29 @@ function QueCheckout() {
   };
 
   const handleGetPrice = (name) => {
-    setGetPackageDetail(
-      getPackages.find((pack) => {
-        return pack.package_name === name;
-      })
+    const packageDetail = getPackages.find(
+      (pack) => pack.package_name === name
     );
+
+    if (packageDetail) {
+      setValue("package_value", packageDetail.package_price);
+      setValue("package_total", packageDetail.package_price);
+      setValue("grand_total", packageDetail.package_price);
+    }
   };
+
+  const calculateGrandTotal = (packagePrice, discount) => {
+    const discountAmount = (packagePrice * discount) / 100;
+    return packagePrice - discountAmount;
+  };
+
+  const watchDiscount = watch("discount", 0);
+  const watchPackagePrice = watch("package_total", 0);
+
+  useEffect(() => {
+    const newGrandTotal = calculateGrandTotal(watchPackagePrice, watchDiscount);
+    setValue("grand_total", newGrandTotal);
+  }, [watchDiscount, watchPackagePrice, setValue]);
 
   const submittedData = async (d) => {
     console.log(d);
@@ -44,13 +60,12 @@ function QueCheckout() {
           },
         })
         .then((res) => {
-          console.log("Family History: ", res);
+          console.log("Checkout: ", res);
+          localStorage.removeItem("client_email");
         })
         .catch((err) => {
           console.log(err);
         });
-      reset();
-      navigate("../complains");
     } catch (error) {
       console.error(error);
     }
@@ -135,7 +150,6 @@ function QueCheckout() {
                 <UserDetailsInput
                   name="package_value"
                   type="text"
-                  defaultValue={getPackageDetail.package_price}
                   label="Package Value"
                   placeholder="NaN"
                   hook={register("package_value")}
@@ -145,7 +159,6 @@ function QueCheckout() {
                 <UserDetailsInput
                   name="package_total"
                   type="text"
-                  defaultValue={getPackageDetail.package_price}
                   label="Package Total"
                   placeholder="NaN"
                   hook={register("package_total")}
@@ -165,7 +178,6 @@ function QueCheckout() {
                   name="grand_total"
                   type="number"
                   label="Grand Total"
-                  defaultValue={getPackageDetail.package_price}
                   placeholder="NaN"
                   hook={register("grand_total")}
                 />

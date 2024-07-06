@@ -1,12 +1,13 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 function FranchiesGeneraldetails({ onNext }) {
+  const [getAdmin, setGetAdmin] = useState([]);
   const {
     register,
     handleSubmit,
@@ -16,7 +17,18 @@ function FranchiesGeneraldetails({ onNext }) {
     resolver: yupResolver(UserSchema),
   });
 
-  
+  const handleGetAdmin = () => {
+    axios
+      .get(`/api/v2/users/search?id=${localStorage.getItem("main_id")}`)
+      .then((res) => {
+        console.log(res.data?.user);
+        setGetAdmin(res.data?.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const submittedData = async (d) => {
     console.log(d);
     try {
@@ -28,6 +40,8 @@ function FranchiesGeneraldetails({ onNext }) {
           email: d.email,
           phone_number: d.mobile,
           address: d.address,
+          created_by_id: getAdmin.id,
+          creator: getAdmin.role,
         },
         personal_detail: {
           city: d.city,
@@ -44,12 +58,15 @@ function FranchiesGeneraldetails({ onNext }) {
       });
       localStorage.setItem("client_email", d.email);
       reset();
-      onNext(); 
+      onNext();
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    handleGetAdmin();
+  }, []);
 
   return (
     <div className="w-full p-2">

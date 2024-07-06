@@ -1,124 +1,167 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
+import { FormLabel, Option, Select } from "@mui/joy";
 
-function FranchiesCheckout({ onBack }) {
+function FranchiesCheckout() {
   const navigate = useNavigate();
-  const { register, handleSubmit, reset } = useForm();
+  const email = localStorage.getItem("client_email");
+  const { register, handleSubmit, reset, setValue, watch } = useForm();
+  const [getPackages, setGetPackages] = useState([]);
 
-  const submittedData = (d) => {
+  const handleGetPackages = () => {
+    axios
+      .get("/api/v1/user_packages")
+      .then((res) => {
+        console.log(res.data);
+        setGetPackages(res.data?.user_packages);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handleGetPrice = (name) => {
+    const packageDetail = getPackages.find(
+      (pack) => pack.package_name === name
+    );
+
+    if (packageDetail) {
+      setValue("package_value", packageDetail.package_price);
+      setValue("package_total", packageDetail.package_price);
+      setValue("grand_total", packageDetail.package_price);
+    }
+  };
+
+  const calculateGrandTotal = (packagePrice, discount) => {
+    const discountAmount = (packagePrice * discount) / 100;
+    return packagePrice - discountAmount;
+  };
+
+  const watchDiscount = watch("discount", 0);
+  const watchPackagePrice = watch("package_total", 0);
+
+  useEffect(() => {
+    const newGrandTotal = calculateGrandTotal(watchPackagePrice, watchDiscount);
+    setValue("grand_total", newGrandTotal);
+  }, [watchDiscount, watchPackagePrice, setValue]);
+
+  const submittedData = async (d) => {
     console.log(d);
-    axios.get(`/api/v1/users/app_creds`).then((res) => {
-      console.log(res);
-      axios
-        .post("/api/v1/users", {
-          user: {
-            first_name: d.firstname,
-            last_name: d.lastname,
-            email: d.email,
-            phone_number: d.mobile,
-            address: d.address,
-          },
+    try {
+      await axios
+        .put(`/api/v2/users/update_personal_details?email=${email}`, {
           personal_detail: {
-            city: d.city,
-            age: d.age,
-            gender: d.gender,
-            overweight_since: d.overweight,
-            language: d.language,
-            reffered_by: d.refferedBy,
-            weight: d.weight,
-            height: d.height,
-            whatsapp_number: d.whatsapp,
+            package: JSON.stringify(d),
           },
-          client_id: res.data?.client_id,
         })
         .then((res) => {
-          console.log(res);
-          localStorage.setItem("client_email", res.data?.user?.user?.email);
-          navigate("../../all-users");
+          console.log("Checkout: ", res);
+          localStorage.removeItem("client_email");
+        })
+        .catch((err) => {
+          console.log(err);
         });
-    });
+    } catch (error) {
+      console.error(error);
+    }
+    navigate("../../admin/customers/all-users");
     reset();
   };
+
+  useEffect(() => {
+    handleGetPackages();
+  }, []);
 
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
-          <div className="text-xl font-semibold">Checkout:-</div>
+          <div className="text-xl font-semibold">Checkout:- </div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center justify-between"
               method="post"
             >
-              <div className="md:flex w-full justify-between">
-                <label className="text-lg text-end w-1/8 mr-2">Package:</label>
-                <select
-                  name="package"
-                  defaultValue="select"
-                  className="py-1 px-2 rounded-md border border-black w-full"
+              <div className="md:flex w-full justify-between gap-2">
+                <FormLabel
+                  sx={{
+                    fontSize: "1.125rem",
+                    textAlign: "end",
+                    marginBottom: 1,
+                  }}
                 >
-                  <option value="select" disabled>
-                    Select One
-                  </option>
-                  <option value="Franchisee_package">FRANCHISEE PACKAGE</option>
-                  <option value="mh-b-2">MH-B-2</option>
-                  <option value="mh-c-3">MH-C-3</option>
-                  <option value="mh-f-6">MH-F-6</option>
-                  <option value="anand 30">Anand 30</option>
-                  <option value="anand 60">Anand 60</option>
-                  <option value="anand 120">Anand 120</option>
-                  <option value="anand od">Anand OD</option>
-                  <option value="mh-outdoor">MH-OUTDOOR</option>
-                  <option value="mh-a-1">MH-A-1</option>
-                </select>
+                  Package:
+                </FormLabel>
+                <Select
+                  {...register("package_name")}
+                  name="package_name"
+                  placeholder="Select Package"
+                  sx={{
+                    paddingY: 1,
+                    paddingX: 2,
+                    borderRadius: "md",
+                    border: "1px solid black",
+                    width: "100%",
+                  }}
+                >
+                  {getPackages.map((pkg) => (
+                    <Option
+                      key={pkg.value}
+                      onClick={() => handleGetPrice(pkg.package_name)}
+                      value={pkg.package_name}
+                    >
+                      {pkg.package_name}
+                    </Option>
+                  ))}
+                </Select>
               </div>
               <div className="md:flex w-full  justify-between">
                 <UserDetailsInput
-                  name="FromDate"
+                  name="from_date"
                   type="date"
                   label="From Date"
                   placeholder="From date"
-                  hook={register("fromdate")}
+                  hook={register("from_date")}
                 />
-                <label>Validate</label>
-                <div className="border-2 w-20 rounded border-black"></div>
                 <UserDetailsInput
-                  name="ToDate"
+                  name="to_date"
                   type="date"
                   label="To Date"
                   placeholder="To date"
-                  hook={register("todate")}
+                  hook={register("to_date")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="possibilitygroup"
+                  name="possibility_group"
                   type="text"
                   label="Possibility Group"
                   placeholder="NaN"
-                  hook={register("possibilitygroup")}
+                  hook={register("possibility_group")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="packagevalue"
+                  name="package_value"
                   type="text"
                   label="Package Value"
-                  placeholder="0"
-                  hook={register("packagevalue")}
+                  placeholder="NaN"
+                  hook={register("package_value")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="packagetotal"
+                  name="package_total"
                   type="text"
                   label="Package Total"
-                  placeholder="0"
-                  hook={register("packagetotal")}
+                  placeholder="NaN"
+                  hook={register("package_total")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
@@ -126,48 +169,47 @@ function FranchiesCheckout({ onBack }) {
                   name="discount"
                   type="number"
                   label="Discount"
-                  placeholder="0"
+                  placeholder="In Percentage"
                   hook={register("discount")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="grandtotal"
+                  name="grand_total"
                   type="number"
                   label="Grand Total"
-                  placeholder="Nan"
-                  hook={register("grandtotal")}
+                  placeholder="NaN"
+                  hook={register("grand_total")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <label className="text-lg text-end w-1/8 mr-2">
                   Payment Method:
                 </label>
-                <select
-                  name="method"
-                  defaultValue="online"
-                  className="py-1 px-2 rounded-md border border-black w-full"
+                <Select
+                  {...register("payment_method")}
+                  name="payment_method"
+                  placeholder="Select Method"
+                  sx={{
+                    paddingY: 1,
+                    paddingX: 2,
+                    borderRadius: "md",
+                    border: "1px solid black",
+                    width: "100%",
+                  }}
                 >
-                  <option value="online">Online</option>
-                  <option value="cash">Cash</option>
-                  <option value="cheque">Cheque</option>
-                </select>
+                  <Option value="online">Online</Option>
+                  <Option value="cash">Cash</Option>
+                </Select>
               </div>
               <div className="md:flex w-full justify-between gap-2">
-                <label>Note</label>
+                <label>Note: </label>
                 <textarea
                   rows={3}
-                  className="border-2 border-black w-full p-2"
+                  className="border-2 border-black w-full p-2 rounded-md"
                 />
               </div>
               <div className="flex w-full justify-center gap-2">
-                <button
-                  name="Back"
-                  className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                  onClick={onBack}
-                >
-                  Back
-                </button>
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>
