@@ -26,6 +26,7 @@ function CustomerAllUsers() {
 
   useEffect(() => {
     handleGetAllUsers();
+    localStorage.removeItem("userId");
   }, []);
 
   return (

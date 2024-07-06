@@ -34,6 +34,7 @@ function LoginPage() {
           console.log(res);
           localStorage.setItem("access_token", res.data?.user?.access_token);
           localStorage.setItem("role", res.data?.user?.role);
+          localStorage.setItem("main_id", res.data?.user?.not_a_number);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -65,11 +66,7 @@ function LoginPage() {
   return (
     <div className="flex flex-col items-center bg-slate-200 h-screen">
       <div className="my-10 flex items-center justify-center  w-[35vh] h-[15vh] shadow-sm bg-white rounded-md">
-        <img
-          className="w-50 h-24"
-          src={icons_slime}
-          alt=""
-        />
+        <img className="w-50 h-24" src={icons_slime} alt="" />
       </div>
 
       <div className="border bg-white px-10 py-5 rounded-sm shadow-sm">

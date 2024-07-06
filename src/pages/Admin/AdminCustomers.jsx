@@ -1,7 +1,7 @@
 import { Outlet, useOutletContext } from "react-router-dom";
 
 function AdminCustomers() {
-    const context = useOutletContext();
+  const context = useOutletContext();
 
   return (
     <div className="flex w-full">

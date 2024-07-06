@@ -1,13 +1,13 @@
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSchema } from "../../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../../components/User/UserDetailsInput";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-function CustomerGeneralDetails({onNext}) {
-  const navigate = useNavigate();
+function CustomerGeneralDetails({ onNext }) {
+  const [getAdmin, setGetAdmin] = useState([]);
   const {
     register,
     handleSubmit,
@@ -17,38 +17,56 @@ function CustomerGeneralDetails({onNext}) {
     resolver: yupResolver(UserSchema),
   });
 
-    const submittedData = async (d) => {
-      console.log(d);
-      try {
-        const res = await axios.get(`/api/v1/users/app_creds`);
-        await axios.post("/api/v1/users", {
-          user: {
-            first_name: d.firstname,
-            last_name: d.lastname,
-            email: d.email,
-            phone_number: d.mobile,
-            address: d.address,
-          },
-          personal_detail: {
-            city: d.city,
-            age: d.age,
-            gender: d.gender,
-            overweight_since: d.overweight,
-            language: d.language,
-            reffered_by: d.refferedBy,
-            weight: d.weight,
-            height: d.height,
-            whatsapp_number: d.whatsapp,
-          },
-          client_id: res.data?.client_id,
-        });
-        localStorage.setItem("client_email", d.email);
-        reset();
-        onNext(); 
-      } catch (error) {
-        console.error(error);
-      }
-  }
+  const handleGetAdmin = () => {
+    axios
+      .get(`/api/v2/users/search?id=${localStorage.getItem("main_id")}`)
+      .then((res) => {
+        console.log(res.data?.user);
+        setGetAdmin(res.data?.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const submittedData = async (d) => {
+    console.log(d);
+    try {
+      const res = await axios.get(`/api/v1/users/app_creds`);
+      await axios.post("/api/v1/users", {
+        user: {
+          first_name: d.firstname,
+          last_name: d.lastname,
+          email: d.email,
+          phone_number: d.mobile,
+          address: d.address,
+          created_by_id: getAdmin.id,
+          creator: getAdmin.role,
+        },
+        personal_detail: {
+          city: d.city,
+          age: d.age,
+          gender: d.gender,
+          overweight_since: d.overweight,
+          language: d.language,
+          reffered_by: d.refferedBy,
+          weight: d.weight,
+          height: d.height,
+          whatsapp_number: d.whatsapp,
+        },
+        client_id: res.data?.client_id,
+      });
+      localStorage.setItem("client_email", d.email);
+      reset();
+      onNext();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetAdmin();
+  }, []);
 
   return (
     <div className="w-full p-2">
