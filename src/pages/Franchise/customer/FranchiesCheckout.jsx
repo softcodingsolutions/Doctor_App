@@ -69,7 +69,7 @@ function FranchiesCheckout() {
     } catch (error) {
       console.error(error);
     }
-    navigate("../../admin/customers/all-users");
+    navigate("../../franchise/customers/all-users");
     reset();
   };
 

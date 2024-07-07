@@ -36,7 +36,7 @@ function FranchiesFamilyhistory({ onNext, onBack }) {
 
   const handleChange = (event, newValue) => {
     setSelectedDiseases(newValue);
-    setValue("family_reasons", newValue);
+    setValue("selected_family_reasons", newValue);
     console.log(newValue);
   };
 

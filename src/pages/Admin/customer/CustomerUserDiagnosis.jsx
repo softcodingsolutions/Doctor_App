@@ -7,14 +7,26 @@ import { reportButtons } from "../../../constants/admin/AdminConstants";
 function CustomerUserDiagnosis() {
   const [selectedId, setSelectedId] = useState("1");
   const [getCustomer, setGetCustomer] = useState([]);
+  const [getAdmin, setGetAdmin] = useState([]);
   const id = localStorage.getItem("userId");
 
   const handlegetUser = () => {
     axios
       .get(`/api/v2/users/search?id=${id}`)
       .then((res) => {
-        console.log("User to diagnos", res.data);
+        console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+
+    axios
+      .get(`/api/v2/users/search?id=${localStorage.getItem("main_id")}`)
+      .then((res) => {
+        console.log("Admin: ", res.data?.user);
+        setGetAdmin(res.data?.user);
       })
       .catch((err) => {
         console.log(err);
@@ -26,12 +38,21 @@ function CustomerUserDiagnosis() {
     handlegetUser();
   }, []);
 
+  const reportButtonsMain = reportButtons.filter((button) => {
+    if (button.id === "4") {
+      return (
+        getAdmin.role === "super_admin" || getAdmin.possibility_group === true
+      );
+    }
+    return true;
+  });
+
   return (
     <>
       <div className="w-full sm:flex items-end">
         <div className="sm:flex-grow flex justify-between overflow-x-hidden">
           <div className="flex flex-wrap justify-center transition-transform gap-3 p-1 w-full">
-            {reportButtons.map((res) => {
+            {reportButtonsMain.map((res) => {
               return (
                 <Link
                   to={res.to}

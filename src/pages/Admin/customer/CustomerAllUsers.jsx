@@ -10,8 +10,11 @@ function CustomerAllUsers() {
 
   const handleGetAllUsers = () => {
     axios.get("/api/v1/users").then((res) => {
-      console.log(res.data.users);
-      setGetCustomers(res.data.users);
+      console.log(res.data?.users?.filter((user) => user.role === "patient"));
+
+      setGetCustomers(
+        res.data?.users?.filter((user) => user.role === "patient")
+      );
     });
   };
 

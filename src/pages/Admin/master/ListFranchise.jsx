@@ -26,7 +26,7 @@ function ListFranchise() {
               state: d.state,
               amount: d.amount,
               commission: d.commission,
-              possibility_group: d.possibility_group,
+              possibility_group: (d.possibility_group === "yes" ? true : false),
               role: d.type_of_admin,
               show_password: d.password,
             },

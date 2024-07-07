@@ -21,7 +21,6 @@ function AddListFranchise(props) {
   const { register, handleSubmit, reset } = useForm();
 
   const submittedData = (d) => {
-    // console.log(d);
     props.handleApi(d);
     reset();
   };

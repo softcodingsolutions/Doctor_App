@@ -52,6 +52,8 @@ function LoginPage() {
           });
           if (res.data?.user?.role === "super_admin") {
             navigate("/admin/dashboard");
+          } else if (res.data?.user?.role === "franchise") {
+            navigate("/franchise/dashboard");
           } else {
             navigate("/user/dashboard");
           }

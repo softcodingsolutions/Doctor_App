@@ -7,17 +7,32 @@ import { useNavigate } from "react-router-dom";
 function FranchiseAllCustomers() {
   const navigate = useNavigate();
   const [getCustomers, setGetCustomers] = useState([]);
+  const mainId = localStorage.getItem("main_id");
 
   const handleGetAllUsers = () => {
     axios.get("/api/v1/users").then((res) => {
-      console.log(res.data.users);
-      setGetCustomers(res.data.users);
+      console.log(
+        res.data?.users?.filter(
+          (user) =>
+            user.role === "patient" &&
+            user.creator === "franchise" &&
+            user.created_by_id == mainId
+        )
+      );
+      setGetCustomers(
+        res.data?.users?.filter(
+          (user) =>
+            user.role === "patient" &&
+            user.creator === "franchise" &&
+            user.created_by_id == mainId
+        )
+      );
     });
   };
 
   const handleDiagnosis = (val) => {
     localStorage.setItem("userId", val);
-    navigate(`../user-diagnosis`);
+    navigate(`../user-diagnosis/profile`);
   };
 
   const handleAddUsers = () => {
@@ -28,6 +43,7 @@ function FranchiseAllCustomers() {
     handleGetAllUsers();
     localStorage.removeItem("userId");
   }, []);
+  
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -91,28 +107,26 @@ function FranchiseAllCustomers() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
+                              things={val.medicine_content ?? "null"}
+                            />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent
                               things={
-                                val.medicine_content
-                                  ? val.medicine_content
-                                  : "null"
+                                val.personal_detail?.package?.payment_method
+                                  ?.charAt(0)
+                                  .toUpperCase() +
+                                  val.personal_detail?.package?.payment_method?.slice(
+                                    1
+                                  ) ?? "null"
                               }
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
                               things={
-                                val.medicine_content
-                                  ? val.medicine_content
-                                  : "null"
-                              }
-                            />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                val.medicine_content
-                                  ? val.medicine_content
-                                  : "null"
+                                val.role?.charAt(0).toUpperCase() +
+                                  val.role?.slice(1) ?? "null"
                               }
                             />
                           </td>

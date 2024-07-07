@@ -148,7 +148,7 @@ function App() {
               <Route path="lab-tests" element={<TreatmentLabTests />} />
               <Route path="progress-report" element={<ReportProgress />} />
               <Route path="package" element={<ReportPackage />} />
-              
+
               {/* customer treatment */}
               <Route path="treatment" element={<ReportTreatment />}>
                 <Route path="medicine" element={<RTreatmentMedicine />} />
@@ -234,9 +234,8 @@ function App() {
         {/* Franchise */}
         <Route path="franchise" element={<FranchiseMain />}>
           <Route path="dashboard" element={<FranchiseDashboard />} />
-          <Route path="customers" element={<FranchiseCustomers />}>
-            <Route path="all-users" element={<FranchiseAllCustomers />} />
-          </Route>
+
+          {/* Franchise New User */}
           <Route path="new-user" element={<FranchiseNewcustomer />}>
             <Route
               path="general-details"
@@ -248,6 +247,29 @@ function App() {
             <Route path="user-questions" element={<FranchiesQuestions />} />
             <Route path="diagnosis" element={<FranchiesDiagnosis />} />
             <Route path="checkout" element={<FranchiesCheckout />} />
+          </Route>
+
+          {/* Franchise Customers */}
+          <Route path="customers" element={<FranchiseCustomers />}>
+            <Route path="all-users" element={<FranchiseAllCustomers />} />
+            <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
+              <Route path="profile" element={<ReportProfile />} />
+              <Route path="questions" element={<ReportQuestions />} />
+              <Route path="past-history" element={<ReportPastHistory />} />
+              <Route path="lab-tests" element={<TreatmentLabTests />} />
+              <Route path="progress-report" element={<ReportProgress />} />
+              <Route path="package" element={<ReportPackage />} />
+
+              {/* customer treatment */}
+              <Route path="treatment" element={<ReportTreatment />}>
+                <Route path="medicine" element={<RTreatmentMedicine />} />
+                <Route path="diet" element={<RTreatmentDiet />} />
+                <Route path="nutrition" element={<RTreatmentNutrition />} />
+                <Route path="exercise" element={<RTreatmentExercise />} />
+                <Route path="dos" element={<RTreatmentDos />} />
+                <Route path="donts" element={<RTreatmentDont />} />
+              </Route>
+            </Route>
           </Route>
         </Route>
 
