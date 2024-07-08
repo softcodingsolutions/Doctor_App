@@ -16,6 +16,8 @@ function RTreatmentMedicine() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
 
+  const [dropdownValues, setDropdownValues] = useState({});
+
   const handleGetMedicines = () => {
     if (sendWeightReason) {
       const data = mappingPackages.filter((pack) => {
@@ -54,6 +56,16 @@ function RTreatmentMedicine() {
     }
   };
 
+  const handleDropdownChange = (id, field, value) => {
+    setDropdownValues((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: value,
+      },
+    }));
+  };
+
   const handleSave = async () => {
     const selectedMedicine = selectedCheckboxes
       .map((id) => getMedicines.find((med) => med.id === Number(id)))
@@ -67,7 +79,16 @@ function RTreatmentMedicine() {
       });
     }
 
-    console.log("Selected Medicine: ", selectedMedicine);
+    const formattedData = selectedMedicine.map((med) => ({
+      medicine_name: med.medicine_name,
+      dosage: dropdownValues[med.id]?.dosage || "",
+      frequency: dropdownValues[med.id]?.frequency || "",
+      quantity: dropdownValues[med.id]?.quantity || "",
+      with_milk: dropdownValues[med.id]?.with_milk || "",
+    }));
+
+    console.log("Formatted Data: ", formattedData);
+
     setShowCheckboxes(false);
 
     const formData = new FormData();
@@ -77,12 +98,12 @@ function RTreatmentMedicine() {
     );
     formData.append(
       "treatment_package[weight_reason]",
-      JSON.stringify(selectedMedicine)
+      JSON.stringify(formattedData)
     );
 
     setStoreData((prev) => ({
       ...prev,
-      medicine: selectedMedicine,
+      medicine: formattedData,
     }));
 
     // try {
@@ -213,21 +234,23 @@ function RTreatmentMedicine() {
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50 flex gap-4">
                           <Select
-                            multiple
                             placeholder="Select Dose"
-                            renderValue={(selected) => (
-                              <Box sx={{ display: "flex", gap: "0.25rem" }}>
-                                {selected.map((selectedOption, index) => (
-                                  <Chip
-                                    key={index + "1"}
-                                    variant="soft"
-                                    color="primary"
-                                  >
-                                    {selectedOption.label}
+                            onChange={(event, value) =>
+                              handleDropdownChange(val.id, "dosage", value)
+                            }
+                            renderValue={(selected) =>
+                              selected ? (
+                                <Box sx={{ display: "flex", gap: "0.25rem" }}>
+                                  <Chip variant="soft" color="primary">
+                                    {selected.label}
                                   </Chip>
-                                ))}
-                              </Box>
-                            )}
+                                </Box>
+                              ) : (
+                                <Box sx={{ display: "flex", gap: "0.25rem" }}>
+                                  Select Dose
+                                </Box>
+                              )
+                            }
                             sx={{
                               minWidth: "15rem",
                             }}
@@ -251,6 +274,9 @@ function RTreatmentMedicine() {
                           <Select
                             multiple
                             placeholder="Select Frequency"
+                            onChange={(event, value) =>
+                              handleDropdownChange(val.id, "frequency", value)
+                            }
                             renderValue={(selected) => (
                               <Box sx={{ display: "flex", gap: "0.25rem" }}>
                                 {selected.map((selectedOption, index) => (
@@ -289,6 +315,9 @@ function RTreatmentMedicine() {
                           <Select
                             multiple
                             placeholder="Select Quantity"
+                            onChange={(event, value) =>
+                              handleDropdownChange(val.id, "quantity", value)
+                            }
                             renderValue={(selected) => (
                               <Box sx={{ display: "flex", gap: "0.25rem" }}>
                                 {selected.map((selectedOption, index) => (
@@ -325,21 +354,23 @@ function RTreatmentMedicine() {
                             <Option value="2">2</Option>
                           </Select>
                           <Select
-                            multiple
                             placeholder="Select with milk"
-                            renderValue={(selected) => (
-                              <Box sx={{ display: "flex", gap: "0.25rem" }}>
-                                {selected.map((selectedOption, index) => (
-                                  <Chip
-                                    key={index + "1"}
-                                    variant="soft"
-                                    color="primary"
-                                  >
-                                    {selectedOption.label}
+                            onChange={(event, value) =>
+                              handleDropdownChange(val.id, "with_milk", value)
+                            }
+                            renderValue={(selected) =>
+                              selected ? (
+                                <Box sx={{ display: "flex", gap: "0.25rem" }}>
+                                  <Chip variant="soft" color="primary">
+                                    {selected.label}
                                   </Chip>
-                                ))}
-                              </Box>
-                            )}
+                                </Box>
+                              ) : (
+                                <Box sx={{ display: "flex", gap: "0.25rem" }}>
+                                  Select with milk
+                                </Box>
+                              )
+                            }
                             sx={{
                               minWidth: "15rem",
                             }}
