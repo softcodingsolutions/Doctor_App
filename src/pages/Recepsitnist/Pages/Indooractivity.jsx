@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Box from '@mui/joy/Box';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Box from "@mui/joy/Box";
 
 export default function Indooractivity(props) {
   const [consultingTime, setConsultingTime] = useState(new Date());
-  const [slot, setSlot] = useState('');
-  const [machine, setMachine] = useState('');
+  const [slot, setSlot] = useState("");
+  const [machine, setMachine] = useState("");
   const [machineDetails, setMachineDetails] = useState([]);
   const [filteredTimeSlots, setFilteredTimeSlots] = useState([]);
   const [machineQuantity, setMachineQuantity] = useState(0);
   const [allocatedMachines, setAllocatedMachines] = useState([]);
-  const [slotTime, setSlotTime] = useState('');
-  const [bookedSlot, setBookedSlot] = useState(null); 
-  const [available, setAvailable] = useState(null);  
+  const [slotTime, setSlotTime] = useState("");
+  const [bookedSlot, setBookedSlot] = useState(null);
+  const [available, setAvailable] = useState(null);
 
   useEffect(() => {
     handleMachineShow();
@@ -24,25 +24,35 @@ export default function Indooractivity(props) {
   };
 
   const handleAppointmentCount = () => {
-    axios.get(`/api/v1/appointments`).then((res) => {
-      console.log(res, "AppointmentCount");
-      const allocatedMachines = res.data.appointments.map((data) => data.machine_consulting_time_id);
-      setAllocatedMachines(allocatedMachines);
-    }).catch((err) => {
-      console.log(err);
-    });
+    axios
+      .get(`/api/v1/appointments`)
+      .then((res) => {
+        console.log(res, "AppointmentCount");
+        const allocatedMachines = res.data.appointments.map(
+          (data) => data.machine_consulting_time_id
+        );
+        setAllocatedMachines(allocatedMachines);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleSlot = (e) => {
     setSlot(e.target.value);
     const formattedDate = formatDate(consultingTime);
-    axios.get(`/api/v1/appointments/machine_consulting_available?date=${formattedDate}&time=${slotTime}&machine_consulting_time_id=${e.target.value}`).then((res) => {
-      console.log(res, "CHECKBOX BUTTONS DATA");
-      setAvailable(res.data.availab_slot);
-      setBookedSlot(res.data.booked_slot);
-    }).catch((err) => {
-      console.log(err);
-    })
+    axios
+      .get(
+        `/api/v1/appointments/machine_consulting_available?date=${formattedDate}&time=${slotTime}&machine_consulting_time_id=${e.target.value}`
+      )
+      .then((res) => {
+        console.log(res, "CHECKBOX BUTTONS DATA");
+        setAvailable(res.data.availab_slot);
+        setBookedSlot(res.data.booked_slot);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleMachine = (e) => {
@@ -65,10 +75,10 @@ export default function Indooractivity(props) {
       .then((res) => {
         console.log(res);
         alert("Successfully created Appointment!");
-        setMachine('');
+        setMachine("");
         setConsultingTime(new Date());
-        setSlot('');
-        setSlotTime('');
+        setSlot("");
+        setSlotTime("");
       })
       .catch((err) => {
         console.log(err);
@@ -77,10 +87,14 @@ export default function Indooractivity(props) {
 
   const handleMachineShow = () => {
     axios
-      .get(`/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`)
+      .get(
+        `/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`
+      )
       .then((res) => {
         console.log(res);
-        const machineDetails = res.data.consulting_times.map(item => item.machine_detail);
+        const machineDetails = res.data.consulting_times.map(
+          (item) => item.machine_detail
+        );
         setMachineDetails(machineDetails);
         console.log(res, "Machine details");
       })
@@ -91,14 +105,20 @@ export default function Indooractivity(props) {
 
   const filterTimeSlots = (machineId) => {
     axios
-      .get(`/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`)
+      .get(
+        `/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`
+      )
       .then((res) => {
         console.log(res, "Filter Time Slots");
-        const filteredSlots = res.data.consulting_times.filter(slot => slot.machine_detail.id === parseInt(machineId));
+        const filteredSlots = res.data.consulting_times.filter(
+          (slot) => slot.machine_detail.id === parseInt(machineId)
+        );
         const slotTimes = filteredSlots.map((data) => data.time);
         setFilteredTimeSlots(filteredSlots);
-        setSlotTime(slotTimes.length > 0 ? slotTimes[0] : '');
-        const machine = filteredSlots.map(slot => slot.machine_detail.quantity);
+        setSlotTime(slotTimes.length > 0 ? slotTimes[0] : "");
+        const machine = filteredSlots.map(
+          (slot) => slot.machine_detail.quantity
+        );
         setMachineQuantity(machine.length > 0 ? machine[0] : 0);
       })
       .catch((err) => {
@@ -109,11 +129,10 @@ export default function Indooractivity(props) {
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
-
 
   const renderBoxes = (count, isChecked) => {
     const boxes = [];
@@ -127,8 +146,8 @@ export default function Indooractivity(props) {
           sx={{
             width: 30,
             height: 30,
-            borderRadius: '20%',
-            margin: '5px'
+            borderRadius: "20%",
+            margin: "5px",
           }}
           readOnly
         />
@@ -141,14 +160,19 @@ export default function Indooractivity(props) {
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-          <h2 className="text-lg font-semibold text-center mt-5">Indoor Activity Time Slot</h2>
+          <h2 className="text-lg font-semibold text-center mt-5">
+            Indoor Activity Time Slot
+          </h2>
         </div>
         <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">Select Machine: </label>
+          <label className="text-lg text-end w-1/3 mr-2">
+            Select Machine:{" "}
+          </label>
           <select
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleMachine}
-            value={machine}>
+            value={machine}
+          >
             <option value="" disabled>
               Select
             </option>
@@ -160,7 +184,9 @@ export default function Indooractivity(props) {
           </select>
         </div>
         <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">Select the Date: </label>
+          <label className="text-lg text-end w-1/3 mr-2">
+            Select the Date:{" "}
+          </label>
           <input
             type="date"
             placeholder="select date"
@@ -169,11 +195,14 @@ export default function Indooractivity(props) {
           />
         </div>
         <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">Select Machine Timeslot: </label>
+          <label className="text-lg text-end w-1/3 mr-2">
+            Select Machine Timeslot:{" "}
+          </label>
           <select
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleSlot}
-            value={slot}>
+            value={slot}
+          >
             <option value="" disabled>
               Select
             </option>
@@ -186,7 +215,7 @@ export default function Indooractivity(props) {
         </div>
         {slot && (
           <div className="flex w-full justify-center mt-10">
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+            <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
               {renderBoxes(bookedSlot, true)}
               {renderBoxes(available, false)}
             </Box>
@@ -197,7 +226,8 @@ export default function Indooractivity(props) {
             type="submit"
             onClick={handleSubmit}
             className="w-[20rem] text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-            style={{ backgroundColor: "black" }}>
+            style={{ backgroundColor: "black" }}
+          >
             Submit
           </button>
         </div>
