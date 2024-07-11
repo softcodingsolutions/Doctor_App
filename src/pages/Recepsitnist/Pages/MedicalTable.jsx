@@ -61,9 +61,7 @@ export default function MedicalTable({ data, refreshData }) {
           <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
             Quantity
           </th>
-          <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-            Remaining
-          </th>
+        
           <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left rounded-tr-md rounded-br-md">
             Action
           </th>
@@ -100,11 +98,6 @@ export default function MedicalTable({ data, refreshData }) {
                   />
                 </td>
                 <td className="py-2 px-4 border-b border-b-gray-50">
-                  <div className='text-black text-sm font-medium ml-1 text-wrap'>
-                    {item.remaining_quantity}
-                  </div>
-                </td>
-                <td className="py-2 px-4 border-b border-b-gray-50">
                   <button
                     onClick={() => handleSave(item.id)}
                     className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
@@ -136,11 +129,7 @@ export default function MedicalTable({ data, refreshData }) {
                     {item.medicine_quantity}
                   </div>
                 </td>
-                <td className="py-2 px-4 border-b border-b-gray-50">
-                  <div className='text-black text-sm font-medium ml-1 text-wrap'>
-                    {item.remaining_quantity}
-                  </div>
-                </td>
+          
                 <td className="py-2 px-4 border-b border-b-gray-50">
                   <button
                     onClick={() => handleEdit(item)}

@@ -11,7 +11,7 @@ export default function GenerateBill() {
   const [id, setId] = useState(0);
   const [userDetails, setUser] = useState({});
   const [medicines, setMedicines] = useState([]);
-
+  const [packageDetail , setPackageDetail] = useState({});
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
   };
@@ -53,6 +53,7 @@ export default function GenerateBill() {
         .then((res) => {
           console.log(res, "USER PACKAGE");
           setUser(res.data.user);
+          setPackageDetail(res.data.user.personal_detail.package)
           console.log(
             res.data.user.treatment_packages[0].treatment_package.medicines,
             "Richa"
@@ -89,6 +90,25 @@ export default function GenerateBill() {
       return "After-meal"
     }
   }
+  const formatPackageDuration = (fromDate, toDate) => {
+    if (fromDate && toDate) {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      const from = new Date(fromDate).toLocaleDateString(undefined, options);
+      const to = new Date(toDate).toLocaleDateString(undefined, options);
+      
+      const fromDateObj = new Date(fromDate);
+      const toDateObj = new Date(toDate);
+      const diffTime = Math.abs(toDateObj - fromDateObj);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      return `${from} - ${to} (${diffDays} days)`;
+    }
+    return "";
+  
+  };
+  const handleTotalMedicine = () =>{
+    
+  }
 
   return (
     <div className="w-full p-5 bg-gray-100">
@@ -111,7 +131,8 @@ export default function GenerateBill() {
               className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="w-full">
+          <div className="w-full ">
+            <div className="flex gap-48">
             <div className="text-lg font-bold mb-4">
               <div>
                 Patient Name:{" "}
@@ -123,6 +144,22 @@ export default function GenerateBill() {
                 Case Number:{" "}
                 <span className="font-medium">{userDetails.case_number}</span>
               </div>
+            </div>
+            <div className="text-lg font-bold mb-4">
+              <div>
+                  Package Name:{" "}
+                  <span className="font-medium">{packageDetail.package_name}</span>
+                </div>
+                <div>
+                  Package Duration:{" "}
+                  <span className="font-medium">
+                    {formatPackageDuration(
+                        packageDetail.from_date,
+                        packageDetail.to_date
+                    )} 
+                  </span>
+                </div>
+                </div>
             </div>
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
@@ -138,7 +175,10 @@ export default function GenerateBill() {
                       Medicine Intake
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
-                      Total Assigned Medicine
+                      Assigned Medicine
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                      Total  Medicine
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
                       With Milk
@@ -166,6 +206,9 @@ export default function GenerateBill() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm ">
                         {med.quantity}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                        <input type="number" className="border border-blue-gray-400 rounded-md p-2" min={0} onChange={handleTotalMedicine}/>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm ">
                         {med.with_milk }
