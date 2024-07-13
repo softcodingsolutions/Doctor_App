@@ -13,6 +13,8 @@ export default function MachineDetails() {
   const [editedBrief, setEditedBrief] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [inputVisible, setInputVisible] = useState(false);
+  const [doctor, setDoctor] = useState([]);
+  const [doctorId, setDoctorId] = useState(0);
 
   useEffect(() => {
     handleShow();
@@ -27,7 +29,25 @@ export default function MachineDetails() {
       .catch((err) => {
         console.log(err);
       });
+
+    axios
+      .get(`api/v1/users`)
+      .then((res) => {
+        console.log(
+          res.data.users.filter((user) => user.role === "doctor"),
+          "Doctor"
+        );
+        setDoctor(res.data.users.filter((user) => user.role === "doctor"));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  function handleGiveDoctorId(e) {
+    console.log(e.target.value);
+    setDoctorId(e.target.value);
+  }
 
   function handleMachineNameChange(e) {
     setInputMachineName(e.target.value);
@@ -45,7 +65,7 @@ export default function MachineDetails() {
   }
 
   function handleAddMachine() {
-    if (inputMachineName && inputQuantity && inputBrief) {
+    if (inputMachineName && inputQuantity && inputBrief && doctorId) {
       const newMachine = {
         machineName: inputMachineName,
         quantity: inputQuantity,
@@ -64,6 +84,8 @@ export default function MachineDetails() {
         formdata.append("machine_detail[name]", inputMachineName);
         formdata.append("machine_detail[quantity]", inputQuantity);
         formdata.append("machine_detail[brief]", inputBrief);
+        formdata.append("machine_detail[user_id]", doctorId);
+
         formdata.append("client_id", res.data?.client_id);
         axios.post(`/api/v1/machine_details`, formdata).then((res) => {
           handleShow();
@@ -153,6 +175,16 @@ export default function MachineDetails() {
                   value={inputBrief}
                   placeholder="Brief"
                 />
+                <select defaultValue="Select" onChange={handleGiveDoctorId} className="border-2 rounded-md p-2">
+                  <option disabled value="Select">Select Doctor</option>
+                  {doctor.map((res) => {
+                    return (
+                      <option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </option>
+                    );
+                  })}
+                </select>
                 <button
                   className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
                   onClick={handleAddMachine}

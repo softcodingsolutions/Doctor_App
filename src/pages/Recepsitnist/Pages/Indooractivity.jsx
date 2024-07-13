@@ -21,6 +21,7 @@ export default function Indooractivity(props) {
 
   const handleConsulting = (e) => {
     setConsultingTime(e.target.value);
+    handleSlot();
   };
 
   const handleAppointmentCount = () => {
@@ -43,10 +44,12 @@ export default function Indooractivity(props) {
     const formattedDate = formatDate(consultingTime);
     axios
       .get(
-        `/api/v1/appointments/machine_consulting_available?date=${formattedDate}&time=${slotTime}&machine_consulting_time_id=${e.target.value}`
+        `/api/v1/appointments/fetch_machine_consulting_times?date=${formattedDate}&machine_consulting_time_id=${e.target.value}`
       )
       .then((res) => {
         console.log(res, "CHECKBOX BUTTONS DATA");
+        console.log(res.data.availab_slot);
+        console.log(res.data.booked_slot);
         setAvailable(res.data.availab_slot);
         setBookedSlot(res.data.booked_slot);
       })
