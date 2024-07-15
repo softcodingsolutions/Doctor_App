@@ -15,7 +15,6 @@ function ReportProgress() {
   const [showComplain, setShowComplain] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
   const context = useOutletContext();
-  console.log(context);
 
   const handleGetQues = async () => {
     const data =
@@ -28,27 +27,28 @@ function ReportProgress() {
     setGetQues(data);
   };
 
-  //   const handleGetProgress = () => {
-  //     axios
-  //       .get("/api/v1/progress")
-  //       .then((res) => {
-  //         console.log(res.data);
-  //         setGetProgress(res.data?.progress);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         alert(err.message);
-  //       });
-  //   };
+  const handleGetProgress = () => {
+    axios
+      .get(`/api/v1/progress_reports?user_id=${context[0]}`)
+      .then((res) => {
+        console.log("Progress Report: ", res.data.progress_reports);
+        setGetProgress(res.data.progress_reports);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
 
-  const handleAddProgress = (package_id) => {
+  const handleAddProgress = (date, weight) => {
     const formData = new FormData();
 
-    formData.append("treatment[user_id]", context[0]);
-    formData.append("treatment[treatment_package_id]", package_id);
-    
+    formData.append("progress_report[user_id]", context[0]);
+    formData.append("progress_report[weight]", weight);
+    formData.append("progress_report[date]", date);
+
     axios
-      .post("api/v1/user_treatments", formData)
+      .post("api/v1/progress_reports", formData)
       .then((res) => {
         console.log(res);
         if (res.data) {
@@ -56,16 +56,30 @@ function ReportProgress() {
             position: "top-end",
             icon: "success",
             title: "Added!",
-            text: "Your progress has been added.",
+            text: "Your progress report has been added.",
             showConfirmButton: false,
             timer: 1500,
           });
         }
-        // handleGetProgress();
+        handleGetProgress();
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
+      });
+  };
+
+  const feedbackReport = (id, val) => {
+    const formData = new FormData();
+    formData.append("progress_report[progress_report]", val);
+    axios
+      .put(`/api/v1/progress_reports/${id}`, formData)
+      .then((res) => {
+        console.log(res);
+        handleGetProgress();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -78,7 +92,7 @@ function ReportProgress() {
   };
 
   useEffect(() => {
-    // handleGetProgress();
+    handleGetProgress();
     handleGetQues();
   }, [showProgress, showQues, showComplain]);
 
@@ -174,29 +188,69 @@ function ReportProgress() {
                             <div className="flex items-center">{index + 1}</div>
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.name} />
+                            <TdComponent things={val.date} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.gender} />
+                            <TdComponent things={val.weight + " kg"} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.comments} />
+                            <TdComponent
+                              things={
+                                val.treatment_package?.weight_reason +
+                                " - " +
+                                val.treatment_package?.package_name
+                              }
+                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
-                            <TdComponent
-                              things={
-                                <button className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
-                                  <FaRegThumbsUp size={20} />
-                                </button>
-                              }
-                            />
-                            <TdComponent
-                              things={
-                                <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
-                                  <FaRegThumbsDown size={20} />
-                                </button>
-                              }
-                            />
+                            {val.progress_report === null && (
+                              <>
+                                <TdComponent
+                                  things={
+                                    <button
+                                      onClick={() =>
+                                        feedbackReport(val.id, true)
+                                      }
+                                      className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white"
+                                    >
+                                      <FaRegThumbsUp size={20} />
+                                    </button>
+                                  }
+                                />
+                                <TdComponent
+                                  things={
+                                    <button
+                                      onClick={() =>
+                                        feedbackReport(val.id, false)
+                                      }
+                                      className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white"
+                                    >
+                                      <FaRegThumbsDown size={20} />
+                                    </button>
+                                  }
+                                />
+                              </>
+                            )}
+
+                            {val.progress_report && (
+                              <TdComponent
+                                things={
+                                  <button className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
+                                    <FaRegThumbsUp size={20} />
+                                  </button>
+                                }
+                              />
+                            )}
+
+                            {val.progress_report === false && (
+                              <TdComponent
+                                things={
+                                  <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
+                                    <FaRegThumbsDown size={20} />
+                                  </button>
+                                }
+                              />
+                            )}
                           </td>
                         </tr>
                       );
@@ -310,22 +364,24 @@ function ReportProgress() {
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.question_in_gujarati} />
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
-                            <TdComponent
-                              things={
-                                <button className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
-                                  <FaRegThumbsUp size={20} />
-                                </button>
-                              }
-                            />
-                            <TdComponent
-                              things={
-                                <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
-                                  <FaRegThumbsDown size={20} />
-                                </button>
-                              }
-                            />
-                          </td>
+                          {val.progress_report === null && (
+                            <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
+                              <TdComponent
+                                things={
+                                  <button className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
+                                    <FaRegThumbsUp size={20} />
+                                  </button>
+                                }
+                              />
+                              <TdComponent
+                                things={
+                                  <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
+                                    <FaRegThumbsDown size={20} />
+                                  </button>
+                                }
+                              />
+                            </td>
+                          )}
                         </tr>
                       );
                     })

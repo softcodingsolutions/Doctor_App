@@ -81,7 +81,7 @@ function AdminDashboard() {
               <div className="text-2xl font-semibold tracking-wide">
                 Consulting Time Slot
               </div>
-              <div className="animate-fade-left animate-delay-75 w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
+              <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
                 <table className="w-full min-w-[460px] z-0">
                   <thead className="uppercase">
                     <tr className="bg-[#1F2937] text-white rounded-md">
@@ -120,7 +120,12 @@ function AdminDashboard() {
                               <TdComponent things={val.user_name} />
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.slot} />
+                              <TdComponent
+                                things={
+                                  val.slot[0]?.toUpperCase() +
+                                  val.slot?.slice(1)
+                                }
+                              />
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
                               <TdComponent things={formatTime(val.time)} />
@@ -139,7 +144,7 @@ function AdminDashboard() {
               <div className="text-2xl font-semibold tracking-wide">
                 Machine Time Slot
               </div>
-              <div className="animate-fade-left animate-delay-75 w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
+              <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
                 <table className="w-full min-w-[460px] z-0">
                   <thead className="uppercas ">
                     <tr className="bg-[#1F2937] text-white rounded-md">
@@ -182,7 +187,12 @@ function AdminDashboard() {
                               <TdComponent things={val.machine_detail?.name} />
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.slot} />
+                              <TdComponent
+                                things={
+                                  val.slot[0]?.toUpperCase() +
+                                  val.slot?.slice(1)
+                                }
+                              />
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
                               <TdComponent things={formatTime(val.time)} />
