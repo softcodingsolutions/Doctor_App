@@ -153,6 +153,16 @@ export default function MachineDetails() {
             </button>
             {inputVisible && (
               <div className="flex gap-5 m-2">
+                 <select defaultValue="Select" onChange={handleGiveDoctorId} className="border-2 rounded-md p-2">
+                  <option disabled value="Select">Select Doctor</option>
+                  {doctor.map((res) => {
+                    return (
+                      <option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </option>
+                    );
+                  })}
+                </select>
                 <input
                   type="text"
                   className="border-2 rounded-md p-2"
@@ -175,16 +185,6 @@ export default function MachineDetails() {
                   value={inputBrief}
                   placeholder="Brief"
                 />
-                <select defaultValue="Select" onChange={handleGiveDoctorId} className="border-2 rounded-md p-2">
-                  <option disabled value="Select">Select Doctor</option>
-                  {doctor.map((res) => {
-                    return (
-                      <option key={res.id} value={res.id}>
-                        {res.first_name + " " + res.last_name}
-                      </option>
-                    );
-                  })}
-                </select>
                 <button
                   className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
                   onClick={handleAddMachine}

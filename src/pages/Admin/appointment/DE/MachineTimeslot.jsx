@@ -10,12 +10,11 @@ export default function MachineTimeslot() {
   const [doctors, setDoctors] = useState([]);
   const [inputVisible, setInputVisible] = useState(false);
   const [doctorName, setDoctorNames] = useState({});
-  const [machineName, setMachineNames] = useState({});
+  const [machineName, setMachineNames] = useState([]);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     handleShow();
-    handleMachineShow();
     handleData();
   }, []);
 
@@ -43,17 +42,7 @@ export default function MachineTimeslot() {
       });
   };
 
-  const handleMachineShow = () => {
-    axios
-      .get(`/api/v1/machine_details`)
-      .then((res) => {
-        console.log(res.data.machine_details);
-        setMachineNames(res.data.machine_details);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  
 
   function handleTimeChange(e) {
     setInputTime(e.target.value);
@@ -69,6 +58,13 @@ export default function MachineTimeslot() {
 
   function handleDoctorChange(e) {
     setInputDoctor(e.target.value);
+    axios.get(`http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`).then((res)=>{
+      console.log(res.data)
+      setMachineNames(res.data.machine_details,"Machine Array");
+      // console.log(res.data.machine_details.map((res)=>setMachineNames(res)));
+    }).catch((err)=>{
+      console.log(err);
+    })
   }
 
   function formatTime(time) {
@@ -157,22 +153,6 @@ export default function MachineTimeslot() {
             {inputVisible && (
               <div className="flex gap-5 m-2">
                 <select
-                  name="machine"
-                  value={inputMachine}
-                  onChange={handleMachineChange}
-                  className="py-1 px-2 rounded-md border border-black"
-                >
-                  <option value="select" disabled>
-                    Select Machine
-                  </option>
-                  {Object.values(machineName).map((name) => (
-                    <option key={name.id} value={name.id}>
-                      {name.name}
-                    </option>
-                  ))}
-                </select>
-
-                <select
                   name="doctor"
                   value={inputDoctor}
                   onChange={handleDoctorChange}
@@ -184,11 +164,26 @@ export default function MachineTimeslot() {
                   {Object.values(doctorName)
                     .filter((doctor) => doctor.role === "doctor")
                     .map((name) => (
-                      <option key={name.id} value={name.id}>
+                      <option key={name.id} value={name.id} >
                         {name.first_name}
                         {name.last_name}
                       </option>
                     ))}
+                </select>
+                <select
+                  name="machine"
+                  value={inputMachine}
+                  onChange={handleMachineChange}
+                  className="py-1 px-2 rounded-md border border-black"
+                >
+                  <option value="select" disabled>
+                    Select Machine
+                  </option>
+                 {machineName.map((name) => (
+                   <option key={name.id} value={name.id}>
+                      {name.name}
+                    </option>
+                  ))}
                 </select>
 
                 <select

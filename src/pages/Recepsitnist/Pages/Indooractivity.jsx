@@ -3,25 +3,36 @@ import axios from "axios";
 import Box from "@mui/joy/Box";
 
 export default function Indooractivity(props) {
-  const [consultingTime, setConsultingTime] = useState(new Date());
+  const [consultingTime, setConsultingTime] = useState("");
   const [slot, setSlot] = useState("");
   const [machine, setMachine] = useState("");
-  const [machineDetails, setMachineDetails] = useState([]);
   const [filteredTimeSlots, setFilteredTimeSlots] = useState([]);
-  const [machineQuantity, setMachineQuantity] = useState(0);
   const [allocatedMachines, setAllocatedMachines] = useState([]);
   const [slotTime, setSlotTime] = useState("");
   const [bookedSlot, setBookedSlot] = useState(null);
   const [available, setAvailable] = useState(null);
 
   useEffect(() => {
-    handleMachineShow();
     handleAppointmentCount();
   }, [props.doctor]);
 
+
   const handleConsulting = (e) => {
     setConsultingTime(e.target.value);
-    handleSlot();
+    axios
+      .get(
+        `/api/v1/appointments/fetch_machine_consulting_times?date=${formatDate(e.target.value)}&machine_consulting_time_id=${slot}`
+      )
+      .then((res) => {
+        console.log(res, "CHECKBOX BUTTONS DATA");
+        console.log(res.data.availab_slot);
+        console.log(res.data.booked_slot);
+        setAvailable(res.data.availab_slot);
+        setBookedSlot(res.data.booked_slot);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleAppointmentCount = () => {
@@ -40,11 +51,12 @@ export default function Indooractivity(props) {
   };
 
   const handleSlot = (e) => {
-    setSlot(e.target.value);
+    const slotId = e ? e.target.value : slot;
+    setSlot(slotId);
     const formattedDate = formatDate(consultingTime);
     axios
       .get(
-        `/api/v1/appointments/fetch_machine_consulting_times?date=${formattedDate}&machine_consulting_time_id=${e.target.value}`
+        `/api/v1/appointments/fetch_machine_consulting_times?date=${formattedDate}&machine_consulting_time_id=${slotId}`
       )
       .then((res) => {
         console.log(res, "CHECKBOX BUTTONS DATA");
@@ -62,6 +74,17 @@ export default function Indooractivity(props) {
     const selectedMachineId = e.target.value;
     setMachine(selectedMachineId);
     filterTimeSlots(selectedMachineId);
+  
+  };
+
+  const filterTimeSlots = (machineId) => {
+    const selectedMachine = props.machine.find(
+      (machine) => machine.id === parseInt(machineId)
+    );
+    const consultingTimes = selectedMachine
+      ? selectedMachine.machine_consulting_times
+      : [];
+    setFilteredTimeSlots(consultingTimes);
   };
 
   const handleSubmit = (e) => {
@@ -77,52 +100,10 @@ export default function Indooractivity(props) {
       .post(`/api/v1/appointments`, formdata)
       .then((res) => {
         console.log(res);
-        alert("Successfully created Appointment!");
         setMachine("");
-        setConsultingTime(new Date());
+        setConsultingTime("");
         setSlot("");
         setSlotTime("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleMachineShow = () => {
-    axios
-      .get(
-        `/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`
-      )
-      .then((res) => {
-        console.log(res);
-        const machineDetails = res.data.consulting_times.map(
-          (item) => item.machine_detail
-        );
-        setMachineDetails(machineDetails);
-        console.log(res, "Machine details");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const filterTimeSlots = (machineId) => {
-    axios
-      .get(
-        `/api/v1/machine_consulting_times/consulting_times_for_doctor/${props.doctor}`
-      )
-      .then((res) => {
-        console.log(res, "Filter Time Slots");
-        const filteredSlots = res.data.consulting_times.filter(
-          (slot) => slot.machine_detail.id === parseInt(machineId)
-        );
-        const slotTimes = filteredSlots.map((data) => data.time);
-        setFilteredTimeSlots(filteredSlots);
-        setSlotTime(slotTimes.length > 0 ? slotTimes[0] : "");
-        const machine = filteredSlots.map(
-          (slot) => slot.machine_detail.quantity
-        );
-        setMachineQuantity(machine.length > 0 ? machine[0] : 0);
       })
       .catch((err) => {
         console.log(err);
@@ -176,10 +157,10 @@ export default function Indooractivity(props) {
             onChange={handleMachine}
             value={machine}
           >
-            <option value="" disabled>
+            <option value="" >
               Select
             </option>
-            {machineDetails.map((detail) => (
+            {props.machine.map((detail) => (
               <option key={detail.id} value={detail.id}>
                 {detail.name}
               </option>

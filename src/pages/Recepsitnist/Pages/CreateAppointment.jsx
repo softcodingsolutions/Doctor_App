@@ -16,10 +16,20 @@ export default function CreateAppointment() {
   const [mobileNumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
   const [userId, setUserId] = useState('');
-
+  const [machineList , setMachineList] = useState([]);
+  const [machineConsultingTime , setMachineConsultingTime] = useState([]);
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
     console.log(e.target.value);
+    axios.get(`http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`).then((res)=>{
+      console.log(res)
+      console.log(res.data.machine_details,"Machine Details");
+      setMachineList(res.data.machine_details);
+      console.log(res.data.machine_details.map((res)=>res.machine_consulting_times.map((res)=>res)),"COnsultingTime")
+      setMachineConsultingTime(res.data.machine_details.map((res)=>res.machine_consulting_times.map((res)=>res)))
+    }).catch((err)=>{
+      console.log(err);
+    })
   };
 
   const handleShow = () => {
@@ -141,7 +151,7 @@ export default function CreateAppointment() {
               </div>
               <div className="flex gap-5 m-5">
                 {Case === "old" ? (
-                  <Oldcase doctor={doctorList} user={userId} />
+                  <Oldcase doctor={doctorList} user={userId} machine={machineList} machineTime={machineConsultingTime}/>
                 ) : (
                   <Newcase doctor={doctorList} name={name} number={mobileNumber} email={email} user={userId} />
                 )}
