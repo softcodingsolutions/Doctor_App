@@ -151,9 +151,7 @@ export default function RoleAssign() {
                   Select Role
                 </option>
                 <option value="Doctor">Doctor</option>
-                <option value="Nurse">Nurse</option>
-                <option value="Technician">Technician</option>
-                <option value="Administrator">Administrator</option>
+                <option value="Recepsitnist">Recepsitnist</option>
               </select>
               <button
                 className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
