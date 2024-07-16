@@ -191,7 +191,8 @@ export default function ConsultingTime() {
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
                       <span className="text-black text-sm font-medium ml-1">
-                        {doctor.slot}
+                        {doctor.slot[0]?.toUpperCase() +
+                                  doctor.slot?.slice(1)}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">

@@ -265,6 +265,7 @@ export default function MachineDetails() {
                       </>
                     ) : (
                       <>
+                      
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <span className="text-black text-sm font-medium ml-1">
                             {machine.name}

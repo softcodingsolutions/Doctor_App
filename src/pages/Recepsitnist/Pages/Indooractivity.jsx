@@ -16,12 +16,13 @@ export default function Indooractivity(props) {
     handleAppointmentCount();
   }, [props.doctor]);
 
-
   const handleConsulting = (e) => {
     setConsultingTime(e.target.value);
     axios
       .get(
-        `/api/v1/appointments/fetch_machine_consulting_times?date=${formatDate(e.target.value)}&machine_consulting_time_id=${slot}`
+        `/api/v1/appointments/fetch_machine_consulting_times?date=${formatDate(
+          e.target.value
+        )}&machine_consulting_time_id=${slot}`
       )
       .then((res) => {
         console.log(res, "CHECKBOX BUTTONS DATA");
@@ -74,7 +75,6 @@ export default function Indooractivity(props) {
     const selectedMachineId = e.target.value;
     setMachine(selectedMachineId);
     filterTimeSlots(selectedMachineId);
-  
   };
 
   const filterTimeSlots = (machineId) => {
@@ -140,6 +140,24 @@ export default function Indooractivity(props) {
     return boxes;
   };
 
+  function formatTime(time) {
+    try {
+      const date = new Date(time);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
+      return formattedTime;
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return "Invalid time";
+    }
+  }
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -157,9 +175,7 @@ export default function Indooractivity(props) {
             onChange={handleMachine}
             value={machine}
           >
-            <option value="" >
-              Select
-            </option>
+            <option value="">Select</option>
             {props.machine.map((detail) => (
               <option key={detail.id} value={detail.id}>
                 {detail.name}
@@ -192,7 +208,7 @@ export default function Indooractivity(props) {
             </option>
             {filteredTimeSlots.map((detail) => (
               <option key={detail.id} value={detail.id}>
-                {detail.time}
+                {formatTime(detail.time)}
               </option>
             ))}
           </select>

@@ -139,6 +139,18 @@ export default function MachineTimeslot() {
     setInputVisible(!inputVisible);
   };
 
+  function formatTime(time) {
+    try {
+      const date = new Date(time);
+      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
+      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+      return formattedTime;
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return "Invalid time";
+    }
+  }
+  
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
@@ -253,12 +265,13 @@ export default function MachineTimeslot() {
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
                       <span className="text-black text-sm font-medium ml-1">
-                        {doctor.slot}
+                        {doctor.slot[0]?.toUpperCase() +
+                                  doctor.slot?.slice(1)}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
                       <span className="text-black text-sm font-medium ml-1">
-                        {doctor.time}
+                        {formatTime(doctor.time)}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
