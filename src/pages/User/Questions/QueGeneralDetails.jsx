@@ -43,6 +43,7 @@ function QueGeneralDetails() {
                 reffered_by: d.refferedBy,
                 weight: d.weight,
                 height: d.height,
+                address: d.address,
                 whatsapp_number: d.whatsapp,
               },
               client_id: res.data?.client_id,
@@ -64,7 +65,6 @@ function QueGeneralDetails() {
                 last_name: d.lastname,
                 email: d.email,
                 phone_number: d.mobile,
-                address: d.address,
               },
             }
           )

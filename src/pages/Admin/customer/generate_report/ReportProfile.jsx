@@ -49,7 +49,7 @@ function ReportProfile() {
               <div>Treatment Code: null</div>
             </div>
             <div className="flex justify-between">
-              <div>Address: {getCustomer[1]?.address ?? "null"}</div>
+              <div>Registration Through: {getCustomer[1]?.creator === "super_admin" ? "Admin" : "Franchise"}</div>
               <div>Email: {getCustomer[1]?.email}</div>
             </div>
             <div className="flex justify-between">

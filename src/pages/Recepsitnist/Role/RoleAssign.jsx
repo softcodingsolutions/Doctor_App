@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 
 export default function RoleAssign() {
-  const [inputName, setInputName] = useState("");
+  const [inputFirstName, setInputFirstName] = useState("");
+  const [inputLastName, setInputLastName] = useState("");
   const [inputMobile, setInputMobile] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [inputRole, setInputRole] = useState("");
@@ -24,8 +25,13 @@ export default function RoleAssign() {
         console.log(err);
       });
   };
+
+  function handleNameChange1(e) {
+    setInputLastName(e.target.value);
+  }
+
   function handleNameChange(e) {
-    setInputName(e.target.value);
+    setInputFirstName(e.target.value);
   }
 
   function handleMobileChange(e) {
@@ -41,15 +47,17 @@ export default function RoleAssign() {
   }
 
   function handleAddDoctor() {
-    if (inputName && inputMobile && inputEmail && inputRole) {
+    if (inputFirstName && inputMobile && inputEmail && inputRole) {
       const newDoctor = {
-        name: inputName,
+        first_name: inputFirstName,
+        last_name: inputLastName,
         mobile: inputMobile,
         email: inputEmail,
         role: inputRole,
       };
       setDoctors([...doctors, newDoctor]);
-      setInputName("");
+      setInputFirstName("");
+      setInputLastName("");
       setInputMobile("");
       setInputEmail("");
       setInputRole("");
@@ -59,8 +67,8 @@ export default function RoleAssign() {
         .then((res) => {
           console.log(res);
           const formdata = new FormData();
-          formdata.append("user[first_name]", inputName);
-          formdata.append("user[last_name]", inputName);
+          formdata.append("user[first_name]", inputFirstName);
+          formdata.append("user[last_name]", inputLastName);
           formdata.append("user[phone_number]", inputMobile);
           formdata.append("user[email]", inputEmail);
           formdata.append("user[role]", inputRole);
@@ -84,12 +92,15 @@ export default function RoleAssign() {
   const handleRemoveDoctor = (index) => {
     const updatedDoctors = doctors.filter((_, i) => i !== index);
     setDoctors(updatedDoctors);
-    axios.delete(`/api/v1/users/${index}`).then((res)=>{
-      console.log(res,"Successfully delete the data");
-      handleShow();
-    }).catch((err)=>{
-      console.log(err)
-    })
+    axios
+      .delete(`/api/v1/users/${index}`)
+      .then((res) => {
+        console.log(res, "Successfully delete the data");
+        handleShow();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -107,8 +118,15 @@ export default function RoleAssign() {
                 type="text"
                 className="border-2 rounded-md p-2"
                 onChange={handleNameChange}
-                value={inputName}
-                placeholder="Name"
+                value={inputFirstName}
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                className="border-2 rounded-md p-2"
+                onChange={handleNameChange1}
+                value={inputLastName}
+                placeholder="Last Name"
               />
               <input
                 className="border-2 rounded-md p-2"
@@ -163,6 +181,9 @@ export default function RoleAssign() {
                     Role
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Password
+                  </th>
+                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
                   </th>
                 </tr>
@@ -177,7 +198,11 @@ export default function RoleAssign() {
                     <tr key={index} className="map">
                       <td className="py-3 px-4 border-b border-b-gray-50">
                         <span className="text-black text-sm font-medium ml-1">
-                          {doctor.first_name}
+                          {doctor.first_name[0]?.toUpperCase() +
+                            doctor.first_name?.slice(1) +
+                            " " +
+                            doctor.last_name[0]?.toUpperCase() +
+                            doctor.last_name?.slice(1)}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
@@ -192,7 +217,13 @@ export default function RoleAssign() {
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
                         <span className="text-black text-sm font-medium ml-1">
-                          {doctor.role}
+                          {doctor?.role[0]?.toUpperCase() +
+                            doctor?.role?.slice(1)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
+                          {doctor?.show_password}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">

@@ -6,10 +6,11 @@ export default function DoctorList() {
   const [inputName, setInputName] = useState("");
   const [inputSpecification, setInputSpecification] = useState("");
   const [inputLastName, setLastName] = useState("");
+  const [inputPhoneNo, setInputPhoneNo] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [inputVisible, setInputVisible] = useState(false);
-  const [role, setRole] = useState("doctor");
+  const role = "doctor";
 
   const handleShow = () => {
     axios
@@ -28,6 +29,10 @@ export default function DoctorList() {
     setInputName(e.target.value);
   }
 
+  function handlePhoneChange(e) {
+    setInputPhoneNo(e.target.value);
+  }
+
   function handleLastName(e) {
     setLastName(e.target.value);
   }
@@ -43,14 +48,18 @@ export default function DoctorList() {
   function handleAddDoctor() {
     if (inputName && inputSpecification && inputEmail) {
       const newDoctor = {
-        name: inputName,
+        first_name: inputName,
+        last_name: inputLastName,
+        phone_number: inputPhoneNo,
         specification: inputSpecification,
         email: inputEmail,
       };
       setDoctors([...doctors, newDoctor]);
       setInputName("");
+      setLastName("");
       setInputSpecification("");
       setInputEmail("");
+      setInputPhoneNo("");
     }
     axios
       .get(`/api/v1/users/app_creds`)
@@ -59,6 +68,7 @@ export default function DoctorList() {
         const formdata = new FormData();
         formdata.append("user[first_name]", inputName);
         formdata.append("user[last_name]", inputLastName);
+        formdata.append("user[phone_number]", inputPhoneNo);
         formdata.append("user[email]", inputEmail);
         formdata.append("user[specification]", inputSpecification);
         formdata.append("user[role]", role);
@@ -128,6 +138,13 @@ export default function DoctorList() {
                   placeholder="Last Name"
                 />
                 <input
+                  type="number"
+                  className="border-2 rounded-md p-2"
+                  onChange={handlePhoneChange}
+                  value={inputPhoneNo}
+                  placeholder="Phone Number"
+                />
+                <input
                   className="border-2 rounded-md p-2"
                   type="text"
                   onChange={handleSpecificationChange}
@@ -165,6 +182,9 @@ export default function DoctorList() {
                     Email
                   </th>
                   <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Password
+                  </th>
+                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
                   </th>
                 </tr>
@@ -176,7 +196,11 @@ export default function DoctorList() {
                     <tr key={index} className="map">
                       <td className="py-3 px-4 border-b border-b-gray-50">
                         <span className="text-black text-sm font-medium ml-1">
-                          {doctor.first_name}
+                          {doctor?.first_name[0].toUpperCase() +
+                            doctor?.first_name?.slice(1) +
+                            " " +
+                            doctor?.last_name[0].toUpperCase() +
+                            doctor?.last_name?.slice(1)}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
@@ -187,6 +211,11 @@ export default function DoctorList() {
                       <td className="py-3 px-4 border-b border-b-gray-50">
                         <span className="text-black text-sm font-medium ml-1">
                           {doctor.email}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
+                          {doctor.show_password}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">

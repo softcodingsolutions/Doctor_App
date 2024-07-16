@@ -5,6 +5,7 @@ import { reportTreatmentButtons } from "../../../../constants/admin/AdminConstan
 import { Option, Select } from "@mui/joy";
 import axios from "axios";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import Swal from "sweetalert2";
 
 function ReportTreatment() {
   const context = useOutletContext();
@@ -53,11 +54,16 @@ function ReportTreatment() {
         newData.append(
           "treatment[treatment_package_id]",
           res.data?.treatment_package?.id
-        ); 
+        );
         await axios
           .post("/api/v1/user_treatments", newData)
           .then((res) => {
             console.log(res);
+            Swal.fire({
+              title: "Assigned!",
+              text: "Your treatment package has been assigned.",
+              icon: "success",
+            });
           })
           .catch((err) => {
             console.log(err);

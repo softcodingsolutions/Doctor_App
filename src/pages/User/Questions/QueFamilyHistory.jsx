@@ -68,8 +68,8 @@ function QueFamilyHistory({onNext,onBack}) {
             >
               <div className="flex flex-col gap-2 justify-between w-full">
                 <h2>
-                  Choose the disease if any of your family member has or had
-                  that disease
+                  Choose a disease which any of your family members has or had
+                  one:
                 </h2>
                 <Select
                   multiple
@@ -95,7 +95,7 @@ function QueFamilyHistory({onNext,onBack}) {
                   })}
                 </Select>
                 <div className="flex flex-col gap-2 mt-10">
-                  <label>Family Disease</label>
+                  <label>Family Disease:</label>
                   <textarea
                     rows={3}
                     className="border-2 w-full rounded-md p-2"

@@ -55,7 +55,7 @@ function CustomerAllUsers() {
                   <ThComponent name="Name" />
                   <ThComponent name="Mobile" />
                   <ThComponent name="City" />
-                  <ThComponent name="Registration Mode" />
+                  <ThComponent name="Registration Through" />
                   <ThComponent name="Paid" />
                   <ThComponent name="Customer Type" />
                   <ThComponent />
@@ -94,9 +94,12 @@ function CustomerAllUsers() {
                             <TdComponent things={val.personal_detail?.city} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={val.medicine_content ?? "null"}
-                            />
+                            {val.creator === "super_admin" && (
+                              <TdComponent things={"Admin"} />
+                            )}
+                            {val.creator === "franchise" && (
+                              <TdComponent things={"Franchise"} />
+                            )}
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent

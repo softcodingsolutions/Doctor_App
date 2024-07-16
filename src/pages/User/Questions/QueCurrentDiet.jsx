@@ -1,14 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function QueCurrentDiet({onNext,onBack}) {
-  const navigate = useNavigate();
+function QueCurrentDiet({ onNext, onBack }) {
   const email = localStorage.getItem("client_email");
   const {
     register,

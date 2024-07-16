@@ -13,7 +13,7 @@ function FranchiseDashboard() {
           <div className="sm:flex-grow flex justify-between">
             <div className="">
               <div className="flex items-center">
-                <div className="text-3xl font-bold">Hello Admin !</div>
+                <div className="text-3xl font-bold">Hello Franchise!</div>
               </div>
             </div>
             <button

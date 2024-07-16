@@ -43,7 +43,7 @@ function FranchiseAllCustomers() {
     handleGetAllUsers();
     localStorage.removeItem("userId");
   }, []);
-  
+
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -106,9 +106,9 @@ function FranchiseAllCustomers() {
                             <TdComponent things={val.personal_detail?.city} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={val.medicine_content ?? "null"}
-                            />
+                            {val.creator === "franchise" && (
+                              <TdComponent things={"Franchise"} />
+                            )}
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
