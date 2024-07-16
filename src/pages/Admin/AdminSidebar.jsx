@@ -176,7 +176,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             </div>
           </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">
-            {admin?.first_name} {admin?.last_name}
+            {admin?.first_name?.toUpperCase()[0] + admin?.first_name?.slice(1)}{" "}
+            {admin?.last_name?.toUpperCase()[0] + admin?.last_name?.slice(1)}
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <img
