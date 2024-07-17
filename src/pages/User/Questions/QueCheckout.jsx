@@ -62,6 +62,7 @@ function QueCheckout() {
         .then((res) => {
           console.log("Checkout: ", res);
           localStorage.removeItem("client_email");
+          navigate("../../admin/customers/all-users");
         })
         .catch((err) => {
           console.log(err);
@@ -69,7 +70,7 @@ function QueCheckout() {
     } catch (error) {
       console.error(error);
     }
-    navigate("../../admin/customers/all-users");
+
     reset();
   };
 

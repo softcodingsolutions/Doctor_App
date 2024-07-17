@@ -75,55 +75,40 @@ function Questions() {
   };
 
   const editQuestion = async (val, Part) => {
-    const see =
-      Part === "1"
-        ? getQuestionsPart1.filter((item) => item?.id === val)
-        : getQuestionsPart2.filter((item) => item?.id === val);
-    console.log(see);
+    const see = Part === "1" 
+      ? getQuestionsPart1.find((item) => item?.id === val) 
+      : getQuestionsPart2.find((item) => item?.id === val);
+  
+    if (!see) return;
+  
     const { value: formValues } = await Swal.fire({
       title: "Edit the question",
       html: `
-    <div class="flex flex-col items-center justify-center text-black">
-      <div>
-        Part:<select id="swal-input1" name="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-          <option value="1" ${Part == 1 ? "selected" : ""}>1</option>
-          <option value="2" ${Part == 2 ? "selected" : ""}>2</option>
-        </select>
-      </div>
-      <div>
-        Gender:<select id="swal-input2" name="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-          <option value="female" ${
-            see[0].gender === "female" ? "selected" : ""
-          }>Female</option>
-          <option value="male" ${
-            see[0].gender === "male" ? "selected" : ""
-          }>Male</option>
-          <option value="both" ${
-            see[0].gender === "both" ? "selected" : ""
-          }>Both</option>
-        </select>
-      </div>
-      <div>
-        Language:<select id="swal-input3" name="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-          <option value="gujarati" ${
-            see[0].language === "gujarati" ? "selected" : ""
-          }>Gujarati</option>
-          <option value="hindi" ${
-            see[0].language === "hindi" ? "selected" : ""
-          }>Hindi</option>
-          <option value="english" ${
-            see[0].language === "english" ? "selected" : ""
-          }>English</option>
-        </select>
-      </div>
-      <div class="flex items-center">
-        Question:
-        <textarea rows="5" cols="30" type="text" id="swal-input4" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${
-          see[0]?.question
-        }
-      </textarea></div>
-    </div>
-  `,
+        <div class="flex flex-col items-center justify-center text-black">
+          <div>
+            Part:<select id="swal-input1" name="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
+              <option value="1" ${Part == 1 ? "selected" : ""}>1</option>
+              <option value="2" ${Part == 2 ? "selected" : ""}>2</option>
+            </select>
+          </div>
+          <div>
+            Gender:<select id="swal-input2" name="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
+              <option value="female" ${see.gender === "female" ? "selected" : ""}>Female</option>
+              <option value="male" ${see.gender === "male" ? "selected" : ""}>Male</option>
+              <option value="both" ${see.gender === "both" ? "selected" : ""}>Both</option>
+            </select>
+          </div>
+          <div>
+            Question in English:<textarea rows="2" cols="30" id="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${see.question_in_english}</textarea>
+          </div>
+          <div>
+            Question in Hindi:<textarea rows="2" cols="30" id="swal-input4" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${see.question_in_hindi}</textarea>
+          </div>
+          <div>
+            Question in Gujarati:<textarea rows="2" cols="30" id="swal-input5" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${see.question_in_gujarati}</textarea>
+          </div>
+        </div>
+      `,
       focusConfirm: false,
       showCancelButton: true,
       preConfirm: () => {
@@ -132,17 +117,18 @@ function Questions() {
           document.getElementById("swal-input2").value,
           document.getElementById("swal-input3").value,
           document.getElementById("swal-input4").value,
+          document.getElementById("swal-input5").value,
         ];
       },
     });
+  
     if (formValues) {
       const formData = new FormData();
       formData.append("question[part]", formValues[0]);
       formData.append("question[gender]", formValues[1]);
-      formData.append("question[language]", formValues[2]);
-      formData.append("question[question_gujarati]", formValues[3]);
-      formData.append("question[question_hindi]", formValues[4]);
-      formData.append("question[question_english]", formValues[5]);
+      formData.append("question[question_in_english]", formValues[2]);
+      formData.append("question[question_in_hindi]", formValues[3]);
+      formData.append("question[question_in_gujarati]", formValues[4]);
       axios.put(`api/v1/questions/${val}`, formData).then((res) => {
         console.log(res);
         Part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
@@ -159,6 +145,7 @@ function Questions() {
       });
     }
   };
+  
 
   const deleteQuestion = (val, Part) => {
     Swal.fire({

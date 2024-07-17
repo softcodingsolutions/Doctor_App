@@ -7,7 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PrevPageButton from "../../../../components/Admin/PrevPageButton";
 
-function CustomerQuestionsPart2({ onBack }) {
+function CustomerQuestionsPart2({ onBack, onNext }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem("client_email");

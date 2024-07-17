@@ -93,7 +93,7 @@ import UserQuestionsPart2 from "./pages/Recepsitnist/Newuser/UserQuestionsPart2"
 import UserCheckout from "./pages/Recepsitnist/Newuser/UserCheckout";
 import GenerateBill from "./pages/Recepsitnist/Pages/GenerateBill";
 import UserDiagnosis from "./pages/User/UserDiagnosis";
-
+import BillHistory from "./pages/Recepsitnist/Pages/BillHistory";
 function App() {
   return (
     <Router>
