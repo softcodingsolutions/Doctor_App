@@ -36,18 +36,24 @@ function AdminDashboard() {
       });
   };
 
-  const formatTime = (isoString) => {
-    const date = new Date(isoString);
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-
-    hours = hours % 12;
-    hours = hours ? hours : 12; // The hour '0' should be '12'
-    const strMinutes = minutes < 10 ? "0" + minutes : minutes;
-
-    return `${hours}:${strMinutes} ${ampm}`;
-  };
+  function formatTime(time) {
+    try {
+      const date = new Date(time);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
+      return formattedTime;
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return "Invalid time";
+    }
+  }
 
   useEffect(() => {
     handleGetConsultingTime();
@@ -181,7 +187,7 @@ function AdminDashboard() {
                               </div>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.doctor?.first_name} />
+                              <TdComponent things={val.doctor?.first_name + " " + val.doctor?.last_name} />
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
                               <TdComponent things={val.machine_detail?.name} />

@@ -17,11 +17,12 @@ export default function Indooractivity(props) {
   }, [props.doctor]);
 
   const handleConsulting = (e) => {
-    setConsultingTime(e.target.value);
+    const value = e ? e.target.value : "";
+    setConsultingTime(value);
     axios
       .get(
         `/api/v1/appointments/fetch_machine_consulting_times?date=${formatDate(
-          e.target.value
+          value
         )}&machine_consulting_time_id=${slot}`
       )
       .then((res) => {
@@ -104,6 +105,9 @@ export default function Indooractivity(props) {
         setConsultingTime("");
         setSlot("");
         setSlotTime("");
+        // Reset date input field and trigger handleConsulting
+        document.querySelector('input[type="date"]').value = "";
+        handleConsulting({ target: { value: "" } });
       })
       .catch((err) => {
         console.log(err);
