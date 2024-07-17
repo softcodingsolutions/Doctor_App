@@ -11,6 +11,7 @@ import QueComplains from "../../User/Questions/QueComplains";
 import CustomerQuestionsPart1 from "./new_customer/CustomerQuestionsPart1";
 import CustomerQuestionsPart2 from "./new_customer/CustomerQuestionsPart2";
 import QueCheckout from "../../User/Questions/QueCheckout";
+
 const steps = [
   "General Details",
   "Current Diet",
@@ -20,6 +21,7 @@ const steps = [
   "Diagnosis",
   "Checkout",
 ];
+
 function NewCustomer() {
   const [currentStep, setCurrentStep] = useState(0);
 

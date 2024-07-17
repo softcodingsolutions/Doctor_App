@@ -1,4 +1,3 @@
-import { useNavigate, useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSchema } from "../../../schemas/UserDetailsSchema";
@@ -6,12 +5,11 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 
-function QueGeneralDetails() {
-  const context = useOutletContext();
-  const navigate = useNavigate();
+function QueGeneralDetails({ user, onNext }) {
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm({
@@ -22,70 +20,62 @@ function QueGeneralDetails() {
     console.log(d);
 
     axios
-      .get(
-        `/api/v1/users/find_user?access_token=${localStorage.getItem(
+      .put(
+        `/api/v1/users/update_profile?access_token=${localStorage.getItem(
           "access_token"
         )}`
       )
-      .then(async (res) => {
+      .then((res) => {
         console.log(res);
-
-        await axios
-          .put(
-            `/api/v2/users/update_personal_details?email=${res.data?.user?.email}`,
-            {
-              personal_detail: {
-                city: d.city,
-                age: d.age,
-                gender: d.gender,
-                overweight_since: d.overweight,
-                language: d.language,
-                reffered_by: d.refferedBy,
-                weight: d.weight,
-                height: d.height,
-                address: d.address,
-                whatsapp_number: d.whatsapp,
-              },
-              client_id: res.data?.client_id,
-            }
-          )
-          .then((res) => {
-            console.log(res);
-            navigate("../current-diet");
-          });
-
-        await axios
-          .put(
-            `/api/v1/users/update_profile?access_token=${localStorage.getItem(
-              "access_token"
-            )}`,
-            {
-              user: {
-                first_name: d.firstname,
-                last_name: d.lastname,
-                email: d.email,
-                phone_number: d.mobile,
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-          });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    reset();
-  };
 
-  console.log(context);
+    // axios
+    //   .get(
+    //     `/api/v1/users/find_user?access_token=${localStorage.getItem(
+    //       "access_token"
+    //     )}`
+    //   )
+    //   .then(async (res) => {
+    //     console.log(res);
+
+    //     await axios
+    //       .put(
+    //         `/api/v2/users/update_personal_details?email=${localStorage.getItem(
+    //           "client_email"
+    //         )}`,
+    //         {
+    //           personal_detail: {
+    //             city: d.city,
+    //             age: d.age,
+    //             gender: d.gender,
+    //             overweight_since: d.overweight,
+    //             language: d.language,
+    //             reffered_by: d.refferedBy,
+    //             weight: d.weight,
+    //             height: d.height,
+    //             address: d.address,
+    //             whatsapp_number: d.whatsapp,
+    //           },
+    //           client_id: res.data?.client_id,
+    //         }
+    //       )
+    //       .then((res) => {
+    //         console.log(res);
+    //         // navigate("../current-diet");
+    //       });
+    //   });
+    // reset();
+    // onNext();
+  };
 
   return (
     <div className=" flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2 ">
       <div className="w-full sm:flex items-end">
         <div className="sm:flex-grow flex justify-end ">
-          <button
-            onClick={context[0]}
-            type="button"
-            className="block sm:hidden hover:scale-110"
-          >
+          <button type="button" className="block sm:hidden hover:scale-110">
             <img
               src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
               alt=""
@@ -105,6 +95,7 @@ function QueGeneralDetails() {
                 <UserDetailsInput
                   errors={errors.firstname}
                   name="firstname"
+                  defaultValue={user.first_name}
                   type="text"
                   label="First Name"
                   placeholder="firstname"
@@ -112,10 +103,12 @@ function QueGeneralDetails() {
                     required: true,
                     minLength: 2,
                   })}
+                  setValue={setValue}
                 />
                 <UserDetailsInput
                   errors={errors.lastname}
                   name="lastname"
+                  defaultValue={user.last_name}
                   type="text"
                   label="Last Name"
                   placeholder="lastname"
@@ -123,11 +116,13 @@ function QueGeneralDetails() {
                     required: true,
                     minLength: 2,
                   })}
+                  setValue={setValue}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
                   errors={errors.email}
+                  defaultValue={user.email}
                   name="email"
                   type="email"
                   label="Email"
@@ -135,9 +130,11 @@ function QueGeneralDetails() {
                   hook={register("email", {
                     required: true,
                   })}
+                  setValue={setValue}
                 />
                 <UserDetailsInput
                   errors={errors.mobile}
+                  defaultValue={user.phone_number}
                   name="mobile"
                   type="text"
                   label="Phone Number"
@@ -145,6 +142,7 @@ function QueGeneralDetails() {
                   hook={register("mobile", {
                     required: true,
                   })}
+                  setValue={setValue}
                 />
               </div>
               <div className="md:flex w-full justify-between">

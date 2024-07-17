@@ -104,15 +104,16 @@ function App() {
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="dashboard" element={<UserDashboard />} />
-          <Route path="questions" element={<UserQuestions />}>
-            <Route path="general-details" element={<QueGeneralDetails />} />
-            <Route path="current-diet" element={<QueCurrentDiet />} />
-            <Route path="family-history" element={<QueFamilyHistory />} />
-            <Route path="complains" element={<QueComplains />} />
-            <Route path="user-questions" element={<QueUserQuestions />} />
-            <Route path="diagnosis" element={<QueDiagnosis />} />
-            <Route path="checkout" element={<QueCheckout />} />
-          </Route>
+        </Route>
+
+        <Route path="questions" element={<UserQuestions />}>
+          <Route path="general-details" element={<QueGeneralDetails />} />
+          <Route path="current-diet" element={<QueCurrentDiet />} />
+          <Route path="family-history" element={<QueFamilyHistory />} />
+          <Route path="complains" element={<QueComplains />} />
+          <Route path="user-questions" element={<QueUserQuestions />} />
+          <Route path="diagnosis" element={<QueDiagnosis />} />
+          <Route path="checkout" element={<QueCheckout />} />
         </Route>
 
         {/* Admin */}

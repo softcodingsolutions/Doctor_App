@@ -30,7 +30,6 @@ function SignUpPage() {
         formData.append("user[password]", d.password);
         formData.append("user[email]", d.email);
         formData.append("user[phone_number]", d.mobile);
-        formData.append("user[address]", d.address);
         formData.append("client_id", res.data?.client_id);
         axios
           .post(`/api/v1/users`, formData)
@@ -38,6 +37,8 @@ function SignUpPage() {
             console.log("Login", res);
             localStorage.setItem("access_token", res.data?.user?.access_token);
             localStorage.setItem("role", res.data?.user?.role);
+            localStorage.setItem("main_id", res.data?.user?.user?.id);
+            localStorage.setItem("client_email", res.data?.user?.user?.email);
 
             const Toast = Swal.mixin({
               toast: true,
@@ -54,7 +55,7 @@ function SignUpPage() {
               icon: "success",
               title: "Signed up successfully",
             });
-            navigate("/");
+            navigate("/questions/general-details");
             reset();
           })
           .catch((err) => {
@@ -127,12 +128,6 @@ function SignUpPage() {
               {errors.mobile?.message}
             </span>
           )}
-          <SignupInputs
-            name="address"
-            type="text"
-            placeholder="address"
-            hook={register("address")}
-          />
           <SignupInputs
             name="password"
             type="password"
