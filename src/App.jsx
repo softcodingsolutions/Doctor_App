@@ -231,6 +231,7 @@ function App() {
               element={<CreateAppointment />}
             ></Route>
             <Route path="medical-inventory" element={<MedicalInventory />} />
+            <Route path="bill-history" element={<BillHistory />} />
           </Route>
         </Route>
 
