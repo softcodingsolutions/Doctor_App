@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDebounce } from 'use-debounce';
+import { useDebounce } from "use-debounce";
 import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
@@ -10,26 +10,40 @@ export default function CreateAppointment() {
   const [Case, setCase] = useState("new");
   const [doctorName, setDoctorNames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm] = useDebounce(searchTerm, 500); 
+  const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
-  const [name, setName] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [userId, setUserId] = useState('');
-  const [machineList , setMachineList] = useState([]);
-  const [machineConsultingTime , setMachineConsultingTime] = useState([]);
+  const [name, setName] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
+  const [machineList, setMachineList] = useState([]);
+  const [machineConsultingTime, setMachineConsultingTime] = useState([]);
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
     console.log(e.target.value);
-    axios.get(`http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`).then((res)=>{
-      console.log(res)
-      console.log(res.data.machine_details,"Machine Details");
-      setMachineList(res.data.machine_details);
-      console.log(res.data.machine_details.map((res)=>res.machine_consulting_times.map((res)=>res)),"COnsultingTime")
-      setMachineConsultingTime(res.data.machine_details.map((res)=>res.machine_consulting_times.map((res)=>res)))
-    }).catch((err)=>{
-      console.log(err);
-    })
+    axios
+      .get(
+        `http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`
+      )
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.machine_details, "Machine Details");
+        setMachineList(res.data.machine_details);
+        console.log(
+          res.data.machine_details.map((res) =>
+            res.machine_consulting_times.map((res) => res)
+          ),
+          "COnsultingTime"
+        );
+        setMachineConsultingTime(
+          res.data.machine_details.map((res) =>
+            res.machine_consulting_times.map((res) => res)
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleShow = () => {
@@ -50,7 +64,9 @@ export default function CreateAppointment() {
   useEffect(() => {
     if (debouncedSearchTerm) {
       axios
-        .get(`/api/v2/users/search?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}`)
+        .get(
+          `/api/v2/users/search?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}`
+        )
         .then((res) => {
           console.log("search", res);
           setName(res.data.user.first_name);
@@ -64,9 +80,9 @@ export default function CreateAppointment() {
               console.log(res, "COUNTT");
               const count = res.data.appointments_count;
               if (count > 0) {
-                setCase('old');
+                setCase("old");
               } else {
-                setCase('new');
+                setCase("new");
               }
             })
             .catch((err) => {
@@ -97,9 +113,9 @@ export default function CreateAppointment() {
     handleShow();
   }, []);
 
-  const handleMove = () =>{
-    navigate('../new-user/general-details');
-  }
+  const handleMove = () => {
+    navigate("../new-user/general-details");
+  };
   return (
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -151,9 +167,20 @@ export default function CreateAppointment() {
               </div>
               <div className="flex gap-5 m-5">
                 {Case === "old" ? (
-                  <Oldcase doctor={doctorList} user={userId} machine={machineList} machineTime={machineConsultingTime}/>
+                  <Oldcase
+                    doctor={doctorList}
+                    user={userId}
+                    machine={machineList}
+                    machineTime={machineConsultingTime}
+                  />
                 ) : (
-                  <Newcase doctor={doctorList} name={name} number={mobileNumber} email={email} user={userId} />
+                  <Newcase
+                    doctor={doctorList}
+                    name={name}
+                    number={mobileNumber}
+                    email={email}
+                    user={userId}
+                  />
                 )}
               </div>
             </form>
