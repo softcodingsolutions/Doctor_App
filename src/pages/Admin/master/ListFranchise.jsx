@@ -4,6 +4,7 @@ import AddListFranchise from "../../../components/Admin/AddListFranchise";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function ListFranchise() {
   const [getFranchise, setGetFranchise] = useState([]);
@@ -26,7 +27,7 @@ function ListFranchise() {
               state: d.state,
               amount: d.amount,
               commission: d.commission,
-              possibility_group: (d.possibility_group === "yes" ? true : false),
+              possibility_group: d.possibility_group === "yes" ? true : false,
               role: d.type_of_admin,
               show_password: d.password,
             },
@@ -55,6 +56,40 @@ function ListFranchise() {
         });
         console.log(filterUser);
         setGetFranchise(filterUser);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleAddAmount = async (val) => {
+    const { value: formValues } = await Swal.fire({
+      title: "Amount",
+      html: `
+      <div class="flex flex-col items-center justify-center text-black">
+        <div>
+          Add Amount: <input id="swal-input1" type="number" min={0} class="swal2-input">
+        </div>
+      </div>
+    `,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        return [
+          document.getElementById("swal-input1").value >= 0
+            ? document.getElementById("swal-input1").value
+            : -document.getElementById("swal-input1").value,
+        ];
+      },
+    });
+
+    axios
+      .put(
+        `/api/v1/users/add_amount_to_franchise?id=${val}&amount=${formValues[0]}`
+      )
+      .then((res) => {
+        console.log(res);
+        handleGetFranchise();
       })
       .catch((err) => {
         console.log(err);
@@ -164,7 +199,7 @@ function ListFranchise() {
                           <TdComponent
                             things={
                               <button
-                                onClick={() => console.log("add amount")}
+                                onClick={() => handleAddAmount(val.id)}
                                 className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-[#33a92b] hover:text-white"
                               >
                                 Add Amount

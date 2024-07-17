@@ -13,7 +13,9 @@ function UserDashboard() {
           <div className="sm:flex-grow flex justify-between">
             <div className="">
               <div className="flex items-center">
-                <div className="text-3xl font-bold">Hello User!</div>
+                <div className="text-3xl font-bold">
+                  Hello {context[1]?.first_name + " " + context[1]?.last_name}!
+                </div>
               </div>
             </div>
             <button

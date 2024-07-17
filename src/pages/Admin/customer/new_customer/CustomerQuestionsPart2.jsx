@@ -7,7 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PrevPageButton from "../../../../components/Admin/PrevPageButton";
 
-function CustomerQuestionsPart2({ onNext, onBack }) {
+function CustomerQuestionsPart2({ onBack }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem("client_email");
@@ -78,9 +78,10 @@ function CustomerQuestionsPart2({ onNext, onBack }) {
       }
     } catch (err) {
       console.error(err);
-      onNext();
     } finally {
-      onNext();
+      localStorage.removeItem("client_email");
+      localStorage.removeItem("main_id");
+      navigate("/user/dashboard");
       setSelectedCheckboxes([]);
     }
   };

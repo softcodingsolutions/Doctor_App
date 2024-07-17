@@ -20,55 +20,41 @@ function QueGeneralDetails({ user, onNext }) {
     console.log(d);
 
     axios
-      .put(
-        `/api/v1/users/update_profile?access_token=${localStorage.getItem(
+      .get(
+        `/api/v1/users/find_user?access_token=${localStorage.getItem(
           "access_token"
         )}`
       )
-      .then((res) => {
+      .then(async (res) => {
         console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
+
+        await axios
+          .put(
+            `/api/v2/users/update_personal_details?email=${localStorage.getItem(
+              "client_email"
+            )}`,
+            {
+              personal_detail: {
+                city: d.city,
+                age: d.age,
+                gender: d.gender,
+                overweight_since: d.overweight,
+                language: d.language,
+                reffered_by: d.refferedBy,
+                weight: d.weight,
+                height: d.height,
+                address: d.address,
+                whatsapp_number: d.whatsapp,
+              },
+              client_id: res.data?.client_id,
+            }
+          )
+          .then((res) => {
+            console.log(res);
+          });
       });
-
-    // axios
-    //   .get(
-    //     `/api/v1/users/find_user?access_token=${localStorage.getItem(
-    //       "access_token"
-    //     )}`
-    //   )
-    //   .then(async (res) => {
-    //     console.log(res);
-
-    //     await axios
-    //       .put(
-    //         `/api/v2/users/update_personal_details?email=${localStorage.getItem(
-    //           "client_email"
-    //         )}`,
-    //         {
-    //           personal_detail: {
-    //             city: d.city,
-    //             age: d.age,
-    //             gender: d.gender,
-    //             overweight_since: d.overweight,
-    //             language: d.language,
-    //             reffered_by: d.refferedBy,
-    //             weight: d.weight,
-    //             height: d.height,
-    //             address: d.address,
-    //             whatsapp_number: d.whatsapp,
-    //           },
-    //           client_id: res.data?.client_id,
-    //         }
-    //       )
-    //       .then((res) => {
-    //         console.log(res);
-    //         // navigate("../current-diet");
-    //       });
-    //   });
-    // reset();
-    // onNext();
+    reset();
+    onNext();
   };
 
   return (
