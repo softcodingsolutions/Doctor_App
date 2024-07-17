@@ -92,6 +92,7 @@ import UserQuestionsPart1 from "./pages/Recepsitnist/Newuser/UserQuestionsPart1"
 import UserQuestionsPart2 from "./pages/Recepsitnist/Newuser/UserQuestionsPart2";
 import UserCheckout from "./pages/Recepsitnist/Newuser/UserCheckout";
 import GenerateBill from "./pages/Recepsitnist/Pages/GenerateBill";
+import UserDiagnosis from "./pages/User/UserDiagnosis";
 
 function App() {
   return (
@@ -104,6 +105,14 @@ function App() {
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="dashboard" element={<UserDashboard />} />
+          <Route path="user-diagnosis" element={<UserDiagnosis />}>
+            <Route path="profile" element={<ReportProfile />} />
+            <Route path="questions" element={<ReportQuestions />} />
+            <Route path="past-history" element={<ReportPastHistory />} />
+            <Route path="lab-tests" element={<TreatmentLabTests />} />
+            <Route path="progress-report" element={<ReportProgress />} />
+            <Route path="package" element={<ReportPackage />} />
+          </Route>
         </Route>
 
         <Route path="questions" element={<UserQuestions />}>
@@ -113,7 +122,6 @@ function App() {
           <Route path="complains" element={<QueComplains />} />
           <Route path="user-questions" element={<QueUserQuestions />} />
           <Route path="diagnosis" element={<QueDiagnosis />} />
-          <Route path="checkout" element={<QueCheckout />} />
         </Route>
 
         {/* Admin */}
@@ -206,7 +214,7 @@ function App() {
         </Route>
 
         {/* Recepsitnist */}
-        <Route path="recepsitnist" element={<RecepsitnistMain />}>
+        <Route path="receptionist" element={<RecepsitnistMain />}>
           <Route path="appointment" element={<Appointment />}>
             <Route path="generatebill" element={<GenerateBill />} />
             <Route path="new-user" element={<NewUser />}>

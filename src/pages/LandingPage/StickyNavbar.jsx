@@ -150,7 +150,14 @@ export function StickyNavbar() {
       <Collapse open={openNav}>
         {navList}
         <div className="flex items-center gap-x-1">
-          <Button fullWidth variant="gradient" size="sm">
+          <Button
+            fullWidth
+            variant="gradient"
+            size="sm"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
             <span className="text-sm">Sign in</span>
           </Button>
         </div>

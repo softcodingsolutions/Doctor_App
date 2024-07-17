@@ -2,8 +2,9 @@ import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import { FaPlus, FaRegCircleQuestion } from "react-icons/fa6";
+import { FaPlus} from "react-icons/fa6";
 import { useState } from "react";
+import { MdOutlineMedicalInformation } from "react-icons/md";
 
 function UserSidebar({ onSidebarHide, showSidebar, user }) {
   const navigate = useNavigate();
@@ -19,9 +20,9 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
     },
     {
       id: "1",
-      title: "Questions",
-      to: "questions/general-details",
-      icons: <FaRegCircleQuestion size={18} />,
+      title: "Diagnosis Details",
+      to: "user-diagnosis/profile",
+      icons: <MdOutlineMedicalInformation size={18} />,
     },
   ];
 

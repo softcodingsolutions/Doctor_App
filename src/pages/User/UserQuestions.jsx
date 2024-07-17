@@ -10,7 +10,6 @@ import QueComplains from "./Questions/QueComplains";
 import CustomerQuestionsPart1 from "../Admin/customer/new_customer/CustomerQuestionsPart1";
 import CustomerQuestionsPart2 from "../Admin/customer/new_customer/CustomerQuestionsPart2";
 import axios from "axios";
-import QueCheckout from "./Questions/QueCheckout";
 import QueGeneralDetails from "./Questions/QueGeneralDetails";
 
 const steps = [
@@ -20,7 +19,6 @@ const steps = [
   "Complains",
   "Questions",
   "Diagnosis",
-  "Checkout",
 ];
 
 function UserQuestions() {
@@ -105,12 +103,8 @@ function UserQuestions() {
           />
         )}
         {currentStep === 5 && (
-          <CustomerQuestionsPart2
-            onNext={handleNextStep}
-            onBack={handleBackStep}
-          />
+          <CustomerQuestionsPart2 onBack={handleBackStep} />
         )}
-        {currentStep === 6 && <QueCheckout onBack={handleBackStep} />}
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ function ReportProgress() {
   const [showQues, setShowQues] = useState(false);
   const [showComplain, setShowComplain] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
+  const role = localStorage.getItem("role");
   const context = useOutletContext();
 
   const handleGetQues = async () => {
@@ -146,14 +147,16 @@ function ReportProgress() {
                 Complains
               </button>
             </div>
-            <AddNewProgresReport
-              handleApi={handleAddProgress}
-              name="Add New Report"
-              title="Add Report"
-              progress_weight="Weight"
-              progress_date="Date"
-              weight_reason="Weight Reason"
-            />
+            {(role === "super_admin" || role === "franchise") && (
+              <AddNewProgresReport
+                handleApi={handleAddProgress}
+                name="Add New Report"
+                title="Add Report"
+                progress_weight="Weight"
+                progress_date="Date"
+                weight_reason="Weight Reason"
+              />
+            )}
           </div>
           {showProgress && (
             <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">

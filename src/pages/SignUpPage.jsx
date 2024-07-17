@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { schema } from "../schemas/SignUpSchema";
 import SubmitButton from "../components/SubmitButton";
+import img from "../assets/images/icons_slime.png";
 import SignupInputs from "../components/SignupInputs";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -37,6 +38,7 @@ function SignUpPage() {
             console.log("Login", res);
             localStorage.setItem("access_token", res.data?.user?.access_token);
             localStorage.setItem("role", res.data?.user?.role);
+            localStorage.setItem("userId", res.data?.user?.user?.id);
             localStorage.setItem("main_id", res.data?.user?.user?.id);
             localStorage.setItem("client_email", res.data?.user?.user?.email);
 
@@ -72,11 +74,7 @@ function SignUpPage() {
   return (
     <div className="flex flex-col items-center bg-slate-200 h-screen">
       <div className="my-10 flex items-center justify-center  w-[35vh] h-[15vh] shadow-sm bg-white rounded-md">
-        <img
-          className="w-50 h-24"
-          src="https://slimandsmile.com/assets/admin/global/img/logo.jpg"
-          alt=""
-        />
+        <img className="w-50 h-24" src={img} alt="" />
       </div>
       <div className="border bg-white px-10 py-5 rounded-sm shadow-sm">
         <form
