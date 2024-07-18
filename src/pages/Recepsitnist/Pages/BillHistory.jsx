@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useDebounce } from "use-debounce";
 
@@ -96,12 +96,14 @@ export default function BillHistory() {
             </div>
 
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
-              {bills.map((bill, index) => (
+              {bills.map((bill) => (
                 <div key={bill.id} className="mb-4">
                   <div className="p-4 border-b">
                     <div className="font-semibold">Bill ID: {bill.id}</div>
                     <div>Total Price: {bill.total_price}</div>
-                    <div>Created At: {new Date(bill.created_at).toLocaleString()}</div>
+                    <div>
+                      Created At: {new Date(bill.created_at).toLocaleString()}
+                    </div>
                   </div>
                   <table className="min-w-full divide-y divide-gray-200 overflow-auto">
                     <thead className="bg-gray-100">

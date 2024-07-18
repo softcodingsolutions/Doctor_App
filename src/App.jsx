@@ -53,6 +53,7 @@ import Packages from "./pages/Admin/master/Packages";
 import SurveyForm from "./pages/Survey/SurveyForm";
 import SurveyForm2 from "./pages/Survey/SurveyForm2";
 import SurveyForm3 from "./pages/Survey/SurveyForm3";
+import DataEntry from "./pages/Admin/appointment/DataEntry";
 import FranchiseMain from "./pages/Franchise/FranchiseMain";
 import FranchiseDashboard from "./pages/Franchise/FranchiseDashboard";
 import FranchiseCustomers from "./pages/Franchise/FranchiseCustomers";
