@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import ThComponent from "../../../../components/ThComponent";
-import TdComponent from "../../../../components/TdComponent";
-import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
+import ThComponent from "../../../components/ThComponent";
+import TdComponent from "../../../components/TdComponent";
+import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import axios from "axios";
-import PrevPageButton from "../../../../components/Admin/PrevPageButton";
+import { useNavigate } from "react-router-dom";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function CustomerQuestionsPart2({ onBack, onNext }) {
+function QuePart2({ onBack }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem("client_email");
+  const navigate = useNavigate();
 
   const handleGetQuestionsPart2 = () => {
     axios
@@ -68,8 +70,8 @@ function CustomerQuestionsPart2({ onBack, onNext }) {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Saved!",
-          text: `Your questions has been saved.`,
+          title: "Sent!",
+          text: `Your details has been sent to the doctor.`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -77,7 +79,9 @@ function CustomerQuestionsPart2({ onBack, onNext }) {
     } catch (err) {
       console.error(err);
     } finally {
-      onNext();
+      localStorage.removeItem("client_email");
+      localStorage.removeItem("main_id");
+      navigate("/user/dashboard");
       setSelectedCheckboxes([]);
     }
   };
@@ -158,4 +162,4 @@ function CustomerQuestionsPart2({ onBack, onNext }) {
   );
 }
 
-export default CustomerQuestionsPart2;
+export default QuePart2;

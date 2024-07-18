@@ -4,10 +4,12 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FormLabel, Option, Select } from "@mui/joy";
+import { useNavigate } from "react-router-dom";
 
 function UserCheckout() {
+  const navigate = useNavigate();
   const email = localStorage.getItem("client_email");
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, watch, setValue } = useForm();
   const [getPackages, setGetPackages] = useState([]);
 
   const handleGetPackages = () => {
@@ -23,28 +25,52 @@ function UserCheckout() {
       });
   };
 
+  const handleGetPrice = (name) => {
+    const packageDetail = getPackages.find(
+      (pack) => pack.package_name === name
+    );
+
+    if (packageDetail) {
+      setValue("package_value", packageDetail.package_price);
+      setValue("package_total", packageDetail.package_price);
+      setValue("grand_total", packageDetail.package_price);
+    }
+  };
+
+  const calculateGrandTotal = (packagePrice, discount) => {
+    const discountAmount = (packagePrice * discount) / 100;
+    return packagePrice - discountAmount;
+  };
+
+  const watchDiscount = watch("discount", 0);
+  const watchPackagePrice = watch("package_total", 0);
+
+  useEffect(() => {
+    const newGrandTotal = calculateGrandTotal(watchPackagePrice, watchDiscount);
+    setValue("grand_total", newGrandTotal);
+  }, [watchDiscount, watchPackagePrice, setValue]);
+
   const submittedData = async (d) => {
     console.log(d);
     try {
       await axios
         .put(`/api/v2/users/update_personal_details?email=${email}`, {
           personal_detail: {
-            checkout: JSON.stringify(d),
+            package: JSON.stringify(d),
           },
         })
         .then((res) => {
-          console.log("Family History: ", res);
+          console.log("Checkout: ", res);
+          localStorage.removeItem("client_email");
         })
         .catch((err) => {
           console.log(err);
         });
-      reset();
-      navigate("../complains");
     } catch (error) {
       console.error(error);
     }
+    navigate("/receptionist/appointment/create-appointment");
     reset();
-    navigate("../../customers/all-users");
   };
 
   useEffect(() => {
@@ -73,9 +99,9 @@ function UserCheckout() {
                   Package:
                 </FormLabel>
                 <Select
-                  {...register("package")}
-                  name="package"
-                  defaultValue="select"
+                  {...register("package_name")}
+                  name="package_name"
+                  placeholder="Select Package"
                   sx={{
                     paddingY: 1,
                     paddingX: 2,
@@ -84,11 +110,12 @@ function UserCheckout() {
                     width: "100%",
                   }}
                 >
-                  <Option value="select" disabled>
-                    Select One
-                  </Option>
                   {getPackages.map((pkg) => (
-                    <Option key={pkg.value} value={pkg.package_name}>
+                    <Option
+                      key={pkg.value}
+                      onClick={() => handleGetPrice(pkg.package_name)}
+                      value={pkg.package_name}
+                    >
                       {pkg.package_name}
                     </Option>
                   ))}
@@ -96,45 +123,45 @@ function UserCheckout() {
               </div>
               <div className="md:flex w-full  justify-between">
                 <UserDetailsInput
-                  name="FromDate"
+                  name="from_date"
                   type="date"
                   label="From Date"
                   placeholder="From date"
-                  hook={register("FromDate")}
+                  hook={register("from_date")}
                 />
                 <UserDetailsInput
-                  name="ToDate"
+                  name="to_date"
                   type="date"
                   label="To Date"
                   placeholder="To date"
-                  hook={register("ToDate")}
+                  hook={register("to_date")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="possibilitygroup"
+                  name="possibility_group"
                   type="text"
                   label="Possibility Group"
                   placeholder="NaN"
-                  hook={register("possibilitygroup")}
+                  hook={register("possibility_group")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="packagevalue"
+                  name="package_value"
                   type="text"
                   label="Package Value"
-                  placeholder="0"
-                  hook={register("packagevalue")}
+                  placeholder="NaN"
+                  hook={register("package_value")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="packagetotal"
+                  name="package_total"
                   type="text"
                   label="Package Total"
-                  placeholder="0"
-                  hook={register("packagetotal")}
+                  placeholder="NaN"
+                  hook={register("package_total")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
@@ -142,17 +169,17 @@ function UserCheckout() {
                   name="discount"
                   type="number"
                   label="Discount"
-                  placeholder="0"
+                  placeholder="In Percentage"
                   hook={register("discount")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  name="grandtotal"
+                  name="grand_total"
                   type="number"
                   label="Grand Total"
                   placeholder="NaN"
-                  hook={register("grandtotal")}
+                  hook={register("grand_total")}
                 />
               </div>
               <div className="md:flex w-full justify-between">
@@ -162,7 +189,7 @@ function UserCheckout() {
                 <Select
                   {...register("payment_method")}
                   name="payment_method"
-                  defaultValue="select"
+                  placeholder="Select Method"
                   sx={{
                     paddingY: 1,
                     paddingX: 2,
@@ -171,12 +198,8 @@ function UserCheckout() {
                     width: "100%",
                   }}
                 >
-                  <Option value="select" disabled>
-                    Select One
-                  </Option>
                   <Option value="online">Online</Option>
                   <Option value="cash">Cash</Option>
-                  <Option value="cheque">Select</Option>
                 </Select>
               </div>
               <div className="md:flex w-full justify-between gap-2">

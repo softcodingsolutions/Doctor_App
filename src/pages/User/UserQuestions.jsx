@@ -8,9 +8,9 @@ import QueCurrentDiet from "./Questions/QueCurrentDiet";
 import QueFamilyHistory from "./Questions/QueFamilyHistory";
 import QueComplains from "./Questions/QueComplains";
 import CustomerQuestionsPart1 from "../Admin/customer/new_customer/CustomerQuestionsPart1";
-import CustomerQuestionsPart2 from "../Admin/customer/new_customer/CustomerQuestionsPart2";
 import axios from "axios";
 import QueGeneralDetails from "./Questions/QueGeneralDetails";
+import QuePart2 from "./Questions/QuePart2";
 
 const steps = [
   "General Details",
@@ -102,9 +102,7 @@ function UserQuestions() {
             onBack={handleBackStep}
           />
         )}
-        {currentStep === 5 && (
-          <CustomerQuestionsPart2 onBack={handleBackStep} />
-        )}
+        {currentStep === 5 && <QuePart2 onBack={handleBackStep} />}
       </div>
     </div>
   );

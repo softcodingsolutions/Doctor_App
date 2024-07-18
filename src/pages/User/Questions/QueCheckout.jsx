@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FormLabel, Option, Select } from "@mui/joy";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function QueCheckout() {
   const navigate = useNavigate();
@@ -61,6 +62,16 @@ function QueCheckout() {
         })
         .then((res) => {
           console.log("Checkout: ", res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Created!",
+              text: `New user has been created.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
           localStorage.removeItem("client_email");
           navigate("../../admin/customers/all-users");
         })
