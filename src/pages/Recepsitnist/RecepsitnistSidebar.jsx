@@ -28,18 +28,24 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const sidebarItems = [
     {
       id: "1",
+      title: "Home",
+      to: "appointment/home",
+      icons: <IoIosPaper size={18} />,
+    },
+    {
+      id: "2",
       title: "Appointment",
       to: "appointment/create-appointment",
       icons: <IoIosPaper size={18} />,
     },
     {
-      id: "2",
+      id: "3",
       title: "Medical Inventory",
       to: "appointment/medical-inventory",
       icons: <FaClinicMedical size={18} />,
     },
     {
-      id: "3",
+      id: "4",
       title: "Bill History",
       to: "appointment/bill-history",
       icons : <MdMenuBook size={18}/>
