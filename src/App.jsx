@@ -32,19 +32,10 @@ import TreatmentFamilyReason from "./pages/Admin/treatment/TreatmentFamilyReason
 import TreatmentComplains from "./pages/Admin/treatment/TreatmentComplains";
 import TreatmentLabTests from "./pages/Admin/treatment/TreatmentLabTests";
 import UserQuestions from "./pages/User/UserQuestions";
-import QueCurrentDiet from "./pages/User/Questions/QueCurrentDiet";
-import QueFamilyHistory from "./pages/User/Questions/QueFamilyHistory";
-import QueComplains from "./pages/User/Questions/QueComplains";
-import QueUserQuestions from "./pages/User/Questions/QueUserQuestions";
-import QueCheckout from "./pages/User/Questions/QueCheckout";
-import QueDiagnosis from "./pages/User/Questions/QueDiagnosis";
-import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
 import CustomerAllUsers from "./pages/Admin/customer/CustomerAllUsers";
 import CustomerUserDiagnosis from "./pages/Admin/customer/CustomerUserDiagnosis";
 import CustomerGeneralDetails from "./pages/Admin/customer/new_customer/CustomerGeneralDetails";
 import NewCustomer from "./pages/Admin/customer/NewCustomer";
-import CustomerQuestionsPart1 from "./pages/Admin/customer/new_customer/CustomerQuestionsPart1";
-import CustomerQuestionsPart2 from "./pages/Admin/customer/new_customer/CustomerQuestionsPart2";
 import ReportPackage from "./pages/Admin/customer/generate_report/ReportPackage";
 import ReportPastHistory from "./pages/Admin/customer/generate_report/ReportPastHistory";
 import ReportProfile from "./pages/Admin/customer/generate_report/ReportProfile";
@@ -67,14 +58,7 @@ import FranchiseDashboard from "./pages/Franchise/FranchiseDashboard";
 import FranchiseCustomers from "./pages/Franchise/FranchiseCustomers";
 import FranchiseAllCustomers from "./pages/Franchise/customer/FranchiseAllCustomers";
 import FranchiseNewcustomer from "./pages/Franchise/customer/FranchiseNewcustomer";
-import FranchiesCurrentdiet from "./pages/Franchise/customer/FranchiesCurrentdiet";
 import FranchiesGeneraldetails from "./pages/Franchise/customer/FranchiesGeneraldetails";
-import FranchiesFamilyhistory from "./pages/Franchise/customer/FranchiesFamilyhistory";
-import FranchiesComplains from "./pages/Franchise/customer/FranchiesComplains";
-import FranchiesQuestions from "./pages/Franchise/customer/FranchiesQuestions";
-import FranchiesDiagnosis from "./pages/Franchise/customer/FranchiesDiagnosis";
-import FranchiesCheckout from "./pages/Franchise/customer/FranchiesCheckout";
-import DataEntry from "./pages/Admin/appointment/DataEntry";
 import AdminAppointment from "./pages/Admin/AdminAppointment";
 import RecepsitnistMain from "./pages/Recepsitnist/RecepsitnistMain";
 import CreateRole from "./pages/Recepsitnist/CreateRole";
@@ -85,15 +69,10 @@ import MedicalInventory from "./pages/Recepsitnist/Pages/MedicalInventory";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import NewUser from "./pages/Recepsitnist/Newuser/NewUser";
 import UserGeneralDetails from "./pages/Recepsitnist/Newuser/UserGeneralDetails";
-import UserCurrentDiet from "./pages/Recepsitnist/Newuser/UserCurrentDiet";
-import UserFamilyHistory from "./pages/Recepsitnist/Newuser/UserFamilyHistory";
-import UserComplains from "./pages/Recepsitnist/Newuser/UserComplains";
-import UserQuestionsPart1 from "./pages/Recepsitnist/Newuser/UserQuestionsPart1";
-import UserQuestionsPart2 from "./pages/Recepsitnist/Newuser/UserQuestionsPart2";
-import UserCheckout from "./pages/Recepsitnist/Newuser/UserCheckout";
 import GenerateBill from "./pages/Recepsitnist/Pages/GenerateBill";
 import UserDiagnosis from "./pages/User/UserDiagnosis";
 import BillHistory from "./pages/Recepsitnist/Pages/BillHistory";
+
 function App() {
   return (
     <Router>
@@ -109,37 +88,23 @@ function App() {
             <Route path="profile" element={<ReportProfile />} />
             <Route path="questions" element={<ReportQuestions />} />
             <Route path="past-history" element={<ReportPastHistory />} />
-            <Route path="lab-tests" element={<TreatmentLabTests />} />
             <Route path="progress-report" element={<ReportProgress />} />
-            <Route path="package" element={<ReportPackage />} />
           </Route>
         </Route>
 
-        <Route path="questions" element={<UserQuestions />}>
-          <Route path="general-details" element={<QueGeneralDetails />} />
-          <Route path="current-diet" element={<QueCurrentDiet />} />
-          <Route path="family-history" element={<QueFamilyHistory />} />
-          <Route path="complains" element={<QueComplains />} />
-          <Route path="user-questions" element={<QueUserQuestions />} />
-          <Route path="diagnosis" element={<QueDiagnosis />} />
-        </Route>
+        {/* User created by itself questions */}
+        <Route path="questions" element={<UserQuestions />} />
 
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>
           <Route path="dashboard" element={<AdminDashboard />} />
 
-          {/* new user */}
+          {/* user created by admin */}
           <Route path="new-user" element={<NewCustomer />}>
             <Route
               path="general-details"
               element={<CustomerGeneralDetails />}
             />
-            <Route path="current-diet" element={<QueCurrentDiet />} />
-            <Route path="family-history" element={<QueFamilyHistory />} />
-            <Route path="complains" element={<QueComplains />} />
-            <Route path="user-questions" element={<CustomerQuestionsPart1 />} />
-            <Route path="diagnosis" element={<CustomerQuestionsPart2 />} />
-            <Route path="checkout" element={<QueCheckout />} />
           </Route>
 
           {/* create role */}
@@ -213,23 +178,17 @@ function App() {
           </Route>
         </Route>
 
-        {/* Recepsitnist */}
+        {/* Receptionist */}
         <Route path="receptionist" element={<RecepsitnistMain />}>
           <Route path="appointment" element={<Appointment />}>
             <Route path="generatebill" element={<GenerateBill />} />
+
+            {/* user created by receptionist */}
             <Route path="new-user" element={<NewUser />}>
               <Route path="general-details" element={<UserGeneralDetails />} />
-              <Route path="current-diet" element={<UserCurrentDiet />} />
-              <Route path="family-history" element={<UserFamilyHistory />} />
-              <Route path="complains" element={<UserComplains />} />
-              <Route path="user-questions" element={<UserQuestionsPart1 />} />
-              <Route path="diagnosis" element={<UserQuestionsPart2 />} />
-              <Route path="checkout" element={<UserCheckout />} />
             </Route>
-            <Route
-              path="create-appointment"
-              element={<CreateAppointment />}
-            ></Route>
+
+            <Route path="create-appointment" element={<CreateAppointment />} />
             <Route path="medical-inventory" element={<MedicalInventory />} />
             <Route path="bill-history" element={<BillHistory />} />
           </Route>
@@ -245,18 +204,12 @@ function App() {
         <Route path="franchise" element={<FranchiseMain />}>
           <Route path="dashboard" element={<FranchiseDashboard />} />
 
-          {/* Franchise New User */}
+          {/* user created by franchise */}
           <Route path="new-user" element={<FranchiseNewcustomer />}>
             <Route
               path="general-details"
               element={<FranchiesGeneraldetails />}
             />
-            <Route path="current-diet" element={<FranchiesCurrentdiet />} />
-            <Route path="family-history" element={<FranchiesFamilyhistory />} />
-            <Route path="complains" element={<FranchiesComplains />} />
-            <Route path="user-questions" element={<FranchiesQuestions />} />
-            <Route path="diagnosis" element={<FranchiesDiagnosis />} />
-            <Route path="checkout" element={<FranchiesCheckout />} />
           </Route>
 
           {/* Franchise Customers */}

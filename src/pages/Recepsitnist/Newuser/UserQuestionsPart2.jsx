@@ -4,14 +4,12 @@ import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
 function UserQuestionsPart2({ onNext, onBack }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem("client_email");
-  const navigate = useNavigate();
 
   const handleGetQuestionsPart2 = () => {
     axios
@@ -78,7 +76,6 @@ function UserQuestionsPart2({ onNext, onBack }) {
       }
     } catch (err) {
       console.error(err);
-      onNext();
     } finally {
       onNext();
       setSelectedCheckboxes([]);
