@@ -45,6 +45,7 @@ export default function GenerateBill() {
       .then((res) => {
         console.log("Bill created successfully", res);
         alert("Bill created successfully");
+        navigate(`../medical-inventory`);
       })
       .catch((err) => {
         console.log("Error creating bill", err);

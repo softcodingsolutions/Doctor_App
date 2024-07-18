@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { masterButtons } from "../../constants/admin/AdminConstants";
-
+import { MdMenuBook } from "react-icons/md";
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
@@ -38,6 +38,12 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "appointment/medical-inventory",
       icons: <FaClinicMedical size={18} />,
     },
+    {
+      id: "3",
+      title: "Bill History",
+      to: "appointment/bill-history",
+      icons : <MdMenuBook size={18}/>
+    }
   ];
 
   
