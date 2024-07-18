@@ -9,7 +9,6 @@ function UserGeneralDetails({ onNext }) {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(UserSchema),
@@ -41,7 +40,6 @@ function UserGeneralDetails({ onNext }) {
         client_id: res.data?.client_id,
       });
       localStorage.setItem("client_email", d.email);
-      reset();
       onNext();
     } catch (error) {
       console.error(error);

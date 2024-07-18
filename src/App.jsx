@@ -73,6 +73,7 @@ import UserGeneralDetails from "./pages/Recepsitnist/Newuser/UserGeneralDetails"
 import GenerateBill from "./pages/Recepsitnist/Pages/GenerateBill";
 import UserDiagnosis from "./pages/User/UserDiagnosis";
 import BillHistory from "./pages/Recepsitnist/Pages/BillHistory";
+import Home from "./pages/Recepsitnist/Pages/Home";
 
 function App() {
   return (
@@ -182,6 +183,7 @@ function App() {
         {/* Receptionist */}
         <Route path="receptionist" element={<RecepsitnistMain />}>
           <Route path="appointment" element={<Appointment />}>
+            <Route path="home" element={<Home />} />
             <Route path="generatebill" element={<GenerateBill />} />
 
             {/* user created by receptionist */}
