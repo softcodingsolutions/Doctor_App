@@ -1,13 +1,13 @@
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { IoIosPaper } from "react-icons/io";
 import { FaClinicMedical } from "react-icons/fa";
-import { BsPersonFillAdd } from "react-icons/bs";
-import { IoPersonSharp, IoCloseOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { masterButtons } from "../../constants/admin/AdminConstants";
 import { MdMenuBook } from "react-icons/md";
+import { MdApps } from "react-icons/md";
+import { IoCloseOutline } from "react-icons/io5";
+
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
@@ -15,22 +15,12 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
     localStorage.getItem("sidebarSelected_id") || "1"
   );
 
-  const save = masterButtons.find(
-    (res) => res.id == localStorage.getItem("selectedMaster_id")
-  )?.to;
-
-  const handleSelectChange = (event) => {
-    if (event) {
-      setSelected(event.target.value);
-    }
-  };
-
   const sidebarItems = [
     {
       id: "1",
       title: "Home",
       to: "appointment/home",
-      icons: <IoIosPaper size={18} />,
+      icons: <MdApps size={19} />,
     },
     {
       id: "2",
@@ -48,11 +38,9 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       id: "4",
       title: "Bill History",
       to: "appointment/bill-history",
-      icons : <MdMenuBook size={18}/>
-    }
+      icons: <MdMenuBook size={18} />,
+    },
   ];
-
-  
 
   const handleLogoutClick = () => {
     localStorage.clear();
@@ -113,7 +101,6 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
           </Link>
         ))}
 
-       
         <div className="flex-grow" />
       </div>
 
