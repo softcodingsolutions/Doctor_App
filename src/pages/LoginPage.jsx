@@ -55,7 +55,7 @@ function LoginPage() {
           } else if (res.data?.user?.role === "franchise") {
             navigate("/franchise/dashboard");
           } else if (res.data?.user?.role === "receptionist") {
-            navigate("/receptionist/appointment/create-appointment");
+            navigate("/receptionist/appointment/home");
           } else {
             navigate("/user/dashboard");
           }
