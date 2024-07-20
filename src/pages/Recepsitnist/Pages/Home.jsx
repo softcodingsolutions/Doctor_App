@@ -1,4 +1,6 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+import ThComponent from "../../../components/ThComponent";
+import TdComponent from "../../../components/TdComponent";
 import axios from "axios";
 
 export default function Home() {
@@ -6,7 +8,9 @@ export default function Home() {
   const [doctorList, setDoctorList] = useState("");
   const [doctorName, setDoctorNames] = useState([]);
   const [consultingTime, setConsultingTime] = useState(new Date());
-
+  const [consultingTimes, setConsultingTimes] = useState({});
+  const [machineConsultingTimes, setMachineConsultingTimes] = useState([]);
+  const [userDetails,setUserDetails] = useState({});
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
   };
@@ -18,8 +22,12 @@ export default function Home() {
   const handleAppointment = () => {
     axios
       .get(`api/v1/appointments?date=${consultingTime}&doctor_id=${doctorList}`)
-      .then((resp) => {
-        console.log(resp);
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.cosulting_times, "Consulting Time");
+        console.log(res.data.machine_consulting_times, "Machine Time");
+        setConsultingTimes(res.data.cosulting_times);
+        setMachineConsultingTimes(res.data.machine_consulting_times)
       })
       .catch((err) => {
         console.log(err);
@@ -68,9 +76,61 @@ export default function Home() {
               onChange={handleConsulting}
             />
           </div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]"></div>
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+            <div className="flex w-full h-full items-center justify-center gap-1">
+              {/* consulting time table */}
+              <div className="flex w-full flex-col items-center p-1 h-full">
+                <div className="text-2xl font-semibold tracking-wide">
+                  Consulting Time Slot
+                </div>
+                <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
+                <table className="w-full min-w-[460px] z-0">
+              <thead className="uppercase">
+                <tr className="bg-[#1F2937] text-white rounded-md">
+                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Doctor
+                  </th>
+                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Slot
+                  </th>
+                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Time
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.keys(consultingTimes).map((data,index) => (
+                  <tr key={index} className="map">
+                  <td className="py-3 px-4 border-b border-b-gray-50">
+                      <span className="text-black text-sm font-medium ml-1">
+                        {data.id}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+                </div>
+              </div>
+
+              {/* machine time table */}
+              {/* <div className="flex w-full flex-col items-center p-1 h-full">
+                <div className="text-2xl font-semibold tracking-wide">
+                  Machine Time Slot
+                </div>
+                <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
+                 
+                </div>
+              </div> */}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+const formatTime = (time) => {
+  const date = new Date(time);
+  return `${date.getHours()}:${date.getMinutes()}`;
+};
