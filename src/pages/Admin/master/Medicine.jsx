@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import AddNewMedicine from "../../../components/Admin/AddNewMedicine";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import axios from "axios";
 import ThComponent from "../../../components/ThComponent";
 import Swal from "sweetalert2";
+import EditMedicine from "../../../components/Admin/EditMedicine";
 
 function Medicine() {
   const [getMedicines, setGetMedicines] = useState([]);
@@ -52,45 +53,45 @@ function Medicine() {
   const editMedicine = async (val) => {
     const see = getMedicines.filter((item) => item?.id === val);
     console.log(see);
-    const { value: formValues } = await Swal.fire({
-      title: "Edit the medicine",
-      html: `
-            <div class="flex flex-col items-center justify-center text-black">
-                <div>Drug's Name:<input type="text" id="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_name}"/></div>
-                <div>Drug's Content:<input type=text" id="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_content}"/></div>
-                <div>Drug's Quantity:<input type="text" id="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_quantity}"/></div>
-            </div> 
-            `,
-      focusConfirm: false,
-      showCancelButton: true,
-      preConfirm: () => {
-        return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value,
-          document.getElementById("swal-input3").value,
-        ];
-      },
-    });
-    if (formValues) {
-      const formData = new FormData();
-      formData.append("medicine[medicine_name]", formValues[0]);
-      formData.append("medicine[medicine_content]", formValues[1]);
-      formData.append("medicine[medicine_quantity]", formValues[2]);
-      axios.put(`api/v1/medicines/${val}`, formData).then((res) => {
-        console.log(res);
-        handleGetMedicines();
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Updated!",
-            text: "Your medicine has been updated.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      });
-    }
+    // const { value: formValues } = await Swal.fire({
+    //   title: "Edit the medicine",
+    //   html: `
+    //         <div class="flex flex-col items-center justify-center text-black">
+    //             <div>Drug's Name:<input type="text" id="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_name}"/></div>
+    //             <div>Drug's Content:<input type=text" id="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_content}"/></div>
+    //             <div>Drug's Quantity:<input type="text" id="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_quantity}"/></div>
+    //         </div>
+    //         `,
+    //   focusConfirm: false,
+    //   showCancelButton: true,
+    //   preConfirm: () => {
+    //     return [
+    //       document.getElementById("swal-input1").value,
+    //       document.getElementById("swal-input2").value,
+    //       document.getElementById("swal-input3").value,
+    //     ];
+    //   },
+    // });
+    // if (formValues) {
+    //   const formData = new FormData();
+    //   formData.append("medicine[medicine_name]", formValues[0]);
+    //   formData.append("medicine[medicine_content]", formValues[1]);
+    //   formData.append("medicine[medicine_quantity]", formValues[2]);
+    //   axios.put(`api/v1/medicines/${val}`, formData).then((res) => {
+    //     console.log(res);
+    //     handleGetMedicines();
+    //     if (res.data) {
+    //       Swal.fire({
+    //         position: "top-end",
+    //         icon: "success",
+    //         title: "Updated!",
+    //         text: "Your medicine has been updated.",
+    //         showConfirmButton: false,
+    //         timer: 1500,
+    //       });
+    //     }
+    //   });
+    // }
   };
 
   const deleteMedicine = (val) => {
@@ -185,15 +186,14 @@ function Medicine() {
                           <TdComponent things={val.medicine_quantity} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editMedicine(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditMedicine
+                            title="Edit the medicine"
+                            med_name="Medicine Name"
+                            med_content="Medicine Content"
+                            med_quantity="Medicine Quantity"
+                            function={() => {
+                              editMedicine(val.id);
+                            }}
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

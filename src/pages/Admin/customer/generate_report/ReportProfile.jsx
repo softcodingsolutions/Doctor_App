@@ -46,10 +46,22 @@ function ReportProfile() {
                 Package:{" "}
                 {getCustomer[1]?.personal_detail?.package?.package_name}
               </div>
-              <div>Treatment Code: null</div>
+              <div>
+                Treatment Name:{" "}
+                {
+                  getCustomer[1]?.treatment_packages?.[0]?.treatment_package
+                  ?.weight_reason + "-" + getCustomer[1]?.treatment_packages?.[0]?.treatment_package
+                    ?.package_name
+                }
+              </div>
             </div>
             <div className="flex justify-between">
-              <div>Registration Through: {getCustomer[1]?.creator === "super_admin" ? "Admin" : "Franchise"}</div>
+              <div>
+                Registration Through:{" "}
+                {getCustomer[1]?.creator === "super_admin"
+                  ? "Admin"
+                  : "Franchise"}
+              </div>
               <div>Email: {getCustomer[1]?.email}</div>
             </div>
             <div className="flex justify-between">

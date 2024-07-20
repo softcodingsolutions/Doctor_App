@@ -30,11 +30,20 @@ function QueCheckout() {
     const packageDetail = getPackages.find(
       (pack) => pack.package_name === name
     );
+    console.log("Package", packageDetail);
 
     if (packageDetail) {
+      const today = new Date();
+      const fromDate = today.toISOString().split("T")[0];
+      const toDate = new Date();
+      toDate.setDate(today.getDate() + packageDetail.no_of_days); 
+      const toDateString = toDate.toISOString().split("T")[0];
+
       setValue("package_value", packageDetail.package_price);
       setValue("package_total", packageDetail.package_price);
       setValue("grand_total", packageDetail.package_price);
+      setValue("from_date", fromDate);
+      setValue("to_date", toDateString);
     }
   };
 
@@ -134,20 +143,34 @@ function QueCheckout() {
                 </Select>
               </div>
               <div className="md:flex w-full  justify-between">
-                <UserDetailsInput
-                  name="from_date"
-                  type="date"
-                  label="From Date"
-                  placeholder="From date"
-                  hook={register("from_date")}
-                />
-                <UserDetailsInput
-                  name="to_date"
-                  type="date"
-                  label="To Date"
-                  placeholder="To date"
-                  hook={register("to_date")}
-                />
+                <>
+                  <label className="text-lg text-end w-1/3 mr-2">
+                    From Date:
+                  </label>
+                  <input
+                    {...register("from_date")}
+                    type="date"
+                    name="from_date"
+                    placeholder="From date"
+                    autoComplete="off"
+                    id="from_date"
+                    className="py-1 px-2 rounded-md border border-black w-[40vh]"
+                  />
+                </>
+                <>
+                  <label className="text-lg text-end w-1/3 mr-2">
+                    To Date:
+                  </label>
+                  <input
+                    {...register("to_date")}
+                    type="date"
+                    name="to_date"
+                    placeholder="To date"
+                    autoComplete="off"
+                    id="to_date"
+                    className="py-1 px-2 rounded-md border border-black w-[40vh]"
+                  />
+                </>
               </div>
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
