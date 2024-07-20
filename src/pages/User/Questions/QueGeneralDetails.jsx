@@ -79,7 +79,6 @@ function QueGeneralDetails({ user, onNext }) {
             >
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
-                  errors={errors.firstname}
                   name="firstname"
                   defaultValue={user.first_name}
                   type="text"
@@ -122,7 +121,7 @@ function QueGeneralDetails({ user, onNext }) {
                   errors={errors.mobile}
                   defaultValue={user.phone_number}
                   name="mobile"
-                  type="text"
+                  type="number"
                   label="Phone Number"
                   placeholder="phone number"
                   hook={register("mobile", {

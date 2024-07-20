@@ -166,21 +166,23 @@ function TreatmentQuestionPart2() {
               </div>
             )}
 
-            <div className="flex items-center gap-2 font-bold text-lg">
-              <span>No. of questions to be answered:</span>{" "}
-              {defaultDropdownValue}
-              <Select required placeholder="Select">
-                {[...Array(selectedCheckboxes.length).keys()].map((index) => (
-                  <MenuItem
-                    key={index}
-                    value={index + 1}
-                    onClick={handleSendQuestionToBeAnswered}
-                  >
-                    {index + 1}
-                  </MenuItem>
-                ))}
-              </Select>
-            </div>
+            {!showCheckboxes && (
+              <div className="flex items-center gap-2 font-bold text-lg">
+                <span>No. of questions to be answered:</span>{" "}
+                {defaultDropdownValue}
+                <Select required placeholder="Select">
+                  {[...Array(selectedCheckboxes.length).keys()].map((index) => (
+                    <MenuItem
+                      key={index}
+                      value={index + 1}
+                      onClick={handleSendQuestionToBeAnswered}
+                    >
+                      {index + 1}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+            )}
 
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">

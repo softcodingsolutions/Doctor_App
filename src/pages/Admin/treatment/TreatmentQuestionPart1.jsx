@@ -7,7 +7,7 @@ import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
-import { MenuItem, Option, Select } from "@mui/joy";
+import { MenuItem, Select } from "@mui/joy";
 
 function TreatmentQuestionPart1() {
   const context = useOutletContext();
@@ -145,7 +145,7 @@ function TreatmentQuestionPart1() {
     setSelectedCheckboxes(preSelectedQuestions);
     setQuestionsToBeAnswered(selectedCheckboxes.length);
   }, [context]);
-  console.log("Contex From Treatments", context);
+
   useEffect(() => {
     axios.get(`/api/v1/packages/find_packages?id=${15}`).then((res) => {
       console.log(res);
@@ -171,22 +171,23 @@ function TreatmentQuestionPart1() {
               </div>
             )}
 
-            <div className="flex items-center gap-2 font-bold text-lg">
-              <span>No. of questions to be answered:</span>{" "}
-              {defaultDropdownValue}
-              <Select required placeholder="Select">
-                {[...Array(selectedCheckboxes.length).keys()].map((index) => (
-                  <MenuItem
-                    key={index}
-                    value={index + 1}
-                    onClick={handleSendQuestionToBeAnswered}
-                  >
-                    {index + 1}
-                  </MenuItem>
-                ))}
-              </Select>
-            </div>
-
+            {!showCheckboxes && (
+              <div className="flex items-center gap-2 font-bold text-lg">
+                <span>No. of questions to be answered:</span>{" "}
+                {defaultDropdownValue}
+                <Select required placeholder="Select">
+                  {[...Array(selectedCheckboxes.length).keys()].map((index) => (
+                    <MenuItem
+                      key={index}
+                      value={index + 1}
+                      onClick={handleSendQuestionToBeAnswered}
+                    >
+                      {index + 1}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+            )}
             {!showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Questions -{" "}

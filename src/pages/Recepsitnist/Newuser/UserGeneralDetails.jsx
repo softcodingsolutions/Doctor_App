@@ -153,7 +153,7 @@ function UserGeneralDetails({ onNext }) {
                     <UserDetailsInput
                       errors={errors.mobile}
                       name="mobile"
-                      type="text"
+                      type="number"
                       label="Phone Number"
                       placeholder="phone number"
                       hook={register("mobile", {
