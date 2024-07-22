@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import AddNewExercise from "../../../components/Admin/AddNewExercise";
 import axios from "axios";
 import Swal from "sweetalert2";
+import EditExercise from "../../../components/Admin/EditExercise";
 
 function ExerciseYoga() {
   const [getExercise, setGetExercise] = useState([]);
+  const [editExercise, setEditExercise] = useState([]);
 
   const handleGetExercise = () => {
     axios
@@ -22,7 +24,12 @@ function ExerciseYoga() {
       });
   };
 
-  const handleAddExercise = (exercise_name, describe_eng, describe_hindi, describe_gujarati) => {
+  const handleAddExercise = (
+    exercise_name,
+    describe_eng,
+    describe_hindi,
+    describe_gujarati
+  ) => {
     const formData = new FormData();
     formData.append("exercise[name]", exercise_name);
     formData.append("exercise[details]", describe_eng);
@@ -50,48 +57,36 @@ function ExerciseYoga() {
       });
   };
 
-  const editExercise = async (val) => {
-    const see = getExercise.filter((item) => item?.id === val);
-    console.log(see);
-    const { value: formValues } = await Swal.fire({
-      title: "Edit the exercise",
-      html: `
-            <div class="flex flex-col items-center justify-center text-black">
-                <div>Exercise Name:<input type="text" id="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.name}"/></div>
-                <div class="flex items-center">Exercise Description: <textarea rows="5" cols="30" type="text" id="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-                ${see[0]?.details}</textarea>
-              </div>
-            </div> 
-            `,
-      focusConfirm: false,
-      showCancelButton: true,
-      preConfirm: () => {
-        return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value,
-        ];
-      },
-    });
+  const handleEditExercise = (val) => {
+    setEditExercise(getExercise.filter((item) => item?.id === val));
+  };
 
-    if (formValues) {
-      const formData = new FormData();
-      formData.append("exercise[name]", formValues[0]);
-      formData.append("exercise[details]", formValues[1]);
-      axios.put(`api/v1/exercises/${val}`, formData).then((res) => {
-        console.log(res);
-        handleGetExercise();
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Updated!",
-            text: "Your diet has been updated.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      });
-    }
+  const handleEditExerciseApi = async (
+    exercise_name,
+    describe_eng,
+    describe_hindi,
+    describe_gujarati,
+    id
+  ) => {
+    const formData = new FormData();
+    formData.append("exercise[name]", exercise_name);
+    formData.append("exercise[details]", describe_eng);
+    formData.append("exercise[details_hindi]", describe_hindi);
+    formData.append("exercise[details_gujarati]", describe_gujarati);
+    axios.put(`api/v1/exercises/${id}`, formData).then((res) => {
+      console.log(res);
+      handleGetExercise();
+      if (res.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Updated!",
+          text: "Your exercise has been updated.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
   };
 
   const deleteExercise = (val) => {
@@ -213,15 +208,15 @@ function ExerciseYoga() {
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editExercise(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditExercise
+                            see={editExercise}
+                            function={() => {
+                              handleEditExercise(val.id);
+                            }}
+                            handleApi={handleEditExerciseApi}
+                            title="Edit Exercise"
+                            exercise_name="Exercise"
+                            exercise_describe_english="Details"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

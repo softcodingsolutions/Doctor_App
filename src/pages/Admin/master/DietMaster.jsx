@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import AddNewDiet from "../../../components/Admin/AddNewDiet";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import Swal from "sweetalert2";
+import EditDiet from "../../../components/Admin/EditDiet";
 
 function DietMaster() {
   const [getDiet, setGetDiet] = useState([]);
+  const [editDiet, setEditDiet] = useState([]);
 
   const handleAddDiet = (
     diet_code,
@@ -57,51 +59,38 @@ function DietMaster() {
       });
   };
 
-  const editDiet = async (val) => {
-    const see = getDiet.filter((item) => item?.id === val);
-    console.log(see);
-    const { value: formValues } = await Swal.fire({
-      title: "Edit the diet",
-      html: `
-            <div class="flex flex-col items-center justify-center text-black">
-                <div>Diet Name:<input type="text" id="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.name}"/></div>
-                <div>Diet Code:<input type=text" id="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.code}"/></div>
-                <div class="flex items-center">Diet Description: <textarea rows="5" cols="30" type="text" id="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-                ${see[0]?.chart_english}</textarea>
-              </div>
-            </div> 
-            `,
-      focusConfirm: false,
-      showCancelButton: true,
-      preConfirm: () => {
-        return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value,
-          document.getElementById("swal-input3").value,
-        ];
-      },
-    });
+  const handleEditDiet = (val) => {
+    setEditDiet(getDiet.filter((item) => item?.id === val));
+  };
 
-    if (formValues) {
-      const formData = new FormData();
-      formData.append("diet[name]", formValues[0]);
-      formData.append("diet[code]", formValues[1]);
-      formData.append("diet[chart_english]", formValues[2]);
-      axios.put(`api/v1/diets/${val}`, formData).then((res) => {
-        console.log(res);
-        handleGetDiet();
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Updated!",
-            text: "Your diet has been updated.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      });
-    }
+  const handleEditDietApi = async (
+    diet_code,
+    diet_name,
+    english,
+    hindi,
+    gujarati,
+    id
+  ) => {
+    const formData = new FormData();
+    formData.append("diet[name]", diet_name);
+    formData.append("diet[code]", diet_code);
+    formData.append("diet[chart_english]", english);
+    formData.append("diet[chart_hindi]", hindi);
+    formData.append("diet[chart_gujarati]", gujarati);
+    axios.put(`api/v1/diets/${id}`, formData).then((res) => {
+      console.log(res);
+      handleGetDiet();
+      if (res.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Updated!",
+          text: "Your diet has been updated.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
   };
 
   const deleteDiet = (val) => {
@@ -228,15 +217,16 @@ function DietMaster() {
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editDiet(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditDiet
+                            see={editDiet}
+                            function={() => {
+                              handleEditDiet(val.id);
+                            }}
+                            handleApi={handleEditDietApi}
+                            title="Edit Diet"
+                            diet_code="Diet Code"
+                            diet_name="Diet Name"
+                            diet_describe_english="Details"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

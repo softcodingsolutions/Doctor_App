@@ -1,13 +1,15 @@
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import AddNewWeight from "../../../components/Admin/AddNewWeight";
 import axios from "axios";
 import Swal from "sweetalert2";
+import EditWeightReason from "../../../components/Admin/EditWeightReason";
 
 function WeightReason() {
   const [getWeight, setGetWeight] = useState([]);
+  const [editWeightReason, setEditWeightReason] = useState([]);
 
   const handleGetWeight = () => {
     axios
@@ -49,7 +51,35 @@ function WeightReason() {
       });
   };
 
-  const editWeight = (val) => {};
+  const handleEditWeightReason = (val) => {
+    setEditWeightReason(getWeight.filter((item) => item?.id === val));
+  };
+
+  const handleEditWeightReasonApi = (
+    reason_name,
+    reason_for,
+    reason_comments,
+    id
+  ) => {
+    const formData = new FormData();
+    formData.append("weight_reason[name]", reason_name);
+    formData.append("weight_reason[for]", reason_for);
+    formData.append("weight_reason[comments]", reason_comments);
+    axios.put(`api/v1/weight_reasons/${id}`, formData).then((res) => {
+      console.log(res);
+      if (res.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Updated!",
+          text: "Your weight reason has been updated.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetWeight();
+    });
+  };
 
   const deleteWeight = (val) => {
     Swal.fire({
@@ -136,22 +166,27 @@ function WeightReason() {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.name} />
                         </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.for} />
+                        <td className="py-3 px-4 bord0er-b border-b-gray-50">
+                          <TdComponent
+                            things={
+                              val.for?.[0]?.toUpperCase() + val.for?.slice(1)
+                            }
+                          />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.comments} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editWeight(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditWeightReason
+                            see={editWeightReason}
+                            function={() => {
+                              handleEditWeightReason(val.id);
+                            }}
+                            handleApi={handleEditWeightReasonApi}
+                            title="Edit Weight Reason"
+                            reason_name="Weight Name"
+                            reason_for="Gender"
+                            reason_comments="Comments"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

@@ -1,13 +1,15 @@
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import AddNewPackage from "../../../components/Admin/AddNewPackage";
+import EditPackage from "../../../components/Admin/EditPackage";
 
 function Packages() {
   const [getPackages, setGetPackages] = useState([]);
+  const [editPackage, setEditPackage] = useState([]);
 
   const handleGetPackages = () => {
     axios
@@ -49,7 +51,36 @@ function Packages() {
       });
   };
 
-  const editPackage = (val) => {};
+  const handleEditPackage = (val) => {
+    setEditPackage(getPackages.filter((item) => item?.id === val));
+  };
+
+  const handleEditPackageApi = (package_name, package_days, price, id) => {
+    const formData = new FormData();
+    formData.append("user_package[package_name]", package_name);
+    formData.append("user_package[no_of_days]", package_days);
+    formData.append("user_package[package_price]", price);
+    axios
+      .put(`api/v1/user_packages/${id}`, formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your package has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetPackages();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
 
   const deletePackage = (val) => {
     Swal.fire({
@@ -74,7 +105,7 @@ function Packages() {
             });
           })
           .catch((err) => {
-            alert(err.message)
+            alert(err.message);
             console.log(err);
             alert(err.message);
           });
@@ -144,15 +175,16 @@ function Packages() {
                           <TdComponent things={val.package_price} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editPackage(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditPackage
+                            see={editPackage}
+                            function={() => {
+                              handleEditPackage(val.id);
+                            }}
+                            handleApi={handleEditPackageApi}
+                            title="Edit Package"
+                            package_name="Name"
+                            package_days="Days"
+                            price="Price"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

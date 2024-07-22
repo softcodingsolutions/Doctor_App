@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import AddNewQuestion from "../../../components/Admin/AddNewQuestion";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
+import EditQuestion from "../../../components/Admin/EditQuestion";
 
 function Questions() {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
+  const [editQuestion, setEditQuestion] = useState([]);
   const [showPart1, setShowPart1] = useState(true);
   const [showPart2, setShowPart2] = useState(false);
 
@@ -74,78 +76,43 @@ function Questions() {
     });
   };
 
-  const editQuestion = async (val, Part) => {
-    const see = Part === "1" 
-      ? getQuestionsPart1.find((item) => item?.id === val) 
-      : getQuestionsPart2.find((item) => item?.id === val);
-  
-    if (!see) return;
-  
-    const { value: formValues } = await Swal.fire({
-      title: "Edit the question",
-      html: `
-        <div class="flex flex-col items-center justify-center text-black">
-          <div>
-            Part:<select id="swal-input1" name="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-              <option value="1" ${Part == 1 ? "selected" : ""}>1</option>
-              <option value="2" ${Part == 2 ? "selected" : ""}>2</option>
-            </select>
-          </div>
-          <div>
-            Gender:<select id="swal-input2" name="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">
-              <option value="female" ${see.gender === "female" ? "selected" : ""}>Female</option>
-              <option value="male" ${see.gender === "male" ? "selected" : ""}>Male</option>
-              <option value="both" ${see.gender === "both" ? "selected" : ""}>Both</option>
-            </select>
-          </div>
-          <div>
-            Question in English:<textarea rows="2" cols="30" id="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${see.question_in_english}</textarea>
-          </div>
-          <div>
-            Question in Hindi:<textarea rows="2" cols="30" id="swal-input4" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${see.question_in_hindi}</textarea>
-          </div>
-          <div>
-            Question in Gujarati:<textarea rows="2" cols="30" id="swal-input5" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md">${see.question_in_gujarati}</textarea>
-          </div>
-        </div>
-      `,
-      focusConfirm: false,
-      showCancelButton: true,
-      preConfirm: () => {
-        return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value,
-          document.getElementById("swal-input3").value,
-          document.getElementById("swal-input4").value,
-          document.getElementById("swal-input5").value,
-        ];
-      },
-    });
-  
-    if (formValues) {
-      const formData = new FormData();
-      formData.append("question[part]", formValues[0]);
-      formData.append("question[gender]", formValues[1]);
-      formData.append("question[question_in_english]", formValues[2]);
-      formData.append("question[question_in_hindi]", formValues[3]);
-      formData.append("question[question_in_gujarati]", formValues[4]);
-      axios.put(`api/v1/questions/${val}`, formData).then((res) => {
-        console.log(res);
-        Part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Updated!",
-            text: "Your question has been updated.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      });
-    }
+  const handleEditQuestion = (val, part) => {
+    if (
+      part == "1"
+        ? setEditQuestion(getQuestionsPart1.filter((item) => item?.id === val))
+        : setEditQuestion(getQuestionsPart2.filter((item) => item?.id === val))
+    );
   };
-  
+
+  const handleEditQuestionApi = async ( 
+    gender,
+    question_gujarati,
+    question_english,
+    question_hindi,
+    part,
+    id
+  ) => {
+    const formData = new FormData();
+    formData.append("question[part]", part);
+    formData.append("question[gender]", gender);
+    formData.append("question[question_in_english]", question_english);
+    formData.append("question[question_in_hindi]", question_hindi);
+    formData.append("question[question_in_gujarati]", question_gujarati);
+    axios.put(`api/v1/questions/${id}`, formData).then((res) => {
+      console.log(res);
+      part == "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+      if (res.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Updated!",
+          text: "Your question has been updated.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  };
 
   const deleteQuestion = (val, Part) => {
     Swal.fire({
@@ -277,15 +244,18 @@ function Questions() {
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                <button
-                                  onClick={() => editQuestion(val.id, val.part)}
-                                  className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                                >
-                                  <MdEdit size={20} />
-                                </button>
-                              }
+                            <EditQuestion
+                              see={editQuestion}
+                              function={() => {
+                                handleEditQuestion(val.id, val.part);
+                              }}
+                              handleApi={handleEditQuestionApi}
+                              gender="gender"
+                              language="Language"
+                              part="Part"
+                              title="Edit Question"
+                              label1="For Whom"
+                              label2="Question"
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
@@ -341,15 +311,18 @@ function Questions() {
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                <button
-                                  onClick={() => editQuestion(val.id, val.part)}
-                                  className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                                >
-                                  <MdEdit size={20} />
-                                </button>
-                              }
+                            <EditQuestion
+                              see={editQuestion}
+                              function={() => {
+                                handleEditQuestion(val.id, val.part);
+                              }}
+                              handleApi={handleEditQuestionApi}
+                              gender="gender"
+                              language="Language"
+                              part="Part"
+                              title="Edit Question"
+                              label1="For Whom"
+                              label2="Question"
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">

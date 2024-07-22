@@ -1,4 +1,3 @@
-import { Add } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -12,38 +11,35 @@ import {
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { MdEdit } from "react-icons/md";
 import { ReactTransliterate } from "react-transliterate";
 
-function AddNewFamily(props) {
+function EditFamilyReason(props) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState({
-    hindi: "",
-    gujarati: "",
-    english: "",
+    hindi: props.see[0]?.details_in_hindi || "",
+    gujarati: props.see[0]?.details_in_gujarati || "",
+    english: props.see[0]?.details_in_english || "",
   });
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const submittedData = (d) => {
-    console.log(text);
     console.log(d);
-    props.handleApi(text.hindi, text.gujarati, text.english);
-    reset();
-    setText({
-      hindi: "",
-      gujarati: "",
-      english: "",
-    });
+    props.handleApi(text.hindi, text.gujarati, text.english, props.see[0]?.id);
   };
 
   return (
     <React.Fragment>
       <Button
+        size="sm"
         variant="outlined"
         color="neutral"
-        startDecorator={<Add />}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+          props?.function();
+        }}
       >
-        {props.name}
+        <MdEdit size={20} />
       </Button>
       <Modal
         open={open}
@@ -66,6 +62,7 @@ function AddNewFamily(props) {
                 <FormLabel>{props.details} :-</FormLabel>
                 <Box className="flex flex-col items-center w-full">
                   <ReactTransliterate
+                    defaultValue={props.see[0]?.details_in_english}
                     name={`question_english`}
                     {...register(`question_english`)}
                     value={text.english}
@@ -91,6 +88,7 @@ function AddNewFamily(props) {
 
                   <ReactTransliterate
                     name={`question_hindi`}
+                    defaultValue={props.see[0]?.details_in_hindi}
                     {...register(`question_hindi`)}
                     value={text.hindi}
                     lang="hi"
@@ -113,6 +111,7 @@ function AddNewFamily(props) {
 
                   <ReactTransliterate
                     name={`question_gujarati`}
+                    defaultValue={props.see[0]?.details_in_gujarati}
                     {...register(`question_gujarati`)}
                     value={text.gujarati}
                     lang="gu"
@@ -146,4 +145,4 @@ function AddNewFamily(props) {
   );
 }
 
-export default AddNewFamily;
+export default EditFamilyReason;

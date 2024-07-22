@@ -4,10 +4,12 @@ import ThComponent from "../../../components/ThComponent";
 import AddLabTest from "../../../components/Admin/AddLabTest";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
+import EditLabTest from "../../../components/Admin/EditLabTest";
 
 function LabTest() {
   const [getTests, setGetTests] = useState([]);
+  const [editTests, setEditTests] = useState([]);
 
   const handleGetTests = () => {
     axios
@@ -49,7 +51,36 @@ function LabTest() {
       });
   };
 
-  const editTest = (val) => {};
+  const handleEditTest = (val) => {
+    setEditTests(getTests.filter((item) => item?.id === val));
+  };
+
+  const handleEditTestApi = (test_name, test_for, comments, id) => {
+    const formData = new FormData();
+    formData.append("labtest_management[name]", test_name);
+    formData.append("labtest_management[gender]", test_for);
+    formData.append("labtest_management[comments]", comments);
+    axios
+      .put(`api/v1/labtest_managements/${id}`, formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your family reason has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetTests();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
 
   const deleteTest = (val) => {
     Swal.fire({
@@ -137,21 +168,26 @@ function LabTest() {
                           <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.gender} />
+                          <TdComponent
+                            things={
+                              val.gender[0]?.toUpperCase() + val.gender.slice(1)
+                            }
+                          />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.comments} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editTest(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditLabTest
+                            see={editTests}
+                            function={() => {
+                              handleEditTest(val.id);
+                            }}
+                            handleApi={handleEditTestApi}
+                            title="Edit Test"
+                            test_name="Test Name"
+                            gender="Gender"
+                            test_comments="Test Comments"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

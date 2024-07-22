@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import AddNewFamily from "../../../components/Admin/AddNewFamily";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
+import EditFamilyReason from "../../../components/Admin/EditFamilyReason";
 
 function FamilyReason() {
   const [getFamily, setGetFamily] = useState([]);
+  const [editFamily, setEditFamily] = useState([]);
 
   const handleGetFamily = () => {
     axios
@@ -79,7 +81,36 @@ function FamilyReason() {
     });
   };
 
-  const editFamily = (val) => {};
+  const handleEditFamily = (val) => {
+    setEditFamily(getFamily.filter((item) => item?.id === val));
+  };
+
+  const handleEditFamilyApi = (hindi, gujarati, english, id) => {
+    const formData = new FormData();
+    formData.append("family_reason[details_in_hindi]", hindi);
+    formData.append("family_reason[details_in_gujarati]", gujarati);
+    formData.append("family_reason[details_in_english]", english);
+    axios
+      .put(`api/v1/family_reasons/${id}`, formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your family reason has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetFamily();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
 
   useEffect(() => {
     handleGetFamily();
@@ -141,15 +172,14 @@ function FamilyReason() {
                           <TdComponent things={val.details_in_gujarati} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editFamily(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditFamilyReason
+                            see={editFamily}
+                            function={() => {
+                              handleEditFamily(val.id);
+                            }}
+                            handleApi={handleEditFamilyApi}
+                            title="Edit Family Reason"
+                            details="Details"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
