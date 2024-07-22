@@ -27,7 +27,7 @@ function AdminDashboard() {
       .then((res) => {
         console.log(
           "Machine Consulting Time: ",
-          res.data?.machine_consulting_times
+          res.data
         );
         setGetMachineTime(res.data?.machine_consulting_times);
       })

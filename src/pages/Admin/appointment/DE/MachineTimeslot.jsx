@@ -3,7 +3,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 
 export default function MachineTimeslot() {
-  const [inputTime, setInputTime] = useState("");
+  const [inputTime, setInputTime] = useState("select");
   const [inputSlot, setInputSlot] = useState("select");
   const [inputMachine, setInputMachine] = useState("select");
   const [inputDoctor, setInputDoctor] = useState("select");
@@ -12,11 +12,6 @@ export default function MachineTimeslot() {
   const [doctorName, setDoctorNames] = useState({});
   const [machineName, setMachineNames] = useState([]);
   const [data, setData] = useState([]);
-
-  useEffect(() => {
-    handleShow();
-    handleData();
-  }, []);
 
   const handleShow = () => {
     axios
@@ -42,12 +37,6 @@ export default function MachineTimeslot() {
       });
   };
 
-  
-
-  function handleTimeChange(e) {
-    setInputTime(e.target.value);
-  }
-
   function handleSlotChange(e) {
     setInputSlot(e.target.value);
   }
@@ -58,18 +47,22 @@ export default function MachineTimeslot() {
 
   function handleDoctorChange(e) {
     setInputDoctor(e.target.value);
-    axios.get(`http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`).then((res)=>{
-      console.log(res.data)
-      setMachineNames(res.data.machine_details,"Machine Array");
-      // console.log(res.data.machine_details.map((res)=>setMachineNames(res)));
-    }).catch((err)=>{
-      console.log(err);
-    })
+    axios
+      .get(
+        `http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setMachineNames(res.data.machine_details);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function formatTime(time) {
     try {
-      const date = new Date(time);
+      const date = new Date(`1970-01-01T${time}Z`);
       const options = {
         hour: "2-digit",
         minute: "2-digit",
@@ -85,10 +78,34 @@ export default function MachineTimeslot() {
       return "Invalid time";
     }
   }
+  function showTime(time) {
+    try {
+      const date = new Date(time);
+      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
+      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+      return formattedTime;
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return "Invalid time";
+    }
+  }
+  
+
+  function generateTimes() {
+    const times = [];
+    let current = new Date("1970-01-01T00:00:00Z");
+    const end = new Date("1970-01-01T23:59:59Z");
+    while (current <= end) {
+      const timeString = current.toISOString().substr(11, 5);
+      times.push(timeString);
+      current = new Date(current.getTime() + 30 * 60000);
+    }
+    return times;
+  }
 
   function handleAddDoctor() {
     if (
-      inputTime &&
+      inputTime !== "select" &&
       inputSlot !== "select" &&
       inputMachine !== "select" &&
       inputDoctor !== "select"
@@ -100,11 +117,12 @@ export default function MachineTimeslot() {
         doctor: inputDoctor,
       };
       setDoctors([...doctors, newDoctor]);
-      setInputTime("");
       setInputSlot("select");
       setInputMachine("select");
       setInputDoctor("select");
+      setInputTime("select");
     }
+
     const formdata = new FormData();
     formdata.append("machine_consulting_time[slot]", inputSlot);
     formdata.append("machine_consulting_time[time]", inputTime);
@@ -139,18 +157,13 @@ export default function MachineTimeslot() {
     setInputVisible(!inputVisible);
   };
 
-  function formatTime(time) {
-    try {
-      const date = new Date(time);
-      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
-      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
-      return formattedTime;
-    } catch (error) {
-      console.error("Error formatting time:", error);
-      return "Invalid time";
-    }
-  }
-  
+  useEffect(() => {
+    handleShow();
+    handleData();
+  }, []);
+
+  const times = generateTimes();
+
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
@@ -176,9 +189,8 @@ export default function MachineTimeslot() {
                   {Object.values(doctorName)
                     .filter((doctor) => doctor.role === "doctor")
                     .map((name) => (
-                      <option key={name.id} value={name.id} >
-                        {name.first_name}
-                        {name.last_name}
+                      <option key={name.id} value={name.id}>
+                        {name.first_name} {name.last_name}
                       </option>
                     ))}
                 </select>
@@ -191,8 +203,8 @@ export default function MachineTimeslot() {
                   <option value="select" disabled>
                     Select Machine
                   </option>
-                 {machineName.map((name) => (
-                   <option key={name.id} value={name.id}>
+                  {machineName.map((name) => (
+                    <option key={name.id} value={name.id}>
                       {name.name}
                     </option>
                   ))}
@@ -212,13 +224,22 @@ export default function MachineTimeslot() {
                   <option value="evening">Evening</option>
                 </select>
 
-                <input
-                  className="border-2 rounded-md p-2"
-                  type="time"
-                  onChange={handleTimeChange}
+                <select
+                  name="time"
                   value={inputTime}
-                  placeholder="Time"
-                />
+                  onChange={(e) => setInputTime(e.target.value)}
+                  className="py-1 px-2 rounded-md border border-black"
+                >
+                  <option value="select" disabled>
+                    Select Time
+                  </option>
+                  {times.map((time, index) => (
+                    <option key={index} value={time}>
+                      {formatTime(time)}
+                    </option>
+                  ))}
+                </select>
+
                 <button
                   className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
                   onClick={handleAddDoctor}
@@ -265,13 +286,12 @@ export default function MachineTimeslot() {
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
                       <span className="text-black text-sm font-medium ml-1">
-                        {doctor.slot[0]?.toUpperCase() +
-                                  doctor.slot?.slice(1)}
+                        {doctor.slot[0]?.toUpperCase() + doctor.slot?.slice(1)}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
                       <span className="text-black text-sm font-medium ml-1">
-                        {formatTime(doctor.time)}
+                        {showTime(doctor.time)}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
