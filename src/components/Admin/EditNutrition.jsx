@@ -13,18 +13,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
 
-function EditMedicine(props) {
+function EditNutrition(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit } = useForm();
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi(
-      d.med_name,
-      d.med_content,
-      d.med_quantity,
-      props?.see[0]?.id
-    );
+    props.handleApi(d.nutrition_name, props.see[0]?.id);
   };
 
   return (
@@ -58,35 +53,13 @@ function EditMedicine(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.med_name} :-</FormLabel>
+                <FormLabel>{props.nutrition_name} :-</FormLabel>
                 <Input
-                  defaultValue={props?.see[0]?.medicine_name}
+                  defaultValue={props.see[0]?.name}
                   placeholder="Name..."
-                  name={`med_name`}
-                  {...register(`med_name`)}
+                  name={`nutrition_name`}
+                  {...register(`nutrition_name`)}
                   autoFocus
-                  required
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.med_content} :-</FormLabel>
-                <Input
-                  defaultValue={props?.see[0]?.medicine_content}
-                  placeholder="Content..."
-                  name={`med_content`}
-                  {...register(`med_content`)}
-                  required
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.med_quantity} :-</FormLabel>
-                <Input
-                  defaultValue={props?.see[0]?.medicine_quantity}
-                  placeholder="Quantity..."
-                  name={`med_quantity`}
-                  {...register(`med_quantity`)}
                   required
                 />
               </FormControl>
@@ -100,4 +73,4 @@ function EditMedicine(props) {
   );
 }
 
-export default EditMedicine;
+export default EditNutrition;

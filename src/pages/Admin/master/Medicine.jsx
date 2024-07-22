@@ -9,6 +9,7 @@ import EditMedicine from "../../../components/Admin/EditMedicine";
 
 function Medicine() {
   const [getMedicines, setGetMedicines] = useState([]);
+  const [editMedicine, setEditMedicine] = useState([]);
 
   const handleGetMedicines = () => {
     axios
@@ -50,48 +51,29 @@ function Medicine() {
       });
   };
 
-  const editMedicine = async (val) => {
-    const see = getMedicines.filter((item) => item?.id === val);
-    console.log(see);
-    // const { value: formValues } = await Swal.fire({
-    //   title: "Edit the medicine",
-    //   html: `
-    //         <div class="flex flex-col items-center justify-center text-black">
-    //             <div>Drug's Name:<input type="text" id="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_name}"/></div>
-    //             <div>Drug's Content:<input type=text" id="swal-input2" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_content}"/></div>
-    //             <div>Drug's Quantity:<input type="text" id="swal-input3" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.medicine_quantity}"/></div>
-    //         </div>
-    //         `,
-    //   focusConfirm: false,
-    //   showCancelButton: true,
-    //   preConfirm: () => {
-    //     return [
-    //       document.getElementById("swal-input1").value,
-    //       document.getElementById("swal-input2").value,
-    //       document.getElementById("swal-input3").value,
-    //     ];
-    //   },
-    // });
-    // if (formValues) {
-    //   const formData = new FormData();
-    //   formData.append("medicine[medicine_name]", formValues[0]);
-    //   formData.append("medicine[medicine_content]", formValues[1]);
-    //   formData.append("medicine[medicine_quantity]", formValues[2]);
-    //   axios.put(`api/v1/medicines/${val}`, formData).then((res) => {
-    //     console.log(res);
-    //     handleGetMedicines();
-    //     if (res.data) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "success",
-    //         title: "Updated!",
-    //         text: "Your medicine has been updated.",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     }
-    //   });
-    // }
+  const handleEditMedicine = async (val) => {
+    setEditMedicine(getMedicines.filter((item) => item?.id === val));
+  };
+
+  const handleEditMedicineApi = (med_name, med_content, med_quantity, id) => {
+    const formData = new FormData();
+    formData.append("medicine[medicine_name]", med_name);
+    formData.append("medicine[medicine_content]", med_content);
+    formData.append("medicine[medicine_quantity]", med_quantity);
+    axios.put(`api/v1/medicines/${id}`, formData).then((res) => {
+      console.log(res);
+      if (res.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Updated!",
+          text: "Your medicine has been updated.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetMedicines();
+    });
   };
 
   const deleteMedicine = (val) => {
@@ -191,9 +173,11 @@ function Medicine() {
                             med_name="Medicine Name"
                             med_content="Medicine Content"
                             med_quantity="Medicine Quantity"
+                            see={editMedicine}
                             function={() => {
-                              editMedicine(val.id);
+                              handleEditMedicine(val.id);
                             }}
+                            handleApi={handleEditMedicineApi}
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

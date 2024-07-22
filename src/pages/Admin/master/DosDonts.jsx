@@ -1,14 +1,16 @@
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import AddDosDonts from "../../../components/Admin/AddDosDonts";
 import axios from "axios";
 import Swal from "sweetalert2";
+import EditDosDonts from "../../../components/Admin/EditDosDonts";
 
 function DosDonts() {
   const [getDos, setGetDos] = useState([]);
   const [getDonts, setGetDonts] = useState([]);
+  const [editDosDonts, setEditDosDonts] = useState([]);
   const [showDos, setShowDos] = useState(true);
   const [showDonts, setShowDonts] = useState(false);
 
@@ -77,7 +79,50 @@ function DosDonts() {
       });
   };
 
-  const editDosDonts = (val) => {};
+  const handleEditDosDonts = (val, cat) => {
+    console.log(val);
+    if (
+      cat == "do"
+        ? setEditDosDonts(getDos.filter((item) => item?.id === val))
+        : setEditDosDonts(getDonts.filter((item) => item?.id === val))
+    );
+  };
+
+  const handleEditDosDontsApi = (
+    comments,
+    do_dont,
+    hindi,
+    gujarati,
+    english,
+    id
+  ) => {
+    const formData = new FormData();
+    formData.append("avoid_and_add[category]", do_dont);
+    formData.append("avoid_and_add[comments]", comments);
+    formData.append("avoid_and_add[details_in_english]", english);
+    formData.append("avoid_and_add[details_in_hindi]", hindi);
+    formData.append("avoid_and_add[details_in_gujarati]", gujarati);
+    axios
+      .put(`api/v1/avoid_and_adds/${id}`, formData)
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: `Your ${showDos ? "Dos" : "Don'ts"}  has been added.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        showDos ? handleGetDos() : handleGetDonts();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
 
   const deleteDosDonts = (val) => {
     Swal.fire({
@@ -196,15 +241,16 @@ function DosDonts() {
                             <TdComponent things={val.details_in_gujarati} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                <button
-                                  onClick={() => editDosDonts(val.id)}
-                                  className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                                >
-                                  <MdEdit size={20} />
-                                </button>
-                              }
+                            <EditDosDonts
+                              see={editDosDonts}
+                              function={() => {
+                                handleEditDosDonts(val.id, val.category);
+                              }}
+                              handleApi={handleEditDosDontsApi}
+                              title="Edit Do/Don't"
+                              do_dont="Do/Don't"
+                              details="Details"
+                              comments="Comments"
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
@@ -251,15 +297,16 @@ function DosDonts() {
                             <TdComponent things={val.details_in_gujarati} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                <button
-                                  onClick={() => editDosDonts(val.id, val.part)}
-                                  className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                                >
-                                  <MdEdit size={20} />
-                                </button>
-                              }
+                            <EditDosDonts
+                              see={editDosDonts}
+                              function={() => {
+                                handleEditDosDonts(val.id, val.category);
+                              }}
+                              handleApi={handleEditDosDontsApi}
+                              title="Edit Do/Don't"
+                              do_dont="Do/Don't"
+                              details="Details"
+                              comments="Comments"
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">

@@ -7,23 +7,26 @@ import {
   Modal,
   ModalClose,
   ModalDialog,
+  Option,
+  Select,
   Stack,
+  Textarea,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
 
-function EditMedicine(props) {
+function EditWeightReason(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit } = useForm();
 
   const submittedData = (d) => {
     console.log(d);
     props.handleApi(
-      d.med_name,
-      d.med_content,
-      d.med_quantity,
-      props?.see[0]?.id
+      d.reason_name,
+      d.reason_for,
+      d.reason_comments,
+      props.see[0]?.id
     );
   };
 
@@ -58,35 +61,42 @@ function EditMedicine(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.med_name} :-</FormLabel>
+                <FormLabel>{props.reason_name} :-</FormLabel>
                 <Input
-                  defaultValue={props?.see[0]?.medicine_name}
+                  defaultValue={props.see[0]?.name}
                   placeholder="Name..."
-                  name={`med_name`}
-                  {...register(`med_name`)}
+                  name={`reason_name`}
+                  {...register(`reason_name`)}
                   autoFocus
                   required
                 />
               </FormControl>
 
-              <FormControl>
-                <FormLabel>{props.med_content} :-</FormLabel>
-                <Input
-                  defaultValue={props?.see[0]?.medicine_content}
-                  placeholder="Content..."
-                  name={`med_content`}
-                  {...register(`med_content`)}
+              <FormControl className="w-1/2">
+                <FormLabel>{props.reason_for} :-</FormLabel>
+                <Select
+                  sx={{ width: "200%" }}
                   required
-                />
+                  placeholder="Choose gender..."
+                  name={`reason_for`}
+                  defaultValue={props.see[0]?.for}
+                  {...register(`reason_for`)}
+                >
+                  <Option value="female">Female</Option>
+                  <Option value="male">Male</Option>
+                  <Option value="both">Both</Option>
+                </Select>
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.med_quantity} :-</FormLabel>
-                <Input
-                  defaultValue={props?.see[0]?.medicine_quantity}
-                  placeholder="Quantity..."
-                  name={`med_quantity`}
-                  {...register(`med_quantity`)}
+                <FormLabel>{props.reason_comments} :-</FormLabel>
+                <Textarea
+                  defaultValue={props.see[0]?.comments}
+                  placeholder="Coments..."
+                  name={`reason_comments`}
+                  {...register(`reason_comments`)}
+                  autoFocus
+                  minRows={5}
                   required
                 />
               </FormControl>
@@ -100,4 +110,4 @@ function EditMedicine(props) {
   );
 }
 
-export default EditMedicine;
+export default EditWeightReason;

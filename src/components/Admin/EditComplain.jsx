@@ -3,28 +3,23 @@ import {
   DialogTitle,
   FormControl,
   FormLabel,
-  Input,
   Modal,
   ModalClose,
   ModalDialog,
   Stack,
+  Textarea,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
 
-function EditMedicine(props) {
+function EditComplain(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit } = useForm();
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi(
-      d.med_name,
-      d.med_content,
-      d.med_quantity,
-      props?.see[0]?.id
-    );
+    props.handleApi(d.complain_details, props.see[0]?.id);
   };
 
   return (
@@ -58,35 +53,14 @@ function EditMedicine(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.med_name} :-</FormLabel>
-                <Input
-                  defaultValue={props?.see[0]?.medicine_name}
-                  placeholder="Name..."
-                  name={`med_name`}
-                  {...register(`med_name`)}
+                <FormLabel>{props.complain_details} :-</FormLabel>
+                <Textarea
+                  defaultValue={props.see[0]?.details}
+                  placeholder="Details..."
+                  name={`complain_details`}
+                  {...register(`complain_details`)}
                   autoFocus
-                  required
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.med_content} :-</FormLabel>
-                <Input
-                  defaultValue={props?.see[0]?.medicine_content}
-                  placeholder="Content..."
-                  name={`med_content`}
-                  {...register(`med_content`)}
-                  required
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.med_quantity} :-</FormLabel>
-                <Input
-                  defaultValue={props?.see[0]?.medicine_quantity}
-                  placeholder="Quantity..."
-                  name={`med_quantity`}
-                  {...register(`med_quantity`)}
+                  minRows={5}
                   required
                 />
               </FormControl>
@@ -100,4 +74,4 @@ function EditMedicine(props) {
   );
 }
 
-export default EditMedicine;
+export default EditComplain;

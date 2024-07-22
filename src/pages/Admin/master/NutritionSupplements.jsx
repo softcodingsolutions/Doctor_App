@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import AddNewSupplement from "../../../components/Admin/AddNewSupplement";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
+import EditNutrition from "../../../components/Admin/EditNutrition";
 
 function NutritionSupplements() {
   const [getNutrition, setGetNutrition] = useState([]);
+  const [editNutrition, setEditNutrition] = useState([]);
 
   const handleAddNutrition = (nutrition_name) => {
     const formData = new FormData();
@@ -77,41 +79,27 @@ function NutritionSupplements() {
     });
   };
 
-  const editNutrition = async (val) => {
-    const see = getNutrition.filter((item) => item?.id === val);
-    console.log(see);
-    const { value: formValues } = await Swal.fire({
-      title: "Edit the nutrition",
-      html: `
-            <div class="flex flex-col items-center justify-center text-black">
-                <div>Nutrition Name:<input type="text" id="swal-input1" class="w-[15rem] p-1 mx-2 my-1.5 border border-gray-500 rounded-md" value="${see[0]?.name}"/></div>
-            </div> 
-            `,
-      focusConfirm: false,
-      showCancelButton: true,
-      preConfirm: () => {
-        return [document.getElementById("swal-input1").value];
-      },
-    });
+  const handleEditNutrition = (val) => {
+    setEditNutrition(getNutrition.filter((item) => item?.id === val));
+  };
 
-    if (formValues) {
-      const formData = new FormData();
-      formData.append("nutrition[name]", formValues[0]);
-      axios.put(`api/v1/nutritions/${val}`, formData).then((res) => {
-        console.log(res);
-        handleGetNutrition();
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Updated!",
-            text: "Your nutrition has been updated.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      });
-    }
+  const handleEditNutritionApi = (nutrition_name, val) => {
+    const formData = new FormData();
+    formData.append("nutrition[name]", nutrition_name);
+    axios.put(`api/v1/nutritions/${val}`, formData).then((res) => {
+      console.log(res);
+      if (res.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Updated!",
+          text: "Your nutrition has been updated.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetNutrition();
+    });
   };
 
   useEffect(() => {
@@ -169,15 +157,14 @@ function NutritionSupplements() {
                           <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editNutrition(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditNutrition
+                            see={editNutrition}
+                            function={() => {
+                              handleEditNutrition(val.id);
+                            }}
+                            handleApi={handleEditNutritionApi}
+                            title="Edit Nutrition"
+                            nutrition_name="Nutrition Name"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

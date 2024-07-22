@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import AddNewComplain from "../../../components/Admin/AddNewComplain";
 import axios from "axios";
 import Swal from "sweetalert2";
+import EditComplain from "../../../components/Admin/EditComplain";
 
 function Complains() {
   const [getComplain, setGetComplain] = useState([]);
+  const [editComplain, setEditComplain] = useState([]);
 
   const handleGetComplain = () => {
     axios
@@ -47,7 +49,29 @@ function Complains() {
       });
   };
 
-  const editComplain = (val) => {};
+  const handleEditComplain = (val) => {
+    setEditComplain(getComplain.filter((item) => item?.id === val));
+  };
+
+  const handleEditComplainApi = (complain_details, id) => {
+    const formData = new FormData();
+    formData.append("complaint[details]", complain_details);
+
+    axios.put(`api/v1/complaints/${id}`, formData).then((res) => {
+      console.log(res);
+      if (res.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Updated!",
+          text: "Your complain has been updated.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      handleGetComplain();
+    });
+  };
 
   const deleteComplain = (val) => {
     Swal.fire({
@@ -131,15 +155,14 @@ function Complains() {
                           <TdComponent things={val.details} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => editComplain(val.id)}
-                                className="font-semibold text-blue-800 border border-gray-300 p-1 rounded-md hover:bg-[#558ccb] hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
+                          <EditComplain
+                            see={editComplain}
+                            function={() => {
+                              handleEditComplain(val.id);
+                            }}
+                            handleApi={handleEditComplainApi}
+                            title="Edit Complain"
+                            complain_details="Details"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

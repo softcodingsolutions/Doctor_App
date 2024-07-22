@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Button,
   DialogTitle,
@@ -9,22 +10,17 @@ import {
   ModalDialog,
   Stack,
 } from "@mui/joy";
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
 
-function EditMedicine(props) {
+function EditPackage(props) {
   const [open, setOpen] = useState(false);
+
   const { register, handleSubmit } = useForm();
 
   const submittedData = (d) => {
     console.log(d);
-    props.handleApi(
-      d.med_name,
-      d.med_content,
-      d.med_quantity,
-      props?.see[0]?.id
-    );
+    props.handleApi(d.package_name, d.package_days, d.price, props.see[0]?.id);
   };
 
   return (
@@ -58,35 +54,37 @@ function EditMedicine(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.med_name} :-</FormLabel>
+                <FormLabel>{props.package_name} :-</FormLabel>
                 <Input
-                  defaultValue={props?.see[0]?.medicine_name}
+                  defaultValue={props.see[0]?.package_name}
                   placeholder="Name..."
-                  name={`med_name`}
-                  {...register(`med_name`)}
+                  name={`package_name`}
+                  {...register(`package_name`)}
                   autoFocus
                   required
                 />
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.med_content} :-</FormLabel>
+                <FormLabel>{props.package_days} :-</FormLabel>
                 <Input
-                  defaultValue={props?.see[0]?.medicine_content}
-                  placeholder="Content..."
-                  name={`med_content`}
-                  {...register(`med_content`)}
+                  defaultValue={props.see[0]?.no_of_days}
+                  placeholder="No. of days"
+                  name={`package_days`}
+                  {...register(`package_days`)}
+                  autoFocus
                   required
                 />
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.med_quantity} :-</FormLabel>
+                <FormLabel>{props.price} :-</FormLabel>
                 <Input
-                  defaultValue={props?.see[0]?.medicine_quantity}
-                  placeholder="Quantity..."
-                  name={`med_quantity`}
-                  {...register(`med_quantity`)}
+                  defaultValue={props.see[0]?.package_price}
+                  placeholder="₹₹₹"
+                  name={`price`}
+                  {...register(`price`)}
+                  autoFocus
                   required
                 />
               </FormControl>
@@ -100,4 +98,4 @@ function EditMedicine(props) {
   );
 }
 
-export default EditMedicine;
+export default EditPackage;
