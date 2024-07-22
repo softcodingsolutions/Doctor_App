@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
-import ThComponent from "../../../components/ThComponent";
-import TdComponent from "../../../components/TdComponent";
 import axios from "axios";
 
 export default function Home() {
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [doctorList, setDoctorList] = useState("");
   const [doctorName, setDoctorNames] = useState([]);
-  const [consultingTime, setConsultingTime] = useState(new Date());
-  const [consultingTimes, setConsultingTimes] = useState({});
+  const [doctor, setDoctor] = useState("");
+  const [consultingTime, setConsultingTime] = useState(new Date().toISOString().split('T')[0]);
+  const [consultingTimes, setConsultingTimes] = useState([]);
   const [machineConsultingTimes, setMachineConsultingTimes] = useState([]);
-  const [userDetails,setUserDetails] = useState({});
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
   };
@@ -24,10 +22,10 @@ export default function Home() {
       .get(`api/v1/appointments?date=${consultingTime}&doctor_id=${doctorList}`)
       .then((res) => {
         console.log(res);
-        console.log(res.data.cosulting_times, "Consulting Time");
+        console.log(res.data?.cosulting_times, "Consulting Time");
         console.log(res.data.machine_consulting_times, "Machine Time");
-        setConsultingTimes(res.data.cosulting_times);
-        setMachineConsultingTimes(res.data.machine_consulting_times)
+        setConsultingTimes(res.data?.cosulting_times);
+        setMachineConsultingTimes(res.data?.machine_consulting_times);
       })
       .catch((err) => {
         console.log(err);
@@ -46,6 +44,29 @@ export default function Home() {
         console.log(err);
       });
   }, []);
+
+  function formatTime(time) {
+    try {
+      const date = new Date(time);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
+      return formattedTime;
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return "Invalid time";
+    }
+  }
+  const formatDate = (date) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(date).toLocaleDateString(undefined, options);
+  };
 
   useEffect(() => {
     handleAppointment();
@@ -84,44 +105,131 @@ export default function Home() {
                   Consulting Time Slot
                 </div>
                 <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
-                <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase">
-                <tr className="bg-[#1F2937] text-white rounded-md">
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                    Doctor
-                  </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                    Slot
-                  </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
-                    Time
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.keys(consultingTimes).map((data,index) => (
-                  <tr key={index} className="map">
-                  <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-sm font-medium ml-1">
-                        {data.id}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  <table className="w-full min-w-[460px] z-0">
+                    <thead className="uppercase">
+                      <tr className="bg-[#1F2937] text-white rounded-md">
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Doctor Name
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Patient Name
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Date
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Slot
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Time
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {consultingTimes.map((data, index) => {
+                        return (
+                          <tr key={index} className="map">
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                {data.doctor.first_name} {data.doctor.last_name}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                {data.user.first_name} {data.user.last_name}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                {formatDate(data.date)}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1"></span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                {formatTime(data.time)}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
               {/* machine time table */}
-              {/* <div className="flex w-full flex-col items-center p-1 h-full">
+              <div className="flex w-full flex-col items-center p-1 h-full">
                 <div className="text-2xl font-semibold tracking-wide">
                   Machine Time Slot
                 </div>
                 <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
-                 
+                <table className="w-full min-w-[460px] z-0">
+                    <thead className="uppercase">
+                      <tr className="bg-[#1F2937] text-white rounded-md">
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Doctor Name
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Patient Name
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Machine Name
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Date
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Slot
+                        </th>
+                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Time
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {machineConsultingTimes.map((data,index)=>{
+                        return(
+                          <tr key={index} className="map">
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                {data.doctor.first_name} {data.doctor.last_name}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                {data.user.first_name} {data.user.last_name}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                {formatDate(data.date)}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <span className="text-black text-sm font-medium ml-1">
+                                {formatTime(data.time)}
+                              </span>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

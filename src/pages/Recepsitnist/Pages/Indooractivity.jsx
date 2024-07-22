@@ -53,16 +53,19 @@ export default function Indooractivity(props) {
   };
 
   const handleSlot = (e) => {
-    const slotId = e ? e.target.value : slot;
-    setSlot(slotId);
+    const selectedSlotId = e.target.value;
+    const selectedSlot = filteredTimeSlots.find(
+      (detail) => detail.id === parseInt(selectedSlotId)
+    );
+    setSlot(selectedSlotId);
+    setSlotTime(selectedSlot ? selectedSlot.time : "");
     const formattedDate = formatDate(consultingTime);
     axios
       .get(
-        `/api/v1/appointments/fetch_machine_consulting_times?date=${formattedDate}&machine_consulting_time_id=${slotId}`
+        `/api/v1/appointments/fetch_machine_consulting_times?date=${formattedDate}&machine_consulting_time_id=${selectedSlotId}`
       )
       .then((res) => {
         console.log(res, "CHECKBOX BUTTONS DATA");
-        console.log(res.data.availab_slot);
         console.log(res.data.booked_slot);
         setAvailable(res.data.availab_slot);
         setBookedSlot(res.data.booked_slot);
@@ -90,6 +93,7 @@ export default function Indooractivity(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(slotTime, "Time");
     const formattedDate = formatDate(consultingTime);
     const formdata = new FormData();
     formdata.append("appointment[user_id]", props.user);
@@ -105,7 +109,6 @@ export default function Indooractivity(props) {
         setConsultingTime("");
         setSlot("");
         setSlotTime("");
-        // Reset date input field and trigger handleConsulting
         document.querySelector('input[type="date"]').value = "";
         handleConsulting({ target: { value: "" } });
       })
@@ -162,6 +165,7 @@ export default function Indooractivity(props) {
       return "Invalid time";
     }
   }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
