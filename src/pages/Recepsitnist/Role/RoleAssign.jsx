@@ -9,6 +9,7 @@ export default function RoleAssign() {
   const [inputEmail, setInputEmail] = useState("");
   const [inputRole, setInputRole] = useState("");
   const [doctors, setDoctors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     handleShow();
@@ -26,28 +27,39 @@ export default function RoleAssign() {
       });
   };
 
-  function handleNameChange1(e) {
+  const handleNameChange1 = (e) => {
     setInputLastName(e.target.value);
-  }
+  };
 
-  function handleNameChange(e) {
+  const handleNameChange = (e) => {
     setInputFirstName(e.target.value);
-  }
+  };
 
-  function handleMobileChange(e) {
+  const handleMobileChange = (e) => {
     setInputMobile(e.target.value);
-  }
+  };
 
-  function handleEmailChange(e) {
+  const handleEmailChange = (e) => {
     setInputEmail(e.target.value);
-  }
+  };
 
-  function handleRoleChange(e) {
+  const handleRoleChange = (e) => {
     setInputRole(e.target.value);
-  }
+  };
 
-  function handleAddDoctor() {
-    if (inputFirstName && inputMobile && inputEmail && inputRole) {
+  const validateForm = () => {
+    const newErrors = {};
+    if (!inputFirstName.trim()) newErrors.inputFirstName = "First Name is required";
+    if(!inputLastName.trim()) newErrors.inputLastName = "Last Name is required";
+    if (!inputMobile.trim()) newErrors.inputMobile = "Mobile Number is required";
+    if (!inputEmail.trim() || !/\S+@\S+\.\S+/.test(inputEmail)) newErrors.inputEmail = "Valid Email is required";
+    if (!inputRole.trim()) newErrors.inputRole = "Role is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleAddDoctor = () => {
+    if (validateForm()) {
       const newDoctor = {
         first_name: inputFirstName,
         last_name: inputLastName,
@@ -87,7 +99,7 @@ export default function RoleAssign() {
           console.log(err);
         });
     }
-  }
+  };
 
   const handleRemoveDoctor = (index) => {
     const updatedDoctors = doctors.filter((_, i) => i !== index);
@@ -114,45 +126,70 @@ export default function RoleAssign() {
               </h2>
             </div>
             <div className="flex gap-5 m-2">
-              <input
-                type="text"
-                className="border-2 rounded-md p-2"
-                onChange={handleNameChange}
-                value={inputFirstName}
-                placeholder="First Name"
-              />
-              <input
-                type="text"
-                className="border-2 rounded-md p-2"
-                onChange={handleNameChange1}
-                value={inputLastName}
-                placeholder="Last Name"
-              />
-              <input
-                className="border-2 rounded-md p-2"
-                type="text"
-                onChange={handleMobileChange}
-                value={inputMobile}
-                placeholder="Mobile Number"
-              />
-              <input
-                className="border-2 rounded-md p-2"
-                type="text"
-                onChange={handleEmailChange}
-                value={inputEmail}
-                placeholder="Email"
-              />
-              <select
-                className="border-2 rounded-md p-2"
-                onChange={handleRoleChange}
-                value={inputRole}
-              >
-                <option value="" disabled>
-                  Select Role
-                </option>
-                <option value="doctor">Doctor</option>
-                <option value="receptionist">Receptionist</option>
-              </select>
+              <div className="flex flex-col">
+                <input
+                  type="text"
+                  className="border-2 rounded-md p-2"
+                  onChange={handleNameChange}
+                  value={inputFirstName}
+                  placeholder="First Name"
+                />
+                {errors.inputFirstName && (
+                  <span className="text-red-500 text-sm">{errors.inputFirstName}</span>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <input
+                  type="text"
+                  className="border-2 rounded-md p-2"
+                  onChange={handleNameChange1}
+                  value={inputLastName}
+                  placeholder="Last Name"
+                />
+                {errors.inputFirstName && (
+                  <span className="text-red-500 text-sm">{errors.inputLastName}</span>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <input
+                  className="border-2 rounded-md p-2"
+                  type="text"
+                  onChange={handleMobileChange}
+                  value={inputMobile}
+                  placeholder="Mobile Number"
+                />
+                {errors.inputMobile && (
+                  <span className="text-red-500 text-sm">{errors.inputMobile}</span>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <input
+                  className="border-2 rounded-md p-2"
+                  type="text"
+                  onChange={handleEmailChange}
+                  value={inputEmail}
+                  placeholder="Email"
+                />
+                {errors.inputEmail && (
+                  <span className="text-red-500 text-sm">{errors.inputEmail}</span>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <select
+                  className="border-2 rounded-md p-2"
+                  onChange={handleRoleChange}
+                  value={inputRole}
+                >
+                  <option value="" disabled>
+                    Select Role
+                  </option>
+                  <option value="doctor">Doctor</option>
+                  <option value="receptionist">Receptionist</option>
+                </select>
+                {errors.inputRole && (
+                  <span className="text-red-500 text-sm">{errors.inputRole}</span>
+                )}
+              </div>
               <button
                 className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
                 onClick={handleAddDoctor}

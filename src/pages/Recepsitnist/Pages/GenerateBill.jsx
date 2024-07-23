@@ -97,6 +97,12 @@ export default function GenerateBill() {
     setPrice(e.target.value);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      setSearchTerm(e.target.value);
+    }
+  };
+
   useEffect(() => {
     if (debouncedSearchTerm) {
       axios
@@ -149,8 +155,7 @@ export default function GenerateBill() {
           <div className="flex gap-5 p-2 w-full mb-4">
             <input
               type="text"
-              value={searchTerm}
-              onChange={(e) => handleSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Search case number or phone number"
               className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

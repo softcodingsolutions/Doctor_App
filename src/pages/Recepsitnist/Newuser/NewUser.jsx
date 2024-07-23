@@ -63,7 +63,7 @@ function NewUser() {
                 },
               }}
             >
-              <StepButton onClick={() => handleStepClick(index)}>
+              <StepButton>
                 {step}
               </StepButton>
             </Step>
