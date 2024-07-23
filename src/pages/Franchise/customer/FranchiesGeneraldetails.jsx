@@ -6,13 +6,13 @@ import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function FranchiesGeneraldetails({ onNext }) {
+function FranchiesGeneraldetails({ onNext, onValidate }) {
   const [getAdmin, setGetAdmin] = useState([]);
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(UserSchema),
   });
@@ -68,11 +68,15 @@ function FranchiesGeneraldetails({ onNext }) {
     handleGetAdmin();
   }, []);
 
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
+
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-4">
-          <div className="text-xl font-semibold">General Details :-</div>
+        <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
+          <div className="text-xl font-semibold">General Details</div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">
               <div className="flex gap-10">
@@ -86,7 +90,6 @@ function FranchiesGeneraldetails({ onNext }) {
                       placeholder="firstname"
                       hook={register("firstname", {
                         required: true,
-                        minLength: 2,
                       })}
                     />
                   </div>
@@ -167,7 +170,6 @@ function FranchiesGeneraldetails({ onNext }) {
                       placeholder="lastname"
                       hook={register("lastname", {
                         required: true,
-                        minLength: 2,
                       })}
                     />
                   </div>
@@ -206,23 +208,25 @@ function FranchiesGeneraldetails({ onNext }) {
                     <label className="text-lg text-end w-1/3 mr-2">
                       Gender:
                     </label>
-                    <select
-                      name="gender"
-                      defaultValue="select"
-                      {...register("gender")}
-                      className="py-1 px-2 rounded-md border border-black w-[40vh]"
-                    >
-                      <option value="select" disabled>
-                        Select One
-                      </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
-                    {errors.gender && (
-                      <span className="text-sm  text-red-500 -mt-2.5">
-                        {errors.gender?.message}
-                      </span>
-                    )}
+                    <div className="flex flex-col gap-2">
+                      <select
+                        name="gender"
+                        defaultValue="select"
+                        {...register("gender")}
+                        className="py-1 px-2 rounded-md border border-black w-[40vh]"
+                      >
+                        <option value="select" disabled>
+                          Select One
+                        </option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                      </select>
+                      {errors.gender && (
+                        <span className="text-sm  text-red-500 -mt-2.5">
+                          {errors.gender?.message}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
@@ -246,7 +250,7 @@ function FranchiesGeneraldetails({ onNext }) {
                   </div>
                 </div>
               </div>
-              <div className="flex w-full justify-center mt-14">
+              <div className="flex w-full justify-center mt-12">
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

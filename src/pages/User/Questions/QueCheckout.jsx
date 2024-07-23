@@ -12,6 +12,7 @@ function QueCheckout() {
   const email = localStorage.getItem("client_email");
   const { register, handleSubmit, reset, setValue, watch } = useForm();
   const [getPackages, setGetPackages] = useState([]);
+  const [selectedPackage, setSelectedPackage] = useState(null);
 
   const handleGetPackages = () => {
     axios
@@ -36,7 +37,7 @@ function QueCheckout() {
       const today = new Date();
       const fromDate = today.toISOString().split("T")[0];
       const toDate = new Date();
-      toDate.setDate(today.getDate() + packageDetail.no_of_days); 
+      toDate.setDate(today.getDate() + packageDetail.no_of_days);
       const toDateString = toDate.toISOString().split("T")[0];
 
       setValue("package_value", packageDetail.package_price);
@@ -44,6 +45,8 @@ function QueCheckout() {
       setValue("grand_total", packageDetail.package_price);
       setValue("from_date", fromDate);
       setValue("to_date", toDateString);
+
+      setSelectedPackage(packageDetail);
     }
   };
 
@@ -54,11 +57,22 @@ function QueCheckout() {
 
   const watchDiscount = watch("discount", 0);
   const watchPackagePrice = watch("package_total", 0);
+  const watchFromDate = watch("from_date");
 
   useEffect(() => {
     const newGrandTotal = calculateGrandTotal(watchPackagePrice, watchDiscount);
     setValue("grand_total", newGrandTotal);
   }, [watchDiscount, watchPackagePrice, setValue]);
+
+  useEffect(() => {
+    if (selectedPackage && watchFromDate) {
+      const fromDate = new Date(watchFromDate);
+      const toDate = new Date(fromDate);
+      toDate.setDate(fromDate.getDate() + selectedPackage.no_of_days);
+      const toDateString = toDate.toISOString().split("T")[0];
+      setValue("to_date", toDateString);
+    }
+  }, [watchFromDate, selectedPackage, setValue]);
 
   const submittedData = async (d) => {
     console.log(d);

@@ -74,6 +74,7 @@ import GenerateBill from "./pages/Recepsitnist/Pages/GenerateBill";
 import UserDiagnosis from "./pages/User/UserDiagnosis";
 import BillHistory from "./pages/Recepsitnist/Pages/BillHistory";
 import Home from "./pages/Recepsitnist/Pages/Home";
+import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
 
 function App() {
   return (
@@ -95,7 +96,9 @@ function App() {
         </Route>
 
         {/* User created by itself questions */}
-        <Route path="questions" element={<UserQuestions />} />
+        <Route path="questions" element={<UserQuestions />}>
+          <Route path="general-details" element={<QueGeneralDetails />} />
+        </Route>
 
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>

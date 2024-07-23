@@ -96,6 +96,36 @@ function ListFranchise() {
       });
   };
 
+  const handleFranchiseDelete = (val) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/users/${val}`)
+          .then((res) => {
+            console.log(res);
+            handleGetFranchise();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your franchise has been deleted.",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err.message);
+          });
+      }
+    });
+  };
+
   useEffect(() => {
     handleGetFranchise();
   }, []);
@@ -207,7 +237,7 @@ function ListFranchise() {
                             }
                           />
                         </td>
-                        {/* <td className="py-3 px-4 border-b border-b-gray-50">
+                        <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
                             things={
                               <button
@@ -218,8 +248,8 @@ function ListFranchise() {
                               </button>
                             }
                           />
-                        </td> */}
-                        <td className="py-3 px-4 border-b border-b-gray-50">
+                        </td>
+                        {/* <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
                             things={
                               <button
@@ -230,12 +260,12 @@ function ListFranchise() {
                               </button>
                             }
                           />
-                        </td>
+                        </td> */}
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
                             things={
                               <button
-                                onClick={() => console.log("delete")}
+                                onClick={() => handleFranchiseDelete(val.id)}
                                 className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
                               >
                                 <MdDelete size={20} />

@@ -48,11 +48,14 @@ function ReportProfile() {
               </div>
               <div>
                 Treatment Name:{" "}
-                {
-                  getCustomer[1]?.treatment_packages?.[0]?.treatment_package
-                  ?.weight_reason + "-" + getCustomer[1]?.treatment_packages?.[0]?.treatment_package
-                    ?.package_name
-                }
+                {getCustomer[1]?.treatment_packages?.[0]?.treatment_package
+                  ?.weight_reason
+                  ? getCustomer[1]?.treatment_packages?.[0]?.treatment_package
+                      ?.weight_reason +
+                    "-" +
+                    getCustomer[1]?.treatment_packages?.[0]?.treatment_package
+                      ?.package_name
+                  : "Null"}
               </div>
             </div>
             <div className="flex justify-between">
