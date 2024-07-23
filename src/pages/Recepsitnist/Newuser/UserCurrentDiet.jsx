@@ -1,20 +1,19 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
+import { useEffect } from "react";
 
-function UserCurrentDiet({onNext,onBack}) {
-  const navigate = useNavigate();
+function UserCurrentDiet({ onNext, onBack, onValidate }) {
   const email = localStorage.getItem("client_email");
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(CurrentDietSchema),
   });
@@ -40,6 +39,10 @@ function UserCurrentDiet({onNext,onBack}) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full p-4">

@@ -24,17 +24,26 @@ const steps = [
 
 function NewCustomer() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
 
   const handleStepClick = (step) => {
-    setCurrentStep(step);
+    if (step === 0 || isGeneralDetailsValid) {
+      setCurrentStep(step);
+    }
   };
 
   const handleNextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
+    if (isGeneralDetailsValid || currentStep !== 0) {
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
   };
 
   const handleBackStep = () => {
     setCurrentStep((prevStep) => prevStep - 1);
+  };
+
+  const handleValidation = (isValid) => {
+    setIsGeneralDetailsValid(isValid);
   };
 
   return (
@@ -72,27 +81,44 @@ function NewCustomer() {
           ))}
         </Stepper>
         {currentStep === 0 && (
-          <CustomerGeneralDetails onNext={handleNextStep} />
+          <CustomerGeneralDetails
+            onNext={handleNextStep}
+            onValidate={handleValidation}
+          />
         )}
         {currentStep === 1 && (
-          <QueCurrentDiet onNext={handleNextStep} onBack={handleBackStep} />
+          <QueCurrentDiet
+            onNext={handleNextStep}
+            onBack={handleBackStep}
+            onValidate={handleValidation}
+          />
         )}
         {currentStep === 2 && (
-          <QueFamilyHistory onNext={handleNextStep} onBack={handleBackStep} />
+          <QueFamilyHistory
+            onNext={handleNextStep}
+            onBack={handleBackStep}
+            onValidate={handleValidation}
+          />
         )}
         {currentStep === 3 && (
-          <QueComplains onNext={handleNextStep} onBack={handleBackStep} />
+          <QueComplains
+            onNext={handleNextStep}
+            onBack={handleBackStep}
+            onValidate={handleValidation}
+          />
         )}
         {currentStep === 4 && (
           <CustomerQuestionsPart1
             onNext={handleNextStep}
             onBack={handleBackStep}
+            onValidate={handleValidation}
           />
         )}
         {currentStep === 5 && (
           <CustomerQuestionsPart2
             onNext={handleNextStep}
             onBack={handleBackStep}
+            onValidate={handleValidation}
           />
         )}
         {currentStep === 6 && <QueCheckout onBack={handleBackStep} />}

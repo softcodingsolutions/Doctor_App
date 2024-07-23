@@ -20,7 +20,6 @@ function EditQuestion(props) {
     gujarati: props.see[0]?.question_in_gujarati || "",
     english: props.see[0]?.question_in_english || "",
   });
-
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
 

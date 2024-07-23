@@ -5,10 +5,18 @@ import Option from "@mui/joy/Option";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function FranchiesComplains({ onNext, onBack }) {
+function FranchiesComplains({ onNext, onBack, onValidate }) {
   const email = localStorage.getItem("client_email");
   const [getComplain, setGetComplain] = useState([]);
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const submittedData = async (d) => {
     console.log(d);
@@ -53,6 +61,10 @@ function FranchiesComplains({ onNext, onBack }) {
   useEffect(() => {
     handleGetComplain();
   }, []);
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full p-2">

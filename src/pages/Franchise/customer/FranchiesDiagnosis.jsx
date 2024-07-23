@@ -4,13 +4,17 @@ import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import axios from "axios";
-import { useLocation, useNavigate, } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-function FranchiesDiagnosis({ onNext,onBack}) {
+function FranchiesDiagnosis({ onNext, onBack, onValidate }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const email = localStorage.getItem('client_email');
-  const navigate = useNavigate();
+  const email = localStorage.getItem("client_email");
+  const {
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const handleGetQuestionsPart2 = () => {
     axios
@@ -87,6 +91,9 @@ function FranchiesDiagnosis({ onNext,onBack}) {
     handleGetQuestionsPart2();
   }, []);
 
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full gap-2 m-3 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
@@ -148,7 +155,13 @@ function FranchiesDiagnosis({ onNext,onBack}) {
             </table>
           </div>
           <div className="flex justify-center gap-2">
-          <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={onBack}>Back</button>
+            <button
+              name="Back"
+              className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+              onClick={onBack}
+            >
+              Back
+            </button>
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"

@@ -6,13 +6,18 @@ import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
+import { useForm } from "react-hook-form";
 
-function UserQuestionsPart1({ onNext, onBack }) {
+function UserQuestionsPart1({ onNext, onBack, onValidate }) {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem("client_email");
   const navigate = useNavigate();
-
+  const {
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
   const handleGetQuestionsPart1 = () => {
     axios
       .get("/api/v1/questions/part1")
@@ -70,8 +75,8 @@ function UserQuestionsPart1({ onNext, onBack }) {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Added!",
-          text: `Your question has been added.`,
+          title: "Saved!",
+          text: `Your question has been saved.`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -87,6 +92,10 @@ function UserQuestionsPart1({ onNext, onBack }) {
   useEffect(() => {
     handleGetQuestionsPart1();
   }, []);
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[80vh] bg-white flex-wrap content-start p-2 px-4">

@@ -4,12 +4,13 @@ import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 export default function CreateAppointment() {
   const navigate = useNavigate();
   const [doctorList, setDoctorList] = useState("");
   const [Case, setCase] = useState("new");
-  const [doctorName, setDoctorNames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [filteredDoctors, setFilteredDoctors] = useState([]);
@@ -57,6 +58,15 @@ export default function CreateAppointment() {
       .catch((err) => {
         console.log(err);
       });
+
+    axios
+      .get("api/v1/users")
+      .then((res) => {
+        console.log("all the users: ", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleSearchTerm = (value) => {
@@ -67,6 +77,10 @@ export default function CreateAppointment() {
     if (event.key === "Enter") {
       setDebouncedSearchTerm(searchTerm);
     }
+
+  const handleMove = () => {
+    navigate("../new-user/general-details");
+
   };
 
   useEffect(() => {
@@ -105,25 +119,14 @@ export default function CreateAppointment() {
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
-    axios
-      .get("api/v1/users")
-      .then((res) => {
-        console.log("all the users: ", res);
-        setDoctorNames(res.data.users);
-        setFilteredDoctors(res.data.users);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
     handleShow();
   }, []);
+
 
   const handleMove = () => {
     navigate("../new-user/general-details");
   };
+
 
   return (
     <div className="w-full p-5">

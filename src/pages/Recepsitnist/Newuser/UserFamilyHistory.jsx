@@ -3,13 +3,20 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function UserFamilyHistory({onNext,onBack}) {
+function UserFamilyHistory({ onNext, onBack, onValidate }) {
   const [getFamily, setGetFamily] = useState([]);
   const email = localStorage.getItem("client_email");
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const submittedData = async (d) => {
     console.log("Family History: ", d);
@@ -54,6 +61,10 @@ function UserFamilyHistory({onNext,onBack}) {
   useEffect(() => {
     handleGetFamily();
   }, []);
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full p-4">

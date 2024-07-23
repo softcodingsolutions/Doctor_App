@@ -5,11 +5,17 @@ import TdComponent from "../../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsButton";
 import axios from "axios";
 import PrevPageButton from "../../../../components/Admin/PrevPageButton";
+import { useForm } from "react-hook-form";
 
-function CustomerQuestionsPart2({ onBack, onNext }) {
+function CustomerQuestionsPart2({ onBack, onNext, onValidate }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const email = localStorage.getItem("client_email");
+  const {
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const handleGetQuestionsPart2 = () => {
     axios
@@ -85,6 +91,10 @@ function CustomerQuestionsPart2({ onBack, onNext }) {
   useEffect(() => {
     handleGetQuestionsPart2();
   }, []);
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[87%] bg-white flex-wrap content-start p-2 px-4">
