@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FormLabel, Option, Select } from "@mui/joy";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UserCheckout() {
   const navigate = useNavigate();
   const email = localStorage.getItem("client_email");
   const { register, handleSubmit, reset, watch, setValue } = useForm();
   const [getPackages, setGetPackages] = useState([]);
+  const [selectedPackage, setSelectedPackage] = useState(null);
 
   const handleGetPackages = () => {
     axios
@@ -29,11 +31,22 @@ function UserCheckout() {
     const packageDetail = getPackages.find(
       (pack) => pack.package_name === name
     );
+    console.log("Package", packageDetail);
 
     if (packageDetail) {
+      const today = new Date();
+      const fromDate = today.toISOString().split("T")[0];
+      const toDate = new Date();
+      toDate.setDate(today.getDate() + packageDetail.no_of_days);
+      const toDateString = toDate.toISOString().split("T")[0];
+
       setValue("package_value", packageDetail.package_price);
       setValue("package_total", packageDetail.package_price);
       setValue("grand_total", packageDetail.package_price);
+      setValue("from_date", fromDate);
+      setValue("to_date", toDateString);
+
+      setSelectedPackage(packageDetail);
     }
   };
 
@@ -44,11 +57,22 @@ function UserCheckout() {
 
   const watchDiscount = watch("discount", 0);
   const watchPackagePrice = watch("package_total", 0);
+  const watchFromDate = watch("from_date");
 
   useEffect(() => {
     const newGrandTotal = calculateGrandTotal(watchPackagePrice, watchDiscount);
     setValue("grand_total", newGrandTotal);
   }, [watchDiscount, watchPackagePrice, setValue]);
+
+  useEffect(() => {
+    if (selectedPackage && watchFromDate) {
+      const fromDate = new Date(watchFromDate);
+      const toDate = new Date(fromDate);
+      toDate.setDate(fromDate.getDate() + selectedPackage.no_of_days);
+      const toDateString = toDate.toISOString().split("T")[0];
+      setValue("to_date", toDateString);
+    }
+  }, [watchFromDate, selectedPackage, setValue]);
 
   const submittedData = async (d) => {
     console.log(d);
@@ -62,6 +86,16 @@ function UserCheckout() {
         .then((res) => {
           console.log("Checkout: ", res);
           localStorage.removeItem("client_email");
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "User Created!",
+              text: `The user has been created.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
         })
         .catch((err) => {
           console.log(err);

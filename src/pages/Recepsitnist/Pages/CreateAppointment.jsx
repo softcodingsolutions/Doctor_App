@@ -3,12 +3,12 @@ import { useDebounce } from "use-debounce";
 import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 export default function CreateAppointment() {
   const navigate = useNavigate();
   const [doctorList, setDoctorList] = useState("");
   const [Case, setCase] = useState("new");
-  const [doctorName, setDoctorNames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
@@ -18,6 +18,7 @@ export default function CreateAppointment() {
   const [userId, setUserId] = useState("");
   const [machineList, setMachineList] = useState([]);
   const [machineConsultingTime, setMachineConsultingTime] = useState([]);
+
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
     console.log(e.target.value);
@@ -55,10 +56,23 @@ export default function CreateAppointment() {
       .catch((err) => {
         console.log(err);
       });
+
+    axios
+      .get("api/v1/users")
+      .then((res) => {
+        console.log("all the users: ", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
+  };
+
+  const handleMove = () => {
+    navigate("../new-user/general-details");
   };
 
   useEffect(() => {
@@ -97,25 +111,9 @@ export default function CreateAppointment() {
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
-    axios
-      .get("api/v1/users")
-      .then((res) => {
-        console.log("all the users: ", res);
-        setDoctorNames(res.data.users);
-        setFilteredDoctors(res.data.users);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
     handleShow();
   }, []);
 
-  const handleMove = () => {
-    navigate("../new-user/general-details");
-  };
   return (
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[90vh] bg-white">

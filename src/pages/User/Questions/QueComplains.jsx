@@ -1,16 +1,22 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import { Option, Select } from "@mui/joy";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import { useEffect, useState } from "react";
 
-function QueComplains({onNext,onBack}) {
+function QueComplains({ onNext, onBack, onValidate }) {
   const email = localStorage.getItem("client_email");
   const [getComplain, setGetComplain] = useState([]);
-  const navigate = useNavigate();
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const submittedData = async (d) => {
     console.log("Complains: ", d);
@@ -55,6 +61,10 @@ function QueComplains({onNext,onBack}) {
   useEffect(() => {
     handleGetComplain();
   }, []);
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full p-2">

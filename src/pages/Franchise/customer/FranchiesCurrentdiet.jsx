@@ -4,39 +4,44 @@ import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
+import { useEffect } from "react";
 
-function FranchiesCurrentdiet({ onNext,onBack}) {
-  const email = localStorage.getItem('client_email');
+function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
+  const email = localStorage.getItem("client_email");
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(CurrentDietSchema),
   });
-  
+
   const submittedData = async (d) => {
     console.log(d);
     try {
-      await axios.put(
-        `/api/v2/users/update_personal_details?email=${email}`,
-        {
+      await axios
+        .put(`/api/v2/users/update_personal_details?email=${email}`, {
           personal_detail: {
             current_diet: JSON.stringify(d),
           },
-        }
-      ).then((res) => {
-        console.log("Current_diet",res);
-      }).catch((err) => {
-        console.log(err);
-      });
+        })
+        .then((res) => {
+          console.log("Current_diet", res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       reset();
       onNext();
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full p-2">
@@ -141,7 +146,7 @@ function FranchiesCurrentdiet({ onNext,onBack}) {
                 >
                   Back
                 </button>
-                <SaveUserDetailsButton name="Save & Continue"/>
+                <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>
           </div>

@@ -5,14 +5,15 @@ import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
+import { useEffect } from "react";
 
-function QueCurrentDiet({ onNext, onBack }) {
+function QueCurrentDiet({ onNext, onBack, onValidate }) {
   const email = localStorage.getItem("client_email");
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(CurrentDietSchema),
   });
@@ -38,6 +39,10 @@ function QueCurrentDiet({ onNext, onBack }) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full p-2">

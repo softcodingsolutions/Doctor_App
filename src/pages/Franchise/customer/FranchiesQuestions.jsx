@@ -1,17 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate,} from "react-router-dom";
 import Swal from "sweetalert2";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
+import { useForm } from "react-hook-form";
 
-function FranchiesQuestions({onNext,onBack}) {
+function FranchiesQuestions({ onNext, onBack, onValidate }) {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const email = localStorage.getItem('client_email');
-  const navigate = useNavigate();
-  console.log("id of the user", email);
+  const email = localStorage.getItem("client_email");
+  const {
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -79,7 +82,6 @@ function FranchiesQuestions({onNext,onBack}) {
     } catch (err) {
       console.error(err);
     } finally {
-
       setSelectedCheckboxes([]);
     }
     onNext();
@@ -88,7 +90,11 @@ function FranchiesQuestions({onNext,onBack}) {
   useEffect(() => {
     handleGetQuestionsPart1();
   }, []);
- 
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
+
   return (
     <div className="w-full gap-2 m-3 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
       <div className="text-xl font-semibold">User Questions:-</div>
@@ -149,7 +155,13 @@ function FranchiesQuestions({onNext,onBack}) {
             </table>
           </div>
           <div className="flex justify-center gap-2">
-          <button name='Back' className='w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105' onClick={onBack}>Back</button>
+            <button
+              name="Back"
+              className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+              onClick={onBack}
+            >
+              Back
+            </button>
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"

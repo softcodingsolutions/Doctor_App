@@ -5,10 +5,18 @@ import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import axios from "axios";
 
-function FranchiesFamilyhistory({ onNext, onBack }) {
+function FranchiesFamilyhistory({ onNext, onBack, onValidate }) {
   const email = localStorage.getItem("client_email");
   const [getFamily, setGetFamily] = useState([]);
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
   const [selectedDiseases, setSelectedDiseases] = useState([]);
 
   const submittedData = async (d) => {
@@ -56,6 +64,10 @@ function FranchiesFamilyhistory({ onNext, onBack }) {
   useEffect(() => {
     handleGetFamily();
   }, []);
+
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
 
   return (
     <div className="w-full p-2">

@@ -103,6 +103,8 @@ function AddListFranchise(props) {
                   <FormLabel>{props.mobile} :-</FormLabel>
                   <Input
                     type="number"
+                    {...register("mobile")}
+                    inputProps={{ minLength: 10, maxLength: 10 }}
                     placeholder="Mobile..."
                     name={`mobile`}
                     {...register(`mobile`)}
@@ -177,7 +179,6 @@ function AddListFranchise(props) {
                     name={`type_of_admin`}
                     {...register(`type_of_admin`)}
                   >
-                    <Option value="super_admin">Super Admin</Option>
                     <Option value="franchise">Franchise</Option>
                   </Select>
                 </FormControl>

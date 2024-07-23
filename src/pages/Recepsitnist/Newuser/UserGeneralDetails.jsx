@@ -4,12 +4,13 @@ import { UserSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
+import { useEffect } from "react";
 
-function UserGeneralDetails({ onNext }) {
+function UserGeneralDetails({ onNext, onValidate }) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(UserSchema),
   });
@@ -46,9 +47,13 @@ function UserGeneralDetails({ onNext }) {
     }
   };
 
+  useEffect(() => {
+    onValidate(isValid);
+  }, [isValid, onValidate]);
+
   return (
-    <div className="w-full p-4">
-      <div className="rounded-lg bg-card h-[84vh] bg-white">
+    <div className="w-full p-2">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
           <div className="text-xl font-semibold">General Details</div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
@@ -64,7 +69,6 @@ function UserGeneralDetails({ onNext }) {
                       placeholder="firstname"
                       hook={register("firstname", {
                         required: true,
-                        minLength: 2,
                       })}
                     />
                   </div>
@@ -145,7 +149,6 @@ function UserGeneralDetails({ onNext }) {
                       placeholder="lastname"
                       hook={register("lastname", {
                         required: true,
-                        minLength: 2,
                       })}
                     />
                   </div>
@@ -184,23 +187,25 @@ function UserGeneralDetails({ onNext }) {
                     <label className="text-lg text-end w-1/3 mr-2">
                       Gender:
                     </label>
-                    <select
-                      name="gender"
-                      defaultValue="select"
-                      {...register("gender")}
-                      className="py-1 px-2 rounded-md border border-black w-[40vh]"
-                    >
-                      <option value="select" disabled>
-                        Select One
-                      </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
-                    {errors.gender && (
-                      <span className="text-sm  text-red-500 -mt-2.5">
-                        {errors.gender?.message}
-                      </span>
-                    )}
+                    <div className="flex flex-col gap-2">
+                      <select
+                        name="gender"
+                        defaultValue="select"
+                        {...register("gender")}
+                        className="py-1 px-2 rounded-md border border-black w-[40vh]"
+                      >
+                        <option value="select" disabled>
+                          Select One
+                        </option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                      </select>
+                      {errors.gender && (
+                        <span className="text-sm  text-red-500 -mt-2.5">
+                          {errors.gender?.message}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
