@@ -3,14 +3,16 @@ import { useDebounce } from "use-debounce";
 import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 
 export default function CreateAppointment() {
   const navigate = useNavigate();
   const [doctorList, setDoctorList] = useState("");
   const [Case, setCase] = useState("new");
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -34,7 +36,7 @@ export default function CreateAppointment() {
           res.data.machine_details.map((res) =>
             res.machine_consulting_times.map((res) => res)
           ),
-          "COnsultingTime"
+          "ConsultingTime"
         );
         setMachineConsultingTime(
           res.data.machine_details.map((res) =>
@@ -71,8 +73,14 @@ export default function CreateAppointment() {
     setSearchTerm(value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      setDebouncedSearchTerm(searchTerm);
+    }
+
   const handleMove = () => {
     navigate("../new-user/general-details");
+
   };
 
   useEffect(() => {
@@ -114,6 +122,12 @@ export default function CreateAppointment() {
     handleShow();
   }, []);
 
+
+  const handleMove = () => {
+    navigate("../new-user/general-details");
+  };
+
+
   return (
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
@@ -125,6 +139,7 @@ export default function CreateAppointment() {
               type="text"
               value={searchTerm}
               onChange={(e) => handleSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="search case number"
               className="py-1 px-2 rounded-md border border-black w-full"
             />

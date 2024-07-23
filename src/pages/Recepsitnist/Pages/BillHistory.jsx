@@ -4,13 +4,19 @@ import { useDebounce } from "use-debounce";
 
 export default function BillHistory() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [userDetails, setUserDetails] = useState({});
   const [packageDetail, setPackageDetail] = useState({});
   const [bills, setBills] = useState([]);
 
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      setDebouncedSearchTerm(searchTerm);
+    }
   };
 
   useEffect(() => {
@@ -58,6 +64,7 @@ export default function BillHistory() {
               type="text"
               value={searchTerm}
               onChange={(e) => handleSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Search case number or phone number"
               className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

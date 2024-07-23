@@ -78,18 +78,25 @@ export default function MachineTimeslot() {
       return "Invalid time";
     }
   }
+
   function showTime(time) {
     try {
       const date = new Date(time);
-      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
-      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
       return formattedTime;
     } catch (error) {
       console.error("Error formatting time:", error);
       return "Invalid time";
     }
   }
-  
 
   function generateTimes() {
     const times = [];
@@ -103,6 +110,24 @@ export default function MachineTimeslot() {
     return times;
   }
 
+  function generateSlotTimes(slot) {
+    const times = generateTimes();
+    if (slot === "morning") {
+      return times.filter(
+        (time) => time >= "06:00" && time < "12:00"
+      );
+    } else if (slot === "afternoon") {
+      return times.filter(
+        (time) => time >= "12:00" && time < "18:00"
+      );
+    } else if (slot === "evening") {
+      return times.filter(
+        (time) => time >= "18:00" && time < "23:59"
+      );
+    }
+    return [];
+  }
+ 
   function handleAddDoctor() {
     if (
       inputTime !== "select" &&
@@ -162,7 +187,7 @@ export default function MachineTimeslot() {
     handleData();
   }, []);
 
-  const times = generateTimes();
+  const times = generateSlotTimes(inputSlot);
 
   return (
     <div className="w-full p-2">
