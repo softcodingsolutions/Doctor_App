@@ -10,7 +10,7 @@ export default function CreateAppointment() {
   const [Case, setCase] = useState("new");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [filteredDoctors, setFilteredDoctors] = useState([]);
+  const [doctorName, setDoctorNames] = useState({});
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -60,6 +60,7 @@ export default function CreateAppointment() {
       .get("api/v1/users")
       .then((res) => {
         console.log("all the users: ", res);
+        setDoctorNames(res.data.users);
       })
       .catch((err) => {
         console.log(err);
@@ -80,7 +81,7 @@ export default function CreateAppointment() {
     if (debouncedSearchTerm) {
       axios
         .get(
-          `/api/v2/users/search?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}`
+          `/api/v2/users/search?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&email=${debouncedSearchTerm}`
         )
         .then((res) => {
           console.log("search", res);
@@ -131,7 +132,7 @@ export default function CreateAppointment() {
               value={searchTerm}
               onChange={(e) => handleSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="search case number"
+              placeholder="search case number/phone number/email"
               className="py-1 px-2 rounded-md border border-black w-full"
             />
             <button
@@ -161,7 +162,7 @@ export default function CreateAppointment() {
                   <option value="select" disabled>
                     Select Doctor
                   </option>
-                  {filteredDoctors
+                  {Object.values(doctorName)
                     .filter((doctor) => doctor.role === "doctor")
                     .map((name) => (
                       <option key={name.id} value={name.id}>

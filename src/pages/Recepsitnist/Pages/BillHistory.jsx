@@ -22,7 +22,7 @@ export default function BillHistory() {
   useEffect(() => {
     if (debouncedSearchTerm) {
       axios
-        .get(`/api/v1/bills?case_number=${debouncedSearchTerm}`)
+        .get(`/api/v1/bills?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&email=${debouncedSearchTerm}`)
         .then((res) => {
           console.log(res, "BILL HISTORY");
           setUserDetails(res.data.user);
