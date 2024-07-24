@@ -75,6 +75,8 @@ import UserDiagnosis from "./pages/User/UserDiagnosis";
 import BillHistory from "./pages/Recepsitnist/Pages/BillHistory";
 import Home from "./pages/Recepsitnist/Pages/Home";
 import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
+import UserChooseDoctor from "./pages/User/UserChooseDoctor";
+import ForgetPassword from "./pages/ForgetPassword";
 
 function App() {
   return (
@@ -82,6 +84,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="forget-password" element={<ForgetPassword />} />
         <Route path="signup" element={<SignUpPage />} />
 
         {/* User */}
@@ -94,6 +97,9 @@ function App() {
             <Route path="progress-report" element={<ReportProgress />} />
           </Route>
         </Route>
+
+        {/* User selects doctor */}
+        <Route path="choose-doctor" element={<UserChooseDoctor />} />
 
         {/* User created by itself questions */}
         <Route path="questions" element={<UserQuestions />}>

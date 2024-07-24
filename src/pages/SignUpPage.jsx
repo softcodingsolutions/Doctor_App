@@ -2,11 +2,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { schema } from "../schemas/SignUpSchema";
-import SubmitButton from "../components/SubmitButton";
 import img from "../assets/images/icons_slime.png";
-import SignupInputs from "../components/SignupInputs";
 import axios from "axios";
-import Swal from "sweetalert2";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Typography,
+  Input,
+  Button,
+} from "@material-tailwind/react";
 
 function SignUpPage() {
   const navigate = useNavigate();
@@ -21,7 +26,6 @@ function SignUpPage() {
 
   const submittedData = (d) => {
     console.log(d);
-
     axios
       .get("/api/v1/users/app_creds")
       .then((res) => {
@@ -35,29 +39,13 @@ function SignUpPage() {
         axios
           .post(`/api/v1/users`, formData)
           .then((res) => {
-            console.log("Login", res);
+            console.log("SignUp", res);
             localStorage.setItem("access_token", res.data?.user?.access_token);
             localStorage.setItem("role", res.data?.user?.role);
             localStorage.setItem("userId", res.data?.user?.user?.id);
             localStorage.setItem("main_id", res.data?.user?.user?.id);
             localStorage.setItem("client_email", res.data?.user?.user?.email);
-
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Signed up successfully",
-            });
-            navigate("/questions/general-details");
+            navigate("../choose-doctor");
             reset();
           })
           .catch((err) => {
@@ -72,90 +60,112 @@ function SignUpPage() {
   };
 
   return (
-    <div className="flex flex-col items-center bg-slate-200 h-screen">
-      <div className="my-10 flex items-center justify-center  w-[35vh] h-[15vh] shadow-sm bg-white rounded-md">
-        <img className="w-50 h-24" src={img} alt="" />
-      </div>
-      <div className="border bg-white px-10 py-5 rounded-sm shadow-sm">
-        <form
-          onSubmit={handleSubmit(submittedData)}
-          className="w-full h-fit flex flex-col justify-center items-center"
-          method="post"
-        >
-          <SignupInputs
-            name="firstname"
-            type="text"
-            placeholder="firstname"
-            hook={register("firstname")}
-          />
-          {errors.firstname && (
-            <span className="text-s text-red-500  -mt-2.5">
-              {errors.firstname?.message}
-            </span>
-          )}
-          <SignupInputs
-            name="lastname"
-            type="text"
-            placeholder="lastname"
-            hook={register("lastname")}
-          />
-          {errors.lastname && (
-            <span className="text-s text-red-500  -mt-2.5">
-              {errors.lastname?.message}
-            </span>
-          )}
-          <SignupInputs
-            name="email"
-            type="email"
-            placeholder="name@email.com"
-            hook={register("email")}
-          />
-          {errors.email && (
-            <span className="text-sm text-red-500  -mt-2.5">
-              {errors.email?.message}
-            </span>
-          )}
-          <SignupInputs
-            name="mobile"
-            type="text"
-            placeholder="mobile number"
-            hook={register("mobile")}
-          />
-          {errors.mobile && (
-            <span className="text-sm  text-red-500 -mt-2.5">
-              {errors.mobile?.message}
-            </span>
-          )}
-          <SignupInputs
-            name="password"
-            type="password"
-            placeholder="password"
-            hook={register("password")}
-          />
-          {errors.password && (
-            <span className="text-sm text-red-500 -mt-2.5">
-              {errors.password?.message}
-            </span>
-          )}
-          <SignupInputs
-            name="confirmpassword"
-            type="password"
-            placeholder="confirm password"
-            hook={register("confirmpassword")}
-          />
-          {errors.confirmpassword && (
-            <span className="text-sm text-red-500 -mt-2.5">
-              {errors.confirmpassword?.message}
-            </span>
-          )}
-          <SubmitButton name="Create Account" />
-          <div className="-mt-2">
-            Already have an account?
-            <Link to="/" className="text-[#198f9f] pl-1">
-              Login
-            </Link>
-          </div>
-        </form>
+    <div className="flex justify-center items-center bg-slate-200 h-screen font-teachers">
+      <div className=" rounded-sm shadow-sm">
+        <Card className="w-96">
+          <form onSubmit={handleSubmit(submittedData)} method="post">
+            <CardBody className="flex flex-col gap-3.5">
+              <div className="flex justify-center border rounded-md p-4 shadow-inner bg-green-50">
+                <img className="w-50 h-24" src={img} alt="" />
+              </div>
+              <Input
+                label="First Name"
+                size="lg"
+                name="firstname"
+                {...register("firstname")}
+              />
+              {errors.firstname && (
+                <span className="text-s text-red-500 -mt-4">
+                  {errors.firstname?.message}
+                </span>
+              )}
+              <Input
+                label="Last Name"
+                size="lg"
+                name="lastname"
+                {...register("lastname")}
+              />
+              {errors.lastname && (
+                <span className="text-s text-red-500 -mt-4">
+                  {errors.lastname?.message}
+                </span>
+              )}
+              <Input
+                label="Email"
+                size="lg"
+                name="email"
+                {...register("email")}
+              />
+              {errors.email && (
+                <span className="text-s text-red-500 -mt-4">
+                  {errors.email?.message}
+                </span>
+              )}
+              <Input
+                label="Phone Number"
+                type="number"
+                size="lg"
+                name="mobile"
+                {...register("mobile")}
+              />
+              {errors.mobile && (
+                <span className="text-s text-red-500 -mt-4">
+                  {errors.mobile?.message}
+                </span>
+              )}
+              <Input
+                label="Password"
+                type="password"
+                size="lg"
+                name="password"
+                {...register("password")}
+              />
+              {errors.password && (
+                <span className="text-s text-red-500 -mt-4">
+                  {errors.password?.message}
+                </span>
+              )}
+              <Input
+                label="Confirm Password"
+                type="password"
+                size="lg"
+                name="confirmpassword"
+                {...register("confirmpassword")}
+              />
+              {errors.confirmpassword && (
+                <span className="text-s text-red-500 -mt-4">
+                  {errors.confirmpassword?.message}
+                </span>
+              )}
+
+              <Button
+                type="submit"
+                variant="gradient"
+                fullWidth
+                className="font-teachers"
+              >
+                Sign Up
+              </Button>
+            </CardBody>
+          </form>
+          <CardFooter className="-mt-6">
+            <Typography
+              variant="small"
+              className="flex justify-center text-base font-teachers"
+            >
+              Already have an account?
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="ml-1 font-bold hover:scale-105"
+              >
+                <Link to="/login" className="text-base font-teachers">
+                  Sign In
+                </Link>
+              </Typography>
+            </Typography>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );

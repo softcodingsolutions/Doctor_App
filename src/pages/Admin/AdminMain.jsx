@@ -39,7 +39,7 @@ function AdminMain() {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex font-teachers">
       <AdminSidebar
         admin={admin}
         onSidebarHide={() => {

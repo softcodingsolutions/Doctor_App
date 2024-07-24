@@ -60,7 +60,7 @@ function AdminMaster() {
                     onClick={() => setSelectedId(res.id)}
                     key={res.id}
                     className={clsx(
-                      "min-w-fit flex items-center justify-center col-span-2 border shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
+                      "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
                       selectedId === res.id
                         ? "bg-[#1F2937] text-white"
                         : "bg-white"

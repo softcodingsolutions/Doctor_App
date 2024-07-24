@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
-import axios from 'axios';
+import axios from "axios";
 
 export default function MedicalTable({ data, refreshData }) {
   const [editingId, setEditingId] = useState(null);
@@ -10,12 +10,15 @@ export default function MedicalTable({ data, refreshData }) {
   const [editedBrief, setEditedBrief] = useState("");
 
   const handleRemove = (id) => {
-    axios.delete(`api/v1/medicines/${id}`).then((res) => {
-      console.log(res);
-      refreshData();
-    }).catch((err) => {
-      console.log(err);
-    });
+    axios
+      .delete(`api/v1/medicines/${id}`)
+      .then((res) => {
+        console.log(res);
+        refreshData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleEdit = (item) => {
@@ -32,13 +35,16 @@ export default function MedicalTable({ data, refreshData }) {
       medicine_content: editedBrief,
     };
 
-    axios.put(`/api/v1/medicines/${id}`, updatedItem).then((res) => {
-      console.log(res);
-      refreshData();
-      setEditingId(null);
-    }).catch((err) => {
-      console.log(err);
-    });
+    axios
+      .put(`/api/v1/medicines/${id}`, updatedItem)
+      .then((res) => {
+        console.log(res);
+        refreshData();
+        setEditingId(null);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleCancel = () => {
@@ -52,17 +58,17 @@ export default function MedicalTable({ data, refreshData }) {
     <table className="w-full min-w-[460px] z-0">
       <thead className="uppercase">
         <tr className="bg-[#1F2937] text-white rounded-md">
-          <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left rounded-tl-md rounded-bl-md">
+          <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left rounded-tl-md rounded-bl-md">
             Medicine Name
           </th>
-          <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+          <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
             Content
           </th>
-          <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+          <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
             Quantity
           </th>
-        
-          <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left rounded-tr-md rounded-br-md">
+
+          <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left rounded-tr-md rounded-br-md">
             Action
           </th>
         </tr>
@@ -115,33 +121,33 @@ export default function MedicalTable({ data, refreshData }) {
             ) : (
               <>
                 <td className="py-2 px-4 border-b border-b-gray-50">
-                  <div className="text-black text-sm font-medium ml-1 text-wrap">
+                  <div className="text-black text-base font-medium ml-1 text-wrap">
                     {item.medicine_name}
                   </div>
                 </td>
                 <td className="py-2 px-4 border-b border-b-gray-50">
-                  <div className='text-black text-sm font-medium ml-1 text-wrap'>
+                  <div className="text-black text-base font-medium ml-1 text-wrap">
                     {item.medicine_content}
                   </div>
                 </td>
                 <td className="py-2 px-4 border-b border-b-gray-50">
-                  <div className='text-black text-sm font-medium ml-1 text-wrap'>
+                  <div className="text-black text-base font-medium ml-1 text-wrap">
                     {item.medicine_quantity}
                   </div>
                 </td>
-          
+
                 <td className="py-2 px-4 border-b border-b-gray-50">
                   <button
                     onClick={() => handleEdit(item)}
                     className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
                   >
-                    <MdOutlineEdit />
+                    <MdOutlineEdit size={17} />
                   </button>
                   <button
                     onClick={() => handleRemove(item.id)}
                     className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
                   >
-                    <AiOutlineDelete />
+                    <AiOutlineDelete size={17} />
                   </button>
                 </td>
               </>

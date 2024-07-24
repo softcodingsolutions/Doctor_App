@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
 import axios from "axios";
@@ -100,6 +100,7 @@ export default function MachineDetails() {
     axios
       .delete(`/api/v1/machine_details/${id}`)
       .then((res) => {
+        console.log(res);
         handleShow();
       })
       .catch((err) => {
@@ -125,6 +126,7 @@ export default function MachineDetails() {
     axios
       .put(`/api/v1/machine_details/${machine.id}`, updatedMachine)
       .then((res) => {
+        console.log(res);
         handleShow();
         setEditIndex(null);
         setEditedMachineName("");
@@ -153,8 +155,14 @@ export default function MachineDetails() {
             </button>
             {inputVisible && (
               <div className="flex gap-5 m-2">
-                 <select defaultValue="Select" onChange={handleGiveDoctorId} className="border-2 rounded-md p-2">
-                  <option disabled value="Select">Select Doctor</option>
+                <select
+                  defaultValue="Select"
+                  onChange={handleGiveDoctorId}
+                  className="border-2 rounded-md p-2"
+                >
+                  <option disabled value="Select">
+                    Select Doctor
+                  </option>
                   {doctor.map((res) => {
                     return (
                       <option key={res.id} value={res.id}>
@@ -199,16 +207,16 @@ export default function MachineDetails() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Machine Name
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Quantity
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Brief
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
                   </th>
                 </tr>
@@ -218,7 +226,7 @@ export default function MachineDetails() {
                   <tr key={index} className="map">
                     {editIndex === index ? (
                       <>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           <input
                             type="text"
                             value={editedMachineName}
@@ -229,7 +237,7 @@ export default function MachineDetails() {
                             className="border-2 rounded-md p-2"
                           />
                         </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           <input
                             type="number"
                             value={editedQuantity}
@@ -239,7 +247,7 @@ export default function MachineDetails() {
                             min="0"
                           />
                         </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           <input
                             type="text"
                             value={editedBrief}
@@ -248,7 +256,7 @@ export default function MachineDetails() {
                             className="border-2 rounded-md p-2"
                           />
                         </td>
-                        <td className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           <button
                             onClick={handleUpdateMachine}
                             className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
@@ -265,19 +273,18 @@ export default function MachineDetails() {
                       </>
                     ) : (
                       <>
-                      
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
+                          <span className="text-black text-base font-medium ml-1">
                             {machine.name}
                           </span>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
+                          <span className="text-black text-base font-medium ml-1">
                             {machine.quantity}
                           </span>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-sm font-medium ml-1">
+                          <span className="text-black text-base font-medium ml-1">
                             {machine.brief}
                           </span>
                         </td>
@@ -291,15 +298,15 @@ export default function MachineDetails() {
                                 machine.brief
                               )
                             }
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            className="min-w-fit  border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
                           >
-                            <MdOutlineEdit />
+                            <MdOutlineEdit size={17} />
                           </button>
                           <button
                             onClick={() => handleRemoveMachine(machine.id)}
                             className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
                           >
-                            <AiOutlineDelete />
+                            <AiOutlineDelete size={17} />
                           </button>
                         </td>
                       </>

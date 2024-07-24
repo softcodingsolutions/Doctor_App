@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
 import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
-
-
+import { useNavigate } from "react-router-dom";
 
 export default function CreateAppointment() {
   const navigate = useNavigate();
@@ -77,8 +74,7 @@ export default function CreateAppointment() {
     if (event.key === "Enter") {
       setDebouncedSearchTerm(searchTerm);
     }
-  }
- 
+  };
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -119,11 +115,9 @@ export default function CreateAppointment() {
     handleShow();
   }, []);
 
-
   const handleMove = () => {
     navigate("../new-user/general-details");
   };
-
 
   return (
     <div className="w-full p-5">
@@ -142,7 +136,7 @@ export default function CreateAppointment() {
             />
             <button
               type="button"
-              className="w-[10rem] text-white rounded-md border border-gray-500 font-medium text-lg  hover:scale-105"
+              className="w-[10rem] text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
               name="Save & Continue"
               onClick={handleMove}
               style={{ backgroundColor: "black" }}
@@ -152,7 +146,7 @@ export default function CreateAppointment() {
           </div>
 
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
-            <form>
+            <form className="text-lg">
               <div className="flex gap-5 m-5">
                 <label className="text-lg text-end w-1/3 mr-2">
                   Select Doctor
@@ -161,9 +155,10 @@ export default function CreateAppointment() {
                 <select
                   onChange={handleDoctorList}
                   value={doctorList}
+                  defaultValue={"select"}
                   className="py-1 px-2 rounded-md border border-black w-[40vh]"
                 >
-                  <option value="select" selected>
+                  <option value="select" disabled>
                     Select Doctor
                   </option>
                   {filteredDoctors
@@ -198,5 +193,5 @@ export default function CreateAppointment() {
         </div>
       </div>
     </div>
-  )
-  }
+  );
+}

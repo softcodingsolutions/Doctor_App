@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useOutletContext } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { reportTreatmentButtons } from "../../../../constants/admin/AdminConstants";
 import { Option, Select } from "@mui/joy";
@@ -8,7 +8,6 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import Swal from "sweetalert2";
 
 function ReportTreatment() {
-  const context = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
   const [getWeightReason, setGetWeightReason] = useState([]);
   const [sendWeightReason, setSendWeightReason] = useState(null);
@@ -22,8 +21,6 @@ function ReportTreatment() {
     dos: [],
     donts: [],
   });
-
-  console.log("Context From Report", context[1]);
 
   const submitDataToCreateTreatmentPackage = () => {
     console.log(storeData);

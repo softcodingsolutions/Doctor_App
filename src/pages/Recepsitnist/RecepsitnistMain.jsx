@@ -39,7 +39,7 @@ function RecepsitnistMain() {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex font-teachers">
       <RecepsitnistSidebar
         admin={admin}
         onSidebarHide={() => {

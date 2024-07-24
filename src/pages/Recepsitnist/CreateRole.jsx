@@ -35,10 +35,6 @@ function AdminTreatment() {
       });
   };
 
-  const handleSendWeightReason = (val) => {
-    setSendWeightReason(val);
-  };
-
   useEffect(() => {
     handleGetWeightReason();
     handlegetPackages();

@@ -5,10 +5,14 @@ export const schema = yup.object().shape({
   lastname: yup.string().required("Last name is required"),
   email: yup.string().email().required("Email is required"),
   mobile: yup
-    .number()
-    .typeError("Mobile must be a number")
-    .min(10)
-    .required("Mobile Number is required"),
-  password: yup.string().min(6).required("Password is required"),
-  confirmpassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match')
+    .string()
+    .required("Phone Number is required.")
+    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits."),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
+  confirmpassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
 });

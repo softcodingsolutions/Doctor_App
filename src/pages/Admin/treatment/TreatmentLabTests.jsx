@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import Swal from "sweetalert2";
-import { useOutletContext } from "react-router-dom";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
 import { Option, Select } from "@mui/joy";
 
 function TreatmentLabTests() {
-  const context = useOutletContext();
   const [getTests, setGetTests] = useState([]);
   const [getWeightReason, setGetWeightReason] = useState([]);
   const [sendWeightReason, setSendWeightReason] = useState(null);
@@ -256,7 +254,12 @@ function TreatmentLabTests() {
                           <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.gender} />
+                          <TdComponent
+                            things={
+                              val.gender?.[0]?.toUpperCase() +
+                              val.gender?.slice(1)
+                            }
+                          />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.comments} />
