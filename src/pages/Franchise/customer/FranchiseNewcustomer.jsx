@@ -75,7 +75,7 @@ function FranchiseNewcustomer() {
                 },
               }}
             >
-              <StepButton onClick={() => handleStepClick(index)}>
+              <StepButton >
                 {step}
               </StepButton>
             </Step>
