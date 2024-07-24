@@ -26,12 +26,6 @@ function NewUser() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
 
-  const handleStepClick = (step) => {
-    if (step === 0 || isGeneralDetailsValid) {
-      setCurrentStep(step);
-    }
-  };
-
   const handleNextStep = () => {
     if (isGeneralDetailsValid || currentStep !== 0) {
       setCurrentStep((prevStep) => prevStep + 1);
@@ -54,6 +48,7 @@ function NewUser() {
             <Step
               key={step}
               orientation="vertical"
+              className="font-teachers"
               indicator={
                 <StepIndicator
                   variant={currentStep <= index ? "outlined" : "solid"}
@@ -71,9 +66,7 @@ function NewUser() {
                 },
               }}
             >
-              <StepButton>
-                {step}
-              </StepButton>
+              <StepButton>{step}</StepButton>
             </Step>
           ))}
         </Stepper>

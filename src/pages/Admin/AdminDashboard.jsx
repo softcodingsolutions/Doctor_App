@@ -25,10 +25,7 @@ function AdminDashboard() {
     axios
       .get(`/api/v1/machine_consulting_times`)
       .then((res) => {
-        console.log(
-          "Machine Consulting Time: ",
-          res.data
-        );
+        console.log("Machine Consulting Time: ", res.data);
         setGetMachineTime(res.data?.machine_consulting_times);
       })
       .catch((err) => {
@@ -67,8 +64,7 @@ function AdminDashboard() {
       </div>
       <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-1">
         <div className="w-full h-full p-2 flex flex-col gap-1">
-          <div className="sm:flex-grow flex justify-between overflow-x-hidden gap-1">
-            <div> </div>
+          <div className="flex justify-end">
             <button
               onClick={context[0]}
               type="button"
@@ -81,7 +77,7 @@ function AdminDashboard() {
               />
             </button>
           </div>
-          <div className="flex w-full h-full items-center justify-center gap-1">
+          <div className="flex flex-wrap xl:flex-nowrap w-full h-full items-center justify-center gap-1">
             {/* consulting time table */}
             <div className="flex w-full flex-col items-center p-1 h-full">
               <div className="text-2xl font-semibold tracking-wide">
@@ -118,7 +114,7 @@ function AdminDashboard() {
                         return (
                           <tr key={val.id}>
                             <td className="py-2 px-4 border-b border-b-gray-50">
-                              <div className="flex items-center">
+                              <div className="flex items-center text-lg">
                                 {index + 1}
                               </div>
                             </td>
@@ -182,12 +178,18 @@ function AdminDashboard() {
                         return (
                           <tr key={val.id}>
                             <td className="py-2 px-4 border-b border-b-gray-50">
-                              <div className="flex items-center">
+                              <div className="flex items-center text-lg">
                                 {index + 1}
                               </div>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.doctor?.first_name + " " + val.doctor?.last_name} />
+                              <TdComponent
+                                things={
+                                  val.doctor?.first_name +
+                                  " " +
+                                  val.doctor?.last_name
+                                }
+                              />
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
                               <TdComponent things={val.machine_detail?.name} />

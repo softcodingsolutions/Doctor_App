@@ -4,11 +4,12 @@ import axios from "axios";
 export default function Home() {
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [doctorList, setDoctorList] = useState("");
-  const [doctorName, setDoctorNames] = useState([]);
-  const [doctor, setDoctor] = useState("");
-  const [consultingTime, setConsultingTime] = useState(new Date().toISOString().split('T')[0]);
+  const [consultingTime, setConsultingTime] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [consultingTimes, setConsultingTimes] = useState([]);
   const [machineConsultingTimes, setMachineConsultingTimes] = useState([]);
+
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
   };
@@ -32,19 +33,6 @@ export default function Home() {
       });
   };
 
-  useEffect(() => {
-    axios
-      .get("api/v1/users")
-      .then((res) => {
-        console.log("all the users: ", res);
-        setDoctorNames(res.data.users);
-        setFilteredDoctors(res.data.users);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   function formatTime(time) {
     try {
       const date = new Date(time);
@@ -63,10 +51,23 @@ export default function Home() {
       return "Invalid time";
     }
   }
+
   const formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
   };
+
+  useEffect(() => {
+    axios
+      .get("api/v1/users")
+      .then((res) => {
+        console.log("all the users: ", res);
+        setFilteredDoctors(res.data.users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     handleAppointment();
@@ -79,9 +80,13 @@ export default function Home() {
           <div className="flex gap-5 items-center p-2 w-full">
             <select
               onChange={handleDoctorList}
+              defaultValue="select1"
               value={doctorList}
               className="p-2 rounded-md border border-black  w-[40vh]"
             >
+              <option value="select1" disabled>
+                Select Doctor
+              </option>
               {filteredDoctors
                 .filter((doctor) => doctor.role === "doctor")
                 .map((name) => (
@@ -97,7 +102,7 @@ export default function Home() {
               onChange={handleConsulting}
             />
           </div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="w-full flex flex-wrap xl:flex-nowrap justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <div className="flex w-full h-full items-center justify-center gap-1">
               {/* consulting time table */}
               <div className="flex w-full flex-col items-center p-1 h-full">
@@ -108,19 +113,19 @@ export default function Home() {
                   <table className="w-full min-w-[460px] z-0">
                     <thead className="uppercase">
                       <tr className="bg-[#1F2937] text-white rounded-md">
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Doctor Name
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Patient Name
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Date
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Slot
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Time
                         </th>
                       </tr>
@@ -130,25 +135,25 @@ export default function Home() {
                         return (
                           <tr key={index} className="map">
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
+                              <span className="text-black text-base font-medium ml-1">
                                 {data.doctor.first_name} {data.doctor.last_name}
                               </span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
+                              <span className="text-black text-base font-medium ml-1">
                                 {data.user.first_name} {data.user.last_name}
                               </span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
+                              <span className="text-black text-base font-medium ml-1">
                                 {formatDate(data.date)}
                               </span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1"></span>
+                              <span className="text-black text-base font-medium ml-1"></span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
+                              <span className="text-black text-base font-medium ml-1">
                                 {formatTime(data.time)}
                               </span>
                             </td>
@@ -166,65 +171,61 @@ export default function Home() {
                   Machine Time Slot
                 </div>
                 <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
-                <table className="w-full min-w-[460px] z-0">
+                  <table className="w-full min-w-[460px] z-0">
                     <thead className="uppercase">
                       <tr className="bg-[#1F2937] text-white rounded-md">
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Doctor Name
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Patient Name
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Machine Name
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Date
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Slot
                         </th>
-                        <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Time
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {machineConsultingTimes.map((data,index)=>{
-                        return(
+                      {machineConsultingTimes.map((data, index) => {
+                        return (
                           <tr key={index} className="map">
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
+                              <span className="text-black text-base font-medium ml-1">
                                 {data.doctor.first_name} {data.doctor.last_name}
                               </span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
+                              <span className="text-black text-base font-medium ml-1">
                                 {data.user.first_name} {data.user.last_name}
                               </span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
-                                
-                              </span>
+                              <span className="text-black text-base font-medium ml-1"></span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
+                              <span className="text-black text-base font-medium ml-1">
                                 {formatDate(data.date)}
                               </span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
-                                
-                              </span>
+                              <span className="text-black text-base font-medium ml-1"></span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-sm font-medium ml-1">
+                              <span className="text-black text-base font-medium ml-1">
                                 {formatTime(data.time)}
                               </span>
                             </td>
                           </tr>
-                        )
+                        );
                       })}
                     </tbody>
                   </table>
@@ -237,8 +238,3 @@ export default function Home() {
     </div>
   );
 }
-
-const formatTime = (time) => {
-  const date = new Date(time);
-  return `${date.getHours()}:${date.getMinutes()}`;
-};

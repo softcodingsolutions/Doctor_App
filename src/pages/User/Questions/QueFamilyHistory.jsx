@@ -74,7 +74,7 @@ function QueFamilyHistory({ onNext, onBack, onValidate }) {
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
-              className="w-[80%] h-full flex flex-col items-center justify-between"
+              className="w-[80%] h-full flex flex-col items-center justify-between text-lg"
               method="post"
             >
               <div className="flex flex-col gap-2 justify-between w-full">

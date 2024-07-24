@@ -26,12 +26,6 @@ function FranchiseNewcustomer() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
 
-  const handleStepClick = (step) => {
-    if (step === 0 || isGeneralDetailsValid) {
-      setCurrentStep(step);
-    }
-  };
-
   const handleNextStep = () => {
     if (isGeneralDetailsValid || currentStep !== 0) {
       setCurrentStep((prevStep) => prevStep + 1);
@@ -75,9 +69,7 @@ function FranchiseNewcustomer() {
                 },
               }}
             >
-              <StepButton >
-                {step}
-              </StepButton>
+              <StepButton>{step}</StepButton>
             </Step>
           ))}
         </Stepper>

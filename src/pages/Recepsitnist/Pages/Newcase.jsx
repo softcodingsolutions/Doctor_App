@@ -1,15 +1,11 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function Newcase(props) {
   console.log(props.doctor);
   const [consultingTime, setConsultingTime] = useState(new Date());
   const [data, setData] = useState([]);
-  const [slot, setSlot] = useState('');
-
-  useEffect(() => {
-    handleData();
-  }, [props.doctor]);
+  const [slot, setSlot] = useState("");
 
   const handleConsulting = (e) => {
     setConsultingTime(e.target.value);
@@ -19,82 +15,115 @@ export default function Newcase(props) {
     setSlot(e.target.value);
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    formdata.append('appointment[date]',consultingTime);
-    formdata.append('appointment[doctor_id]',props.doctor);
-    formdata.append('appointment[time]',slot);
-    formdata.append('appointment[user_id]',props.user);
-    axios.post(`/api/v1/appointments`, formdata).then((res)=>{
-      console.log(res);
-      alert("Successfully created Your Appointment!");
-      setConsultingTime();
-      setSlot('');
-    }).catch((err)=>{
-      console.log(err);
-    })
-  };
-
-  const handleData = () => {
-    if(props.doctor != 0){
+    formdata.append("appointment[date]", consultingTime);
+    formdata.append("appointment[doctor_id]", props.doctor);
+    formdata.append("appointment[time]", slot);
+    formdata.append("appointment[user_id]", props.user);
     axios
-      .get(`/api/v1/consulting_times/user/${props.doctor}`)
+      .post(`/api/v1/appointments`, formdata)
       .then((res) => {
-        console.log(res.data.consulting_times, "ConsultingTime");
-        setData(res.data.consulting_times);
+        console.log(res);
+        alert("Successfully created Your Appointment!");
+        setConsultingTime();
+        setSlot("");
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleData = () => {
+    if (props.doctor != 0) {
+      axios
+        .get(`/api/v1/consulting_times/user/${props.doctor}`)
+        .then((res) => {
+          console.log(res.data.consulting_times, "ConsultingTime");
+          setData(res.data.consulting_times);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
+
   function formatTime(time) {
     try {
       const date = new Date(time);
-      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
-      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
       return formattedTime;
     } catch (error) {
       console.error("Error formatting time:", error);
       return "Invalid time";
     }
   }
+
+  useEffect(() => {
+    handleData();
+  }, [props.doctor]);
+
   return (
     <div>
-      <form>
+      <form className="text-lg">
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">Name </label>
-          <input type="text" placeholder="enter name"
+          <input
+            type="text"
+            placeholder="Enter name"
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            value={props.name} />
+            value={props.name}
+          />
         </div>
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">Mobile Number </label>
-          <input type="text" placeholder="enter number"
+          <input
+            type="text"
+            placeholder="Enter number"
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            value={props.number} />
+            value={props.number}
+          />
         </div>
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">Email id </label>
-          <input type="email" placeholder="enter email"
+          <input
+            type="email"
+            placeholder="Enter email"
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            value={props.email} />
+            value={props.email}
+          />
         </div>
         <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">Select the Date </label>
-          <input type="date" placeholder="select date"
+          <label className="text-lg text-end w-1/3 mr-2">
+            Select the Date{" "}
+          </label>
+          <input
+            type="date"
+            placeholder="select date"
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            onChange={handleConsulting} />
+            onChange={handleConsulting}
+          />
         </div>
         <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">Select the Slot </label>
+          <label className="text-lg text-end w-1/3 mr-2">
+            Select the Slot{" "}
+          </label>
           <select
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleSlot}
-            value={slot}>
-            <option value="" disabled>
+            value={slot}
+            defaultValue={"select"}
+          >
+            <option value="select" disabled>
               Select
             </option>
             {data.map((timeSlot) => (
@@ -105,7 +134,13 @@ export default function Newcase(props) {
           </select>
         </div>
         <div className="flex w-full justify-center mt-10">
-          <button type="submit" className="w-[20rem] text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105" name="Save & Continue" style={{ backgroundColor: "black" }} onClick={handleSubmit}>
+          <button
+            type="submit"
+            className="w-[20rem] text-white py-1 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+            name="Save & Continue"
+            style={{ backgroundColor: "black" }}
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </div>

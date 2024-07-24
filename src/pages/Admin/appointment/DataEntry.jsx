@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { WiTime2 } from "react-icons/wi";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -77,13 +77,13 @@ export default function DataEntry() {
 
   return (
     <div className="w-full ">
-      <div className="flex transition-transform gap-10 p-1 min-w-fit items-center justify-evenly">
+      <div className="flex transition-transform gap-3 p-1 min-w-fit items-center">
         {buttons.map((res) => (
           <button
             key={res.id}
             onClick={res.function}
             className={clsx(
-              "min-w-fit flex items-center justify-center col-span-2 border shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
+              "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
               selectedId === res.id ? "bg-[#1F2937] text-white" : "bg-white"
             )}
           >

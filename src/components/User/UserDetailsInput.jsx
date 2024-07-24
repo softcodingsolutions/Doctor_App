@@ -31,7 +31,7 @@ function UserDetailsInput({
           className="py-1 px-2 rounded-md border border-black w-[40vh]"
         />
         {errors && (
-          <span className="text-sm text-red-500">{errors.message}</span>
+          <span className="text-base text-red-500">{errors.message}</span>
         )}
       </div>
     </>

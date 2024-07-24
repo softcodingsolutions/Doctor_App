@@ -7,7 +7,7 @@ function ReportProfile() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[82vh] bg-white">
         <div className="flex p-5 h-full flex-col items-center space-y-8">
-          <div className="flex flex-col text-lg font-bold justify-center w-5/6 gap-3 mt-1">
+          <div className="flex flex-col text-lg font-semibold justify-center w-5/6 gap-3 mt-1">
             <div className="flex justify-between">
               <div>
                 Patient Name:{" "}
