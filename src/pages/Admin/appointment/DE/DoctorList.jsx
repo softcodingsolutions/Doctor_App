@@ -172,19 +172,19 @@ export default function DoctorList() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Name
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Specification
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Email
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Password
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
                   </th>
                 </tr>
@@ -195,7 +195,7 @@ export default function DoctorList() {
                   .map((doctor, index) => (
                     <tr key={index} className="map">
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor?.first_name[0].toUpperCase() +
                             doctor?.first_name?.slice(1) +
                             " " +
@@ -204,17 +204,17 @@ export default function DoctorList() {
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor.specification}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor.email}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor.show_password}
                         </span>
                       </td>

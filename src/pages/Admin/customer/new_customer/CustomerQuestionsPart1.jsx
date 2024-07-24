@@ -104,7 +104,7 @@ function CustomerQuestionsPart1({ onNext, onBack, onValidate }) {
       <div className="flex flex-col rounded-lg bg-card h-[72vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
           <div className="animate-fade-left w-full min-h-[450px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
-            <table className="w-full z-0 ">
+            <table className="w-full z-0 text-lg">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent
@@ -133,14 +133,13 @@ function CustomerQuestionsPart1({ onNext, onBack, onValidate }) {
                   getQuestionsPart1.map((val) => {
                     return (
                       <tr key={val.id}>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
+                        <td className="py-3 px-4 border-b border-b-gray-50 ">
                           <input
                             value={val.id}
                             onChange={handleCheckboxChange}
                             type="checkbox"
                           />
                         </td>
-
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.question_in_english} />
                         </td>

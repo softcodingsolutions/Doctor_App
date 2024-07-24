@@ -1,6 +1,3 @@
-import Inputs from "../components/Inputs";
-import LinkTo from "../components/LinkTo";
-import SubmitButton from "../components/SubmitButton";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,6 +5,15 @@ import { schema } from "../schemas/LoginSchema";
 import axios from "axios";
 import Swal from "sweetalert2";
 import icons_slime from "../assets/images/icons_slime.png";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Typography,
+  Input,
+  Button,
+} from "@material-tailwind/react";
+import { useEffect } from "react";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -22,7 +28,6 @@ function LoginPage() {
 
   const submittedData = (d) => {
     console.log(d);
-
     axios
       .get("/api/v1/users/app_creds")
       .then((res) => {
@@ -67,53 +72,89 @@ function LoginPage() {
       });
   };
 
-  return (
-    <div className="flex flex-col items-center bg-slate-200 h-screen">
-      <div className="my-10 flex items-center justify-center  w-[35vh] h-[15vh] shadow-sm bg-white rounded-md">
-        <img className="w-50 h-24" src={icons_slime} alt="" />
-      </div>
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role === "super_admin") {
+      navigate("/admin/dashboard");
+    } else if (role === "franchise") {
+      navigate("/franchise/dashboard");
+    } else if (role === "receptionist") {
+      navigate("/receptionist/appointment/home");
+    } else if (role === "patient") {
+      navigate("/user/dashboard");
+    }
+  }, []);
 
-      <div className="border bg-white px-10 py-5 rounded-sm shadow-sm">
-        <form
-          onSubmit={handleSubmit(submittedData)}
-          className="w-full flex flex-col justify-center items-center"
-          method="post"
-        >
-          <Inputs
-            title="Email"
-            name="email"
-            type="email"
-            placeholder="name@email.com"
-            hook={register("email")}
-          />
-          {errors.email && (
-            <span className="text-s text-red-500  -mt-2.5">
-              {errors.email?.message}
-            </span>
-          )}
-          <Inputs
-            title="Password"
-            name="password"
-            type="password"
-            placeholder="password"
-            hook={register("password")}
-          />
-          {errors.password && (
-            <span className="text-s text-red-500  -mt-3.5">
-              {errors.password?.message}
-            </span>
-          )}
-          <div className="flex justify-end w-[20rem] mt-1">
-            <LinkTo to="/forget-password" name="Forget Password" />   
-          </div>
-          <SubmitButton name="Login" />
-          <div className="-mt-2">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-[#198f9f]">
-              Create Account
-            </Link>
-          </div>
-        </form>
+  return (
+    <div className="flex flex-col items-center justify-center h-screen font-teachers">
+      <div className="border px-10 py-5 rounded-sm shadow-sm">
+        <Card className="w-96 h-fit py-2">
+          <form onSubmit={handleSubmit(submittedData)} method="post">
+            <CardBody className="flex flex-col gap-4">
+              <div className="flex justify-center border rounded-md p-4 shadow-inner bg-green-100">
+                <img className="w-50 h-24" src={icons_slime} alt="" />
+              </div>
+              <Input
+                label="Email"
+                size="lg"
+                name="email"
+                {...register("email")}
+              />
+              {errors.email && (
+                <span className="text-s text-red-500 -mt-4">
+                  {errors.email?.message}
+                </span>
+              )}
+              <Input
+                label="Password"
+                type="password"
+                size="lg"
+                name="password"
+                {...register("password")}
+              />
+              {errors.password && (
+                <span className="text-s text-red-500 -mt-4">
+                  {errors.password?.message}
+                </span>
+              )}
+              <div className="-mt-1.5 text-right">
+                <Typography variant="small" color="light">
+                  <Link
+                    to="/forget-password"
+                    className="font-teachers text-base hover:underline"
+                  >
+                    Forget Password
+                  </Link>
+                </Typography>
+              </div>
+              <Button
+                type="submit"
+                className="font-teachers text-sm"
+                variant="gradient"
+                fullWidth
+              >
+                Sign In
+              </Button>
+            </CardBody>
+          </form>
+          <CardFooter className="pt-0">
+            <Typography
+              variant="small"
+              className="flex justify-center text-base font-teachers"
+            >
+              Don&apos;t have an account?
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="ml-1 font-bold hover:scale-105"
+              >
+                <Link to="/signup" className="text-base font-teachers">
+                  Sign up
+                </Link>
+              </Typography>
+            </Typography>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );

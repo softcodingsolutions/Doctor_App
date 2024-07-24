@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Box from "@mui/joy/Box";
 
@@ -168,7 +168,7 @@ export default function Indooractivity(props) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="text-lg">
         <div>
           <h2 className="text-lg font-semibold text-center mt-5">
             Indoor Activity Time Slot

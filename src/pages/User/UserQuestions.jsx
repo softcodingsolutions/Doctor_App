@@ -38,12 +38,6 @@ function UserQuestions() {
       });
   };
 
-  const handleStepClick = (step) => {
-    if (step === 0 || isGeneralDetailsValid) {
-      setCurrentStep(step);
-    }
-  };
-
   const handleNextStep = () => {
     if (isGeneralDetailsValid || currentStep !== 0) {
       setCurrentStep((prevStep) => prevStep + 1);
@@ -63,12 +57,13 @@ function UserQuestions() {
   }, []);
 
   return (
-    <div className="flex w-full p-2 items-center">
+    <div className="flex w-full p-2 items-center font-teachers">
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <Stepper sx={{ width: "100%", height: "7%" }}>
           {steps.map((step, index) => (
             <Step
               key={step}
+              className="font-teachers"
               orientation="vertical"
               indicator={
                 <StepIndicator
@@ -87,9 +82,7 @@ function UserQuestions() {
                 },
               }}
             >
-              <StepButton >
-                {step}
-              </StepButton>
+              <StepButton>{step}</StepButton>
             </Step>
           ))}
         </Stepper>

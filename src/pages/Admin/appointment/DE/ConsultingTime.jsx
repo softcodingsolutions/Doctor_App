@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 
 export default function ConsultingTime() {
-  const [inputTime, setInputTime] = useState('');
+  const [inputTime, setInputTime] = useState("");
   const [inputSlot, setInputSlot] = useState("select");
   const [inputDoctor, setInputDoctor] = useState("select");
   const [doctors, setDoctors] = useState([]);
@@ -55,15 +55,21 @@ export default function ConsultingTime() {
   function formatTime(time) {
     try {
       const date = new Date(time);
-      const options = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC' };
-      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
       return formattedTime;
     } catch (error) {
       console.error("Error formatting time:", error);
       return "Invalid time";
     }
   }
-  
 
   function handleAddDoctor() {
     if (inputTime && inputSlot !== "select" && inputDoctor !== "select") {
@@ -76,10 +82,11 @@ export default function ConsultingTime() {
       setInputSlot("select");
 
       const formdata = new FormData();
-      formdata.append('consulting_time[slot]', inputSlot);
-      formdata.append('consulting_time[time]', inputTime);
+      formdata.append("consulting_time[slot]", inputSlot);
+      formdata.append("consulting_time[time]", inputTime);
 
-      axios.post(`/api/v1/consulting_times?id=${inputDoctor}`, formdata)
+      axios
+        .post(`/api/v1/consulting_times?id=${inputDoctor}`, formdata)
         .then((res) => {
           console.log(res, "ADD");
           handleData();
@@ -91,12 +98,15 @@ export default function ConsultingTime() {
   }
 
   const handleRemoveDoctor = (id) => {
-    axios.delete(`/api/v1/consulting_times/${id}`).then((res)=>{
-      console.log(res,"DELETE");
-      handleData();
-    }).catch((err)=>{
-      console.log(err)
-    })
+    axios
+      .delete(`/api/v1/consulting_times/${id}`)
+      .then((res) => {
+        console.log(res, "DELETE");
+        handleData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleShowInput = () => {
@@ -167,16 +177,16 @@ export default function ConsultingTime() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Doctor
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Slot
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Time
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
                   </th>
                 </tr>
@@ -185,25 +195,24 @@ export default function ConsultingTime() {
                 {data.map((doctor, index) => (
                   <tr key={index} className="map">
                     <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-sm font-medium ml-1">
+                      <span className="text-black text-base font-medium ml-1">
                         {doctor.user_name}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-sm font-medium ml-1">
-                        {doctor.slot[0]?.toUpperCase() +
-                                  doctor.slot?.slice(1)}
+                      <span className="text-black text-base font-medium ml-1">
+                        {doctor.slot[0]?.toUpperCase() + doctor.slot?.slice(1)}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-sm font-medium ml-1">
+                      <span className="text-black text-base font-medium ml-1">
                         {formatTime(doctor.time)}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
                       <button
                         onClick={() => handleRemoveDoctor(doctor.id)}
-                        className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                        className="min-w-fit border text-base cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
                       >
                         <AiOutlineDelete />
                       </button>

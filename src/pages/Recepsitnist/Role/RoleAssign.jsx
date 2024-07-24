@@ -11,10 +11,6 @@ export default function RoleAssign() {
   const [doctors, setDoctors] = useState([]);
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    handleShow();
-  }, []);
-
   const handleShow = () => {
     axios
       .get(`api/v1/users`)
@@ -49,10 +45,14 @@ export default function RoleAssign() {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!inputFirstName.trim()) newErrors.inputFirstName = "First Name is required";
-    if(!inputLastName.trim()) newErrors.inputLastName = "Last Name is required";
-    if (!inputMobile.trim()) newErrors.inputMobile = "Mobile Number is required";
-    if (!inputEmail.trim() || !/\S+@\S+\.\S+/.test(inputEmail)) newErrors.inputEmail = "Valid Email is required";
+    if (!inputFirstName.trim())
+      newErrors.inputFirstName = "First Name is required";
+    if (!inputLastName.trim())
+      newErrors.inputLastName = "Last Name is required";
+    if (!inputMobile.trim())
+      newErrors.inputMobile = "Mobile Number is required";
+    if (!inputEmail.trim() || !/\S+@\S+\.\S+/.test(inputEmail))
+      newErrors.inputEmail = "Valid Email is required";
     if (!inputRole.trim()) newErrors.inputRole = "Role is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -115,11 +115,15 @@ export default function RoleAssign() {
       });
   };
 
+  useEffect(() => {
+    handleShow();
+  }, []);
+
   return (
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4">
-          <div className="">
+          <div>
             <div>
               <h2 className="flex gap-5 m-2 text-xl font-semibold">
                 Create Role
@@ -135,7 +139,9 @@ export default function RoleAssign() {
                   placeholder="First Name"
                 />
                 {errors.inputFirstName && (
-                  <span className="text-red-500 text-sm">{errors.inputFirstName}</span>
+                  <span className="text-red-500 text-sm">
+                    {errors.inputFirstName}
+                  </span>
                 )}
               </div>
               <div className="grid grid-cols-1">
@@ -147,7 +153,9 @@ export default function RoleAssign() {
                   placeholder="Last Name"
                 />
                 {errors.inputFirstName && (
-                  <span className="text-red-500 text-sm">{errors.inputLastName}</span>
+                  <span className="text-red-500 text-sm">
+                    {errors.inputLastName}
+                  </span>
                 )}
               </div>
               <div className="grid grid-cols-1">
@@ -159,7 +167,9 @@ export default function RoleAssign() {
                   placeholder="Mobile Number"
                 />
                 {errors.inputMobile && (
-                  <span className="text-red-500 text-sm">{errors.inputMobile}</span>
+                  <span className="text-red-500 text-sm">
+                    {errors.inputMobile}
+                  </span>
                 )}
               </div>
               <div className="grid grid-cols-1">
@@ -171,7 +181,9 @@ export default function RoleAssign() {
                   placeholder="Email"
                 />
                 {errors.inputEmail && (
-                  <span className="text-red-500 text-sm">{errors.inputEmail}</span>
+                  <span className="text-red-500 text-sm">
+                    {errors.inputEmail}
+                  </span>
                 )}
               </div>
               <div className="grid grid-cols-1">
@@ -187,7 +199,9 @@ export default function RoleAssign() {
                   <option value="receptionist">Receptionist</option>
                 </select>
                 {errors.inputRole && (
-                  <span className="text-red-500 text-sm">{errors.inputRole}</span>
+                  <span className="text-red-500 text-sm">
+                    {errors.inputRole}
+                  </span>
                 )}
               </div>
               <button
@@ -203,22 +217,22 @@ export default function RoleAssign() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Name
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Mobile Number
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Email
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Role
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Password
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
                   </th>
                 </tr>
@@ -229,10 +243,10 @@ export default function RoleAssign() {
                     (doctor) =>
                       doctor.role !== "patient" && doctor.role !== "super_admin"
                   )
-                  .map((doctor, index) => (
-                    <tr key={index} className="map">
+                  .map((doctor) => (
+                    <tr key={doctor.id}>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor.first_name[0]?.toUpperCase() +
                             doctor.first_name?.slice(1) +
                             " " +
@@ -241,23 +255,23 @@ export default function RoleAssign() {
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor.phone_number}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor.email}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor?.role[0]?.toUpperCase() +
                             doctor?.role?.slice(1)}
                         </span>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-sm font-medium ml-1">
+                        <span className="text-black text-base font-medium ml-1">
                           {doctor?.show_password}
                         </span>
                       </td>

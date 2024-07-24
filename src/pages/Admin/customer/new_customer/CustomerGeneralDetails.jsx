@@ -80,7 +80,7 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
           <div className="text-xl font-semibold">General Details</div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">
-              <div className="flex gap-10">
+              <div className="flex gap-10 text-lg">
                 <div className="flex flex-col ">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
@@ -150,10 +150,14 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
                     </label>
                     <select
                       name="overweight"
+                      defaultValue="select"
                       placeholder="Select one"
                       {...register("overweight")}
                       className="py-1 px-2 rounded-md border border-black"
                     >
+                      <option value="select" disabled>
+                        Select One
+                      </option>
                       <option value="1-5">1-5 years</option>
                       <option value="6-10">6-10 years</option>
                       <option value="11-15">11-15 years</option>
@@ -223,7 +227,7 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
                         <option value="female">Female</option>
                       </select>
                       {errors.gender && (
-                        <span className="text-sm  text-red-500 -mt-2.5">
+                        <span className="text-base  text-red-500 -mt-1.5">
                           {errors.gender?.message}
                         </span>
                       )}

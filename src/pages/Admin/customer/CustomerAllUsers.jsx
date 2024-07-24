@@ -39,7 +39,7 @@ function CustomerAllUsers() {
           <div>
             <button
               onClick={handleAddUsers}
-              className="border border-gray-300 p-1 rounded-md bg-green-600 text-white hover:scale-105"
+              className="border border-gray-300 text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
             >
               Add New
             </button>
@@ -77,7 +77,7 @@ function CustomerAllUsers() {
                       val.role === "patient" && (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">
+                            <div className="flex items-center text-lg">
                               {val.case_number}
                             </div>
                           </td>

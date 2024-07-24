@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 
@@ -12,6 +12,7 @@ export default function MachineTimeslot() {
   const [doctorName, setDoctorNames] = useState({});
   const [machineName, setMachineNames] = useState([]);
   const [data, setData] = useState([]);
+  const times = generateSlotTimes(inputSlot);
 
   const handleShow = () => {
     axios
@@ -181,8 +182,6 @@ export default function MachineTimeslot() {
     handleData();
   }, []);
 
-  const times = generateSlotTimes(inputSlot);
-
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
@@ -273,19 +272,19 @@ export default function MachineTimeslot() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Machine
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Doctor
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Slot
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Time
                   </th>
-                  <th className="text-[12px] uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
                   </th>
                 </tr>
@@ -294,22 +293,22 @@ export default function MachineTimeslot() {
                 {data.map((doctor, index) => (
                   <tr key={index} className="map">
                     <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-sm font-medium ml-1">
+                      <span className="text-black text-base font-medium ml-1">
                         {doctor.machine_detail.name}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-sm font-medium ml-1">
+                      <span className="text-black text-base font-medium ml-1">
                         {doctor.doctor.first_name} {doctor.doctor.last_name}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-sm font-medium ml-1">
+                      <span className="text-black text-base font-medium ml-1">
                         {doctor.slot[0]?.toUpperCase() + doctor.slot?.slice(1)}
                       </span>
                     </td>
                     <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-sm font-medium ml-1">
+                      <span className="text-black text-base font-medium ml-1">
                         {showTime(doctor.time)}
                       </span>
                     </td>

@@ -16,10 +16,6 @@ export default function GenerateBill() {
   const [price, setPrice] = useState("");
   const [totalQuantities, setTotalQuantities] = useState([]);
 
-  const handleSearchTerm = (value) => {
-    setSearchTerm(value);
-  };
-
   const handleInventory = () => {
     navigate(`../medical-inventory`);
   };
@@ -112,7 +108,9 @@ export default function GenerateBill() {
         .then((res) => {
           const userId = res.data.user.id;
           setId(userId);
-          return axios.get(`/api/v1/appointments/user_appointments_count/${userId}`);
+          return axios.get(
+            `/api/v1/appointments/user_appointments_count/${userId}`
+          );
         })
         .then((res) => {
           console.log("Appointments Count:", res.data.appointments_count);
@@ -132,7 +130,9 @@ export default function GenerateBill() {
           const user = res.data.user;
           setUser(user);
           setPackageDetail(user.personal_detail.package);
-          setMedicines(user.treatment_packages[0].treatment_package.medicines || []);
+          setMedicines(
+            user.treatment_packages[0].treatment_package.medicines || []
+          );
         })
         .catch((err) => {
           console.log(err);
@@ -143,16 +143,20 @@ export default function GenerateBill() {
   return (
     <div className="w-full p-5 bg-gray-100">
       <div className="rounded-lg bg-white shadow-lg overflow-hidden">
-        <div className="flex flex-col px-4 py-6 space-y-4">
-          <div className="text-2xl font-semibold text-center mb-4">
+        <div className="flex flex-col px-4 py-6 space-y-2">
+          <div className="text-2xl font-semibold text-center">
             Generate Bill
           </div>
           <div>
-            <Button variant="outlined" color="neutral" onClick={handleInventory}>
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={handleInventory}
+            >
               <IoMdArrowRoundBack size={24} />
             </Button>
           </div>
-          <div className="flex gap-5 p-2 w-full mb-4">
+          <div className="flex gap-5 w-full py-3">
             <input
               type="text"
               onKeyDown={handleKeyDown}
@@ -196,22 +200,22 @@ export default function GenerateBill() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       Medicine Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       Time
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       Medicine Intake
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       Assigned Medicine
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       Total Medicine
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       With Milk
                     </th>
                   </tr>
@@ -219,31 +223,33 @@ export default function GenerateBill() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {medicines.map((med, index) => (
                     <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
+                      <td className="px-6 py-4 whitespace-nowrap text-base font-medium ">
                         {med.medicine_name}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                      <td className="px-6 py-4 whitespace-nowrap text-base ">
                         {med.frequency?.map((time, timeIndex) => (
                           <span key={timeIndex} className="ml-1">
                             {formatTime(time)}
                           </span>
                         ))}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                      <td className="px-6 py-4 whitespace-nowrap text-base ">
                         {formatDuration(med.dosage)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                      <td className="px-6 py-4 whitespace-nowrap text-base ">
                         {med.quantity}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                      <td className="px-6 py-4 whitespace-nowrap text-base ">
                         <input
                           type="number"
                           className="border border-blue-gray-400 rounded-md p-2"
                           min={0}
-                          onChange={(e) => handleTotalMedicine(index, e.target.value)}
+                          onChange={(e) =>
+                            handleTotalMedicine(index, e.target.value)
+                          }
                         />
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                      <td className="px-6 py-4 whitespace-nowrap text-base ">
                         {med.with_milk ? "Yes" : "No"}
                       </td>
                     </tr>
@@ -251,16 +257,16 @@ export default function GenerateBill() {
                 </tbody>
               </table>
             </div>
-            <div className="m-5 justify-end flex gap-8">
+            <div className="m-5 justify-end flex gap-4">
               <div>
-                <label>Total Price: </label>
+                <label className="font-semibold">Total Price: </label>
                 <input
                   type="text"
                   className="border border-blue-gray-400 rounded-md p-2"
                   onChange={handlePrice}
                 />
               </div>
-              <Button variant="outlined" color="neutral" onClick={handleBill}>
+              <Button variant="solid" color="primary" onClick={handleBill}>
                 Generate
               </Button>
             </div>

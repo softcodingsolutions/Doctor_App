@@ -123,7 +123,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             to={i.to}
             key={i.id}
             className={clsx(
-              "w-full mt-6 flex items-center px-3 py-1.5 sm:px-0 xl:px-3 justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer",
+              "w-full mt-6 flex items-center px-3 py-1.5 sm:px-0 xl:px-3 text-base justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer",
               selected === i.id ? "sidebar-item-selected" : "sidebar-item"
             )}
             onClick={() => setSelected(i.id)}
@@ -191,7 +191,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
           {isLogoutMenuOpen && (
             <div
               onClick={() => handleLogoutClick()}
-              className="absolute rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-black bg-white rounded-md sm:rounded-bl-none w-20 z-50 hover:bg-black hover:text-gray-100"
+              className="absolute rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer shadow-lg text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-gray-400 bg-white rounded-md sm:rounded-bl-none w-20 z-50 hover:bg-black hover:border-gray-900 hover:text-gray-100"
             >
               Logout
             </div>

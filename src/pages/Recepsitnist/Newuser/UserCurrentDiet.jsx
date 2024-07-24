@@ -55,11 +55,11 @@ function UserCurrentDiet({ onNext, onBack, onValidate }) {
               className="w-[80%] h-full flex flex-col items-center justify-between"
               method="post"
             >
-              <div>
+              <div className="text-lg">
                 Enter all your meal details from Breakfast to Dinner <br />
                 સવારથી સાંજની બધી ખાવા-પીવાની આદત ભરો
               </div>
-              <div className="flex flex-col gap-10 justify-between w-full">
+              <div className="flex flex-col gap-10 justify-between w-full text-lg">
                 <h2 className="text-[red]">YOUR LAST WEEK DIET....</h2>
                 <div className="md:flex w-full justify-between">
                   <UserDetailsInput
@@ -134,8 +134,11 @@ function UserCurrentDiet({ onNext, onBack, onValidate }) {
                       minLength: 2,
                     })}
                   />
-                  <div>
-                    <div></div>
+                  <div className="invisible ml-44">
+                    <label className="text-lg text-end w-1/3 mr-2"></label>
+                    <div className="flex flex-col">
+                      <input className="py-1 px-2 rounded-md border border-black w-[40vh]" />
+                    </div>
                   </div>
                 </div>
               </div>
