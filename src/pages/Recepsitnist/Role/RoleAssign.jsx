@@ -125,8 +125,8 @@ export default function RoleAssign() {
                 Create Role
               </h2>
             </div>
-            <div className="flex gap-5 m-2">
-              <div className="flex flex-col">
+            <div className="grid grid-cols-4 transition-transform lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex">
+              <div className="grid grid-cols-1">
                 <input
                   type="text"
                   className="border-2 rounded-md p-2"
@@ -138,7 +138,7 @@ export default function RoleAssign() {
                   <span className="text-red-500 text-sm">{errors.inputFirstName}</span>
                 )}
               </div>
-              <div className="flex flex-col">
+              <div className="grid grid-cols-1">
                 <input
                   type="text"
                   className="border-2 rounded-md p-2"
@@ -150,7 +150,7 @@ export default function RoleAssign() {
                   <span className="text-red-500 text-sm">{errors.inputLastName}</span>
                 )}
               </div>
-              <div className="flex flex-col">
+              <div className="grid grid-cols-1">
                 <input
                   className="border-2 rounded-md p-2"
                   type="text"
@@ -162,7 +162,7 @@ export default function RoleAssign() {
                   <span className="text-red-500 text-sm">{errors.inputMobile}</span>
                 )}
               </div>
-              <div className="flex flex-col">
+              <div className="grid grid-cols-1">
                 <input
                   className="border-2 rounded-md p-2"
                   type="text"
@@ -174,7 +174,7 @@ export default function RoleAssign() {
                   <span className="text-red-500 text-sm">{errors.inputEmail}</span>
                 )}
               </div>
-              <div className="flex flex-col">
+              <div className="grid grid-cols-1">
                 <select
                   className="border-2 rounded-md p-2"
                   onChange={handleRoleChange}
@@ -191,7 +191,7 @@ export default function RoleAssign() {
                 )}
               </div>
               <button
-                className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
+                className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:bg-white hover:text-black p-3 rounded-md"
                 onClick={handleAddDoctor}
               >
                 ADD

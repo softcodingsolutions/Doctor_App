@@ -104,7 +104,7 @@ function LoginPage() {
             </span>
           )}
           <div className="flex justify-end w-[20rem] mt-1">
-            <LinkTo to="/forget-password" name="Forget Password" />
+            <LinkTo to="/forget-password" name="Forget Password" />   
           </div>
           <SubmitButton name="Login" />
           <div className="-mt-2">

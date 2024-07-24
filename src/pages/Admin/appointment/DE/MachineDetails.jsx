@@ -152,7 +152,7 @@ export default function MachineDetails() {
               Add Machine Details
             </button>
             {inputVisible && (
-              <div className="flex gap-5 m-2">
+              <div className="grid grid-cols-4 transition-transform lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex">
                  <select defaultValue="Select" onChange={handleGiveDoctorId} className="border-2 rounded-md p-2">
                   <option disabled value="Select">Select Doctor</option>
                   {doctor.map((res) => {
@@ -186,7 +186,7 @@ export default function MachineDetails() {
                   placeholder="Brief"
                 />
                 <button
-                  className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
+                  className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:bg-white hover:text-black p-3 rounded-md"
                   onClick={handleAddMachine}
                 >
                   ADD

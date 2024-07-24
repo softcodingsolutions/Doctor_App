@@ -115,7 +115,7 @@ export default function ConsultingTime() {
               Add Consulting Time
             </button>
             {inputVisible && (
-              <div className="flex gap-5 m-2">
+              <div className="grid grid-cols-4 transition-transform lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex">
                 <select
                   name="doctor"
                   value={inputDoctor}
@@ -154,7 +154,7 @@ export default function ConsultingTime() {
                   placeholder="Time"
                 />
                 <button
-                  className="min-w-fit flex items-center justify-center border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md"
+                  className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:bg-white hover:text-black p-3 rounded-md"
                   onClick={handleAddDoctor}
                 >
                   ADD

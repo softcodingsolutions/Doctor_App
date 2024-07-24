@@ -77,7 +77,7 @@ export default function DataEntry() {
 
   return (
     <div className="w-full ">
-      <div className="flex transition-transform gap-10 p-1 min-w-fit items-center justify-evenly">
+      <div className="grid grid-cols-2 justify-evenly transition-transform lg:grid-cols-4  md:grid-cols-4 sm:grid-cols-4  p-1 min-w-fit xl:flex">
         {buttons.map((res) => (
           <button
             key={res.id}
