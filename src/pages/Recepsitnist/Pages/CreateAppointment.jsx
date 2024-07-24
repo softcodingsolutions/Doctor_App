@@ -4,7 +4,7 @@ import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
 
 
 export default function CreateAppointment() {
@@ -77,11 +77,8 @@ export default function CreateAppointment() {
     if (event.key === "Enter") {
       setDebouncedSearchTerm(searchTerm);
     }
-
-  const handleMove = () => {
-    navigate("../new-user/general-details");
-
-  };
+  }
+ 
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -201,5 +198,5 @@ export default function CreateAppointment() {
         </div>
       </div>
     </div>
-  );
-}
+  )
+  }

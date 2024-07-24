@@ -87,7 +87,7 @@ function UserQuestions() {
                 },
               }}
             >
-              <StepButton onClick={() => handleStepClick(index)}>
+              <StepButton >
                 {step}
               </StepButton>
             </Step>

@@ -74,7 +74,7 @@ function NewCustomer() {
                 },
               }}
             >
-              <StepButton onClick={() => handleStepClick(index)}>
+              <StepButton >
                 {step}
               </StepButton>
             </Step>
