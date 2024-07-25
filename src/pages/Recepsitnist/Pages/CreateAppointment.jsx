@@ -43,6 +43,7 @@ export default function CreateAppointment() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -54,6 +55,7 @@ export default function CreateAppointment() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
 
     axios
@@ -64,6 +66,7 @@ export default function CreateAppointment() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -103,6 +106,7 @@ export default function CreateAppointment() {
             })
             .catch((err) => {
               console.log(err);
+              alert(err.message);
             });
         })
         .catch((err) => {
@@ -132,7 +136,7 @@ export default function CreateAppointment() {
               value={searchTerm}
               onChange={(e) => handleSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="search case number/phone number/email"
+              placeholder="Search User through Case Number/Phone Number/Email"
               className="py-1 px-2 rounded-md border border-black w-full"
             />
             <button

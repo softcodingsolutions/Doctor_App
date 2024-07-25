@@ -13,7 +13,7 @@ export default function Consulting(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    formdata.append("appointment[user_id]",props.user);
+    formdata.append("appointment[user_id]", props.user);
     formdata.append("appointment[date]", consultingTime);
     formdata.append("appointment[doctor_id]", props.doctor);
     formdata.append("appointment[time]", slot);
@@ -25,6 +25,7 @@ export default function Consulting(props) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -37,6 +38,7 @@ export default function Consulting(props) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

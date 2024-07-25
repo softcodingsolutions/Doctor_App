@@ -36,6 +36,14 @@ function AdminMain() {
       localStorage.clear();
       navigate("/");
     }
+
+    if (localStorage.getItem("role" == "franchise")) {
+      navigate("/franchise/dashboard");
+    } else if (localStorage.getItem("role" == "receptionist")) {
+      navigate("/receptionist/appointment/home");
+    } else if (localStorage.getItem("role" == "patient")) {
+      navigate("/user/dashboard");
+    }
   }, []);
 
   return (

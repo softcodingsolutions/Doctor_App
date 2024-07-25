@@ -99,6 +99,7 @@ function UserCheckout() {
         })
         .catch((err) => {
           console.log(err);
+          alert(err.message);
         });
     } catch (error) {
       console.error(error);

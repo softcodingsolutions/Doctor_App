@@ -32,6 +32,7 @@ export default function Newcase(props) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -45,6 +46,7 @@ export default function Newcase(props) {
         })
         .catch((err) => {
           console.log(err);
+          alert(err.message);
         });
     }
   };

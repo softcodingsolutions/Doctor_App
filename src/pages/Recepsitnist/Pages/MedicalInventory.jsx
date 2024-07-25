@@ -29,6 +29,7 @@ export default function MedicalInventory() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -73,6 +74,7 @@ export default function MedicalInventory() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

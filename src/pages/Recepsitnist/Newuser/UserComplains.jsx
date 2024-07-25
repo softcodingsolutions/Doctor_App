@@ -32,6 +32,7 @@ function UserComplains({ onNext, onBack, onValidate }) {
         })
         .catch((err) => {
           console.log(err);
+          alert(err.message);
         });
       reset();
       onNext();

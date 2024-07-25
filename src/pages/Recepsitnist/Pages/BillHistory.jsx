@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useDebounce } from "use-debounce";
 
 export default function BillHistory() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,7 +21,9 @@ export default function BillHistory() {
   useEffect(() => {
     if (debouncedSearchTerm) {
       axios
-        .get(`/api/v1/bills?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&email=${debouncedSearchTerm}`)
+        .get(
+          `/api/v1/bills?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&email=${debouncedSearchTerm}`
+        )
         .then((res) => {
           console.log(res, "BILL HISTORY");
           setUserDetails(res.data.user);
@@ -65,7 +66,7 @@ export default function BillHistory() {
               value={searchTerm}
               onChange={(e) => handleSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Search case number or phone number"
+              placeholder="Search User through Case Number/Phone Number"
               className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>

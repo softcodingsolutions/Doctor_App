@@ -20,6 +20,7 @@ export default function RoleAssign() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -93,10 +94,12 @@ export default function RoleAssign() {
             })
             .catch((err) => {
               console.log(err);
+              alert(err.message);
             });
         })
         .catch((err) => {
           console.log(err);
+          alert(err.message);
         });
     }
   };
@@ -112,6 +115,7 @@ export default function RoleAssign() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -205,7 +209,7 @@ export default function RoleAssign() {
                 )}
               </div>
               <button
-                className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:bg-white hover:text-black p-3 rounded-md"
+                className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:scale-105 p-3 rounded-md"
                 onClick={handleAddDoctor}
               >
                 ADD

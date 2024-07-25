@@ -107,8 +107,8 @@ function TreatmentQuestionPart2() {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Added!",
-          text: `Your question has been added.`,
+          title: "Saved!",
+          text: `Your question has been saved.`,
           showConfirmButton: false,
           timer: 1500,
         });

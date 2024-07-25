@@ -22,6 +22,7 @@ export default function DoctorList() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -81,10 +82,12 @@ export default function DoctorList() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   }
 
@@ -99,6 +102,7 @@ export default function DoctorList() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

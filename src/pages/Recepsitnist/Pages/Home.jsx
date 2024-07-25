@@ -30,6 +30,7 @@ export default function Home() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -66,6 +67,7 @@ export default function Home() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   }, []);
 

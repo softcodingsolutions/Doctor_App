@@ -16,18 +16,15 @@ export default function MachineDetails() {
   const [doctor, setDoctor] = useState([]);
   const [doctorId, setDoctorId] = useState(0);
 
-  useEffect(() => {
-    handleShow();
-  }, []);
-
   const handleShow = () => {
     axios
       .get(`/api/v1/machine_details`)
       .then((res) => {
-        setMachines(res.data.machine_details);
+        setMachines(res.data?.machine_details);
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
 
     axios
@@ -41,6 +38,7 @@ export default function MachineDetails() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -88,11 +86,13 @@ export default function MachineDetails() {
 
         formdata.append("client_id", res.data?.client_id);
         axios.post(`/api/v1/machine_details`, formdata).then((res) => {
+          console.log(res);
           handleShow();
         });
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   }
 
@@ -105,6 +105,7 @@ export default function MachineDetails() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -135,12 +136,17 @@ export default function MachineDetails() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
   const handleShowInput = () => {
     setInputVisible(!inputVisible);
   };
+
+  useEffect(() => {
+    handleShow();
+  }, []);
 
   return (
     <div className="w-full p-2">
@@ -222,97 +228,110 @@ export default function MachineDetails() {
                 </tr>
               </thead>
               <tbody>
-                {machines.map((machine, index) => (
-                  <tr key={index} className="map">
-                    {editIndex === index ? (
-                      <>
-                        <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedMachineName}
-                            onChange={(e) =>
-                              setEditedMachineName(e.target.value)
-                            }
-                            placeholder="Machine Name"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="number"
-                            value={editedQuantity}
-                            onChange={(e) => setEditedQuantity(e.target.value)}
-                            placeholder="Quantity"
-                            className="border-2 rounded-md p-2"
-                            min="0"
-                          />
-                        </td>
-                        <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <input
-                            type="text"
-                            value={editedBrief}
-                            onChange={(e) => setEditedBrief(e.target.value)}
-                            placeholder="Brief"
-                            className="border-2 rounded-md p-2"
-                          />
-                        </td>
-                        <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          <button
-                            onClick={handleUpdateMachine}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            Update
-                          </button>
-                          <button
-                            onClick={() => setEditIndex(null)}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            Cancel
-                          </button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-base font-medium ml-1">
-                            {machine.name}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-base font-medium ml-1">
-                            {machine.quantity}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <span className="text-black text-base font-medium ml-1">
-                            {machine.brief}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50 flex items-center gap-2">
-                          <button
-                            onClick={() =>
-                              handleEditMachine(
-                                index,
-                                machine.name,
-                                machine.quantity,
-                                machine.brief
-                              )
-                            }
-                            className="min-w-fit  border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <MdOutlineEdit size={17} />
-                          </button>
-                          <button
-                            onClick={() => handleRemoveMachine(machine.id)}
-                            className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                          >
-                            <AiOutlineDelete size={17} />
-                          </button>
-                        </td>
-                      </>
-                    )}
+                {machines.length === 0 ? (
+                  <tr>
+                    <th
+                      className="uppercase tracking-wide font-medium pt-[15rem] text-xl"
+                      colSpan={8}
+                    >
+                      No Machine List Found!
+                    </th>
                   </tr>
-                ))}
+                ) : (
+                  machines.map((machine, index) => (
+                    <tr key={index} className="map">
+                      {editIndex === index ? (
+                        <>
+                          <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <input
+                              type="text"
+                              value={editedMachineName}
+                              onChange={(e) =>
+                                setEditedMachineName(e.target.value)
+                              }
+                              placeholder="Machine Name"
+                              className="border-2 rounded-md p-2"
+                            />
+                          </td>
+                          <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <input
+                              type="number"
+                              value={editedQuantity}
+                              onChange={(e) =>
+                                setEditedQuantity(e.target.value)
+                              }
+                              placeholder="Quantity"
+                              className="border-2 rounded-md p-2"
+                              min="0"
+                            />
+                          </td>
+                          <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <input
+                              type="text"
+                              value={editedBrief}
+                              onChange={(e) => setEditedBrief(e.target.value)}
+                              placeholder="Brief"
+                              className="border-2 rounded-md p-2"
+                            />
+                          </td>
+                          <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <button
+                              onClick={handleUpdateMachine}
+                              className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            >
+                              Update
+                            </button>
+                            <button
+                              onClick={() => setEditIndex(null)}
+                              className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            >
+                              Cancel
+                            </button>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-base font-medium ml-1">
+                              {machine.name}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-base font-medium ml-1">
+                              {machine.quantity}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-base font-medium ml-1">
+                              {machine.brief}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50 flex items-center gap-2">
+                            <button
+                              onClick={() =>
+                                handleEditMachine(
+                                  index,
+                                  machine.name,
+                                  machine.quantity,
+                                  machine.brief
+                                )
+                              }
+                              className="min-w-fit  border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            >
+                              <MdOutlineEdit size={17} />
+                            </button>
+                            <button
+                              onClick={() => handleRemoveMachine(machine.id)}
+                              className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                            >
+                              <AiOutlineDelete size={17} />
+                            </button>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

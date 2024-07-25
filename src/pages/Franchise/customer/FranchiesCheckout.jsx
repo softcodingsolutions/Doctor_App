@@ -88,6 +88,7 @@ function FranchiesCheckout() {
         })
         .catch((err) => {
           console.log(err);
+          alert(err.message);
         });
     } catch (error) {
       console.error(error);

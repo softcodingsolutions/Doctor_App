@@ -1,31 +1,31 @@
 import { useState } from "react";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { WiTime2 } from "react-icons/wi";
-import { FaUserDoctor } from "react-icons/fa6";
+// import { FaUserDoctor } from "react-icons/fa6";
 import { GrVirtualMachine } from "react-icons/gr";
 import { LuCalendarClock } from "react-icons/lu";
-import DoctorList from "./DE/DoctorList";
+// import DoctorList from "./DE/DoctorList";
 import ConsultingTime from "./DE/ConsultingTime";
 import MachineDetails from "./DE/MachineDetails";
 import MachineTimeslot from "./DE/MachineTimeslot";
 
 export default function DataEntry() {
-  const [selectedId, setSelectedId] = useState("1");
-  const [doctorlist, setDoctorList] = useState(true);
-  const [timeslot, setTimeslot] = useState(false);
+  const [selectedId, setSelectedId] = useState("2");
+  //   const [doctorlist, setDoctorList] = useState(true);
+  const [timeslot, setTimeslot] = useState(true);
   const [machines, setMachines] = useState(false);
   const [machinestime, setMachinestime] = useState(false);
 
-  const handleDoctor = () => {
-    setDoctorList(true);
-    setTimeslot(false);
-    setMachines(false);
-    setMachinestime(false);
-    setSelectedId("1");
-  };
+  //   const handleDoctor = () => {
+  //     setDoctorList(true);
+  //     setTimeslot(false);
+  //     setMachines(false);
+  //     setMachinestime(false);
+  //     setSelectedId("1");
+  //   };
 
   const handleTimeslot = () => {
-    setDoctorList(false);
+    // setDoctorList(false);
     setTimeslot(true);
     setMachines(false);
     setMachinestime(false);
@@ -33,7 +33,7 @@ export default function DataEntry() {
   };
 
   const handleMachines = () => {
-    setDoctorList(false);
+    // setDoctorList(false);
     setTimeslot(false);
     setMachines(true);
     setMachinestime(false);
@@ -41,7 +41,7 @@ export default function DataEntry() {
   };
 
   const handleMachinestime = () => {
-    setDoctorList(false);
+    // setDoctorList(false);
     setTimeslot(false);
     setMachines(false);
     setMachinestime(true);
@@ -49,12 +49,6 @@ export default function DataEntry() {
   };
 
   const buttons = [
-    {
-      id: "1",
-      name: "Doctor List",
-      icons: <FaUserDoctor className="mt-1" />,
-      function: handleDoctor,
-    },
     {
       id: "2",
       name: "Consulting Timeslot",
@@ -77,7 +71,7 @@ export default function DataEntry() {
 
   return (
     <div className="w-full ">
-      <div className="grid grid-cols-2 justify-evenly transition-transform lg:grid-cols-4  md:grid-cols-4 sm:grid-cols-4  p-1 min-w-fit xl:flex">
+      <div className="grid grid-cols-2 gap-2 transition-transform lg:grid-cols-4  md:grid-cols-4 sm:grid-cols-4  p-1 min-w-fit xl:flex">
         {buttons.map((res) => (
           <button
             key={res.id}
@@ -94,7 +88,7 @@ export default function DataEntry() {
         ))}
       </div>
       <div>
-        {doctorlist && <DoctorList />}
+        {/* {doctorlist && <DoctorList />} */}
         {timeslot && <ConsultingTime />}
         {machines && <MachineDetails />}
         {machinestime && <MachineTimeslot />}
