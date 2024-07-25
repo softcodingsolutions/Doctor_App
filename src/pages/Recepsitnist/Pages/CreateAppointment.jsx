@@ -154,7 +154,7 @@ export default function CreateAppointment() {
             <form className="text-lg">
               <div className="flex gap-5 m-5">
                 <label className="text-lg text-end w-1/3 mr-2">
-                  Select Doctor
+                  Select Doctor  
                 </label>
 
                 <select
@@ -163,7 +163,7 @@ export default function CreateAppointment() {
                   defaultValue={"select"}
                   className="py-1 px-2 rounded-md border border-black w-[40vh]"
                 >
-                  <option value="select" disabled>
+                  <option value="select" selected>
                     Select Doctor
                   </option>
                   {Object.values(doctorName)
