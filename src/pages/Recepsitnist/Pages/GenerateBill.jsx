@@ -136,6 +136,7 @@ export default function GenerateBill() {
         })
         .catch((err) => {
           console.log(err);
+          alert(err.message);
         });
     }
   }, [id]);

@@ -18,6 +18,7 @@ function AdminDashboard() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -29,7 +30,7 @@ function AdminDashboard() {
         setGetMachineTime(res.data?.machine_consulting_times);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err.message);
       });
   };
 
@@ -103,8 +104,8 @@ function AdminDashboard() {
                     {getConsultingTime.length === 0 ? (
                       <tr>
                         <th
-                          className="uppercase tracking-wide font-medium pt-[8rem] text-lg"
-                          colSpan={5}
+                          className="uppercase tracking-wide font-medium pt-[18rem] text-lg"
+                          colSpan={8}
                         >
                           No Consulting Slots Found!
                         </th>
@@ -167,7 +168,7 @@ function AdminDashboard() {
                     {getMachineTime.length === 0 ? (
                       <tr>
                         <th
-                          className="uppercase tracking-wide font-medium pt-[8rem] text-lg"
+                          className="uppercase tracking-wide font-medium pt-[18rem] text-lg"
                           colSpan={8}
                         >
                           No Machine Slots Found!

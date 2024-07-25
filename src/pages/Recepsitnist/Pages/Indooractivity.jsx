@@ -37,6 +37,7 @@ export default function Indooractivity(props) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -52,6 +53,7 @@ export default function Indooractivity(props) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -75,6 +77,7 @@ export default function Indooractivity(props) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -118,6 +121,7 @@ export default function Indooractivity(props) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

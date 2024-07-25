@@ -1,7 +1,7 @@
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import AddListFranchise from "../../../components/Admin/AddListFranchise";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -43,6 +43,7 @@ function ListFranchise() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -59,6 +60,7 @@ function ListFranchise() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -93,6 +95,7 @@ function ListFranchise() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

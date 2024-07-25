@@ -39,7 +39,7 @@ function FranchiseMain() {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex font-teachers">
       <FranchiseSidebar
         franchise={franchise}
         onSidebarHide={() => {

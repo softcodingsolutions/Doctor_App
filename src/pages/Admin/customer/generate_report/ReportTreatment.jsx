@@ -64,10 +64,12 @@ function ReportTreatment() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -79,6 +81,7 @@ function ReportTreatment() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

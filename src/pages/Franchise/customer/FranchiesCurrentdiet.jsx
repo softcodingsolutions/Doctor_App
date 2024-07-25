@@ -31,6 +31,7 @@ function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
         })
         .catch((err) => {
           console.log(err);
+          alert(err.message);
         });
       reset();
       onNext();
@@ -133,8 +134,11 @@ function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
                       minLength: 2,
                     })}
                   />
-                  <div>
-                    <div></div>
+                  <div className="invisible ml-40">
+                    <label className="text-lg text-end w-1/3 mr-2"></label>
+                    <div className="flex flex-col">
+                      <input className="py-1 px-2 rounded-md border border-black w-[40vh]" />
+                    </div>
                   </div>
                 </div>
               </div>

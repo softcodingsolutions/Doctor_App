@@ -23,6 +23,7 @@ export default function MachineTimeslot() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -35,6 +36,7 @@ export default function MachineTimeslot() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -58,6 +60,7 @@ export default function MachineTimeslot() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   }
 
@@ -156,6 +159,7 @@ export default function MachineTimeslot() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   }
 
@@ -170,6 +174,7 @@ export default function MachineTimeslot() {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -290,38 +295,50 @@ export default function MachineTimeslot() {
                 </tr>
               </thead>
               <tbody>
-                {data.map((doctor, index) => (
-                  <tr key={index} className="map">
-                    <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-base font-medium ml-1">
-                        {doctor.machine_detail.name}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-base font-medium ml-1">
-                        {doctor.doctor.first_name} {doctor.doctor.last_name}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-base font-medium ml-1">
-                        {doctor.slot[0]?.toUpperCase() + doctor.slot?.slice(1)}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 border-b border-b-gray-50">
-                      <span className="text-black text-base font-medium ml-1">
-                        {showTime(doctor.time)}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 border-b border-b-gray-50">
-                      <button
-                        onClick={() => handleRemoveDoctor(doctor.id)}
-                        className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
-                      >
-                        <AiOutlineDelete />
-                      </button>
-                    </td>
+                {data.length === 0 ? (
+                  <tr>
+                    <th
+                      className="uppercase tracking-wide font-medium pt-[15rem] text-xl"
+                      colSpan={8}
+                    >
+                      No Machine List Found!
+                    </th>
                   </tr>
-                ))}
+                ) : (
+                  data.map((doctor, index) => (
+                    <tr key={index} className="map">
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-base font-medium ml-1">
+                          {doctor.machine_detail.name}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-base font-medium ml-1">
+                          {doctor.doctor.first_name} {doctor.doctor.last_name}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-base font-medium ml-1">
+                          {doctor.slot[0]?.toUpperCase() +
+                            doctor.slot?.slice(1)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <span className="text-black text-base font-medium ml-1">
+                          {showTime(doctor.time)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <button
+                          onClick={() => handleRemoveDoctor(doctor.id)}
+                          className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
+                        >
+                          <AiOutlineDelete />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

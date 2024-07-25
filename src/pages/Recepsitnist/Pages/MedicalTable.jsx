@@ -18,6 +18,7 @@ export default function MedicalTable({ data, refreshData }) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 
@@ -44,6 +45,7 @@ export default function MedicalTable({ data, refreshData }) {
       })
       .catch((err) => {
         console.log(err);
+        alert(err.message);
       });
   };
 

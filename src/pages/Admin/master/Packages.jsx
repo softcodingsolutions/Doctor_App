@@ -105,7 +105,6 @@ function Packages() {
             });
           })
           .catch((err) => {
-            alert(err.message);
             console.log(err);
             alert(err.message);
           });
