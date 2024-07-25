@@ -84,7 +84,7 @@ export default function Home() {
               value={doctorList}
               className="p-2 rounded-md border border-black  w-[40vh]"
             >
-              <option value="select1" disabled>
+              <option value="select1" selected>
                 Select Doctor
               </option>
               {filteredDoctors

@@ -2,9 +2,10 @@ import { useState } from "react";
 import Consulting from "./Consulting";
 import Indooractivity from "./Indooractivity";
 
+
 export default function Oldcase(props) {
   const [choice, setChoice] = useState("");
-
+ 
   const handleChoice = (e) => {
     setChoice(e.target.value);
   };

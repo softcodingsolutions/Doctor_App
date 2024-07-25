@@ -204,9 +204,6 @@ export default function GenerateBill() {
                       Medicine Name
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                      Time
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       Medicine Intake
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
@@ -225,13 +222,6 @@ export default function GenerateBill() {
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-base font-medium ">
                         {med.medicine_name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-base ">
-                        {med.frequency?.map((time, timeIndex) => (
-                          <span key={timeIndex} className="ml-1">
-                            {formatTime(time)}
-                          </span>
-                        ))}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-base ">
                         {formatDuration(med.dosage)}

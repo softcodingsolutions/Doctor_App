@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Box from "@mui/joy/Box";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Indooractivity(props) {
+  const navigate = useNavigate();
   const [consultingTime, setConsultingTime] = useState("");
   const [slot, setSlot] = useState("");
   const [machine, setMachine] = useState("");
@@ -109,6 +112,7 @@ export default function Indooractivity(props) {
         setConsultingTime("");
         setSlot("");
         setSlotTime("");
+        navigate('/receptionist/appointment/home');
         document.querySelector('input[type="date"]').value = "";
         handleConsulting({ target: { value: "" } });
       })
@@ -210,9 +214,9 @@ export default function Indooractivity(props) {
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleSlot}
             value={slot}
-          >
-            <option value="" disabled>
-              Select
+          > 
+            <option value="" selected>
+              Select Machine Consulting Time
             </option>
             {filteredTimeSlots.map((detail) => (
               <option key={detail.id} value={detail.id}>

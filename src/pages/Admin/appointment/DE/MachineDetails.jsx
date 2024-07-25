@@ -15,7 +15,7 @@ export default function MachineDetails() {
   const [inputVisible, setInputVisible] = useState(false);
   const [doctor, setDoctor] = useState([]);
   const [doctorId, setDoctorId] = useState(0);
-
+  const [slot,setSlot] = useState(0);
   useEffect(() => {
     handleShow();
   }, []);
@@ -107,7 +107,9 @@ export default function MachineDetails() {
         console.log(err);
       });
   };
-
+  const handleSlot = (e) =>{
+    setSlot(e.target.value);
+  }
   const handleEditMachine = (index, machineName, quantity, brief) => {
     setEditIndex(index);
     setEditedMachineName(machineName);
@@ -154,7 +156,7 @@ export default function MachineDetails() {
               Add Machine Details
             </button>
             {inputVisible && (
-              <div className="flex gap-5 m-2">
+              <div className="grid grid-cols-4 transition-transform lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex">
                 <select
                   defaultValue="Select"
                   onChange={handleGiveDoctorId}
@@ -192,6 +194,14 @@ export default function MachineDetails() {
                   onChange={handleBriefChange}
                   value={inputBrief}
                   placeholder="Brief"
+                />
+                <input
+                  className="border-2 rounded-md p-2"
+                  type="number"
+                  onChange={handleSlot}
+                  value={slot}
+                  placeholder="Slot Number"
+                  min="0"
                 />
                 <button
                   className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:bg-white hover:text-black p-3 rounded-md"

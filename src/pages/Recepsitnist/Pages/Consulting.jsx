@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 export default function Consulting(props) {
   console.log(props.user);
   const [consultingTime, setConsultingTime] = useState(new Date());
   const [data, setData] = useState([]);
   const [slot, setSlot] = useState("");
-
+  const navigate = useNavigate();
   const handleSlot = (e) => {
     setSlot(e.target.value);
   };
@@ -22,6 +24,7 @@ export default function Consulting(props) {
       .then((res) => {
         console.log(res);
         alert("Successfully created Appointment!");
+        navigate("/receptionist/appointment/home")
       })
       .catch((err) => {
         console.log(err);
@@ -95,8 +98,8 @@ export default function Consulting(props) {
             onChange={handleSlot}
             value={slot}
           >
-            <option value="" disabled>
-              Select
+            <option value="" selected>
+              Select Consulting Time
             </option>
             {data.map((timeSlot) => (
               <option key={timeSlot.id} value={timeSlot.time}>
