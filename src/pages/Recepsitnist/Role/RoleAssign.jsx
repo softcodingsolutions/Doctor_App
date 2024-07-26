@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 export default function RoleAssign() {
   const [inputFirstName, setInputFirstName] = useState("");
@@ -107,16 +108,28 @@ export default function RoleAssign() {
   const handleRemoveDoctor = (index) => {
     const updatedDoctors = doctors.filter((_, i) => i !== index);
     setDoctors(updatedDoctors);
-    axios
-      .delete(`/api/v1/users/${index}`)
-      .then((res) => {
-        console.log(res, "Successfully delete the data");
-        handleShow();
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/users/${index}`)
+          .then((res) => {
+            console.log(res, "Successfully delete the data");
+            handleShow();
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err.message);
+          });
+      }
+    });
   };
 
   useEffect(() => {
