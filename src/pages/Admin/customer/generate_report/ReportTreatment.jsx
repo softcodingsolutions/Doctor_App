@@ -144,30 +144,32 @@ function ReportTreatment() {
                     })}
                   </Select>
                 </div>
-                {reportTreatmentButtons.map((res) => {
-                  return (
-                    <Link
-                      to={res.to}
-                      onClick={() => setSelectedId(res.id)}
-                      key={res.id}
-                      className={clsx(
-                        "min-w-fit flex items-center justify-center border shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white py-2 px-3.5 rounded-md",
-                        selectedId === res.id
-                          ? "bg-[#1F2937] text-white"
-                          : "bg-white"
-                      )}
-                    >
-                      {res.icons}
-                      <span className="ml-1.5">{res.name}</span>
-                    </Link>
-                  );
-                })}
-                <button
-                  onClick={submitDataToCreateTreatmentPackage}
-                  className="min-w-fit flex text-green-500 font-semibold items-center justify-center border shadow-md cursor-pointer hover:bg-[#17da21] hover:text-white py-2 px-3.5 rounded-md"
-                >
-                  <IoIosCheckmarkCircle size={20} /> Submit
-                </button>
+                <div className="flex flex-wrap space-x-3">
+                  {reportTreatmentButtons.map((res) => {
+                    return (
+                      <Link
+                        to={res.to}
+                        onClick={() => setSelectedId(res.id)}
+                        key={res.id}
+                        className={clsx(
+                          "min-w-fit flex flex-wrap items-center border shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white py-2 px-2.5 rounded-md",
+                          selectedId === res.id
+                            ? "bg-[#1F2937] text-white"
+                            : "bg-white"
+                        )}
+                      >
+                        {res.icons}
+                        <span className="ml-1.5">{res.name}</span>
+                      </Link>
+                    );
+                  })}
+                  <button
+                    onClick={submitDataToCreateTreatmentPackage}
+                    className="min-w-fit flex flex-wrap text-green-500 font-semibold items-center border shadow-md cursor-pointer hover:bg-[#17da21] hover:text-white py-2 px-3.5 rounded-md"
+                  >
+                    <IoIosCheckmarkCircle size={20} /> Submit
+                  </button>
+                </div>
               </div>
               <Outlet
                 context={{

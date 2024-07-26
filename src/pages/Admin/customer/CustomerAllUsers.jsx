@@ -128,6 +128,9 @@ function CustomerAllUsers() {
                             {val.creator === "super_admin" && (
                               <TdComponent things={"Admin"} />
                             )}
+                            {val.creator === "doctor" && (
+                              <TdComponent things={"Doctor"} />
+                            )}
                             {val.creator === "franchise" && (
                               <TdComponent things={"Franchise"} />
                             )}

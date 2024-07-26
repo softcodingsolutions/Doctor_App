@@ -15,10 +15,7 @@ export default function MachineDetails() {
   const [inputVisible, setInputVisible] = useState(false);
   const [doctor, setDoctor] = useState([]);
   const [doctorId, setDoctorId] = useState(0);
-  const [slot,setSlot] = useState(0);
-  useEffect(() => {
-    handleShow();
-  }, []);
+  const [slot, setSlot] = useState("");
 
   const handleShow = () => {
     axios
@@ -77,6 +74,7 @@ export default function MachineDetails() {
       setInputMachineName("");
       setInputQuantity("");
       setInputBrief("");
+      setSlot("");
     }
 
     axios
@@ -112,9 +110,11 @@ export default function MachineDetails() {
         alert(err.message);
       });
   };
-  const handleSlot = (e) =>{
+
+  const handleSlot = (e) => {
     setSlot(e.target.value);
-  }
+  };
+
   const handleEditMachine = (index, machineName, quantity, brief) => {
     setEditIndex(index);
     setEditedMachineName(machineName);
@@ -139,6 +139,7 @@ export default function MachineDetails() {
         setEditedMachineName("");
         setEditedQuantity("");
         setEditedBrief("");
+        setSlot("");
       })
       .catch((err) => {
         console.log(err);
