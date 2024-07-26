@@ -1,44 +1,7 @@
-import { Option, Select } from "@mui/joy";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 
 function AdminTreatment() {
   const context = useOutletContext();
-  const [getWeightReason, setGetWeightReason] = useState([]);
-  const [sendWeightReason, setSendWeightReason] = useState(null);
-  const [getPackages, setPackages] = useState([]);
-
-  const handleGetWeightReason = () => {
-    axios
-      .get("/api/v1/weight_reasons")
-      .then((res) => {
-        console.log(res.data);
-        setGetWeightReason(res.data?.weight_reasons);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
-  };
-
-  const handlegetPackages = () => {
-    axios
-      .get("/api/v1/packages")
-      .then((res) => {
-        console.log("Packages", res.data?.packages);
-        setPackages(res.data?.packages);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
-  };
-
-  useEffect(() => {
-    handleGetWeightReason();
-    handlegetPackages();
-  }, []);
 
   return (
     <div className="flex w-full">
@@ -58,7 +21,7 @@ function AdminTreatment() {
             />
           </button>
         </div>
-        <Outlet context={[sendWeightReason, handlegetPackages, getPackages]} />
+        <Outlet />
       </div>
     </div>
   );

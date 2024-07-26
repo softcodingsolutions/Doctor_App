@@ -55,7 +55,10 @@ function LoginPage() {
             icon: "success",
             title: `Welcome ${res.data?.user?.email}!`,
           });
-          if (res.data?.user?.role === "super_admin") {
+          if (
+            res.data?.user?.role === "super_admin" ||
+            res.data?.user?.role === "doctor"
+          ) {
             navigate("/admin/dashboard");
           } else if (res.data?.user?.role === "franchise") {
             navigate("/franchise/dashboard");

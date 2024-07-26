@@ -148,7 +148,7 @@ function ReportProgress() {
                 Complains
               </button>
             </div>
-            {(role === "super_admin" || role === "franchise") && (
+            {(role === "super_admin" || role === "franchise" || role === "doctor") && (
               <AddNewProgresReport
                 handleApi={handleAddProgress}
                 name="Add New Report"

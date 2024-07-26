@@ -66,7 +66,30 @@ function RTreatmentMedicine() {
     }));
   };
 
+  const validateSelections = () => {
+    for (const id of selectedCheckboxes) {
+      const selections = dropdownValues[id] || {};
+      if (
+        !selections.dosage ||
+        !selections.frequency ||
+        !selections.quantity ||
+        !selections.with_milk
+      ) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handleSave = async () => {
+    if (!validateSelections()) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Incomplete Selections",
+        text: "Please ensure all dropdowns are selected for each selected medicine.",
+      });
+    }
+
     const selectedMedicine = selectedCheckboxes
       .map((id) => getMedicines.find((med) => med.id === Number(id)))
       .filter((med) => med);
@@ -105,27 +128,11 @@ function RTreatmentMedicine() {
       ...prev,
       medicine: formattedData,
     }));
-
-    // try {
-    //   const response = await axios.post("/api/v1/packages", formData);
-    //   if (response.data) {
-    //     Swal.fire({
-    //       position: "top-end",
-    //       icon: "success",
-    //       title: "Added!",
-    //       text: `Your medicine has been added.`,
-    //       showConfirmButton: false,
-    //       timer: 1500,
-    //     });
-    //   }
-    //   handleGetMedicines();
-    //   context[1]();
-    // } catch (err) {
-    //   console.error(err);
-    // } finally {
-    //   setSelectedCheckboxes([]);
-    //   setShowCheckboxes(false);
-    // }
+    Swal.fire({
+      icon: "Success",
+      title: "Saved!",
+      text: "Your selected medicines have been saved.",
+    });
   };
 
   useEffect(() => {
@@ -225,7 +232,7 @@ function RTreatmentMedicine() {
                           </td>
                         )}
                         {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
+                          <td className="py-3 px-4 border-b border-b-gray-50">
                             <div className="flex items-center">{index + 1}</div>
                           </td>
                         )}
@@ -252,7 +259,7 @@ function RTreatmentMedicine() {
                               )
                             }
                             sx={{
-                              minWidth: "15rem",
+                              minWidth: "10rem",
                             }}
                             slotProps={{
                               listbox: {
@@ -291,7 +298,7 @@ function RTreatmentMedicine() {
                               </Box>
                             )}
                             sx={{
-                              minWidth: "15rem",
+                              minWidth: "10rem",
                             }}
                             slotProps={{
                               listbox: {
@@ -332,7 +339,7 @@ function RTreatmentMedicine() {
                               </Box>
                             )}
                             sx={{
-                              minWidth: "15rem",
+                              minWidth: "10rem",
                             }}
                             slotProps={{
                               listbox: {
@@ -372,7 +379,7 @@ function RTreatmentMedicine() {
                               )
                             }
                             sx={{
-                              minWidth: "15rem",
+                              minWidth: "10rem",
                             }}
                             slotProps={{
                               listbox: {
