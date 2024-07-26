@@ -47,7 +47,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <FaWpforms size={18} />,
     },
     {
-      id: "8",
+      id: "7",
       title: "Create Role",
       to: "create-role/role-assign",
       icons: <MdManageAccounts size={18} />,
@@ -74,7 +74,20 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <MdOutlineGppGood size={18} />,
     },
   ];
-
+  const surveyItems = [
+    {
+      id: "8",
+      title: "Survey Master",
+      to: `master/${save ? save : "list-franchise"}`,
+      icons: <FaLightbulb size={18} />,
+    },
+    {
+      id: "9",
+      title: "Survey Treatment",
+      to: `master/${save ? save : "list-franchise"}`,
+      icons: <FaLightbulb size={18} />,
+    },
+  ]
   const handleLogoutClick = () => {
     localStorage.clear();
     navigate("/");
@@ -156,7 +169,28 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             </Option>
           ))}
         </Select>
-
+        <Select
+          style={{ backgroundColor: "transparent", color: "white" }}
+          className={clsx("xl:mt-4 mt-6 mx-1")}
+          value={selected}
+          placeholder="Survey"
+          onChange={handleSelectChange}
+        >
+          {surveyItems.map((res) => (
+            <Option key={res.id} value={res.id}>
+              {" "}
+              <Link
+                to={res.to}
+                key={res.id}
+                className={"w-full flex items-center space-x-2"}
+                onClick={() => setSelected(res.id)}
+              >
+                <div>{res.icons}</div>
+                <div>{res.title}</div>
+              </Link>
+            </Option>
+          ))}
+        </Select>
         <div className="flex-grow" />
       </div>
 

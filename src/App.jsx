@@ -77,7 +77,7 @@ import Home from "./pages/Recepsitnist/Pages/Home";
 import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
 import UserChooseDoctor from "./pages/User/UserChooseDoctor";
 import ForgetPassword from "./pages/ForgetPassword";
-
+import ReportGenerate from "./pages/Admin/customer/generate_report/ReportGenerate";
 function App() {
   return (
     <Router>
@@ -132,6 +132,7 @@ function App() {
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />
               <Route path="progress-report" element={<ReportProgress />} />
+              <Route path="generate-report" element={<ReportGenerate/>} />
               <Route path="package" element={<ReportPackage />} />
 
               {/* customer treatment */}

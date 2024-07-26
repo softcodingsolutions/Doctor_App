@@ -126,7 +126,7 @@ function LoginPage() {
                     Forget Password
                   </Link>
                 </Typography>
-              </div>
+              </div>  
               <Button
                 type="submit"
                 className="font-teachers text-sm"

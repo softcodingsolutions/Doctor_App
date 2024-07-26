@@ -141,7 +141,7 @@ export const reportButtons = [
     id: "8",
     name: "Generate Report",
     icons: <MdOutlinePictureAsPdf size={18} />,
-    to: "progress-report",
+    to: "generate-report",
   },
 ];
 
