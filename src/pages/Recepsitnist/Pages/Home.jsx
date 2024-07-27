@@ -26,7 +26,7 @@ export default function Home() {
         console.log(res.data?.cosulting_times, "Consulting Time");
         console.log(res.data.machine_consulting_times, "Machine Time");
         setConsultingTimes(res.data?.cosulting_times);
-        setMachineConsultingTimes(res.data?.machine_consulting_times);
+        setMachineConsultingTimes(res.data?.machine_details);
       })
       .catch((err) => {
         console.log(err);

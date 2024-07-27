@@ -11,6 +11,7 @@ export default function MachineDetails() {
   const [editedMachineName, setEditedMachineName] = useState("");
   const [editedQuantity, setEditedQuantity] = useState("");
   const [editedBrief, setEditedBrief] = useState("");
+  const [editedSlot, setEditedSlot] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [inputVisible, setInputVisible] = useState(false);
   const [doctor, setDoctor] = useState([]);
@@ -21,6 +22,7 @@ export default function MachineDetails() {
     axios
       .get(`/api/v1/machine_details`)
       .then((res) => {
+        console.log(res.data, "Show ");
         setMachines(res.data?.machine_details);
       })
       .catch((err) => {
@@ -85,8 +87,8 @@ export default function MachineDetails() {
         formdata.append("machine_detail[quantity]", inputQuantity);
         formdata.append("machine_detail[brief]", inputBrief);
         formdata.append("machine_detail[user_id]", doctorId);
-
         formdata.append("client_id", res.data?.client_id);
+        formdata.append("machine_detail[slot_number]", slot);
         axios.post(`/api/v1/machine_details`, formdata).then((res) => {
           console.log(res);
           handleShow();
@@ -115,11 +117,12 @@ export default function MachineDetails() {
     setSlot(e.target.value);
   };
 
-  const handleEditMachine = (index, machineName, quantity, brief) => {
+  const handleEditMachine = (index, machineName, quantity, brief, slot) => {
     setEditIndex(index);
     setEditedMachineName(machineName);
     setEditedQuantity(quantity);
     setEditedBrief(brief);
+    setEditedSlot(slot);
   };
 
   const handleUpdateMachine = () => {
@@ -128,6 +131,7 @@ export default function MachineDetails() {
       name: editedMachineName,
       quantity: editedQuantity,
       brief: editedBrief,
+      slot_number: editedSlot,
     };
 
     axios
@@ -139,7 +143,7 @@ export default function MachineDetails() {
         setEditedMachineName("");
         setEditedQuantity("");
         setEditedBrief("");
-        setSlot("");
+        setEditedSlot("");
       })
       .catch((err) => {
         console.log(err);
@@ -235,6 +239,9 @@ export default function MachineDetails() {
                     Quantity
                   </th>
                   <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Slot
+                  </th>
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Brief
                   </th>
                   <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
@@ -282,6 +289,16 @@ export default function MachineDetails() {
                           </td>
                           <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                             <input
+                              type="number"
+                              value={editedSlot}
+                              onChange={(e) => setEditedSlot(e.target.value)}
+                              placeholder="Slot Number"
+                              className="border-2 rounded-md p-2"
+                              min="0"
+                            />
+                          </td>
+                          <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <input
                               type="text"
                               value={editedBrief}
                               onChange={(e) => setEditedBrief(e.target.value)}
@@ -318,6 +335,11 @@ export default function MachineDetails() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <span className="text-black text-base font-medium ml-1">
+                              {machine.slot_number}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-base font-medium ml-1">
                               {machine.brief}
                             </span>
                           </td>
@@ -328,7 +350,8 @@ export default function MachineDetails() {
                                   index,
                                   machine.name,
                                   machine.quantity,
-                                  machine.brief
+                                  machine.brief,
+                                  machine.slot_number
                                 )
                               }
                               className="min-w-fit  border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"
