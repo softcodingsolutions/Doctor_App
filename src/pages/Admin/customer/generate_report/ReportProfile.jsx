@@ -61,9 +61,7 @@ function ReportProfile() {
             <div className="flex justify-between">
               <div>
                 Registration Through:{" "}
-                {getCustomer[1]?.creator === "super_admin"
-                  ? "Admin"
-                  : "Franchise"}
+                {getCustomer[1]?.creator === "doctor" ? "Doctor" : "Franchise"}
               </div>
               <div>Email: {getCustomer[1]?.email}</div>
             </div>

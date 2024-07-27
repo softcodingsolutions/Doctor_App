@@ -66,7 +66,7 @@ function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
                     errors={errors.Morning}
                     name="Morning"
                     type="text"
-                    label="Morning ** "
+                    label="Morning** "
                     hook={register("Morning", {
                       required: true,
                       minLength: 2,
@@ -87,7 +87,7 @@ function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
                     errors={errors.Lunch}
                     name="Lunch"
                     type="text"
-                    label="Lunch ** "
+                    label="Lunch** "
                     hook={register("Lunch", {
                       required: true,
                       minLength: 2,
@@ -117,7 +117,7 @@ function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
                     errors={errors.Dinner}
                     name="Dinner"
                     type="text"
-                    label="Dinner ** "
+                    label="Dinner** "
                     hook={register("Dinner", {
                       required: true,
                       minLength: 2,

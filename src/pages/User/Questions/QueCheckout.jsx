@@ -137,6 +137,7 @@ function QueCheckout() {
                 <Select
                   {...register("package_name")}
                   name="package_name"
+                  required
                   placeholder="Select Package"
                   sx={{
                     paddingY: 1,
@@ -148,7 +149,7 @@ function QueCheckout() {
                 >
                   {getPackages.map((pkg) => (
                     <Option
-                      key={pkg.value}
+                      key={pkg.id}
                       onClick={() => handleGetPrice(pkg.package_name)}
                       value={pkg.package_name}
                     >
@@ -237,6 +238,7 @@ function QueCheckout() {
                   Payment Method:
                 </label>
                 <Select
+                  required
                   {...register("payment_method")}
                   name="payment_method"
                   placeholder="Select Method"

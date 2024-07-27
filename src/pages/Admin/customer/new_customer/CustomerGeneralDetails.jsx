@@ -5,9 +5,16 @@ import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsBu
 import UserDetailsInput from "../../../../components/User/UserDetailsInput";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Option, Select } from "@mui/joy";
 
 function CustomerGeneralDetails({ onNext, onValidate }) {
   const [getAdmin, setGetAdmin] = useState([]);
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("");
+  const [doctorError, setDoctorError] = useState(false);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+
   const {
     register,
     handleSubmit,
@@ -20,7 +27,7 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
 
   const handleGetAdmin = () => {
     axios
-      .get(`/api/v2/users/search?id=${localStorage.getItem("main_id")}`)
+      .get(`/api/v2/users/search?id=${main_id}`)
       .then((res) => {
         console.log(res.data?.user);
         setGetAdmin(res.data?.user);
@@ -31,33 +38,83 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
       });
   };
 
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
   const submittedData = async (d) => {
+    if (role === "super_admin" && !getDoctorId) {
+      setDoctorError(true);
+      return;
+    }
+
     console.log(d);
     try {
       const res = await axios.get(`/api/v1/users/app_creds`);
-      await axios.post("/api/v1/users", {
-        user: {
-          first_name: d.firstname,
-          last_name: d.lastname,
-          email: d.email,
-          phone_number: d.mobile,
-          created_by_id: getAdmin.id,
-          creator: getAdmin.role,
-        },
-        personal_detail: {
-          city: d.city,
-          age: d.age,
-          address: d.address,
-          gender: d.gender,
-          overweight_since: d.overweight,
-          language: d.language,
-          reffered_by: d.refferedBy,
-          weight: d.weight,
-          height: d.height,
-          whatsapp_number: d.whatsapp,
-        },
-        client_id: res.data?.client_id,
-      });
+      if (role === "doctor") {
+        await axios.post("/api/v1/users", {
+          user: {
+            first_name: d.firstname,
+            last_name: d.lastname,
+            email: d.email,
+            phone_number: d.mobile,
+            created_by_id: getAdmin.id,
+            creator: getAdmin.role,
+          },
+          personal_detail: {
+            city: d.city,
+            age: d.age,
+            address: d.address,
+            gender: d.gender,
+            overweight_since: d.overweight,
+            language: d.language,
+            reffered_by: d.refferedBy,
+            weight: d.weight,
+            height: d.height,
+            whatsapp_number: d.whatsapp,
+          },
+          client_id: res.data?.client_id,
+        });
+      } else if (role === "super_admin") {
+        await axios.post("/api/v1/users", {
+          user: {
+            first_name: d.firstname,
+            last_name: d.lastname,
+            email: d.email,
+            phone_number: d.mobile,
+            created_by_id: getDoctorId,
+            creator: "doctor",
+          },
+          personal_detail: {
+            city: d.city,
+            age: d.age,
+            address: d.address,
+            gender: d.gender,
+            overweight_since: d.overweight,
+            language: d.language,
+            reffered_by: d.refferedBy,
+            weight: d.weight,
+            height: d.height,
+            whatsapp_number: d.whatsapp,
+          },
+          client_id: res.data?.client_id,
+        });
+      }
+
       localStorage.setItem("client_email", d.email);
       reset();
       onNext();
@@ -68,6 +125,7 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
 
   useEffect(() => {
     handleGetAdmin();
+    handleGetDoctors();
   }, []);
 
   useEffect(() => {
@@ -77,12 +135,40 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
-        <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
-          <div className="text-xl font-semibold">General Details</div>
+        <div className="flex flex-col px-4 py-3 h-full space-y-4">
+          <div className="flex justify-between items-center">
+            <div className="text-xl font-semibold">General Details</div>
+            {role === "super_admin" && (
+              <div className="flex items-center gap-2">
+                <div className="text-lg font-semibold">Select Doctor:</div>
+                <Select
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => {
+                    setGetDoctorId(newValue);
+                    setDoctorError(false);
+                  }}
+                >
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+                {doctorError && (
+                  <span className="text-base text-red-500">
+                    Please select a doctor.
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">
               <div className="flex gap-10 text-lg">
-                <div className="flex flex-col ">
+                <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
                       errors={errors.firstname}
@@ -166,7 +252,7 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
                     </select>
                   </div>
                 </div>
-                <div className="flex flex-col ">
+                <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
                       errors={errors.lastname}
@@ -228,7 +314,7 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
                         <option value="female">Female</option>
                       </select>
                       {errors.gender && (
-                        <span className="text-base  text-red-500 -mt-1.5">
+                        <span className="text-base text-red-500 -mt-1.5">
                           {errors.gender?.message}
                         </span>
                       )}

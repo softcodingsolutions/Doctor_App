@@ -29,13 +29,13 @@ function QueFamilyHistory({ onNext, onBack, onValidate }) {
         })
         .then((res) => {
           console.log("Family History: ", res);
+          reset();
+          onNext();
         })
         .catch((err) => {
           console.log(err);
           alert(err.message);
         });
-      reset();
-      onNext();
     } catch (error) {
       console.error(error);
     }

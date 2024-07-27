@@ -135,6 +135,7 @@ function UserCheckout() {
                 </FormLabel>
                 <Select
                   {...register("package_name")}
+                  required
                   name="package_name"
                   placeholder="Select Package"
                   sx={{
@@ -225,6 +226,7 @@ function UserCheckout() {
                   {...register("payment_method")}
                   name="payment_method"
                   placeholder="Select Method"
+                  required
                   sx={{
                     paddingY: 1,
                     paddingX: 2,

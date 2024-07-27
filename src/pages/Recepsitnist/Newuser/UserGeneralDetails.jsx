@@ -4,7 +4,8 @@ import { UserSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Option, Select } from "@mui/joy";
 
 function UserGeneralDetails({ onNext, onValidate }) {
   const {
@@ -13,9 +14,36 @@ function UserGeneralDetails({ onNext, onValidate }) {
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(UserSchema),
+    mode: "onChange",
   });
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [doctorError, setDoctorError] = useState(false);
+  const [getDoctorId, setGetDoctorId] = useState("");
+
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
 
   const submittedData = async (d) => {
+    if (!getDoctorId) {
+      setDoctorError(true);
+      return;
+    }
+
     console.log(d);
     try {
       const res = await axios.get(`/api/v1/users/app_creds`);
@@ -25,6 +53,8 @@ function UserGeneralDetails({ onNext, onValidate }) {
           last_name: d.lastname,
           email: d.email,
           phone_number: d.mobile,
+          created_by_id: getDoctorId,
+          creator: "doctor",
         },
         personal_detail: {
           city: d.city,
@@ -48,6 +78,10 @@ function UserGeneralDetails({ onNext, onValidate }) {
   };
 
   useEffect(() => {
+    handleGetDoctors();
+  }, []);
+
+  useEffect(() => {
     onValidate(isValid);
   }, [isValid, onValidate]);
 
@@ -55,7 +89,33 @@ function UserGeneralDetails({ onNext, onValidate }) {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
-          <div className="text-xl font-semibold">General Details</div>
+          <div className="flex justify-between">
+            <div className="text-xl font-semibold">General Details</div>
+            <div className="flex items-center gap-2">
+              <div className="text-lg font-semibold">Select Doctor:</div>
+              <Select
+                placeholder="Select"
+                value={getDoctorId}
+                onChange={(e, newValue) => {
+                  setGetDoctorId(newValue);
+                  setDoctorError(false);
+                }}
+              >
+                {getDoctors?.map((res) => {
+                  return (
+                    <Option key={res.id} value={res.id}>
+                      {res.first_name + " " + res.last_name}
+                    </Option>
+                  );
+                })}
+              </Select>
+              {doctorError && (
+                <span className="text-base text-red-500">
+                  Please select a doctor.
+                </span>
+              )}
+            </div>
+          </div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">
               <div className="flex gap-10">

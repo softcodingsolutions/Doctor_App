@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ThComponent from "../../../../components/ThComponent";
 import TdComponent from "../../../../components/TdComponent";
@@ -17,7 +16,6 @@ function CustomerQuestionsPart1({ onNext, onBack, onValidate }) {
   } = useForm({
     mode: "onChange",
   });
-  const navigate = useNavigate();
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -81,13 +79,14 @@ function CustomerQuestionsPart1({ onNext, onBack, onValidate }) {
           showConfirmButton: false,
           timer: 1500,
         });
+        onNext();
       }
     } catch (err) {
       console.error(err);
+      alert(err.message);
     } finally {
       setSelectedCheckboxes([]);
     }
-    navigate(onNext(), { state: { email: email } });
   };
 
   useEffect(() => {

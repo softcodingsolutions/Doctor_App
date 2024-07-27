@@ -25,6 +25,8 @@ function LandingPage() {
     }
 
     requestAnimationFrame(raf);
+
+    localStorage.clear();
   }, []);
 
   return (

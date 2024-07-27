@@ -9,6 +9,7 @@ import { MdOutlineGppGood } from "react-icons/md";
 import { Option, Select } from "@mui/joy";
 import { MdManageAccounts } from "react-icons/md";
 import { masterButtons } from "../../constants/admin/AdminConstants";
+import img from "../../assets/images/icons_slime.png";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -58,7 +59,12 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       to: `appointment/data-entry`,
       icons: <FaLightbulb size={18} />,
     },
-  ];
+  ].filter((item) => {
+    if (item.id === "7" && localStorage.getItem("role") !== "super_admin") {
+      return false;
+    }
+    return true;
+  });
 
   const masterItems = [
     {
@@ -74,6 +80,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <MdOutlineGppGood size={18} />,
     },
   ];
+
   const surveyItems = [
     {
       id: "8",
@@ -87,7 +94,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       to: `master/${save ? save : "list-franchise"}`,
       icons: <FaLightbulb size={18} />,
     },
-  ]
+  ];
+
   const handleLogoutClick = () => {
     localStorage.clear();
     navigate("/");
@@ -113,7 +121,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
           <div className="flex w-70 sm:hidden xl:flex p-5 items-center justify-center shadow-sm bg-white  rounded-md">
             <img
               className="h-16 sm:h-full"
-              src="https://slimandsmile.com/assets/admin/global/img/logo.jpg"
+              src={img}
               alt="img"
             />
           </div>
@@ -147,11 +155,12 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
           </Link>
         ))}
 
+        {/* treatment flow */}
         <Select
           style={{ backgroundColor: "transparent", color: "white" }}
           className={clsx("xl:mt-4 mt-6 mx-1")}
           value={selected}
-          placeholder="Treatment"
+          placeholder="Treatment Flow"
           onChange={handleSelectChange}
         >
           {masterItems.map((res) => (
@@ -169,6 +178,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             </Option>
           ))}
         </Select>
+
+        {/* survey flow */}
         <Select
           style={{ backgroundColor: "transparent", color: "white" }}
           className={clsx("xl:mt-4 mt-6 mx-1")}

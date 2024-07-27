@@ -27,6 +27,7 @@ function AddListFranchise(props) {
   } = useForm();
 
   const submittedData = (d) => {
+    console.log(d);
     props.handleApi(d);
     reset();
     setOpen(false);
@@ -119,6 +120,28 @@ function AddListFranchise(props) {
                 </FormControl>
               </Box>
               <Box className="flex space-x-4">
+                {props.role === "super_admin" && (
+                  <FormControl className="w-1/2">
+                    <FormLabel>Select Doctor :-</FormLabel>
+                    <Select
+                      required
+                      placeholder="Select"
+                      name="doctor_id"
+                      {...register("doctor_id")}
+                    >
+                      {props?.doctors?.map((res) => (
+                        <Option key={res.id} value={res.id}>
+                          {res.first_name + " " + res.last_name}
+                        </Option>
+                      ))}
+                    </Select>
+                    {errors.doctor_id && (
+                      <Typography level="body2" color="danger">
+                        {errors.doctor_id.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
                 <FormControl>
                   <FormLabel>{props.mobile} :-</FormLabel>
                   <Input
@@ -139,21 +162,40 @@ function AddListFranchise(props) {
                     </Typography>
                   )}
                 </FormControl>
-                <FormControl>
-                  <FormLabel>{props.city} :-</FormLabel>
-                  <Input
-                    placeholder="City..."
-                    name="city"
-                    {...register("city", { required: "City is required" })}
-                  />
-                  {errors.city && (
-                    <Typography level="body2" color="danger">
-                      {errors.city.message}
-                    </Typography>
-                  )}
-                </FormControl>
+
+                {props?.role === "doctor" && (
+                  <FormControl>
+                    <FormLabel>{props.city} :-</FormLabel>
+                    <Input
+                      placeholder="City..."
+                      name="city"
+                      {...register("city", { required: "City is required" })}
+                    />
+                    {errors.city && (
+                      <Typography level="body2" color="danger">
+                        {errors.city.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
               </Box>
               <Box className="flex space-x-4">
+                {props?.role === "super_admin" && (
+                  <FormControl>
+                    <FormLabel>{props.city} :-</FormLabel>
+                    <Input
+                      placeholder="City..."
+                      name="city"
+                      {...register("city", { required: "City is required" })}
+                    />
+                    {errors.city && (
+                      <Typography level="body2" color="danger">
+                        {errors.city.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
+
                 <FormControl>
                   <FormLabel>{props.state} :-</FormLabel>
                   <Input
@@ -167,22 +209,25 @@ function AddListFranchise(props) {
                     </Typography>
                   )}
                 </FormControl>
-                <FormControl>
-                  <FormLabel>{props.pincode} :-</FormLabel>
-                  <Input
-                    type="number"
-                    placeholder="Pincode..."
-                    name="pincode"
-                    {...register("pincode", {
-                      required: "Pincode is required",
-                    })}
-                  />
-                  {errors.pincode && (
-                    <Typography level="body2" color="danger">
-                      {errors.pincode.message}
-                    </Typography>
-                  )}
-                </FormControl>
+
+                {props?.role === "doctor" && (
+                  <FormControl>
+                    <FormLabel>{props.pincode} :-</FormLabel>
+                    <Input
+                      type="number"
+                      placeholder="Pincode..."
+                      name="pincode"
+                      {...register("pincode", {
+                        required: "Pincode is required",
+                      })}
+                    />
+                    {errors.pincode && (
+                      <Typography level="body2" color="danger">
+                        {errors.pincode.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
               </Box>
               <Box className="flex space-x-4">
                 <FormControl>

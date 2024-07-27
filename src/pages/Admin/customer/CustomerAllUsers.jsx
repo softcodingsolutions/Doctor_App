@@ -9,14 +9,26 @@ function CustomerAllUsers() {
   const [getCustomers, setGetCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
 
   const handleGetAllUsers = () => {
     axios.get("/api/v1/users").then((res) => {
-      const patients = res.data?.users?.filter(
-        (user) => user.role === "patient"
-      );
-      setGetCustomers(patients);
-      setGetParticularCustomer(patients);
+      if (role === "super_admin") {
+        const patients = res.data?.users?.filter(
+          (user) => user.role === "patient"
+        );
+        console.log("Patients by Super Admin: ", patients);
+        setGetCustomers(patients);
+        setGetParticularCustomer(patients);
+      } else if (role === "doctor") {
+        const patients = res.data?.users?.filter(
+          (user) => user.created_by_id == main_id
+        );
+        console.log("Patients by Doctor: ", patients);
+        setGetCustomers(patients);
+        setGetParticularCustomer(patients);
+      }
     });
   };
 
@@ -110,9 +122,15 @@ function CustomerAllUsers() {
                               {val.case_number}
                             </div>
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          <td className="py-3 px-4 border-b border-b-gray-50 break-all">
                             <TdComponent
-                              things={val.first_name + " " + val.last_name}
+                              things={
+                                val.first_name[0]?.toUpperCase() +
+                                val.first_name?.slice(1) +
+                                " " +
+                                val.last_name[0]?.toUpperCase() +
+                                val.last_name?.slice(1)
+                              }
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
