@@ -11,21 +11,12 @@ import MachineTimeslot from "./DE/MachineTimeslot";
 
 export default function DataEntry() {
   const [selectedId, setSelectedId] = useState("2");
-  //   const [doctorlist, setDoctorList] = useState(true);
   const [timeslot, setTimeslot] = useState(true);
   const [machines, setMachines] = useState(false);
   const [machinestime, setMachinestime] = useState(false);
 
-  //   const handleDoctor = () => {
-  //     setDoctorList(true);
-  //     setTimeslot(false);
-  //     setMachines(false);
-  //     setMachinestime(false);
-  //     setSelectedId("1");
-  //   };
 
   const handleTimeslot = () => {
-    // setDoctorList(false);
     setTimeslot(true);
     setMachines(false);
     setMachinestime(false);
@@ -33,7 +24,6 @@ export default function DataEntry() {
   };
 
   const handleMachines = () => {
-    // setDoctorList(false);
     setTimeslot(false);
     setMachines(true);
     setMachinestime(false);
@@ -41,7 +31,6 @@ export default function DataEntry() {
   };
 
   const handleMachinestime = () => {
-    // setDoctorList(false);
     setTimeslot(false);
     setMachines(false);
     setMachinestime(true);
@@ -88,7 +77,7 @@ export default function DataEntry() {
         ))}
       </div>
       <div>
-        {/* {doctorlist && <DoctorList />} */}
+ 
         {timeslot && <ConsultingTime />}
         {machines && <MachineDetails />}
         {machinestime && <MachineTimeslot />}

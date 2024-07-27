@@ -77,6 +77,9 @@ import QueGeneralDetails from "./pages/User/Questions/QueGeneralDetails";
 import UserChooseDoctor from "./pages/User/UserChooseDoctor";
 import ForgetPassword from "./pages/ForgetPassword";
 import ReportGenerate from "./pages/Admin/customer/generate_report/ReportGenerate";
+import SurveyMaster from "./pages/Admin/SurveyMaster";
+import Healthproblem from "./pages/Admin/surveymaster/Healthproblem";
+import Weightgainreason from "./pages/Admin/surveymaster/Weightgainreason";
 function App() {
   return (
     <Router>
@@ -175,7 +178,13 @@ function App() {
             <Route path="family-reason" element={<TreatmentFamilyReason />} />
             <Route path="complains" element={<TreatmentComplains />} />
           </Route>
-
+        
+         {/* Survey Master */}
+          <Route path="survey-master" element={<SurveyMaster />}>
+            <Route path="health-problem" element={<Healthproblem />} />
+            <Route path="weight-gain-reason" element={<Weightgainreason />} />
+          </Route>
+         
           {/* list follow up */}
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
 

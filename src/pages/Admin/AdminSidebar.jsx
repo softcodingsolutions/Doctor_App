@@ -85,7 +85,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "8",
       title: "Survey Master",
-      to: `master/${save ? save : "list-franchise"}`,
+      to: `survey-master/health-problem`,
       icons: <FaLightbulb size={18} />,
     },
     {

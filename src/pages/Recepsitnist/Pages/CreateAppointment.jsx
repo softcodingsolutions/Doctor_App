@@ -26,18 +26,18 @@ export default function CreateAppointment() {
         `http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`
       )
       .then((res) => {
-        console.log(res);
+        console.log(res,"DATA");
         console.log(res.data.machine_details, "Machine Details");
         setMachineList(res.data.machine_details);
         console.log(
           res.data.machine_details.map((res) =>
-            res.machine_consulting_times.map((res) => res)
+            res
           ),
           "ConsultingTime"
         );
         setMachineConsultingTime(
           res.data.machine_details.map((res) =>
-            res.machine_consulting_times.map((res) => res)
+            res
           )
         );
       })

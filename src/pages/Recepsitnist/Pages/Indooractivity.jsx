@@ -3,7 +3,6 @@ import axios from "axios";
 import Box from "@mui/joy/Box";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Indooractivity(props) {
   const navigate = useNavigate();
   const [consultingTime, setConsultingTime] = useState("");
@@ -12,28 +11,60 @@ export default function Indooractivity(props) {
   const [filteredTimeSlots, setFilteredTimeSlots] = useState([]);
   const [allocatedMachines, setAllocatedMachines] = useState([]);
   const [slotTime, setSlotTime] = useState("");
-  const [bookedSlot, setBookedSlot] = useState(null);
-  const [available, setAvailable] = useState(null);
+  const [bookedSlot, setBookedSlot] = useState([]);
+  const [available, setAvailable] = useState([]);
+  const [inputSlot, setInputSlot] = useState("select");
+  const [inputTime, setInputTime] = useState("select");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     handleAppointmentCount();
   }, [props.doctor]);
+
+  function generateSlotTimes(slot) {
+    function generateTimes() {
+      const times = [];
+      let current = new Date("1970-01-01T00:00:00Z");
+      const end = new Date("1970-01-01T23:59:59Z");
+      while (current <= end) {
+        const timeString = current.toISOString().substr(11, 5);
+        times.push(timeString);
+        current = new Date(current.getTime() + 30 * 60000);
+      }
+      return times;
+    }
+    const times = generateTimes();
+    if (slot === "morning") {
+      return times.filter((time) => time >= "06:00" && time < "12:00");
+    } else if (slot === "afternoon") {
+      return times.filter((time) => time >= "12:00" && time < "18:00");
+    } else if (slot === "evening") {
+      return times.filter((time) => time >= "18:00" && time < "23:59");
+    }
+    return [];
+  }
+
+  const times = generateSlotTimes(inputSlot);
+
+  function handleSlotChange(e) {
+    setInputSlot(e.target.value);
+  }
 
   const handleConsulting = (e) => {
     const value = e ? e.target.value : "";
     setConsultingTime(value);
     axios
       .get(
-        `/api/v1/appointments/fetch_machine_consulting_times?date=${formatDate(
+        `/api/v1/appointments/fetch_machine_details?date=${formatDate(
           value
-        )}&machine_consulting_time_id=${slot}`
+        )}&machine_detail_id=${machine}`
       )
       .then((res) => {
         console.log(res, "CHECKBOX BUTTONS DATA");
-        console.log(res.data.availab_slot);
-        console.log(res.data.booked_slot);
         setAvailable(res.data.availab_slot);
         setBookedSlot(res.data.booked_slot);
+        console.log("Available Slots: ", res.data.availab_slot);
+        console.log("Booked Slots: ", res.data.booked_slot);
       })
       .catch((err) => {
         console.log(err);
@@ -57,6 +88,25 @@ export default function Indooractivity(props) {
       });
   };
 
+  function formatTime(time) {
+    try {
+      const date = new Date(`1970-01-01T${time}Z`);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
+      return formattedTime;
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return "Invalid time";
+    }
+  }
+
   const handleSlot = (e) => {
     const selectedSlotId = e.target.value;
     const selectedSlot = filteredTimeSlots.find(
@@ -71,9 +121,10 @@ export default function Indooractivity(props) {
       )
       .then((res) => {
         console.log(res, "CHECKBOX BUTTONS DATA");
-        console.log(res.data.booked_slot);
-        setAvailable(res.data.availab_slot);
-        setBookedSlot(res.data.booked_slot);
+        setAvailable(res.data.availab_slot || []);
+        setBookedSlot(res.data.booked_slot || []);
+        console.log("Available Slots: ", res.data.availab_slot);
+        console.log("Booked Slots: ", res.data.booked_slot);
       })
       .catch((err) => {
         console.log(err);
@@ -99,14 +150,14 @@ export default function Indooractivity(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(slotTime, "Time");
+    setErrorMessage(""); // Clear previous error message
     const formattedDate = formatDate(consultingTime);
     const formdata = new FormData();
     formdata.append("appointment[user_id]", props.user);
     formdata.append("appointment[date]", formattedDate);
     formdata.append("appointment[doctor_id]", props.doctor);
-    formdata.append("appointment[time]", slotTime);
-    formdata.append("appointment[machine_consulting_time_id]", slot);
+    formdata.append("appointment[time]", inputTime);
+    formdata.append("appointment[machine_detail_id]", machine);
     axios
       .post(`/api/v1/appointments`, formdata)
       .then((res) => {
@@ -115,13 +166,14 @@ export default function Indooractivity(props) {
         setConsultingTime("");
         setSlot("");
         setSlotTime("");
-        navigate('/receptionist/appointment/home');
+        alert("YEYE");
+        navigate("/receptionist/appointment/home");
         document.querySelector('input[type="date"]').value = "";
         handleConsulting({ target: { value: "" } });
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.message);
+        console.log(err.response.data.message);
+        setErrorMessage(err.response.data.message); // Set error message
       });
   };
 
@@ -154,25 +206,6 @@ export default function Indooractivity(props) {
     }
     return boxes;
   };
-
-  function formatTime(time) {
-    try {
-      const date = new Date(time);
-      const options = {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        timeZone: "UTC",
-      };
-      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
-        date
-      );
-      return formattedTime;
-    } catch (error) {
-      console.error("Error formatting time:", error);
-      return "Invalid time";
-    }
-  }
 
   return (
     <div>
@@ -215,28 +248,47 @@ export default function Indooractivity(props) {
             Select Machine Timeslot:{" "}
           </label>
           <select
-            className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            onChange={handleSlot}
-            value={slot}
-          > 
-            <option value="" selected>
-              Select Machine Consulting Time
+            name="slot"
+            value={inputSlot}
+            onChange={handleSlotChange}
+            className="py-1 px-2 rounded-md border border-black"
+          >
+            <option value="select" disabled>
+              Select Slot
             </option>
-            {filteredTimeSlots.map((detail) => (
-              <option key={detail.id} value={detail.id}>
-                {formatTime(detail.time)}
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
+
+          <select
+            name="time"
+            value={inputTime}
+            onChange={(e) => setInputTime(e.target.value)}
+            className="py-1 px-2 rounded-md border border-black"
+          >
+            <option value="select" disabled>
+              Select Time
+            </option>
+            {times.map((time, index) => (
+              <option key={index} value={time}>
+                {formatTime(time)}
               </option>
             ))}
           </select>
         </div>
-        {slot && (
-          <div className="flex w-full justify-center mt-10">
-            <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-              {renderBoxes(bookedSlot, true)}
-              {renderBoxes(available, false)}
-            </Box>
-          </div>
+        {errorMessage && (
+          <div className="text-red-500 text-center mt-4">{errorMessage}</div>
         )}
+        {machine && (
+           <div className="flex w-full justify-center mt-10">
+           <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+             {renderBoxes(bookedSlot, true)}
+             {renderBoxes(available, false)}
+           </Box>
+         </div>
+        )}
+
         <div className="flex w-full justify-center mt-10">
           <button
             type="submit"
