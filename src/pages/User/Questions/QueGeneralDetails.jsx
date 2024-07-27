@@ -6,55 +6,57 @@ import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 import { useEffect } from "react";
 
-function QueGeneralDetails({ user, onNext, onValidate }) {
+function QueGeneralDetails({ onNext, onValidate }) {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(UserSchema),
   });
+  const doctorId = localStorage.getItem("doctorId");
 
-  const submittedData = (d) => {
+  const submittedData = async (d) => {
     console.log(d);
-    axios
-      .get(
-        `/api/v1/users/find_user?access_token=${localStorage.getItem(
-          "access_token"
-        )}`
-      )
-      .then(async (res) => {
-        console.log(res);
-
-        await axios
-          .put(
-            `/api/v2/users/update_personal_details?email=${localStorage.getItem(
-              "client_email"
-            )}`,
-            {
-              personal_detail: {
-                city: d.city,
-                age: d.age,
-                gender: d.gender,
-                overweight_since: d.overweight,
-                language: d.language,
-                reffered_by: d.refferedBy,
-                weight: d.weight,
-                height: d.height,
-                address: d.address,
-                whatsapp_number: d.whatsapp,
-              },
-              client_id: res.data?.client_id,
-            }
-          )
-          .then((res) => {
-            console.log(res);
-            onNext();
-          });
-      });
-    reset();
+    try {
+      const res = await axios.get(`/api/v1/users/app_creds`);
+      await axios
+        .post("/api/v1/users", {
+          user: {
+            first_name: d.firstname,
+            last_name: d.lastname,
+            email: d.email,
+            phone_number: d.mobile,
+            created_by_id: doctorId,
+            creator: "doctor",
+          },
+          personal_detail: {
+            city: d.city,
+            age: d.age,
+            gender: d.gender,
+            address: d.address,
+            overweight_since: d.overweight,
+            language: d.language,
+            reffered_by: d.refferedBy,
+            weight: d.weight,
+            height: d.height,
+            whatsapp_number: d.whatsapp,
+          },
+          client_id: res.data?.client_id,
+        })
+        .then((res) => {
+          console.log("User Created: ", res.data);
+          localStorage.setItem("access_token", res.data?.user?.access_token);
+          localStorage.setItem("role", res.data?.user?.role);
+          localStorage.setItem("main_id", res.data?.user?.user?.id);
+        });
+      localStorage.setItem("client_email", d.email);
+      onNext();
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -82,7 +84,6 @@ function QueGeneralDetails({ user, onNext, onValidate }) {
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
                       errors={errors.firstname}
-                      defaultValue={user.first_name}
                       name="firstname"
                       type="text"
                       label="First Name"
@@ -90,7 +91,6 @@ function QueGeneralDetails({ user, onNext, onValidate }) {
                       hook={register("firstname", {
                         required: true,
                       })}
-                      setValue={setValue}
                     />
                   </div>
                   <div className="flex gap-5 m-2">
@@ -99,12 +99,10 @@ function QueGeneralDetails({ user, onNext, onValidate }) {
                       name="email"
                       type="email"
                       label="Email"
-                      defaultValue={user.email}
                       placeholder="name@email.com"
                       hook={register("email", {
                         required: true,
                       })}
-                      setValue={setValue}
                     />
                   </div>
                   <div className="flex gap-5 m-2">
@@ -165,7 +163,6 @@ function QueGeneralDetails({ user, onNext, onValidate }) {
                 <div className="flex flex-col ">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
-                      defaultValue={user.last_name}
                       errors={errors.lastname}
                       name="lastname"
                       type="text"
@@ -174,13 +171,11 @@ function QueGeneralDetails({ user, onNext, onValidate }) {
                       hook={register("lastname", {
                         required: true,
                       })}
-                      setValue={setValue}
                     />
                   </div>
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
                       errors={errors.mobile}
-                      defaultValue={user.phone_number}
                       name="mobile"
                       type="number"
                       label="Phone Number"
@@ -188,7 +183,6 @@ function QueGeneralDetails({ user, onNext, onValidate }) {
                       hook={register("mobile", {
                         required: true,
                       })}
-                      setValue={setValue}
                     />
                   </div>
                   <div className="flex gap-5 m-2">

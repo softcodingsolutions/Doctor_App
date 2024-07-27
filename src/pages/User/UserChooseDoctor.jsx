@@ -6,32 +6,47 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
+const staticDoctors = [
+  {
+    specialist: "Weight Loss",
+    img: "https://plus.unsplash.com/premium_photo-1677592645419-0702774b0148?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    specialist: "Skin Specialist",
+    img: "https://images.unsplash.com/photo-1573461160327-b450ce3d8e7f?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    specialist: "Beauty Care",
+    img: "https://images.unsplash.com/photo-1552046122-03184de85e08?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+];
+
 function UserChooseDoctor() {
   const navigate = useNavigate();
-  const [getDoctor, setGetDoctor] = useState([
-    {
-      id: 1,
-      name: "Bhavesh Thakar",
-      specialist: "Weight Loss",
-      img: "https://plus.unsplash.com/premium_photo-1677592645419-0702774b0148?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      id: 2,
-      name: "Deepali Pathak",
-      specialist: "Skin Specialist",
-      img: "https://images.unsplash.com/photo-1573461160327-b450ce3d8e7f?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      id: 3,
-      name: "Hemali Shah",
-      specialist: "Beauty Care",
-      img: "https://images.unsplash.com/photo-1552046122-03184de85e08?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ]);
+  const [getDoctors, setGetDoctors] = useState([]);
+
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
 
   const handleGetDoctorId = (val) => {
     console.log(val);
@@ -49,7 +64,7 @@ function UserChooseDoctor() {
     });
     Toast.fire({
       icon: "success",
-      title: "Signed up successfully",
+      title: "Doctor Selected!",
     });
     navigate("/questions/general-details");
   };
@@ -58,29 +73,34 @@ function UserChooseDoctor() {
     if (!localStorage.getItem("access_token")) {
       navigate("/signup");
     }
+    handleGetDoctors();
   }, []);
 
   return (
     <div className="flex items-center justify-center w-full gap-8 h-[100vh] p-4 flex-wrap">
-      {getDoctor.map((val) => {
+      {getDoctors.map((val, index) => {
         return (
           <Card
             key={val.id}
             className="w-96 hover:scale-105 transition-transform shadow-lg cursor-pointer"
           >
             <CardHeader floated={false} className="h-80">
-              <img src={val.img} alt="profile-picture" />
+              <img src={staticDoctors[index].img} alt="profile-picture" />
             </CardHeader>
             <CardBody className="text-center">
-              <Typography variant="h4" color="blue-gray" className="mb-2 font-teachers">
-                {val.name}
+              <Typography
+                variant="h4"
+                color="blue-gray"
+                className="mb-2 font-teachers"
+              >
+                {val.first_name + " " + val.last_name}
               </Typography>
               <Typography
                 color="blue-gray"
                 className="font-medium font-teachers"
                 textGradient
               >
-                {val.specialist}
+                {staticDoctors[index].specialist}
               </Typography>
             </CardBody>
             <CardFooter className="flex items-center w-full justify-center pt-0">

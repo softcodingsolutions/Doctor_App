@@ -125,6 +125,7 @@ function FranchiesCheckout() {
                 <Select
                   {...register("package_name")}
                   name="package_name"
+                  required
                   placeholder="Select Package"
                   sx={{
                     paddingY: 1,
@@ -227,6 +228,7 @@ function FranchiesCheckout() {
                 <Select
                   {...register("payment_method")}
                   name="payment_method"
+                  required
                   placeholder="Select Method"
                   sx={{
                     paddingY: 1,

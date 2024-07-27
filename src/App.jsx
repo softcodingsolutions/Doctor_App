@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
 import AdminMain from "./pages/Admin/AdminMain";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminCustomers from "./pages/Admin/AdminCustomers";
@@ -85,7 +84,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="forget-password" element={<ForgetPassword />} />
-        <Route path="signup" element={<SignUpPage />} />
+        <Route path="signup" element={<UserChooseDoctor />} />
 
         {/* User */}
         <Route path="user" element={<UserMain />}>
@@ -97,9 +96,6 @@ function App() {
             <Route path="progress-report" element={<ReportProgress />} />
           </Route>
         </Route>
-
-        {/* User selects doctor */}
-        <Route path="choose-doctor" element={<UserChooseDoctor />} />
 
         {/* User created by itself questions */}
         <Route path="questions" element={<UserQuestions />}>
@@ -132,7 +128,7 @@ function App() {
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />
               <Route path="progress-report" element={<ReportProgress />} />
-              <Route path="generate-report" element={<ReportGenerate/>} />
+              <Route path="generate-report" element={<ReportGenerate />} />
               <Route path="package" element={<ReportPackage />} />
 
               {/* customer treatment */}

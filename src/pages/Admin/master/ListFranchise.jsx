@@ -5,58 +5,125 @@ import { MdDelete } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Option, Select } from "@mui/joy";
 
 function ListFranchise() {
   const [getFranchise, setGetFranchise] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleAddFranchise = async (d) => {
     console.log(d);
-    await axios
-      .get("/api/v1/users/app_creds")
-      .then((res) => {
-        axios
-          .post("/api/v1/users", {
-            user: {
-              first_name: d.first_name,
-              last_name: d.last_name,
-              email: d.email,
-              phone_number: d.mobile,
-              address: d.address,
-              password: d.password,
-              pincode: d.pincode,
-              state: d.state,
-              amount: d.amount,
-              commission: d.commission,
-              possibility_group: d.possibility_group === "yes" ? true : false,
-              role: d.type_of_admin,
-              show_password: d.password,
-            },
-            personal_detail: {
-              city: d.city,
-            },
-            client_id: res.data?.client_id,
-          })
-          .then((res) => {
-            console.log(res);
-            handleGetFranchise();
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      await axios
+        .get("/api/v1/users/app_creds")
+        .then((res) => {
+          axios
+            .post("/api/v1/users", {
+              user: {
+                first_name: d.first_name,
+                last_name: d.last_name,
+                email: d.email,
+                phone_number: d.mobile,
+                address: d.address,
+                password: d.password,
+                pincode: d.pincode,
+                state: d.state,
+                amount: d.amount,
+                commission: d.commission,
+                possibility_group: d.possibility_group === "yes" ? true : false,
+                role: d.type_of_admin,
+                created_by_id: main_id,
+                creator: "doctor",
+                show_password: d.password,
+              },
+              personal_detail: {
+                city: d.city,
+              },
+              client_id: res.data?.client_id,
+            })
+            .then((res) => {
+              console.log(res);
+              handleGetFranchise();
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      await axios
+        .get("/api/v1/users/app_creds")
+        .then((res) => {
+          axios
+            .post("/api/v1/users", {
+              user: {
+                first_name: d.first_name,
+                last_name: d.last_name,
+                email: d.email,
+                phone_number: d.mobile,
+                address: d.address,
+                password: d.password,
+                pincode: d.pincode,
+                state: d.state,
+                amount: d.amount,
+                commission: d.commission,
+                possibility_group: d.possibility_group === "yes" ? true : false,
+                role: d.type_of_admin,
+                created_by_id: d.doctor_id,
+                creator: "doctor",
+                show_password: d.password,
+              },
+              personal_detail: {
+                city: d.city,
+              },
+              client_id: res.data?.client_id,
+            })
+            .then((res) => {
+              console.log(res);
+              handleGetFranchise();
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleGetFranchise = () => {
     axios
-      .get("/api/v1/users")
+      .get("/api/v1/users/franchise_index")
       .then((res) => {
-        // console.log(res?.data?.users);
-        const filterUser = res?.data?.users.filter((user) => {
-          return user.commission != null;
-        });
-        console.log(filterUser);
-        setGetFranchise(filterUser);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(res.data?.users);
+              setGetFranchise(res.data?.users);
+            } else {
+              console.log(
+                "Particular Doctor: ",
+                res.data?.users.filter(
+                  (user) => user.created_by_id === getDoctorId
+                )
+              );
+              setGetFranchise(
+                res.data?.users.filter(
+                  (user) => user.created_by_id === getDoctorId
+                )
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            res.data?.users.filter((user) => user.created_by_id === main_id)
+          );
+          setGetFranchise(
+            res.data?.users.filter((user) => user.created_by_id === main_id)
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -129,9 +196,28 @@ function ListFranchise() {
     });
   };
 
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
   useEffect(() => {
     handleGetFranchise();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -140,24 +226,48 @@ function ListFranchise() {
           <div className="flex items-center">
             <div className="font-semibold text-xl">Franchise List</div>
             <div className="flex-grow" />
-            <AddListFranchise
-              handleApi={handleAddFranchise}
-              name="Add Franchise"
-              title="Add New Franchise"
-              first_name="First Name"
-              last_name="Last Name"
-              email="Email"
-              mobile="Mobile"
-              city="City"
-              state="State"
-              pincode="Pincode"
-              language="Language"
-              password="Password"
-              amount="Amount"
-              commission="Commission"
-              type_of_admin="Admin Type"
-              possibility_group="Possibility Group"
-            />
+            <div className="flex gap-3">
+              <AddListFranchise
+                handleApi={handleAddFranchise}
+                name="Add Franchise"
+                role={role}
+                title="Add New Franchise"
+                first_name="First Name"
+                last_name="Last Name"
+                email="Email"
+                mobile="Mobile"
+                city="City"
+                state="State"
+                doctors={getDoctors}
+                pincode="Pincode"
+                language="Language"
+                password="Password"
+                amount="Amount"
+                commission="Commission"
+                type_of_admin="Admin Type"
+                possibility_group="Possibility Group"
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">

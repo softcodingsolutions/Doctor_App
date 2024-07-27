@@ -8,7 +8,7 @@ function UserDiagnosis() {
   const context = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
   const [getCustomer, setGetCustomer] = useState([]);
-  const id = localStorage.getItem("userId");
+  const id = localStorage.getItem("main_id");
 
   const handlegetUser = () => {
     axios

@@ -75,14 +75,14 @@ function QuePart2({ onBack }) {
           showConfirmButton: false,
           timer: 1500,
         });
+        localStorage.removeItem("client_email");
+        localStorage.removeItem("doctorId");
+        navigate("/user/dashboard");
       }
     } catch (err) {
       console.error(err);
+      alert(err.message);
     } finally {
-      localStorage.removeItem("client_email");
-      localStorage.removeItem("doctorId");
-      localStorage.removeItem("main_id");
-      navigate("/user/dashboard");
       setSelectedCheckboxes([]);
     }
   };

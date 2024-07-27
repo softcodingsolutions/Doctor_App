@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Stepper from "@mui/joy/Stepper";
 import Step from "@mui/joy/Step";
 import StepButton from "@mui/joy/StepButton";
@@ -8,7 +8,6 @@ import QueCurrentDiet from "./Questions/QueCurrentDiet";
 import QueFamilyHistory from "./Questions/QueFamilyHistory";
 import QueComplains from "./Questions/QueComplains";
 import CustomerQuestionsPart1 from "../Admin/customer/new_customer/CustomerQuestionsPart1";
-import axios from "axios";
 import QueGeneralDetails from "./Questions/QueGeneralDetails";
 import QuePart2 from "./Questions/QuePart2";
 
@@ -23,21 +22,7 @@ const steps = [
 
 function UserQuestions() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [user, setUser] = useState([]);
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
-
-  const handleGetUser = () => {
-    axios
-      .get(`/api/v2/users/search?id=${localStorage.getItem("main_id")}`)
-      .then((res) => {
-        console.log(res.data?.user);
-        setUser(res.data?.user);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
-  };
 
   const handleNextStep = () => {
     if (isGeneralDetailsValid || currentStep !== 0) {
@@ -52,10 +37,6 @@ function UserQuestions() {
   const handleValidation = (isValid) => {
     setIsGeneralDetailsValid(isValid);
   };
-
-  useEffect(() => {
-    handleGetUser();
-  }, []);
 
   return (
     <div className="flex w-full p-2 items-center font-teachers">
@@ -89,7 +70,6 @@ function UserQuestions() {
         </Stepper>
         {currentStep === 0 && (
           <QueGeneralDetails
-            user={user}
             onNext={handleNextStep}
             onValidate={handleValidation}
           />
