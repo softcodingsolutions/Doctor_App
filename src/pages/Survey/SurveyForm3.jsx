@@ -53,7 +53,7 @@ export default function SurveyForm3() {
         `;
         alert(alertMessage);
 
-        // Perform any additional actions with completeData
+      
     };
 
     const handleBack = () => {
