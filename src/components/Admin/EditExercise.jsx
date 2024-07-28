@@ -8,7 +8,10 @@ import {
   Modal,
   ModalClose,
   ModalDialog,
+  Option,
+  Select,
   Stack,
+  Typography,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -19,7 +22,11 @@ import "react-quill/dist/quill.snow.css";
 
 function EditExercise(props) {
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [text, setText] = useState({
     hindi: props.see[0]?.details_hindi || "",
     gujarati: props.see[0]?.details_gujarati || "",
@@ -33,7 +40,8 @@ function EditExercise(props) {
       text.english,
       text.hindi,
       text.gujarati,
-      props.see[0]?.id
+      props.see[0]?.id,
+      d.doctor_id
     );
   };
 
@@ -86,6 +94,29 @@ function EditExercise(props) {
                   required
                 />
               </FormControl>
+
+              {props?.role === "super_admin" && (
+                <FormControl className="w-1/2">
+                  <FormLabel>Select Doctor :-</FormLabel>
+                  <Select
+                    required
+                    placeholder="Select"
+                    name="doctor_id"
+                    {...register("doctor_id")}
+                  >
+                    {props?.doctors?.map((res) => (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    ))}
+                  </Select>
+                  {errors.doctor_id && (
+                    <Typography level="body2" color="danger">
+                      {errors.doctor_id.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
 
               <FormControl>
                 <FormLabel>{props.exercise_describe_english} :-</FormLabel>

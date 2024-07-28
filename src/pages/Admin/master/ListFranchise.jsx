@@ -47,6 +47,11 @@ function ListFranchise() {
             .then((res) => {
               console.log(res);
               handleGetFranchise();
+              Swal.fire({
+                title: "Added!",
+                text: "New franchise has been added.",
+                icon: "success",
+              });
             });
         })
         .catch((err) => {
@@ -84,6 +89,11 @@ function ListFranchise() {
             .then((res) => {
               console.log(res);
               handleGetFranchise();
+              Swal.fire({
+                title: "Added!",
+                text: "New franchise has been added.",
+                icon: "success",
+              });
             });
         })
         .catch((err) => {
@@ -106,22 +116,23 @@ function ListFranchise() {
               console.log(
                 "Particular Doctor: ",
                 res.data?.users.filter(
-                  (user) => user.created_by_id === getDoctorId
+                  (user) => user.created_by_id == getDoctorId
                 )
               );
               setGetFranchise(
                 res.data?.users.filter(
-                  (user) => user.created_by_id === getDoctorId
+                  (user) => user.created_by_id == getDoctorId
                 )
               );
             }
           }
         } else if (role === "doctor") {
           console.log(
-            res.data?.users.filter((user) => user.created_by_id === main_id)
+            "Doctor: ",
+            res.data?.users.filter((user) => user.created_by_id == main_id)
           );
           setGetFranchise(
-            res.data?.users.filter((user) => user.created_by_id === main_id)
+            res.data?.users.filter((user) => user.created_by_id == main_id)
           );
         }
       })

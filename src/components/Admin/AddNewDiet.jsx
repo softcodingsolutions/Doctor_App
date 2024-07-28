@@ -9,7 +9,10 @@ import {
   Modal,
   ModalClose,
   ModalDialog,
+  Option,
+  Select,
   Stack,
+  Typography,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,7 +21,12 @@ import "react-quill/dist/quill.snow.css";
 
 function AddNewMedicine(props) {
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [text, setText] = useState({
     hindi: "",
     gujarati: "",
@@ -33,7 +41,8 @@ function AddNewMedicine(props) {
       d.diet_name,
       text.english,
       text.hindi,
-      text.gujarati
+      text.gujarati,
+      d.doctor_id
     );
     reset();
     setText({
@@ -69,7 +78,7 @@ function AddNewMedicine(props) {
               setOpen(false);
             }}
           >
-            <Stack spacing={3} width={500}>
+            <Stack spacing={2} width={500}>
               <FormControl>
                 <FormLabel>{props.diet_code} :-</FormLabel>
                 <Input
@@ -90,6 +99,29 @@ function AddNewMedicine(props) {
                   required
                 />
               </FormControl>
+
+              {props?.role === "super_admin" && (
+                <FormControl>
+                  <FormLabel>Select Doctor :-</FormLabel>
+                  <Select
+                    required
+                    placeholder="Select"
+                    name="doctor_id"
+                    {...register("doctor_id")}
+                  >
+                    {props?.doctors?.map((res) => (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    ))}
+                  </Select>
+                  {errors.doctor_id && (
+                    <Typography level="body2" color="danger">
+                      {errors.doctor_id.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
 
               <FormControl>
                 <FormLabel>{props.diet_describe_english} :-</FormLabel>

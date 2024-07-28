@@ -7,7 +7,10 @@ import {
   Modal,
   ModalClose,
   ModalDialog,
+  Option,
+  Select,
   Stack,
+  Typography,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,7 +18,11 @@ import { MdEdit } from "react-icons/md";
 
 function EditMedicine(props) {
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const submittedData = (d) => {
     console.log(d);
@@ -23,7 +30,8 @@ function EditMedicine(props) {
       d.med_name,
       d.med_content,
       d.med_quantity,
-      props?.see[0]?.id
+      props?.see[0]?.id,
+      d.doctor_id
     );
   };
 
@@ -90,6 +98,29 @@ function EditMedicine(props) {
                   required
                 />
               </FormControl>
+
+              {props?.role === "super_admin" && (
+                <FormControl className="w-1/2">
+                  <FormLabel>Select Doctor :-</FormLabel>
+                  <Select
+                    required
+                    placeholder="Select"
+                    name="doctor_id"
+                    {...register("doctor_id")}
+                  >
+                    {props?.doctors?.map((res) => (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    ))}
+                  </Select>
+                  {errors.doctor_id && (
+                    <Typography level="body2" color="danger">
+                      {errors.doctor_id.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
 
               <Button type="submit">Submit</Button>
             </Stack>

@@ -11,7 +11,7 @@ import Stack from "@mui/joy/Stack";
 import { useForm } from "react-hook-form";
 import "react-transliterate/dist/index.css";
 import { ReactTransliterate } from "react-transliterate";
-import { Box, ModalClose } from "@mui/joy";
+import { Box, ModalClose, Typography } from "@mui/joy";
 import { MdEdit } from "react-icons/md";
 
 function EditQuestion(props) {
@@ -21,7 +21,12 @@ function EditQuestion(props) {
     english: props.see[0]?.question_in_english || "",
   });
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     setText({
@@ -51,7 +56,8 @@ function EditQuestion(props) {
       finalData.question_english,
       finalData.question_hindi,
       finalData.part,
-      props.see[0]?.id
+      props.see[0]?.id,
+      data.doctor_id
     );
   };
 
@@ -85,7 +91,7 @@ function EditQuestion(props) {
             }}
           >
             <Stack spacing={3}>
-              <Box className="flex space-x-4">
+              <Box className="flex gap-3">
                 <FormControl className="w-1/2">
                   <FormLabel>{props.part} :-</FormLabel>
                   <Select
@@ -115,6 +121,29 @@ function EditQuestion(props) {
                     <Option value="both">Both</Option>
                   </Select>
                 </FormControl>
+
+                {props?.role === "super_admin" && (
+                  <FormControl className="w-3/4">
+                    <FormLabel>Select Doctor :-</FormLabel>
+                    <Select
+                      required
+                      placeholder="Select"
+                      name="doctor_id"
+                      {...register("doctor_id")}
+                    >
+                      {props?.doctors?.map((res) => (
+                        <Option key={res.id} value={res.id}>
+                          {res.first_name + " " + res.last_name}
+                        </Option>
+                      ))}
+                    </Select>
+                    {errors.doctor_id && (
+                      <Typography level="body2" color="danger">
+                        {errors.doctor_id.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
               </Box>
 
               <FormControl>
