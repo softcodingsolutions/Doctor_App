@@ -6,17 +6,44 @@ import axios from "axios";
 import ThComponent from "../../../components/ThComponent";
 import Swal from "sweetalert2";
 import EditMedicine from "../../../components/Admin/EditMedicine";
+import { Option, Select } from "@mui/joy";
 
 function Medicine() {
   const [getMedicines, setGetMedicines] = useState([]);
   const [editMedicine, setEditMedicine] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleGetMedicines = () => {
     axios
       .get("/api/v1/medicines")
       .then((res) => {
-        console.log(res.data?.medicines);
-        setGetMedicines(res.data?.medicines);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(res.data?.medicines);
+              setGetMedicines(res.data?.medicines);
+            } else {
+              console.log(
+                "Particular Doctor Med: ",
+                res.data?.medicines?.filter((med) => med.user_id == getDoctorId)
+              );
+              setGetMedicines(
+                res.data?.medicines?.filter((med) => med.user_id == getDoctorId)
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Med: ",
+            res.data?.medicines?.filter((med) => med.user_id == main_id)
+          );
+          setGetMedicines(
+            res.data?.medicines?.filter((med) => med.user_id == main_id)
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -24,56 +51,130 @@ function Medicine() {
       });
   };
 
-  const handleAddMedicine = (med_name, med_contact, med_quantity) => {
-    const formData = new FormData();
-    formData.append("medicine[medicine_name]", med_name);
-    formData.append("medicine[medicine_content]", med_contact);
-    formData.append("medicine[medicine_quantity]", med_quantity);
+  const handleGetDoctors = () => {
     axios
-      .post("api/v1/medicines", formData)
+      .get(`/api/v1/users`)
       .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: "Your medicine has been added.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        handleGetMedicines();
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
       });
+  };
+
+  const handleAddMedicine = (med_name, med_contact, med_quantity, doc_id) => {
+    const formData = new FormData();
+    if (role === "doctor") {
+      formData.append("medicine[medicine_name]", med_name);
+      formData.append("medicine[medicine_content]", med_contact);
+      formData.append("medicine[medicine_quantity]", med_quantity);
+      formData.append("medicine[user_id]", main_id);
+      axios
+        .post("api/v1/medicines", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your medicine has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetMedicines();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("medicine[medicine_name]", med_name);
+      formData.append("medicine[medicine_content]", med_contact);
+      formData.append("medicine[medicine_quantity]", med_quantity);
+      formData.append("medicine[user_id]", doc_id);
+      axios
+        .post("api/v1/medicines", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your medicine has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetMedicines();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleEditMedicine = async (val) => {
     setEditMedicine(getMedicines.filter((item) => item?.id === val));
   };
 
-  const handleEditMedicineApi = (med_name, med_content, med_quantity, id) => {
+  const handleEditMedicineApi = (
+    med_name,
+    med_content,
+    med_quantity,
+    id,
+    doc_id
+  ) => {
     const formData = new FormData();
-    formData.append("medicine[medicine_name]", med_name);
-    formData.append("medicine[medicine_content]", med_content);
-    formData.append("medicine[medicine_quantity]", med_quantity);
-    axios.put(`api/v1/medicines/${id}`, formData).then((res) => {
-      console.log(res);
-      if (res.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Updated!",
-          text: "Your medicine has been updated.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-      handleGetMedicines();
-    });
+    if (role === "doctor") {
+      formData.append("medicine[medicine_name]", med_name);
+      formData.append("medicine[medicine_content]", med_content);
+      formData.append("medicine[medicine_quantity]", med_quantity);
+      formData.append("medicine[user_id]", main_id);
+      axios.put(`api/v1/medicines/${id}`, formData).then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your medicine has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetMedicines();
+      });
+    } else {
+      formData.append("medicine[medicine_name]", med_name);
+      formData.append("medicine[medicine_content]", med_content);
+      formData.append("medicine[medicine_quantity]", med_quantity);
+      formData.append("medicine[user_id]", doc_id);
+      axios.put(`api/v1/medicines/${id}`, formData).then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your medicine has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetMedicines();
+      });
+    }
   };
 
   const deleteMedicine = (val) => {
@@ -108,7 +209,8 @@ function Medicine() {
 
   useEffect(() => {
     handleGetMedicines();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -116,14 +218,38 @@ function Medicine() {
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Medicines List</div>
-            <AddNewMedicine
-              handleApi={handleAddMedicine}
-              name="Add Medicine"
-              title="Add New Medicine"
-              med_name="Drug's Name"
-              med_content="Drug's Content"
-              med_quantity="Drug's Quantity"
-            />
+            <div className="flex gap-3">
+              <AddNewMedicine
+                handleApi={handleAddMedicine}
+                name="Add Medicine"
+                role={role}
+                doctors={getDoctors}
+                title="Add New Medicine"
+                med_name="Drug's Name"
+                med_content="Drug's Content"
+                med_quantity="Drug's Quantity"
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -174,6 +300,8 @@ function Medicine() {
                             med_content="Medicine Content"
                             med_quantity="Medicine Quantity"
                             see={editMedicine}
+                            role={role}
+                            doctors={getDoctors}
                             function={() => {
                               handleEditMedicine(val.id);
                             }}

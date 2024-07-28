@@ -6,39 +6,108 @@ import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import Swal from "sweetalert2";
 import EditDiet from "../../../components/Admin/EditDiet";
+import { Option, Select } from "@mui/joy";
 
 function DietMaster() {
   const [getDiet, setGetDiet] = useState([]);
   const [editDiet, setEditDiet] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleAddDiet = (
     diet_code,
     diet_name,
     diet_english,
     diet_hindi,
-    diet_gujarati
+    diet_gujarati,
+    doc_id
   ) => {
     const formData = new FormData();
-    formData.append("diet[name]", diet_name);
-    formData.append("diet[code]", diet_code);
-    formData.append("diet[chart_english]", diet_english);
-    formData.append("diet[chart_hindi]", diet_hindi);
-    formData.append("diet[chart_gujarati]", diet_gujarati);
+    if (role === "doctor") {
+      formData.append("diet[name]", diet_name);
+      formData.append("diet[code]", diet_code);
+      formData.append("diet[chart_english]", diet_english);
+      formData.append("diet[chart_hindi]", diet_hindi);
+      formData.append("diet[chart_gujarati]", diet_gujarati);
+      formData.append("diet[user_id]", main_id);
+      axios
+        .post("/api/v1/diets", formData)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: `Your diet has been added.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetDiet();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("diet[name]", diet_name);
+      formData.append("diet[code]", diet_code);
+      formData.append("diet[chart_english]", diet_english);
+      formData.append("diet[chart_hindi]", diet_hindi);
+      formData.append("diet[chart_gujarati]", diet_gujarati);
+      formData.append("diet[user_id]", doc_id);
+      axios
+        .post("/api/v1/diets", formData)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: `Your diet has been added.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetDiet();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
+  };
+
+  const handleGetDiet = () => {
     axios
-      .post("/api/v1/diets", formData)
+      .get("/api/v1/diets")
       .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: `Your diet has been added.`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(res.data);
+              setGetDiet(res.data);
+            } else {
+              console.log(
+                "Particular Doctor Diet: ",
+                res.data?.filter((diet) => diet.user_id == getDoctorId)
+              );
+              setGetDiet(
+                res.data?.filter((diet) => diet.user_id == getDoctorId)
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Diet: ",
+            res.data?.filter((diet) => diet.user_id == main_id)
+          );
+          setGetDiet(res.data?.filter((diet) => diet.user_id == main_id));
         }
-        handleGetDiet();
       })
       .catch((err) => {
         console.log(err);
@@ -46,12 +115,17 @@ function DietMaster() {
       });
   };
 
-  const handleGetDiet = () => {
+  const handleGetDoctors = () => {
     axios
-      .get("/api/v1/diets")
+      .get(`/api/v1/users`)
       .then((res) => {
-        console.log(res.data);
-        setGetDiet(res.data);
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -69,28 +143,53 @@ function DietMaster() {
     english,
     hindi,
     gujarati,
-    id
+    id,
+    doc_id
   ) => {
     const formData = new FormData();
-    formData.append("diet[name]", diet_name);
-    formData.append("diet[code]", diet_code);
-    formData.append("diet[chart_english]", english);
-    formData.append("diet[chart_hindi]", hindi);
-    formData.append("diet[chart_gujarati]", gujarati);
-    axios.put(`api/v1/diets/${id}`, formData).then((res) => {
-      console.log(res);
-      handleGetDiet();
-      if (res.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Updated!",
-          text: "Your diet has been updated.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
+    if (role === "doctor") {
+      formData.append("diet[name]", diet_name);
+      formData.append("diet[code]", diet_code);
+      formData.append("diet[chart_english]", english);
+      formData.append("diet[chart_hindi]", hindi);
+      formData.append("diet[chart_gujarati]", gujarati);
+      formData.append("diet[user_id]", main_id);
+      axios.put(`api/v1/diets/${id}`, formData).then((res) => {
+        console.log(res);
+        handleGetDiet();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your diet has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    } else {
+      formData.append("diet[name]", diet_name);
+      formData.append("diet[code]", diet_code);
+      formData.append("diet[chart_english]", english);
+      formData.append("diet[chart_hindi]", hindi);
+      formData.append("diet[chart_gujarati]", gujarati);
+      formData.append("diet[user_id]", doc_id);
+      axios.put(`api/v1/diets/${id}`, formData).then((res) => {
+        console.log(res);
+        handleGetDiet();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your diet has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    }
   };
 
   const deleteDiet = (val) => {
@@ -125,7 +224,8 @@ function DietMaster() {
 
   useEffect(() => {
     handleGetDiet();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -133,14 +233,38 @@ function DietMaster() {
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Diet List</div>
-            <AddNewDiet
-              handleApi={handleAddDiet}
-              name="Add Diet"
-              title="Add New Diet"
-              diet_code="Diet Code"
-              diet_name="Diet Name"
-              diet_describe_english="Details"
-            />
+            <div className="flex gap-3">
+              <AddNewDiet
+                handleApi={handleAddDiet}
+                name="Add Diet"
+                title="Add New Diet"
+                diet_code="Diet Code"
+                diet_name="Diet Name"
+                role={role}
+                doctors={getDoctors}
+                diet_describe_english="Details"
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -225,6 +349,8 @@ function DietMaster() {
                             handleApi={handleEditDietApi}
                             title="Edit Diet"
                             diet_code="Diet Code"
+                            role={role}
+                            doctors={getDoctors}
                             diet_name="Diet Name"
                             diet_describe_english="Details"
                           />

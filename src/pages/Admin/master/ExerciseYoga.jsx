@@ -6,17 +6,60 @@ import AddNewExercise from "../../../components/Admin/AddNewExercise";
 import axios from "axios";
 import Swal from "sweetalert2";
 import EditExercise from "../../../components/Admin/EditExercise";
+import { Option, Select } from "@mui/joy";
 
 function ExerciseYoga() {
   const [getExercise, setGetExercise] = useState([]);
   const [editExercise, setEditExercise] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleGetExercise = () => {
     axios
       .get("/api/v1/exercises")
       .then((res) => {
-        console.log(res.data);
-        setGetExercise(res.data);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(res.data);
+              setGetExercise(res.data);
+            } else {
+              console.log(
+                "Particular Doctor Exercise: ",
+                res.data?.filter((med) => med.user_id == getDoctorId)
+              );
+              setGetExercise(
+                res.data?.filter((med) => med.user_id == getDoctorId)
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Exercise: ",
+            res.data?.filter((med) => med.user_id == main_id)
+          );
+          setGetExercise(res.data?.filter((med) => med.user_id == main_id));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -28,33 +71,63 @@ function ExerciseYoga() {
     exercise_name,
     describe_eng,
     describe_hindi,
-    describe_gujarati
+    describe_gujarati,
+    doc_id
   ) => {
     const formData = new FormData();
-    formData.append("exercise[name]", exercise_name);
-    formData.append("exercise[details]", describe_eng);
-    formData.append("exercise[details_hindi]", describe_hindi);
-    formData.append("exercise[details_gujarati]", describe_gujarati);
-    axios
-      .post("/api/v1/exercises", formData)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: "Your exercise has been added.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        handleGetExercise();
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      formData.append("exercise[name]", exercise_name);
+      formData.append("exercise[details]", describe_eng);
+      formData.append("exercise[details_hindi]", describe_hindi);
+      formData.append("exercise[details_gujarati]", describe_gujarati);
+      formData.append("exercise[user_id]", main_id);
+      axios
+        .post("/api/v1/exercises", formData)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your exercise has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetExercise();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("exercise[name]", exercise_name);
+      formData.append("exercise[details]", describe_eng);
+      formData.append("exercise[details_hindi]", describe_hindi);
+      formData.append("exercise[details_gujarati]", describe_gujarati);
+      formData.append("exercise[user_id]", doc_id);
+      axios
+        .post("/api/v1/exercises", formData)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your exercise has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetExercise();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleEditExercise = (val) => {
@@ -66,27 +139,51 @@ function ExerciseYoga() {
     describe_eng,
     describe_hindi,
     describe_gujarati,
-    id
+    id,
+    doc_id
   ) => {
     const formData = new FormData();
-    formData.append("exercise[name]", exercise_name);
-    formData.append("exercise[details]", describe_eng);
-    formData.append("exercise[details_hindi]", describe_hindi);
-    formData.append("exercise[details_gujarati]", describe_gujarati);
-    axios.put(`api/v1/exercises/${id}`, formData).then((res) => {
-      console.log(res);
-      handleGetExercise();
-      if (res.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Updated!",
-          text: "Your exercise has been updated.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
+    if (role === "doctor") {
+      formData.append("exercise[name]", exercise_name);
+      formData.append("exercise[details]", describe_eng);
+      formData.append("exercise[details_hindi]", describe_hindi);
+      formData.append("exercise[details_gujarati]", describe_gujarati);
+      formData.append("exercise[user_id]", main_id);
+      axios.put(`api/v1/exercises/${id}`, formData).then((res) => {
+        console.log(res);
+        handleGetExercise();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your exercise has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    } else {
+      formData.append("exercise[name]", exercise_name);
+      formData.append("exercise[details]", describe_eng);
+      formData.append("exercise[details_hindi]", describe_hindi);
+      formData.append("exercise[details_gujarati]", describe_gujarati);
+      formData.append("exercise[user_id]", doc_id);
+      axios.put(`api/v1/exercises/${id}`, formData).then((res) => {
+        console.log(res);
+        handleGetExercise();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your exercise has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    }
   };
 
   const deleteExercise = (val) => {
@@ -121,7 +218,8 @@ function ExerciseYoga() {
 
   useEffect(() => {
     handleGetExercise();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -129,13 +227,37 @@ function ExerciseYoga() {
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Exercise & Yoga List</div>
-            <AddNewExercise
-              handleApi={handleAddExercise}
-              name="Add Exercise/Yoga"
-              title="Add New Exercise/Yoga"
-              exercise_name="Exercise/Yoga Name"
-              exercise_describe_english="Details"
-            />
+            <div className="flex gap-3">
+              <AddNewExercise
+                handleApi={handleAddExercise}
+                name="Add Exercise/Yoga"
+                title="Add New Exercise/Yoga"
+                role={role}
+                doctors={getDoctors}
+                exercise_name="Exercise/Yoga Name"
+                exercise_describe_english="Details"
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -215,6 +337,8 @@ function ExerciseYoga() {
                             }}
                             handleApi={handleEditExerciseApi}
                             title="Edit Exercise"
+                            role={role}
+                            doctors={getDoctors}
                             exercise_name="Exercise"
                             exercise_describe_english="Details"
                           />

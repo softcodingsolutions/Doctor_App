@@ -6,6 +6,7 @@ import TdComponent from "../../../components/TdComponent";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import EditQuestion from "../../../components/Admin/EditQuestion";
+import { Option, Select } from "@mui/joy";
 
 function Questions() {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
@@ -13,13 +14,39 @@ function Questions() {
   const [editQuestion, setEditQuestion] = useState([]);
   const [showPart1, setShowPart1] = useState(true);
   const [showPart2, setShowPart2] = useState(false);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleGetQuestionsPart1 = () => {
     axios
       .get("/api/v1/questions/part1")
       .then((res) => {
-        console.log("Part1", res.data);
-        setGetQuestionsPart1(res.data);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log("Part1", res.data);
+              setGetQuestionsPart1(res.data);
+            } else {
+              console.log(
+                "Particular Doctor Part 1: ",
+                res.data?.filter((que) => que.user_id == getDoctorId)
+              );
+              setGetQuestionsPart1(
+                res.data?.filter((que) => que.user_id == getDoctorId)
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Part 1: ",
+            res.data?.filter((que) => que.user_id == main_id)
+          );
+          setGetQuestionsPart1(
+            res.data?.filter((que) => que.user_id == main_id)
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -31,8 +58,30 @@ function Questions() {
     axios
       .get("/api/v1/questions/part2")
       .then((res) => {
-        console.log("Part2", res.data);
-        setGetQuestionsPart2(res.data);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log("Part2", res.data);
+              setGetQuestionsPart2(res.data);
+            } else {
+              console.log(
+                "Particular Doctor Part 2: ",
+                res.data?.filter((que) => que.user_id == getDoctorId)
+              );
+              setGetQuestionsPart2(
+                res.data?.filter((que) => que.user_id == getDoctorId)
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Part 2: ",
+            res.data?.filter((que) => que.user_id == main_id)
+          );
+          setGetQuestionsPart2(
+            res.data?.filter((que) => que.user_id == main_id)
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -45,35 +94,53 @@ function Questions() {
     question_gujarati,
     question_english,
     question_hindi,
-    Part
+    Part,
+    doc_id
   ) => {
     const formData = new FormData();
-    console.log(
-      gender,
-      question_english,
-      question_hindi,
-      question_gujarati,
-      Part
-    );
-    formData.append("question[gender]", gender);
-    formData.append("question[question_in_english]", question_english);
-    formData.append("question[question_in_hindi]", question_hindi);
-    formData.append("question[question_in_gujarati]", question_gujarati);
-    formData.append("question[part]", Part);
-    axios.post("/api/v1/questions", formData).then((res) => {
-      console.log(res);
-      Part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
-      if (res.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Added!",
-          text: "Your question is added.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
+    if (role === "doctor") {
+      formData.append("question[gender]", gender);
+      formData.append("question[question_in_english]", question_english);
+      formData.append("question[question_in_hindi]", question_hindi);
+      formData.append("question[question_in_gujarati]", question_gujarati);
+      formData.append("question[part]", Part);
+      formData.append("question[user_id]", main_id);
+      axios.post("/api/v1/questions", formData).then((res) => {
+        console.log(res);
+        Part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: "Your question is added.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    } else {
+      formData.append("question[gender]", gender);
+      formData.append("question[question_in_english]", question_english);
+      formData.append("question[question_in_hindi]", question_hindi);
+      formData.append("question[question_in_gujarati]", question_gujarati);
+      formData.append("question[part]", Part);
+      formData.append("question[user_id]", doc_id);
+      axios.post("/api/v1/questions", formData).then((res) => {
+        console.log(res);
+        Part === "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added!",
+            text: "Your question is added.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    }
   };
 
   const handleEditQuestion = (val, part) => {
@@ -84,34 +151,59 @@ function Questions() {
     );
   };
 
-  const handleEditQuestionApi = async ( 
+  const handleEditQuestionApi = async (
     gender,
     question_gujarati,
     question_english,
     question_hindi,
     part,
-    id
+    id,
+    doc_id
   ) => {
     const formData = new FormData();
-    formData.append("question[part]", part);
-    formData.append("question[gender]", gender);
-    formData.append("question[question_in_english]", question_english);
-    formData.append("question[question_in_hindi]", question_hindi);
-    formData.append("question[question_in_gujarati]", question_gujarati);
-    axios.put(`api/v1/questions/${id}`, formData).then((res) => {
-      console.log(res);
-      part == "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
-      if (res.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Updated!",
-          text: "Your question has been updated.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
+    if (role === "doctor") {
+      formData.append("question[part]", part);
+      formData.append("question[gender]", gender);
+      formData.append("question[question_in_english]", question_english);
+      formData.append("question[question_in_hindi]", question_hindi);
+      formData.append("question[question_in_gujarati]", question_gujarati);
+      formData.append("question[user_id]", main_id);
+      axios.put(`api/v1/questions/${id}`, formData).then((res) => {
+        console.log(res);
+        part == "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your question has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    } else {
+      formData.append("question[part]", part);
+      formData.append("question[gender]", gender);
+      formData.append("question[question_in_english]", question_english);
+      formData.append("question[question_in_hindi]", question_hindi);
+      formData.append("question[question_in_gujarati]", question_gujarati);
+      formData.append("question[user_id]", doc_id);
+      axios.put(`api/v1/questions/${id}`, formData).then((res) => {
+        console.log(res);
+        part == "1" ? handleGetQuestionsPart1() : handleGetQuestionsPart2();
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your question has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    }
   };
 
   const deleteQuestion = (val, Part) => {
@@ -146,9 +238,31 @@ function Questions() {
     });
   };
 
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  useEffect(() => {
+    handleGetDoctors();
+  }, [getDoctorId]);
+
   useEffect(() => {
     showPart2 ? handleGetQuestionsPart2() : handleGetQuestionsPart1();
-  }, [showPart1, showPart2]);
+  }, [showPart1, showPart2, getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -180,16 +294,40 @@ function Questions() {
                 Part 2
               </button>
             </div>
-            <AddNewQuestion
-              handleApi={handleAddQuestion}
-              gender="gender"
-              language="Language"
-              part="Part"
-              name="Add Question"
-              title="Add New Question"
-              label1="For Whom"
-              label2="Question"
-            />
+            <div className="flex gap-3">
+              <AddNewQuestion
+                handleApi={handleAddQuestion}
+                gender="gender"
+                language="Language"
+                role={role}
+                doctors={getDoctors}
+                part="Part"
+                name="Add Question"
+                title="Add New Question"
+                label1="For Whom"
+                label2="Question"
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -252,6 +390,8 @@ function Questions() {
                               handleApi={handleEditQuestionApi}
                               gender="gender"
                               language="Language"
+                              role={role}
+                              doctors={getDoctors}
                               part="Part"
                               title="Edit Question"
                               label1="For Whom"
@@ -321,6 +461,8 @@ function Questions() {
                               language="Language"
                               part="Part"
                               title="Edit Question"
+                              role={role}
+                              doctors={getDoctors}
                               label1="For Whom"
                               label2="Question"
                             />

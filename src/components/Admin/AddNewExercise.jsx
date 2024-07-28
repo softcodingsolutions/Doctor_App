@@ -9,7 +9,10 @@ import {
   Modal,
   ModalClose,
   ModalDialog,
+  Option,
+  Select,
   Stack,
+  Typography,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,7 +21,12 @@ import "react-quill/dist/quill.snow.css";
 
 function AddNewExercise(props) {
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [text, setText] = useState({
     hindi: "",
     gujarati: "",
@@ -28,7 +36,13 @@ function AddNewExercise(props) {
   const submittedData = (d) => {
     console.log(text);
     console.log(d);
-    props.handleApi(d.exercise_name, text.english, text.hindi, text.gujarati);
+    props.handleApi(
+      d.exercise_name,
+      text.english,
+      text.hindi,
+      text.gujarati,
+      d.doctor_id
+    );
     reset();
     setText({
       hindi: "",
@@ -74,6 +88,29 @@ function AddNewExercise(props) {
                   required
                 />
               </FormControl>
+
+              {props?.role === "super_admin" && (
+                <FormControl>
+                  <FormLabel>Select Doctor :-</FormLabel>
+                  <Select
+                    required
+                    placeholder="Select"
+                    name="doctor_id"
+                    {...register("doctor_id")}
+                  >
+                    {props?.doctors?.map((res) => (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    ))}
+                  </Select>
+                  {errors.doctor_id && (
+                    <Typography level="body2" color="danger">
+                      {errors.doctor_id.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
 
               <FormControl>
                 <FormLabel>{props.exercise_describe_english} :-</FormLabel>

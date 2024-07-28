@@ -12,7 +12,7 @@ import Add from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 import "react-transliterate/dist/index.css";
 import { ReactTransliterate } from "react-transliterate";
-import { Box, ModalClose } from "@mui/joy";
+import { Box, ModalClose, Typography } from "@mui/joy";
 
 function AddNewQuestion(props) {
   const [text, setText] = useState({
@@ -21,12 +21,24 @@ function AddNewQuestion(props) {
     english: "",
   });
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const submittedData = (d) => {
     console.log(text);
     console.log(d);
-    props.handleApi(d.gender, text.gujarati, text.english, text.hindi, d.Part);
+    props.handleApi(
+      d.gender,
+      text.gujarati,
+      text.english,
+      text.hindi,
+      d.Part,
+      d.doctor_id
+    );
     reset();
     setText({
       hindi: "",
@@ -62,7 +74,7 @@ function AddNewQuestion(props) {
             }}
           >
             <Stack spacing={3}>
-              <Box className="flex space-x-4">
+              <Box className="flex space-x-2">
                 <FormControl className="w-1/2">
                   <FormLabel>{props.part} :-</FormLabel>
                   <Select
@@ -90,6 +102,29 @@ function AddNewQuestion(props) {
                     <Option value="both">Both</Option>
                   </Select>
                 </FormControl>
+
+                {props?.role === "super_admin" && (
+                  <FormControl className="w-1/2">
+                    <FormLabel>Select Doctor :-</FormLabel>
+                    <Select
+                      required
+                      placeholder="Select"
+                      name="doctor_id"
+                      {...register("doctor_id")}
+                    >
+                      {props?.doctors?.map((res) => (
+                        <Option key={res.id} value={res.id}>
+                          {res.first_name + " " + res.last_name}
+                        </Option>
+                      ))}
+                    </Select>
+                    {errors.doctor_id && (
+                      <Typography level="body2" color="danger">
+                        {errors.doctor_id.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
               </Box>
 
               <FormControl>
@@ -166,7 +201,7 @@ function AddNewQuestion(props) {
                   />
                 </Box>
               </FormControl>
-              
+
               <Button type="submit">Submit</Button>
             </Stack>
           </form>
