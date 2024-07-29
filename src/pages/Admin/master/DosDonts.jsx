@@ -6,6 +6,7 @@ import AddDosDonts from "../../../components/Admin/AddDosDonts";
 import axios from "axios";
 import Swal from "sweetalert2";
 import EditDosDonts from "../../../components/Admin/EditDosDonts";
+import { Option, Select } from "@mui/joy";
 
 function DosDonts() {
   const [getDos, setGetDos] = useState([]);
@@ -13,18 +14,52 @@ function DosDonts() {
   const [editDosDonts, setEditDosDonts] = useState([]);
   const [showDos, setShowDos] = useState(true);
   const [showDonts, setShowDonts] = useState(false);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleGetDos = () => {
     axios
       .get("/api/v1/avoid_and_adds")
       .then((res) => {
-        console.log(
-          "Dos",
-          res.data?.avoid_and_adds.filter((res) => res.category === "do")
-        );
-        setGetDos(
-          res.data?.avoid_and_adds.filter((res) => res.category === "do")
-        );
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(
+                "Dos",
+                res.data?.avoid_and_adds.filter((res) => res.category === "do")
+              );
+              setGetDos(
+                res.data?.avoid_and_adds.filter((res) => res.category === "do")
+              );
+            } else {
+              console.log(
+                "Particular Doctor Dos: ",
+                res.data?.avoid_and_adds.filter(
+                  (res) => res.category === "do" && res.user_id == getDoctorId
+                )
+              );
+              setGetDos(
+                res.data?.avoid_and_adds.filter(
+                  (res) => res.category === "do" && res.user_id == getDoctorId
+                )
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Dos: ",
+            res.data?.avoid_and_adds.filter(
+              (res) => res.category === "do" && res.user_id == main_id
+            )
+          );
+          setGetDos(
+            res.data?.avoid_and_adds.filter(
+              (res) => res.category === "do" && res.user_id == main_id
+            )
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -36,12 +71,64 @@ function DosDonts() {
     axios
       .get("/api/v1/avoid_and_adds")
       .then((res) => {
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(
+                "Dos",
+                res.data?.avoid_and_adds.filter(
+                  (res) => res.category === "dont"
+                )
+              );
+              setGetDonts(
+                res.data?.avoid_and_adds.filter(
+                  (res) => res.category === "dont"
+                )
+              );
+            } else {
+              console.log(
+                "Particular Doctor Dont: ",
+                res.data?.avoid_and_adds.filter(
+                  (res) => res.category === "dont" && res.user_id == getDoctorId
+                )
+              );
+              setGetDonts(
+                res.data?.avoid_and_adds.filter(
+                  (res) => res.category === "dont" && res.user_id == getDoctorId
+                )
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Dont: ",
+            res.data?.avoid_and_adds.filter(
+              (res) => res.category === "dont" && res.user_id == main_id
+            )
+          );
+          setGetDonts(
+            res.data?.avoid_and_adds.filter(
+              (res) => res.category === "dont" && res.user_id == main_id
+            )
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
         console.log(
-          "Donts",
-          res.data?.avoid_and_adds.filter((res) => res.category === "dont")
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
         );
-        setGetDonts(
-          res.data?.avoid_and_adds.filter((res) => res.category === "dont")
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
         );
       })
       .catch((err) => {
@@ -50,33 +137,70 @@ function DosDonts() {
       });
   };
 
-  const handleAddDosDonts = (comments, do_dont, hindi, gujarati, english) => {
+  const handleAddDosDonts = (
+    comments,
+    do_dont,
+    hindi,
+    gujarati,
+    english,
+    doc_id
+  ) => {
     const formData = new FormData();
-    formData.append("avoid_and_add[category]", do_dont);
-    formData.append("avoid_and_add[comments]", comments);
-    formData.append("avoid_and_add[details_in_english]", english);
-    formData.append("avoid_and_add[details_in_hindi]", hindi);
-    formData.append("avoid_and_add[details_in_gujarati]", gujarati);
-    axios
-      .post("api/v1/avoid_and_adds", formData)
-      .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: `Your ${showDos ? "Dos" : "Don'ts"}  has been added.`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        showDos ? handleGetDos() : handleGetDonts();
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      formData.append("avoid_and_add[category]", do_dont);
+      formData.append("avoid_and_add[comments]", comments);
+      formData.append("avoid_and_add[details_in_english]", english);
+      formData.append("avoid_and_add[details_in_hindi]", hindi);
+      formData.append("avoid_and_add[details_in_gujarati]", gujarati);
+      formData.append("avoid_and_add[user_id]", main_id);
+      axios
+        .post("api/v1/avoid_and_adds", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: `Your ${showDos ? "Dos" : "Don'ts"}  has been added.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          showDos ? handleGetDos() : handleGetDonts();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("avoid_and_add[category]", do_dont);
+      formData.append("avoid_and_add[comments]", comments);
+      formData.append("avoid_and_add[details_in_english]", english);
+      formData.append("avoid_and_add[details_in_hindi]", hindi);
+      formData.append("avoid_and_add[details_in_gujarati]", gujarati);
+      formData.append("avoid_and_add[user_id]", doc_id);
+      axios
+        .post("api/v1/avoid_and_adds", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: `Your ${showDos ? "Dos" : "Don'ts"}  has been added.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          showDos ? handleGetDos() : handleGetDonts();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleEditDosDonts = (val, cat) => {
@@ -94,34 +218,65 @@ function DosDonts() {
     hindi,
     gujarati,
     english,
-    id
+    id,
+    doc_id
   ) => {
     const formData = new FormData();
-    formData.append("avoid_and_add[category]", do_dont);
-    formData.append("avoid_and_add[comments]", comments);
-    formData.append("avoid_and_add[details_in_english]", english);
-    formData.append("avoid_and_add[details_in_hindi]", hindi);
-    formData.append("avoid_and_add[details_in_gujarati]", gujarati);
-    axios
-      .put(`api/v1/avoid_and_adds/${id}`, formData)
-      .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: `Your ${showDos ? "Dos" : "Don'ts"}  has been added.`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        showDos ? handleGetDos() : handleGetDonts();
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      formData.append("avoid_and_add[category]", do_dont);
+      formData.append("avoid_and_add[comments]", comments);
+      formData.append("avoid_and_add[details_in_english]", english);
+      formData.append("avoid_and_add[details_in_hindi]", hindi);
+      formData.append("avoid_and_add[details_in_gujarati]", gujarati);
+      formData.append("avoid_and_add[user_id]", main_id);
+      axios
+        .put(`api/v1/avoid_and_adds/${id}`, formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: `Your ${showDos ? "Dos" : "Don'ts"}  has been added.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          showDos ? handleGetDos() : handleGetDonts();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("avoid_and_add[category]", do_dont);
+      formData.append("avoid_and_add[comments]", comments);
+      formData.append("avoid_and_add[details_in_english]", english);
+      formData.append("avoid_and_add[details_in_hindi]", hindi);
+      formData.append("avoid_and_add[details_in_gujarati]", gujarati);
+      formData.append("avoid_and_add[user_id]", doc_id);
+      axios
+        .put(`api/v1/avoid_and_adds/${id}`, formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: `Your ${showDos ? "Dos" : "Don'ts"}  has been added.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          showDos ? handleGetDos() : handleGetDonts();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const deleteDosDonts = (val) => {
@@ -155,8 +310,9 @@ function DosDonts() {
   };
 
   useEffect(() => {
+    handleGetDoctors();
     showDos ? handleGetDos() : handleGetDonts();
-  }, [showDos, showDonts]);
+  }, [showDos, showDonts, getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -188,14 +344,38 @@ function DosDonts() {
                 Don'ts
               </button>
             </div>
-            <AddDosDonts
-              handleApi={handleAddDosDonts}
-              name="Add Do/Don't"
-              title="Add New Do/Don't"
-              do_dont="Do/Don't"
-              details="Details"
-              comments="Comments"
-            />
+            <div className="flex gap-3">
+              <AddDosDonts
+                handleApi={handleAddDosDonts}
+                name="Add Do/Don't"
+                title="Add New Do/Don't"
+                do_dont="Do/Don't"
+                details="Details"
+                comments="Comments"
+                role={role}
+                doctors={getDoctors}
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -248,6 +428,8 @@ function DosDonts() {
                               }}
                               handleApi={handleEditDosDontsApi}
                               title="Edit Do/Don't"
+                              role={role}
+                              doctors={getDoctors}
                               do_dont="Do/Don't"
                               details="Details"
                               comments="Comments"
@@ -306,6 +488,8 @@ function DosDonts() {
                               title="Edit Do/Don't"
                               do_dont="Do/Don't"
                               details="Details"
+                              role={role}
+                              doctors={getDoctors}
                               comments="Comments"
                             />
                           </td>

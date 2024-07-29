@@ -48,7 +48,9 @@ function QueFamilyHistory({ onNext, onBack, onValidate }) {
 
   const handleGetFamily = () => {
     axios
-      .get("/api/v1/family_reasons")
+      .get(
+        `/api/v1/family_reasons?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
         console.log("Family Reason: ", res.data?.family_reasons);
         setGetFamily(res.data?.family_reasons);

@@ -15,7 +15,7 @@ function QueGeneralDetails({ onNext, onValidate }) {
   } = useForm({
     resolver: yupResolver(UserSchema),
   });
-  const doctorId = localStorage.getItem("doctorId");
+  const doctorId = localStorage.getItem("doctor_id");
 
   const submittedData = async (d) => {
     console.log(d);

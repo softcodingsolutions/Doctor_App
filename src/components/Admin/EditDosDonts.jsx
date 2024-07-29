@@ -4,13 +4,14 @@ import {
   DialogTitle,
   FormControl,
   FormLabel,
-  Input,
+  //   Input,
   Modal,
   ModalClose,
   ModalDialog,
   Option,
   Select,
   Stack,
+  Typography,
 } from "@mui/joy";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -24,7 +25,12 @@ function EditDosDonts(props) {
     gujarati: props.see[0]?.details_in_gujarati || "",
     english: props.see[0]?.details_in_english || "",
   });
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const submittedData = (d) => {
     console.log(d);
@@ -34,7 +40,8 @@ function EditDosDonts(props) {
       text.hindi,
       text.gujarati,
       text.english,
-      props.see[0]?.id
+      props.see[0]?.id,
+      d.doctor_id
     );
   };
 
@@ -95,6 +102,30 @@ function EditDosDonts(props) {
                 </Select>
               </FormControl>
 
+              {props?.role === "super_admin" && (
+                <FormControl>
+                  <FormLabel>Select Doctor :-</FormLabel>
+                  <Select
+                    required
+                    placeholder="Select"
+                    name="doctor_id"
+                    {...register("doctor_id")}
+                  >
+                    {props?.doctors?.map((res) => (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    ))}
+                  </Select>
+                  {errors.doctor_id && (
+                    <Typography level="body2" color="danger">
+                      {errors.doctor_id.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
+
+              {/* 
               <FormControl>
                 <FormLabel>{props.comments} :-</FormLabel>
                 <Input
@@ -104,7 +135,7 @@ function EditDosDonts(props) {
                   {...register(`comments`)}
                   autoFocus
                 />
-              </FormControl>
+              </FormControl> */}
 
               <FormControl>
                 <FormLabel>{props.details} :-</FormLabel>

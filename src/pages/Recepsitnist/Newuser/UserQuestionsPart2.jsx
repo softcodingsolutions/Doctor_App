@@ -19,7 +19,9 @@ function UserQuestionsPart2({ onNext, onBack, onValidate }) {
 
   const handleGetQuestionsPart2 = () => {
     axios
-      .get("/api/v1/questions/part2")
+      .get(
+        `/api/v1/questions/part2?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
         console.log(res.data);
         setGetQuestionsPart2(res.data);

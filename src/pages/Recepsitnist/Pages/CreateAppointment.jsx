@@ -26,20 +26,14 @@ export default function CreateAppointment() {
         `http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`
       )
       .then((res) => {
-        console.log(res,"DATA");
+        console.log(res, "DATA");
         console.log(res.data.machine_details, "Machine Details");
         setMachineList(res.data.machine_details);
         console.log(
-          res.data.machine_details.map((res) =>
-            res
-          ),
+          res.data.machine_details.map((res) => res),
           "ConsultingTime"
         );
-        setMachineConsultingTime(
-          res.data.machine_details.map((res) =>
-            res
-          )
-        );
+        setMachineConsultingTime(res.data.machine_details.map((res) => res));
       })
       .catch((err) => {
         console.log(err);
@@ -118,6 +112,7 @@ export default function CreateAppointment() {
 
   useEffect(() => {
     handleShow();
+    localStorage.removeItem("doctor_id");
   }, []);
 
   const handleMove = () => {
@@ -154,7 +149,7 @@ export default function CreateAppointment() {
             <form className="text-lg">
               <div className="flex gap-5 m-5">
                 <label className="text-lg text-end w-1/3 mr-2">
-                  Select Doctor  
+                  Select Doctor
                 </label>
 
                 <select

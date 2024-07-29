@@ -23,6 +23,7 @@ function FranchiesGeneraldetails({ onNext, onValidate }) {
       .then((res) => {
         console.log(res.data?.user);
         setGetAdmin(res.data?.user);
+        localStorage.setItem("doctor_id", res.data?.user?.created_by_id);
       })
       .catch((err) => {
         console.log(err);

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Option, Select } from "@mui/joy";
+import ViewFranchiseDetails from "../../../components/Admin/ViewFranchiseDetails";
 
 function ListFranchise() {
   const [getFranchise, setGetFranchise] = useState([]);
@@ -13,6 +14,7 @@ function ListFranchise() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [getFranchiseUsers, setGetFranchiseUsers] = useState([]);
 
   const handleAddFranchise = async (d) => {
     console.log(d);
@@ -135,6 +137,19 @@ function ListFranchise() {
             res.data?.users.filter((user) => user.created_by_id == main_id)
           );
         }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handleGetFranchiseUsers = (val) => {
+    axios
+      .get(`/api/v1/users/find_doc_franchise_users?id=${val}`)
+      .then((res) => {
+        console.log("Franchise Users", res?.data?.users);
+        setGetFranchiseUsers(res?.data?.users);
       })
       .catch((err) => {
         console.log(err);
@@ -300,7 +315,6 @@ function ListFranchise() {
                   <ThComponent />
                   <ThComponent />
                   <ThComponent />
-                  {/* <ThComponent /> */}
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -362,29 +376,14 @@ function ListFranchise() {
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => console.log("view details")}
-                                className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-blue-600 hover:text-white"
-                              >
-                                View Details
-                              </button>
-                            }
+                          <ViewFranchiseDetails
+                            function={() => {
+                              handleGetFranchiseUsers(val.id);
+                            }}
+                            franchiseId={val.id}
+                            users={getFranchiseUsers}
                           />
                         </td>
-                        {/* <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => console.log("edit")}
-                                className="font-semibold text-brown-800 border border-gray-300 p-1 rounded-md hover:bg-brown-800 hover:text-white"
-                              >
-                                <MdEdit size={20} />
-                              </button>
-                            }
-                          />
-                        </td> */}
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent
                             things={

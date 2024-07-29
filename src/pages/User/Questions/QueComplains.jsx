@@ -48,7 +48,7 @@ function QueComplains({ onNext, onBack, onValidate }) {
 
   const handleGetComplain = () => {
     axios
-      .get("/api/v1/complaints")
+      .get(`/api/v1/complaints?user_id=${localStorage.getItem("doctor_id")}`)
       .then((res) => {
         console.log("Complain: ", res.data);
         setGetComplain(res.data);

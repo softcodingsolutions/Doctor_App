@@ -41,6 +41,7 @@ function FranchiseAllCustomers() {
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
+    localStorage.removeItem("doctor_id");
   }, []);
 
   useEffect(() => {
