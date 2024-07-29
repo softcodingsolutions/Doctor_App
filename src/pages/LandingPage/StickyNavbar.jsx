@@ -11,13 +11,17 @@ import { Link, useNavigate } from "react-router-dom";
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false)
-    );
+    const handleResize = () => {
+      if (window.innerWidth >= 960) {
+        setOpenNav(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const navList = (
@@ -87,6 +91,47 @@ export function StickyNavbar() {
           Contact Us
         </Link>
       </Typography>
+      <div
+        className="relative"
+        onMouseEnter={() => setOpenDropdown(true)}
+        onMouseLeave={() => setOpenDropdown(false)}
+      >
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <div className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2 cursor-pointer">
+            Survey & Report
+          </div>
+        </Typography>
+        {openDropdown && (
+          <div
+            className="absolute left-0 w-48 rounded-md shadow-lg bg-white bg-opacity-95 ring-1 ring-black ring-opacity-5 z-10"
+            style={{ top: "100%" }}
+          >
+            <ul className="py-1" onMouseEnter={() => setOpenDropdown(true)} onMouseLeave={() => setOpenDropdown(false)}>
+              <li>
+                <Link
+                  to="/survey"
+                  className="block px-4 py-2 text-base text-gray-800 hover:bg-green-200 "
+                >
+                  Survey
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/survey-report"
+                  className="block px-4 py-2 text-base text-gray-800 hover:bg-green-200"
+                >
+                  Survey Report
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
     </ul>
   );
 
