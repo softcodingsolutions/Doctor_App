@@ -111,7 +111,11 @@ export function StickyNavbar() {
             className="absolute left-0 w-48 rounded-md shadow-lg bg-white bg-opacity-95 ring-1 ring-black ring-opacity-5 z-10"
             style={{ top: "100%" }}
           >
-            <ul className="py-1" onMouseEnter={() => setOpenDropdown(true)} onMouseLeave={() => setOpenDropdown(false)}>
+            <ul
+              className="py-1"
+              onMouseEnter={() => setOpenDropdown(true)}
+              onMouseLeave={() => setOpenDropdown(false)}
+            >
               <li>
                 <Link
                   to="/survey"

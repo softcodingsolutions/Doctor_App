@@ -50,7 +50,7 @@ function UserChooseDoctor() {
 
   const handleGetDoctorId = (val) => {
     console.log(val);
-    localStorage.setItem("doctorId", val);
+    localStorage.setItem("doctor_id", val);
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",

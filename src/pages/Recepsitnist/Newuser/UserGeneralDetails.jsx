@@ -71,6 +71,7 @@ function UserGeneralDetails({ onNext, onValidate }) {
         client_id: res.data?.client_id,
       });
       localStorage.setItem("client_email", d.email);
+      localStorage.setItem("doctor_id", getDoctorId);
       onNext();
     } catch (error) {
       console.error(error);

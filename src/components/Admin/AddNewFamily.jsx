@@ -8,7 +8,10 @@ import {
   Modal,
   ModalClose,
   ModalDialog,
+  Option,
+  Select,
   Stack,
+  Typography,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,12 +24,17 @@ function AddNewFamily(props) {
     gujarati: "",
     english: "",
   });
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const submittedData = (d) => {
     console.log(text);
     console.log(d);
-    props.handleApi(text.hindi, text.gujarati, text.english);
+    props.handleApi(text.hindi, text.gujarati, text.english, d.doctor_id);
     reset();
     setText({
       hindi: "",
@@ -62,6 +70,28 @@ function AddNewFamily(props) {
             }}
           >
             <Stack spacing={3}>
+              {props?.role === "super_admin" && (
+                <FormControl>
+                  <FormLabel>Select Doctor :-</FormLabel>
+                  <Select
+                    required
+                    placeholder="Select"
+                    name="doctor_id"
+                    {...register("doctor_id")}
+                  >
+                    {props?.doctors?.map((res) => (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    ))}
+                  </Select>
+                  {errors.doctor_id && (
+                    <Typography level="body2" color="danger">
+                      {errors.doctor_id.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
               <FormControl>
                 <FormLabel>{props.details} :-</FormLabel>
                 <Box className="flex flex-col items-center w-full">

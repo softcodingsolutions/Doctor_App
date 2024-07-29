@@ -12,6 +12,7 @@ import {
   Option,
   Select,
   Stack,
+  Typography,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -24,7 +25,12 @@ function AddDosDonts(props) {
     gujarati: "",
     english: "",
   });
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const submittedData = (d) => {
     console.log(text);
@@ -34,7 +40,8 @@ function AddDosDonts(props) {
       d.do_dont,
       text.hindi,
       text.gujarati,
-      text.english
+      text.english,
+      d.doctor_id
     );
     reset();
     setText({
@@ -85,7 +92,30 @@ function AddDosDonts(props) {
                 </Select>
               </FormControl>
 
-              <FormControl>
+              {props?.role === "super_admin" && (
+                <FormControl>
+                  <FormLabel>Select Doctor :-</FormLabel>
+                  <Select
+                    required
+                    placeholder="Select"
+                    name="doctor_id"
+                    {...register("doctor_id")}
+                  >
+                    {props?.doctors?.map((res) => (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    ))}
+                  </Select>
+                  {errors.doctor_id && (
+                    <Typography level="body2" color="danger">
+                      {errors.doctor_id.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
+
+              {/* <FormControl>
                 <FormLabel>{props.comments} :-</FormLabel>
                 <Input
                   placeholder="Comments..."
@@ -93,7 +123,7 @@ function AddDosDonts(props) {
                   {...register(`comments`)}
                   autoFocus
                 />
-              </FormControl>
+              </FormControl> */}
 
               <FormControl>
                 <FormLabel>{props.details} :-</FormLabel>

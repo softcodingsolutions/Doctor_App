@@ -6,29 +6,78 @@ import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
 import EditNutrition from "../../../components/Admin/EditNutrition";
+import { Option, Select } from "@mui/joy";
 
 function NutritionSupplements() {
   const [getNutrition, setGetNutrition] = useState([]);
   const [editNutrition, setEditNutrition] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
-  const handleAddNutrition = (nutrition_name) => {
+  const handleAddNutrition = (nutrition_name, doc_id) => {
     const formData = new FormData();
-    formData.append("nutrition[name]", nutrition_name);
+    if (role === "doctor") {
+      formData.append("nutrition[name]", nutrition_name);
+      formData.append("nutrition[user_id]", main_id);
+      axios
+        .post("/api/v1/nutritions", formData)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your nutrition has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetNutrition();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("nutrition[name]", nutrition_name);
+      formData.append("nutrition[user_id]", doc_id);
+      axios
+        .post("/api/v1/nutritions", formData)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your nutrition has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetNutrition();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
+  };
+
+  const handleGetDoctors = () => {
     axios
-      .post("/api/v1/nutritions", formData)
+      .get(`/api/v1/users`)
       .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: "Your nutrition has been added.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        handleGetNutrition();
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -40,8 +89,28 @@ function NutritionSupplements() {
     axios
       .get("/api/v1/nutritions")
       .then((res) => {
-        console.log(res.data);
-        setGetNutrition(res.data);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(res.data);
+              setGetNutrition(res.data);
+            } else {
+              console.log(
+                "Particular Doctor Exe: ",
+                res.data?.filter((exe) => exe.user_id == getDoctorId)
+              );
+              setGetNutrition(
+                res.data?.filter((exe) => exe.user_id == getDoctorId)
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Exe: ",
+            res.data?.filter((exe) => exe.user_id == main_id)
+          );
+          setGetNutrition(res.data?.filter((exe) => exe.user_id == main_id));
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -83,28 +152,49 @@ function NutritionSupplements() {
     setEditNutrition(getNutrition.filter((item) => item?.id === val));
   };
 
-  const handleEditNutritionApi = (nutrition_name, val) => {
+  const handleEditNutritionApi = (nutrition_name, val, doc_id) => {
     const formData = new FormData();
-    formData.append("nutrition[name]", nutrition_name);
-    axios.put(`api/v1/nutritions/${val}`, formData).then((res) => {
-      console.log(res);
-      if (res.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Updated!",
-          text: "Your nutrition has been updated.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-      handleGetNutrition();
-    });
+    if (role === "doctor") {
+      formData.append("nutrition[name]", nutrition_name);
+      formData.append("nutrition[user_id]", main_id);
+      axios.put(`api/v1/nutritions/${val}`, formData).then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your nutrition has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetNutrition();
+      });
+    } else {
+      formData.append("nutrition[name]", nutrition_name);
+      formData.append("nutrition[user_id]", doc_id);
+      axios.put(`api/v1/nutritions/${val}`, formData).then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your nutrition has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetNutrition();
+      });
+    }
   };
 
   useEffect(() => {
     handleGetNutrition();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -115,12 +205,36 @@ function NutritionSupplements() {
               Nutrition & Supplements List
             </div>
             <div className="flex-grow" />
-            <AddNewSupplement
-              handleApi={handleAddNutrition}
-              name="Add Nutrition/Supplement"
-              title="Add New Nutrition/Supplement"
-              nutrition_name="Nutrition Name"
-            />
+            <div className="flex gap-3">
+              <AddNewSupplement
+                handleApi={handleAddNutrition}
+                name="Add Nutrition/Supplement"
+                title="Add New Nutrition/Supplement"
+                nutrition_name="Nutrition Name"
+                role={role}
+                doctors={getDoctors}
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -162,6 +276,8 @@ function NutritionSupplements() {
                             function={() => {
                               handleEditNutrition(val.id);
                             }}
+                            role={role}
+                            doctors={getDoctors}
                             handleApi={handleEditNutritionApi}
                             title="Edit Nutrition"
                             nutrition_name="Nutrition Name"

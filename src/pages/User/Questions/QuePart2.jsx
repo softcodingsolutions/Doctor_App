@@ -15,7 +15,9 @@ function QuePart2({ onBack }) {
 
   const handleGetQuestionsPart2 = () => {
     axios
-      .get("/api/v1/questions/part2")
+      .get(
+        `/api/v1/questions/part2?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
         console.log(res.data);
         setGetQuestionsPart2(res.data);
@@ -76,7 +78,7 @@ function QuePart2({ onBack }) {
           timer: 1500,
         });
         localStorage.removeItem("client_email");
-        localStorage.removeItem("doctorId");
+        localStorage.removeItem("doctor_id");
         navigate("/user/dashboard");
       }
     } catch (err) {

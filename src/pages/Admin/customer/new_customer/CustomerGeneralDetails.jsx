@@ -89,6 +89,7 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
           },
           client_id: res.data?.client_id,
         });
+        localStorage.setItem("doctor_id", getAdmin.id);
       } else if (role === "super_admin") {
         await axios.post("/api/v1/users", {
           user: {
@@ -113,9 +114,11 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
           },
           client_id: res.data?.client_id,
         });
+        localStorage.setItem("doctor_id", getDoctorId);
       }
 
       localStorage.setItem("client_email", d.email);
+
       reset();
       onNext();
     } catch (error) {

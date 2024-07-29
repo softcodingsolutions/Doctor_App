@@ -6,10 +6,15 @@ import AddNewWeight from "../../../components/Admin/AddNewWeight";
 import axios from "axios";
 import Swal from "sweetalert2";
 import EditWeightReason from "../../../components/Admin/EditWeightReason";
+import { Option, Select } from "@mui/joy";
 
 function WeightReason() {
   const [getWeight, setGetWeight] = useState([]);
   const [editWeightReason, setEditWeightReason] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleGetWeight = () => {
     axios
@@ -24,31 +29,82 @@ function WeightReason() {
       });
   };
 
-  const handleAddWeight = (reason_name, reason_for, reason_comments) => {
-    const formData = new FormData();
-    formData.append("weight_reason[name]", reason_name);
-    formData.append("weight_reason[for]", reason_for);
-    formData.append("weight_reason[comments]", reason_comments);
+  const handleGetDoctors = () => {
     axios
-      .post("api/v1/weight_reasons", formData)
+      .get(`/api/v1/users`)
       .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: "Your weight reason has been added.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        handleGetWeight();
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
       });
+  };
+
+  const handleAddWeight = (
+    reason_name,
+    reason_for,
+    reason_comments,
+    doc_id
+  ) => {
+    const formData = new FormData();
+    if (role === "doctor") {
+      formData.append("weight_reason[name]", reason_name);
+      formData.append("weight_reason[for]", reason_for);
+      formData.append("weight_reason[comments]", reason_comments);
+      formData.append("weight_reason[user_id]", main_id);
+      axios
+        .post("api/v1/weight_reasons", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your weight reason has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetWeight();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("weight_reason[name]", reason_name);
+      formData.append("weight_reason[for]", reason_for);
+      formData.append("weight_reason[comments]", reason_comments);
+      formData.append("weight_reason[user_id]", doc_id);
+      axios
+        .post("api/v1/weight_reasons", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your weight reason has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetWeight();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleEditWeightReason = (val) => {
@@ -59,26 +115,49 @@ function WeightReason() {
     reason_name,
     reason_for,
     reason_comments,
-    id
+    id,
+    doc_id
   ) => {
     const formData = new FormData();
-    formData.append("weight_reason[name]", reason_name);
-    formData.append("weight_reason[for]", reason_for);
-    formData.append("weight_reason[comments]", reason_comments);
-    axios.put(`api/v1/weight_reasons/${id}`, formData).then((res) => {
-      console.log(res);
-      if (res.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Updated!",
-          text: "Your weight reason has been updated.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-      handleGetWeight();
-    });
+    if (role === "doctor") {
+      formData.append("weight_reason[name]", reason_name);
+      formData.append("weight_reason[for]", reason_for);
+      formData.append("weight_reason[comments]", reason_comments);
+      formData.append("weight_reason[user_id]", main_id);
+      axios.put(`api/v1/weight_reasons/${id}`, formData).then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your weight reason has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetWeight();
+      });
+    } else {
+      formData.append("weight_reason[name]", reason_name);
+      formData.append("weight_reason[for]", reason_for);
+      formData.append("weight_reason[comments]", reason_comments);
+      formData.append("weight_reason[user_id]", doc_id);
+      axios.put(`api/v1/weight_reasons/${id}`, formData).then((res) => {
+        console.log(res);
+        if (res.data) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Updated!",
+            text: "Your weight reason has been updated.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        handleGetWeight();
+      });
+    }
   };
 
   const deleteWeight = (val) => {
@@ -113,7 +192,8 @@ function WeightReason() {
 
   useEffect(() => {
     handleGetWeight();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -121,14 +201,38 @@ function WeightReason() {
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Weight Reason List</div>
-            <AddNewWeight
-              handleApi={handleAddWeight}
-              name="Add Weight Reason"
-              title="Add New Weight Reason"
-              reason_name="Weight Name"
-              reason_for="Gender"
-              reason_comments="Comments"
-            />
+            <div className="flex gap-3">
+              <AddNewWeight
+                handleApi={handleAddWeight}
+                name="Add Weight Reason"
+                title="Add New Weight Reason"
+                reason_name="Weight Name"
+                reason_for="Gender"
+                reason_comments="Comments"
+                role={role}
+                doctors={getDoctors}
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -187,6 +291,8 @@ function WeightReason() {
                             reason_name="Weight Name"
                             reason_for="Gender"
                             reason_comments="Comments"
+                            role={role}
+                            doctors={getDoctors}
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

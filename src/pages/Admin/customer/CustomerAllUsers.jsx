@@ -13,23 +13,22 @@ function CustomerAllUsers() {
   const main_id = localStorage.getItem("main_id");
 
   const handleGetAllUsers = () => {
-    axios.get("/api/v1/users").then((res) => {
-      if (role === "super_admin") {
+    if (role === "super_admin") {
+      axios.get(`/api/v1/users`).then((res) => {
         const patients = res.data?.users?.filter(
           (user) => user.role === "patient"
         );
         console.log("Patients by Super Admin: ", patients);
         setGetCustomers(patients);
         setGetParticularCustomer(patients);
-      } else if (role === "doctor") {
-        const patients = res.data?.users?.filter(
-          (user) => user.created_by_id == main_id
-        );
-        console.log("Patients by Doctor: ", patients);
-        setGetCustomers(patients);
-        setGetParticularCustomer(patients);
-      }
-    });
+      });
+    } else if (role === "doctor") {
+      axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
+        console.log("Patients by Doctor: ", res.data?.users);
+        setGetCustomers(res.data?.users);
+        setGetParticularCustomer(res.data?.users);
+      });
+    }
   };
 
   const handleDiagnosis = (val) => {
@@ -48,6 +47,7 @@ function CustomerAllUsers() {
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
+    localStorage.removeItem("doctor_id");
   }, []);
 
   useEffect(() => {

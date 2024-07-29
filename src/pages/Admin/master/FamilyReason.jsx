@@ -6,10 +6,15 @@ import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
 import EditFamilyReason from "../../../components/Admin/EditFamilyReason";
+import { Option, Select } from "@mui/joy";
 
 function FamilyReason() {
   const [getFamily, setGetFamily] = useState([]);
   const [editFamily, setEditFamily] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleGetFamily = () => {
     axios
@@ -17,6 +22,34 @@ function FamilyReason() {
       .then((res) => {
         console.log(res.data);
         setGetFamily(res.data?.family_reasons);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(res.data);
+              setGetFamily(res.data?.family_reasons);
+            } else {
+              console.log(
+                "Particular Doctor Family Reasons: ",
+                res.data?.family_reasons?.filter(
+                  (fam) => fam.user_id == getDoctorId
+                )
+              );
+              setGetFamily(
+                res.data?.family_reasons?.filter(
+                  (fam) => fam.user_id == getDoctorId
+                )
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Family Reasons: ",
+            res.data?.family_reasons?.filter((fam) => fam.user_id == main_id)
+          );
+          setGetFamily(
+            res.data?.family_reasons?.filter((fam) => fam.user_id == main_id)
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -24,31 +57,77 @@ function FamilyReason() {
       });
   };
 
-  const handleAddFamily = (hindi, gujarati, english) => {
-    const formData = new FormData();
-    formData.append("family_reason[details_in_hindi]", hindi);
-    formData.append("family_reason[details_in_gujarati]", gujarati);
-    formData.append("family_reason[details_in_english]", english);
+  const handleGetDoctors = () => {
     axios
-      .post("api/v1/family_reasons", formData)
+      .get(`/api/v1/users`)
       .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: "Your family reason has been added.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        handleGetFamily();
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
       });
+  };
+
+  const handleAddFamily = (hindi, gujarati, english, doc_id) => {
+    const formData = new FormData();
+    if (role === "doctor") {
+      formData.append("family_reason[details_in_hindi]", hindi);
+      formData.append("family_reason[details_in_gujarati]", gujarati);
+      formData.append("family_reason[details_in_english]", english);
+      formData.append("family_reason[user_id]", main_id);
+      axios
+        .post("api/v1/family_reasons", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your family reason has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetFamily();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("family_reason[details_in_hindi]", hindi);
+      formData.append("family_reason[details_in_gujarati]", gujarati);
+      formData.append("family_reason[details_in_english]", english);
+      formData.append("family_reason[user_id]", doc_id);
+      axios
+        .post("api/v1/family_reasons", formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Added!",
+              text: "Your family reason has been added.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetFamily();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const deleteFamily = (val) => {
@@ -85,36 +164,65 @@ function FamilyReason() {
     setEditFamily(getFamily.filter((item) => item?.id === val));
   };
 
-  const handleEditFamilyApi = (hindi, gujarati, english, id) => {
+  const handleEditFamilyApi = (hindi, gujarati, english, id, doc_id) => {
     const formData = new FormData();
-    formData.append("family_reason[details_in_hindi]", hindi);
-    formData.append("family_reason[details_in_gujarati]", gujarati);
-    formData.append("family_reason[details_in_english]", english);
-    axios
-      .put(`api/v1/family_reasons/${id}`, formData)
-      .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Updated!",
-            text: "Your family reason has been updated.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-        handleGetFamily();
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      formData.append("family_reason[details_in_hindi]", hindi);
+      formData.append("family_reason[details_in_gujarati]", gujarati);
+      formData.append("family_reason[details_in_english]", english);
+      formData.append("family_reason[user_id]", main_id);
+      axios
+        .put(`api/v1/family_reasons/${id}`, formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Updated!",
+              text: "Your family reason has been updated.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetFamily();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else {
+      formData.append("family_reason[details_in_hindi]", hindi);
+      formData.append("family_reason[details_in_gujarati]", gujarati);
+      formData.append("family_reason[details_in_english]", english);
+      formData.append("family_reason[user_id]", doc_id);
+      axios
+        .put(`api/v1/family_reasons/${id}`, formData)
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Updated!",
+              text: "Your family reason has been updated.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          handleGetFamily();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   useEffect(() => {
     handleGetFamily();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -122,12 +230,36 @@ function FamilyReason() {
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Family Reason List</div>
-            <AddNewFamily
-              handleApi={handleAddFamily}
-              name="Add Family Reason"
-              title="Add New Reason"
-              details="Details"
-            />
+            <div className="flex gap-3">
+              <AddNewFamily
+                handleApi={handleAddFamily}
+                name="Add Family Reason"
+                title="Add New Reason"
+                details="Details"
+                role={role}
+                doctors={getDoctors}
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -177,6 +309,8 @@ function FamilyReason() {
                             function={() => {
                               handleEditFamily(val.id);
                             }}
+                            role={role}
+                            doctors={getDoctors}
                             handleApi={handleEditFamilyApi}
                             title="Edit Family Reason"
                             details="Details"
