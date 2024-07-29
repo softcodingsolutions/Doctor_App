@@ -85,8 +85,8 @@ import Table from '@mui/joy/Table';
     
   };
   const tableContainerStyle = {
-    width: '80%', // Adjust the width as needed
-    margin: '0 auto', // Center the table
+    width: '80%',
+    margin: '0 auto',
 };
   
 export default function SurveyReport(){

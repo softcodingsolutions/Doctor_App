@@ -1,6 +1,6 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import icons_slime from "../assets/images/icons_slime.png";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,27 +10,42 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { schema1 } from "../schemas/SignUpSchema";
 
-function ForgetPassword() {
+function ChangePassword() {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema1),
+  });
 
   const submittedData = (d) => {
+    const getResetToken = () => {
+      const currentUrl = window.location.href;
+      const url = new URL(currentUrl);
+      return url.searchParams.get("reset_token");
+    };
+    const resetToken = getResetToken();
+
     console.log(d);
-    const formdata = new FormData
-    formdata.append('email', d.email)
-    axios.post(`/api/v2/reset_password_tokens`,formdata).then((res)=>{
-      console.log(res);
-      alert("Check your email!")
-    }).catch((err)=>{
-      console.log(err)
-    })
-    
+    const formdata = new FormData();
+    formdata.append("password", d.password);
+    axios
+      .put(
+        `/api/v2/reset_password_tokens/forgot_password?reset_token=${resetToken}`,
+        formdata
+      )
+      .then((res) => {
+        console.log(res);
+        alert("Successfully Reset Your Password \nNow you can Sign in with your new password!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -46,17 +61,28 @@ function ForgetPassword() {
               color="blue-gray"
               className="ml-1 text-center text-xl font-teachers"
             >
-              Forget Password?
+              Change Password
             </Typography>
             <Input
-              label="Email"
+              label="Password"
               size="lg"
-              name="email"
-              {...register("email")}
+              name="password"
+              {...register("password")}
             />
-            {errors.email && (
+            {errors.password && (
               <span className="text-s text-red-500 -mt-4">
-                {errors.email?.message}
+                {errors.password?.message}
+              </span>
+            )}
+            <Input
+              label="Confirm Password"
+              size="lg"
+              name="confirmpassword"
+              {...register("confirmpassword")}
+            />
+            {errors.confirmpassword && (
+              <span className="text-s text-red-500 -mt-4">
+                {errors.confirmpassword?.message}
               </span>
             )}
             <Button
@@ -74,4 +100,4 @@ function ForgetPassword() {
   );
 }
 
-export default ForgetPassword;
+export default ChangePassword;

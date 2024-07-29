@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 export default function SurveyForm3() {
     const navigate = useNavigate();
     const [selectedCheckboxes3, setSelectedCheckboxes3] = useState([]);
     const [selectedCheckboxes4, setSelectedCheckboxes4] = useState([]);
     const [language, setLanguage] = useState('English');
+    
+    const [code,setCode]  = React.useState();
 
     const {
         register,
@@ -14,6 +22,17 @@ export default function SurveyForm3() {
         reset,
         formState: { errors },
     } = useForm();
+
+    const handleCodeClose = () =>{
+        setCode(false);
+      }
+      const handlePasscode = (e) =>{
+        setPasscode(e.target.value);
+    } 
+    
+    const handlePasswordhandle = () =>{
+
+    }
 
     const handleCheckboxChange3 = (e) => {
         const checkboxValue = e.target.value;
@@ -42,17 +61,7 @@ export default function SurveyForm3() {
     };
 
     const submittedData3 = (data) => {
-        const completeData = {
-            ...data,
-            selectedCheckboxes: language === 'English' ? selectedCheckboxes3 : selectedCheckboxes4,
-        };
-        
-        const alertMessage = `
-            Language: ${completeData.language}
-            Selected Checkboxes: ${completeData.selectedCheckboxes.join(', ')}
-        `;
-        alert(alertMessage);
-
+        setCode(true);
       
     };
 
@@ -201,6 +210,34 @@ export default function SurveyForm3() {
                                 </button>
                             </div>
                     </form>
+                </div>
+                <div>
+                    <Dialog
+                    open={code}
+                    onClose={handleCodeClose}>
+                        <DialogTitle>Enter OTP</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText>
+                            Enter the OTP sent to your email. 
+                        </DialogContentText>
+                        <TextField 
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="otp"
+                            name="otp"
+                            label="OTP"
+                            type="otp"
+                            fullWidth
+                            onChange={handlePasscode}
+                            variant="standard"
+                        />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCodeClose}>Cancel</Button>
+                            <Button type="submit" onClick={handlePasswordhandle}>Verify OTP</Button>
+                        </DialogActions>
+                    </Dialog>
                 </div>
             </body>
             <footer>

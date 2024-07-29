@@ -23,7 +23,7 @@ export default function Consulting(props) {
       .post(`/api/v1/appointments`, formdata)
       .then((res) => {
         console.log(res);
-        alert("Successfully created Appointment!");
+        alert("Successfully create your Consulting Appointment!");
         navigate("/receptionist/appointment/home")
       })
       .catch((err) => {
