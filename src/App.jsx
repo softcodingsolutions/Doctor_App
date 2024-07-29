@@ -80,6 +80,9 @@ import ReportGenerate from "./pages/Admin/customer/generate_report/ReportGenerat
 import SurveyMaster from "./pages/Admin/SurveyMaster";
 import Healthproblem from "./pages/Admin/surveymaster/Healthproblem";
 import Weightgainreason from "./pages/Admin/surveymaster/Weightgainreason";
+import ChangePassword from "./pages/ChangePassword";
+import SurveyOtp from "./pages/Survey/SurveyOtp";
+import SurveyResult from "./pages/Survey/SurveyResult";
 function App() {
   return (
     <Router>
@@ -87,6 +90,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="forget-password" element={<ForgetPassword />} />
+        <Route path="change-password" element={<ChangePassword />} />
         <Route path="signup" element={<UserChooseDoctor />} />
 
         {/* User */}
@@ -217,6 +221,8 @@ function App() {
         <Route path="surveyform" element={<SurveyForm />} />
         <Route path="surveyform2" element={<SurveyForm2 />} />
         <Route path="surveyform3" element={<SurveyForm3 />} />
+        <Route path="surveyOtp" element={<SurveyOtp />} />
+        <Route path="surveyresult" element={<SurveyResult />} />
 
         {/* Franchise */}
         <Route path="franchise" element={<FranchiseMain />}>

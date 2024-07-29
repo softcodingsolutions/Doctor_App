@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
   },
-  body: {justifyContent: "center",},
-  s: { marginBottom: 20,justifyContent: "center"},
-  heading: { margin: 10, padding: 10,display: "grid"},
+  body: { justifyContent: "center" },
+  s: { marginBottom: 20, justifyContent: "center" },
+  heading: { margin: 10, padding: 10, display: "grid" },
   subtitle: { fontSize: 16, marginTop: 10 },
   Name: { fontSize: 14, fontFamily: "Tiro Devanagari Hindi" },
   table: { display: "table", width: "auto", margin: "10px 0" },
@@ -69,25 +69,21 @@ export const BillDocument = ({ data }) => (
         <Image style={styles.image} src={iconsSlime} />
       </View>
       <View style={styles.heading}>
-            <View>
-                <Text style={styles.Name}>
-                    Name : {data?.first_name || "No Name"} {data?.last_name || ""}
-                </Text>
-                <Text style={styles.Name}>
-                    Email : {data?.email}
-                </Text>
-            </View>
-            <View>
-                <Text style={styles.Name}>
-                    Case Number : {data?.case_number}
-                </Text>
-                <Text style={styles.Name}>
-                    Height : {data?.personal_detail?.height} cm
-                </Text>
-                <Text style={styles.Name}>
-                    Weight : {data?.personal_detail?.weight} kg
-                </Text>
-            </View>
+        <View>
+          <Text style={styles.Name}>
+            Name : {data?.first_name || "No Name"} {data?.last_name || ""}
+          </Text>
+          <Text style={styles.Name}>Email : {data?.email}</Text>
+        </View>
+        <View>
+          <Text style={styles.Name}>Case Number : {data?.case_number}</Text>
+          <Text style={styles.Name}>
+            Height : {data?.personal_detail?.height} cm
+          </Text>
+          <Text style={styles.Name}>
+            Weight : {data?.personal_detail?.weight} kg
+          </Text>
+        </View>
       </View>
       <View style={styles.body}>
         <View style={styles.s}>
@@ -123,7 +119,6 @@ export const BillDocument = ({ data }) => (
                     <Text style={styles.tableCellHindi}>
                       {diet.chart_hindi}
                     </Text>{" "}
-                    {/* Apply Hindi font */}
                   </View>
                 </View>
               )
@@ -168,7 +163,6 @@ export const BillDocument = ({ data }) => (
                     <Text style={styles.tableCellHindi}>
                       {diet.details_in_hindi}
                     </Text>{" "}
-                    {/* Apply Hindi font */}
                   </View>
                 </View>
               )
@@ -193,30 +187,30 @@ export const BillDocument = ({ data }) => (
                 <Text style={styles.tableCell}>Hindi</Text>
               </View>
             </View>
-                {data.treatment_packages?.[0]?.treatment_package?.dos?.map(
-                (diet, index) => (
-                    <View style={styles.tableRow} key={index}>
-                    <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>{diet.name}</Text>
-                    </View>
-                    <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                        {diet.details_in_english}
-                        </Text>
-                    </View>
-                    <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                        {diet.details_in_gujarati}
-                        </Text>
-                    </View>
-                    <View style={styles.tableCol}>
-                        <Text style={styles.tableCellHindi}>
-                        {diet.details_in_hindi}
-                        </Text>{" "}
-                    </View>
-                    </View>
-                )
-                )}
+            {data.treatment_packages?.[0]?.treatment_package?.dos?.map(
+              (diet, index) => (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{diet.name}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>
+                      {diet.details_in_english}
+                    </Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>
+                      {diet.details_in_gujarati}
+                    </Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCellHindi}>
+                      {diet.details_in_hindi}
+                    </Text>{" "}
+                  </View>
+                </View>
+              )
+            )}
           </View>
         </View>
 
@@ -231,25 +225,23 @@ export const BillDocument = ({ data }) => (
                 <Text style={styles.tableCell}>English</Text>
               </View>
             </View>
-                {data.treatment_packages?.[0]?.treatment_package?.exercise?.map(
-                (diet, index) => (
-                    <View style={styles.tableRow} key={index}>
-                    <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>{diet.name}</Text>
-                    </View>
-                    <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                        {diet.details}
-                        </Text>
-                    </View>
-                    </View>
-                )
-                )}
+            {data.treatment_packages?.[0]?.treatment_package?.exercise?.map(
+              (diet, index) => (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{diet.name}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{diet.details}</Text>
+                  </View>
+                </View>
+              )
+            )}
           </View>
         </View>
 
         <View style={styles.s}>
-          <Text style={styles.subtitle}>Mediciens</Text>
+          <Text style={styles.subtitle}>Medicines</Text>
           <View style={styles.table}>
             <View style={styles.tableRow}>
               <View style={styles.tableCol}>
@@ -284,9 +276,7 @@ export const BillDocument = ({ data }) => (
                     <Text style={styles.tableCell}>{diet.quantity}</Text>
                   </View>
                   <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHindi}>
-                      {diet.with_milk}
-                    </Text>{" "}
+                    <Text style={styles.tableCellHindi}>{diet.with_milk}</Text>{" "}
                   </View>
                 </View>
               )
@@ -305,20 +295,18 @@ export const BillDocument = ({ data }) => (
                 <Text style={styles.tableCell}>Reason</Text>
               </View>
             </View>
-                {data.treatment_packages?.[0]?.treatment_package?.nutrition?.map(
-                (diet, index) => (
-                    <View style={styles.tableRow} key={index}>
-                    <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>{diet.name}</Text>
-                    </View>
-                    <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                        {diet.weight_reason}
-                        </Text>
-                    </View>
-                    </View>
-                )
-                )}
+            {data.treatment_packages?.[0]?.treatment_package?.nutrition?.map(
+              (diet, index) => (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{diet.name}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{diet.weight_reason}</Text>
+                  </View>
+                </View>
+              )
+            )}
           </View>
         </View>
       </View>
@@ -341,15 +329,33 @@ const ReportGenerate = () => {
   }, [customer]);
 
   return (
-    <div>
-      <PDFDownloadLink
-        document={<BillDocument data={pdfData} />}
-        fileName="ReportGenerate.pdf"
-      >
-        {({ blob, url, loading, error }) =>
-          loading ? "Loading document..." : "Download PDF"
-        }
-      </PDFDownloadLink>
+    <div className="w-full p-2">
+      <div className="rounded-lg  bg-card h-[85vh] bg-white">
+      <div className="flex px-4 items-center justify-center py-3 h-full flex-col space-y-4">
+        {pdfData?.treatment_packages?.length > 0 ? (
+          <PDFDownloadLink
+            document={<BillDocument data={pdfData} />}
+            fileName="ReportGenerate.pdf"
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? (
+                <button className="px-4 py-2 bg-blue-500 text-white text-2xl rounded shadow-md hover:bg-blue-600">
+                  Loading document...
+                </button>
+              ) : (
+                <button className="px-4 py-2 bg-green-500 text-white text-2xl rounded shadow-md hover:bg-green-600">
+                  Download PDF
+                </button>
+              )
+            }
+          </PDFDownloadLink>
+        ) : (
+          <div className="bg-red-100 text-red-700 text-2xl p-4 rounded border border-red-400">
+            You need to create the Treatment package
+          </div>
+        )}
+        </div>
+      </div>
     </div>
   );
 };

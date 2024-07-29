@@ -16,3 +16,13 @@ export const schema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password"), null], "Passwords must match"),
 });
+
+export const schema1 = yup.object().shape({
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
+  confirmpassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
+});

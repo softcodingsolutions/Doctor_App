@@ -24,7 +24,7 @@ export default function Home() {
       .then((res) => {
         console.log(res);
         console.log(res.data?.cosulting_times, "Consulting Time");
-        console.log(res.data.machine_consulting_times, "Machine Time");
+        console.log(res.data.machine_details, "Machine Time");
         setConsultingTimes(res.data?.cosulting_times);
         setMachineConsultingTimes(res.data?.machine_details);
       })
@@ -125,15 +125,13 @@ export default function Home() {
                           Date
                         </th>
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Slot
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Time
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {consultingTimes.map((data, index) => {
+                      {consultingTimes.length>0 ? 
+                      (consultingTimes.map((data, index) => {
                         return (
                           <tr key={index} className="map">
                             <td className="py-3 px-4 border-b border-b-gray-50">
@@ -152,16 +150,21 @@ export default function Home() {
                               </span>
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1"></span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
                               <span className="text-black text-base font-medium ml-1">
                                 {formatTime(data.time)}
                               </span>
                             </td>
                           </tr>
                         );
-                      })}
+                      })) : 
+                      (
+                        <tr>
+                          <td colSpan="4" className="py-3 px-4 text-center justify-center">
+                            No Appointment is created for Consulting Time
+                          </td>
+                        </tr>
+                      )
+                     }
                     </tbody>
                   </table>
                 </div>
@@ -189,51 +192,58 @@ export default function Home() {
                           Date
                         </th>
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Slot
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Time
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {machineConsultingTimes.map((data, index) => {
-                        return (
-                          <tr key={index} className="map">
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1">
-                                {data.doctor.first_name} {data.doctor.last_name}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1">
-                                {data.user.first_name} {data.user.last_name}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1"></span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1">
-                                {formatDate(data.date)}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1"></span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1">
-                                {formatTime(data.time)}
-                              </span>
+                      {machineConsultingTimes.length > 0 ?
+                        (machineConsultingTimes.map((data, index) => {
+                          return (
+                            <tr key={index} className="map">
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {data.doctor.first_name} {data.doctor.last_name}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {data.user.first_name} {data.user.last_name}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {data.machine_detail.name}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {formatDate(data.date)}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {formatTime(data.time)}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        }))
+                        :
+                        (
+                          <tr>
+                            <td colSpan="5" className="py-3 px-4 text-center">
+                              No Appointment is created for Machine Consulting Time
                             </td>
                           </tr>
-                        );
-                      })}
+                        )
+                      }
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
+          
           </div>
         </div>
       </div>

@@ -28,11 +28,10 @@ export default function Newcase(props) {
       .post(`/api/v1/appointments`, formdata)
       .then((res) => {
         console.log(res);
-        alert("Successfully created Your Appointment!");
+        alert("Successfully created Your Consulting Appointment!");
         setConsultingTime();
         setSlot("");
         navigate("/receptionist/appointment/home");
-
       })
       .catch((err) => {
         console.log(err);

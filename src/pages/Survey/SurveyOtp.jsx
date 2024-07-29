@@ -16,22 +16,8 @@ export default function SurveyOtp(){
       const handlePasscode = (e) =>{
         setPasscode(e.target.value);
     }
-    const isPasswordValid = (password) =>{
-        const passwordRegex = /^[a-zA-Z\d]{8,}$/;
-        return passwordRegex.test(password);
-    }
-    const handlePassword = (e) =>{
-        const newpassword= e.target.value;
-        setPass(newpassword);
     
-        if (!isPasswordValid(newpassword)) {
-            
-            console.error("Password does not meet the criteria");
-          }
-    }
-    const handlePasswordopen = () =>{
-        
-      }
+  
     return(
         <div>
             <Dialog
@@ -60,7 +46,6 @@ export default function SurveyOtp(){
                    <Button type="submit" onClick={handlePasswordopen}>Verify OTP</Button>
                 </DialogActions>
             </Dialog>
-
         </div>
     )
 }

@@ -6,11 +6,9 @@ import { useNavigate } from "react-router-dom";
 export default function Indooractivity(props) {
   const navigate = useNavigate();
   const [consultingTime, setConsultingTime] = useState("");
-  const [slot, setSlot] = useState("");
   const [machine, setMachine] = useState("");
   const [filteredTimeSlots, setFilteredTimeSlots] = useState([]);
   const [allocatedMachines, setAllocatedMachines] = useState([]);
-  const [slotTime, setSlotTime] = useState("");
   const [bookedSlot, setBookedSlot] = useState([]);
   const [available, setAvailable] = useState([]);
   const [inputSlot, setInputSlot] = useState("select");
@@ -50,14 +48,13 @@ export default function Indooractivity(props) {
     setInputSlot(e.target.value);
   }
 
-  const handleConsulting = (e) => {
-    const value = e ? e.target.value : "";
-    setConsultingTime(value);
+  const handleConsulting = (time) => {
+    const value = consultingTime;
     axios
       .get(
         `/api/v1/appointments/fetch_machine_details?date=${formatDate(
           value
-        )}&machine_detail_id=${machine}`
+        )}&time=${time}&machine_detail_id=${machine}`
       )
       .then((res) => {
         console.log(res, "CHECKBOX BUTTONS DATA");
@@ -107,30 +104,7 @@ export default function Indooractivity(props) {
     }
   }
 
-  const handleSlot = (e) => {
-    const selectedSlotId = e.target.value;
-    const selectedSlot = filteredTimeSlots.find(
-      (detail) => detail.id === parseInt(selectedSlotId)
-    );
-    setSlot(selectedSlotId);
-    setSlotTime(selectedSlot ? selectedSlot.time : "");
-    const formattedDate = formatDate(consultingTime);
-    axios
-      .get(
-        `/api/v1/appointments/fetch_machine_consulting_times?date=${formattedDate}&machine_consulting_time_id=${selectedSlotId}`
-      )
-      .then((res) => {
-        console.log(res, "CHECKBOX BUTTONS DATA");
-        setAvailable(res.data.availab_slot || []);
-        setBookedSlot(res.data.booked_slot || []);
-        console.log("Available Slots: ", res.data.availab_slot);
-        console.log("Booked Slots: ", res.data.booked_slot);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
-  };
+ 
 
   const handleMachine = (e) => {
     const selectedMachineId = e.target.value;
@@ -148,9 +122,15 @@ export default function Indooractivity(props) {
     setFilteredTimeSlots(consultingTimes);
   };
 
+  const handleTimeChange = (e) => {
+    const selectedTime = e.target.value;
+    setInputTime(selectedTime);
+    handleConsulting(selectedTime);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Clear previous error message
+    setErrorMessage(""); 
     const formattedDate = formatDate(consultingTime);
     const formdata = new FormData();
     formdata.append("appointment[user_id]", props.user);
@@ -164,16 +144,16 @@ export default function Indooractivity(props) {
         console.log(res);
         setMachine("");
         setConsultingTime("");
-        setSlot("");
-        setSlotTime("");
-        alert("YEYE");
+        setInputTime("");
+        setMachine("");
+        alert("Successfully create your Machine Consulting Appointment!");
         navigate("/receptionist/appointment/home");
         document.querySelector('input[type="date"]').value = "";
-        handleConsulting({ target: { value: "" } });
+        handleConsulting(""); 
       })
       .catch((err) => {
         console.log(err.response.data.message);
-        setErrorMessage(err.response.data.message); // Set error message
+        setErrorMessage(err.response.data.message);
       });
   };
 
@@ -240,7 +220,7 @@ export default function Indooractivity(props) {
             type="date"
             placeholder="select date"
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            onChange={handleConsulting}
+            onChange={(e) => setConsultingTime(e.target.value)}
           />
         </div>
         <div className="flex gap-5 m-2">
@@ -264,7 +244,7 @@ export default function Indooractivity(props) {
           <select
             name="time"
             value={inputTime}
-            onChange={(e) => setInputTime(e.target.value)}
+            onChange={handleTimeChange}
             className="py-1 px-2 rounded-md border border-black"
           >
             <option value="select" disabled>
@@ -281,12 +261,12 @@ export default function Indooractivity(props) {
           <div className="text-red-500 text-center mt-4">{errorMessage}</div>
         )}
         {machine && (
-           <div className="flex w-full justify-center mt-10">
-           <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-             {renderBoxes(bookedSlot, true)}
-             {renderBoxes(available, false)}
-           </Box>
-         </div>
+          <div className="flex w-full justify-center mt-10">
+            <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+              {renderBoxes(bookedSlot, true)}
+              {renderBoxes(available, false)}
+            </Box>
+          </div>
         )}
 
         <div className="flex w-full justify-center mt-10">
