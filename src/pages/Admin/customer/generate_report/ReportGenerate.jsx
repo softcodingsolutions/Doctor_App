@@ -331,29 +331,29 @@ const ReportGenerate = () => {
   return (
     <div className="w-full p-2">
       <div className="rounded-lg  bg-card h-[85vh] bg-white">
-      <div className="flex px-4 items-center justify-center py-3 h-full flex-col space-y-4">
-        {pdfData?.treatment_packages?.length > 0 ? (
-          <PDFDownloadLink
-            document={<BillDocument data={pdfData} />}
-            fileName="ReportGenerate.pdf"
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? (
-                <button className="px-4 py-2 bg-blue-500 text-white text-2xl rounded shadow-md hover:bg-blue-600">
-                  Loading document...
-                </button>
-              ) : (
-                <button className="px-4 py-2 bg-green-500 text-white text-2xl rounded shadow-md hover:bg-green-600">
-                  Download PDF
-                </button>
-              )
-            }
-          </PDFDownloadLink>
-        ) : (
-          <div className="bg-red-100 text-red-700 text-2xl p-4 rounded border border-red-400">
-            You need to create the Treatment package
-          </div>
-        )}
+        <div className="flex px-4 items-center justify-center py-3 h-full flex-col space-y-4">
+          {pdfData?.treatment_packages?.length > 0 ? (
+            <PDFDownloadLink
+              document={<BillDocument data={pdfData} />}
+              fileName="ReportGenerate.pdf"
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? (
+                  <button className="px-4 py-2 bg-blue-500 text-white text-xl rounded shadow-md hover:bg-blue-600">
+                    Loading document...
+                  </button>
+                ) : (
+                  <button className="px-4 py-2 bg-green-500 text-white text-xl rounded shadow-md hover:bg-green-600">
+                    Download PDF
+                  </button>
+                )
+              }
+            </PDFDownloadLink>
+          ) : (
+            <div className="bg-red-100 text-red-700 text-xl p-4 rounded border border-red-400">
+              You need to create the Treatment package
+            </div>
+          )}
         </div>
       </div>
     </div>

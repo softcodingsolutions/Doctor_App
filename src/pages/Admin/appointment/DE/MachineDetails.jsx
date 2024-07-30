@@ -210,14 +210,18 @@ export default function MachineDetails() {
                   value={inputBrief}
                   placeholder="Brief"
                 />
-                <input
-                  className="border-2 rounded-md p-2"
-                  type="number"
-                  onChange={handleSlot}
-                  value={slot}
-                  placeholder="Slot Number"
-                  min="0"
-                />
+                <div className="flex flex-col">
+                  <input
+                    className="border-2 rounded-md p-2"
+                    type="number"
+                    onChange={handleSlot}
+                    value={slot}
+                    placeholder="Number of Slot"
+                    min="0"
+                  />
+                  <p className="text-gray-600 text-sm mt-1">1 Slot = 30min</p>
+                </div>
+
                 <button
                   className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:bg-white hover:text-black p-3 rounded-md"
                   onClick={handleAddMachine}

@@ -7,7 +7,7 @@ import { LuCalendarClock } from "react-icons/lu";
 // import DoctorList from "./DE/DoctorList";
 import ConsultingTime from "./DE/ConsultingTime";
 import MachineDetails from "./DE/MachineDetails";
-import MachineTimeslot from "./DE/MachineTimeslot";
+// import MachineTimeslot from "./DE/MachineTimeslot";
 
 export default function DataEntry() {
   const [selectedId, setSelectedId] = useState("2");
@@ -19,23 +19,23 @@ export default function DataEntry() {
   const handleTimeslot = () => {
     setTimeslot(true);
     setMachines(false);
-    setMachinestime(false);
+    // setMachinestime(false);
     setSelectedId("2");
   };
 
   const handleMachines = () => {
     setTimeslot(false);
     setMachines(true);
-    setMachinestime(false);
+    // setMachinestime(false);
     setSelectedId("3");
   };
 
-  const handleMachinestime = () => {
-    setTimeslot(false);
-    setMachines(false);
-    setMachinestime(true);
-    setSelectedId("4");
-  };
+  // const handleMachinestime = () => {
+  //   setTimeslot(false);
+  //   setMachines(false);
+  //   setMachinestime(true);
+  //   setSelectedId("4");
+  // };
 
   const buttons = [
     {
@@ -50,12 +50,12 @@ export default function DataEntry() {
       function: handleMachines,
       icons: <GrVirtualMachine className="mt-1" />,
     },
-    {
-      id: "4",
-      name: "Machine Timeslot",
-      function: handleMachinestime,
-      icons: <LuCalendarClock className="mt-1" />,
-    },
+    // {
+    //   id: "4",
+    //   name: "Machine Timeslot",
+    //   function: handleMachinestime,
+    //   icons: <LuCalendarClock className="mt-1" />,
+    // },
   ];
 
   return (
@@ -80,7 +80,7 @@ export default function DataEntry() {
  
         {timeslot && <ConsultingTime />}
         {machines && <MachineDetails />}
-        {machinestime && <MachineTimeslot />}
+        {/* {machinestime && <MachineTimeslot />} */}
       </div>
     </div>
   );

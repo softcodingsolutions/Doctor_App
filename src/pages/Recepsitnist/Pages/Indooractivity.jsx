@@ -87,24 +87,26 @@ export default function Indooractivity(props) {
 
   function formatTime(time) {
     try {
-      const date = new Date(`1970-01-01T${time}Z`);
-      const options = {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        timeZone: "UTC",
-      };
-      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
-        date
-      );
+      const [hours, minutes] = time.split(':');
+      const date = new Date();
+      date.setHours(parseInt(hours));
+      date.setMinutes(parseInt(minutes));
+      let period = "AM";
+      let hour = date.getHours();
+      if (hour >= 12) {
+        period = "PM";
+        hour = hour > 12 ? hour - 12 : hour;
+      } else {
+        hour = hour === 0 ? 12 : hour;
+      }
+      const formattedTime = `${hour}:${minutes.padStart(2, '0')} ${period}`;
       return formattedTime;
     } catch (error) {
       console.error("Error formatting time:", error);
       return "Invalid time";
     }
   }
-
- 
+  
 
   const handleMachine = (e) => {
     const selectedMachineId = e.target.value;
