@@ -34,23 +34,13 @@ export default function Home() {
       });
   };
 
-  function formatTime(time) {
-    try {
-      const date = new Date(time);
-      const options = {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        timeZone: "UTC",
-      };
-      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
-        date
-      );
-      return formattedTime;
-    } catch (error) {
-      console.error("Error formatting time:", error);
-      return "Invalid time";
-    }
+  function formatTime(dateTimeString) {
+    const date = new Date(dateTimeString);
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
   }
 
   const formatDate = (date) => {
@@ -130,41 +120,41 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody>
-                      {consultingTimes.length>0 ? 
-                      (consultingTimes.map((data, index) => {
-                        return (
-                          <tr key={index} className="map">
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1">
-                                {data.doctor.first_name} {data.doctor.last_name}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1">
-                                {data.user.first_name} {data.user.last_name}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1">
-                                {formatDate(data.date)}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <span className="text-black text-base font-medium ml-1">
-                                {formatTime(data.time)}
-                              </span>
+                      {consultingTimes.length > 0 ? 
+                        (consultingTimes.map((data, index) => {
+                          return (
+                            <tr key={index} className="map">
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {data.doctor.first_name} {data.doctor.last_name}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {data.user.first_name} {data.user.last_name}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {formatDate(data.date)}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {formatTime(data.time)}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })) : 
+                        (
+                          <tr>
+                            <td colSpan="4" className="py-3 px-4 text-center justify-center">
+                              No Appointment is created for Consulting Time
                             </td>
                           </tr>
-                        );
-                      })) : 
-                      (
-                        <tr>
-                          <td colSpan="4" className="py-3 px-4 text-center justify-center">
-                            No Appointment is created for Consulting Time
-                          </td>
-                        </tr>
-                      )
-                     }
+                        )
+                      }
                     </tbody>
                   </table>
                 </div>
@@ -243,7 +233,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          
           </div>
         </div>
       </div>

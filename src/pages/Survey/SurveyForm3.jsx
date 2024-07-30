@@ -31,7 +31,7 @@ export default function SurveyForm3() {
     } 
     
     const handlePasswordhandle = () =>{
-
+        navigate(`/surveyresult`)
     }
 
     const handleCheckboxChange3 = (e) => {

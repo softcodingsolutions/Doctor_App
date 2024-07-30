@@ -101,6 +101,7 @@ function App() {
             <Route path="questions" element={<ReportQuestions />} />
             <Route path="past-history" element={<ReportPastHistory />} />
             <Route path="progress-report" element={<ReportProgress />} />
+            <Route path="generate-report" element={<ReportGenerate />} />
           </Route>
         </Route>
 
