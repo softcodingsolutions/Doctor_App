@@ -16,6 +16,19 @@ function CustomerUserDiagnosis() {
       .then((res) => {
         console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
+        if (res.data?.user?.creator === "doctor") {
+          localStorage.setItem("doctor_id", res.data?.user.created_by_id);
+        } else if (res.data?.user?.creator === "franchise") {
+          axios
+            .get(`/api/v2/users/search?id=${res.data?.user?.created_by_id}`)
+            .then((res) => {
+              console.log(
+                "User created by franchise's doctor: ",
+                res.data?.user
+              );
+              localStorage.setItem("doctor_id", res.data?.user?.created_by_id);
+            });
+        }
       })
       .catch((err) => {
         console.log(err);

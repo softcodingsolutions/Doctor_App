@@ -97,7 +97,6 @@ function CustomerAllUsers() {
                   <ThComponent name="Mobile" />
                   <ThComponent name="City" />
                   <ThComponent name="Registration Through" />
-                  <ThComponent name="Paid" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -152,18 +151,6 @@ function CustomerAllUsers() {
                             {val.creator === "franchise" && (
                               <TdComponent things={"Franchise"} />
                             )}
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                val.personal_detail?.package?.payment_method
-                                  ?.charAt(0)
-                                  .toUpperCase() +
-                                  val.personal_detail?.package?.payment_method?.slice(
-                                    1
-                                  ) ?? "null"
-                              }
-                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent

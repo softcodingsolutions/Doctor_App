@@ -182,13 +182,13 @@ function App() {
             <Route path="family-reason" element={<TreatmentFamilyReason />} />
             <Route path="complains" element={<TreatmentComplains />} />
           </Route>
-        
-         {/* Survey Master */}
+
+          {/* Survey Master */}
           <Route path="survey-master" element={<SurveyMaster />}>
             <Route path="health-problem" element={<Healthproblem />} />
             <Route path="weight-gain-reason" element={<Weightgainreason />} />
           </Route>
-         
+
           {/* list follow up */}
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
 
@@ -245,6 +245,7 @@ function App() {
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />
               <Route path="progress-report" element={<ReportProgress />} />
+              <Route path="generate-report" element={<ReportGenerate />} />
               <Route path="package" element={<ReportPackage />} />
 
               {/* customer treatment */}

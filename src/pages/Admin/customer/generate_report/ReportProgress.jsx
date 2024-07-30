@@ -11,6 +11,7 @@ import { FaRegThumbsDown } from "react-icons/fa6";
 function ReportProgress() {
   const [getProgess, setGetProgress] = useState([]);
   const [getQues, setGetQues] = useState([]);
+  const [getComplains, setGetComplains] = useState([]);
   const [showQues, setShowQues] = useState(false);
   const [showComplain, setShowComplain] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
@@ -26,6 +27,17 @@ function ReportProgress() {
     console.log("User Questions: ", data);
 
     setGetQues(data);
+  };
+  console.log("User lyo", context[1]);
+
+  const handleGetComplains = () => {
+    const data = context[1].personal_detail?.complaints?.selected_complains;
+    const complainsArray = data.map((complain) => ({
+      details: complain,
+      isEffective: null,
+    }));
+    console.log("Complains: ", complainsArray);
+    setGetComplains(complainsArray);
   };
 
   const handleGetProgress = () => {
@@ -89,12 +101,38 @@ function ReportProgress() {
     console.log(val);
   };
 
-  const feedbackComplains = (val) => {
-    console.log(val);
+  const feedbackComplains = (id, isEffective) => {
+    const updatedComplains = getComplains.map((complain, index) => ({
+      ...complain,
+      isEffective: index === id ? isEffective : complain.isEffective,
+    }));
+
+    const formData = new FormData();
+    formData.append(
+      "personal_detail[complaints]",
+      JSON.stringify(updatedComplains)
+    );
+
+    console.log(updatedComplains);
+
+    axios
+      .put(
+        `/api/v2/users/update_personal_details?user_id=${context[1]?.id}`,
+        formData
+      )
+      .then((res) => {
+        console.log(res);
+        handleGetComplains();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
   };
 
   useEffect(() => {
     handleGetProgress();
+    handleGetComplains();
     handleGetQues();
   }, [showProgress, showQues, showComplain]);
 
@@ -148,7 +186,9 @@ function ReportProgress() {
                 Complains
               </button>
             </div>
-            {(role === "super_admin" || role === "franchise" || role === "doctor") && (
+            {(role === "super_admin" ||
+              role === "franchise" ||
+              role === "doctor") && (
               <AddNewProgresReport
                 handleApi={handleAddProgress}
                 name="Add New Report"
@@ -279,7 +319,7 @@ function ReportProgress() {
                   </tr>
                 </thead>
                 <tbody>
-                  {context[1].personal_detail?.complaints?.length === 0 ? (
+                  {getComplains?.length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -289,38 +329,42 @@ function ReportProgress() {
                       </th>
                     </tr>
                   ) : (
-                    context[1].personal_detail?.complaints?.selected_complains?.map(
-                      (val, index) => {
-                        return (
-                          <tr key={val.id}>
-                            <td className="py-2 px-4 border-b border-b-gray-50">
-                              <div className="flex items-center">
-                                {index + 1}
-                              </div>
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val} />
-                            </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
-                              <TdComponent
-                                things={
-                                  <button className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
-                                    <FaRegThumbsUp size={20} />
-                                  </button>
-                                }
-                              />
-                              <TdComponent
-                                things={
-                                  <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
-                                    <FaRegThumbsDown size={20} />
-                                  </button>
-                                }
-                              />
-                            </td>
-                          </tr>
-                        );
-                      }
-                    )
+                    getComplains.map((val, index) => {
+                      return (
+                        <tr key={val.id}>
+                          <td className="py-2 px-4 border-b border-b-gray-50">
+                            <div className="flex items-center">{index + 1}</div>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.details} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
+                            <TdComponent
+                              things={
+                                <button
+                                  onClick={() => feedbackComplains(index, true)}
+                                  className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white"
+                                >
+                                  <FaRegThumbsUp size={20} />
+                                </button>
+                              }
+                            />
+                            <TdComponent
+                              things={
+                                <button
+                                  onClick={() =>
+                                    feedbackComplains(index, false)
+                                  }
+                                  className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white"
+                                >
+                                  <FaRegThumbsDown size={20} />
+                                </button>
+                              }
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })
                   )}
                 </tbody>
               </table>
