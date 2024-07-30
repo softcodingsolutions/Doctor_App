@@ -25,7 +25,9 @@ function RTreatmentDont() {
     }
 
     axios
-      .get("/api/v1/avoid_and_adds")
+      .get(
+        `/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
         console.log(
           "All the Donts",
@@ -79,7 +81,7 @@ function RTreatmentDont() {
       sendWeightReason === "null" ? null : sendWeightReason
     );
     formData.append("package[medicines]", JSON.stringify(selectedDonts));
-    
+
     setStoreData((prev) => ({
       ...prev,
       donts: selectedDonts,

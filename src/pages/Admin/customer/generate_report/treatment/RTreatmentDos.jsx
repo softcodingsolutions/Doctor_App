@@ -25,7 +25,7 @@ function RTreatmentDos() {
     }
 
     axios
-      .get("/api/v1/avoid_and_adds")
+      .get(`/api/v1/avoid_and_adds?user_id=${localStorage.getItem('doctor_id')}`)
       .then((res) => {
         console.log(
           "All the Dos",

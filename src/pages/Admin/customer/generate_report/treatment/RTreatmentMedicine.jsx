@@ -28,7 +28,7 @@ function RTreatmentMedicine() {
     }
 
     axios
-      .get("/api/v1/medicines")
+      .get(`/api/v1/medicines?user_id=${localStorage.getItem('doctor_id')}}`)
       .then((res) => {
         console.log("All the medicines:", res.data?.medicines);
         setGetMedicines(res.data?.medicines);

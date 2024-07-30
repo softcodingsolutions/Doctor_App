@@ -25,7 +25,7 @@ function RTreatmentDiet() {
     }
 
     axios
-      .get("/api/v1/diets")
+      .get(`/api/v1/diets?user_id=${localStorage.getItem("doctor_id")}`)
       .then((res) => {
         console.log("All the Diet:", res.data);
         setGetDiet(res.data);

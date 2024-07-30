@@ -95,6 +95,7 @@ function ReportTreatment() {
         );
         setMappingPackages(res.data?.matching_packages);
 
+
         const data = res.data?.matching_packages.map((pack) => {
           return [pack.package.weight_reason, pack.meets_requirements];
         });

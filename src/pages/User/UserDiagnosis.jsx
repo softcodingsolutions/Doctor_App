@@ -28,7 +28,12 @@ function UserDiagnosis() {
   }, []);
 
   const reportButtonsMain = reportButtons.filter((button) => {
-    if (button.id === "4" || button.id === "5" || button.id === "6") {
+    if (
+      button.id === "2" ||
+      button.id === "4" ||
+      button.id === "5" ||
+      button.id === "6"
+    ) {
       return (
         getCustomer.role === "super_admin" ||
         getCustomer.possibility_group === true

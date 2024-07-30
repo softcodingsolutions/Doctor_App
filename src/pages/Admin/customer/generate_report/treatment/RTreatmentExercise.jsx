@@ -25,7 +25,7 @@ function RTreatmentExercise() {
     }
 
     axios
-      .get("/api/v1/exercises")
+      .get(`/api/v1/exercises?user_id=${localStorage.getItem("doctor_id")}}`)
       .then((res) => {
         console.log("All the Exercise:", res.data);
         setGetExercise(res.data);

@@ -25,7 +25,7 @@ function RTreatmentNutrition() {
     }
 
     axios
-      .get("/api/v1/nutritions")
+      .get(`/api/v1/nutritions?user_id=${localStorage.getItem("doctor_id")}`)
       .then((res) => {
         console.log("All the Nutritions:", res.data);
         setGetNutrition(res.data);

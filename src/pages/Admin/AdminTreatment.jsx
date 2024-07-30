@@ -8,18 +8,36 @@ function AdminTreatment() {
   const [getWeightReason, setGetWeightReason] = useState([]);
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [getPackages, setPackages] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
 
   const handleGetWeightReason = () => {
-    axios
-      .get("/api/v1/weight_reasons")
-      .then((res) => {
-        console.log(res.data);
-        setGetWeightReason(res.data?.weight_reasons);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "super_admin") {
+      axios
+        .get("/api/v1/weight_reasons")
+        .then((res) => {
+          console.log("Weight Reasons: ", res.data?.weight_reasons);
+          setGetWeightReason(res.data?.weight_reasons);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else if (role === "doctor") {
+      axios
+        .get(`/api/v1/weight_reasons?user_id=${main_id}`)
+        .then((res) => {
+          console.log(
+            "Weight Reasons of particular doctor: ",
+            res.data?.weight_reasons
+          );
+          setGetWeightReason(res.data?.weight_reasons);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handlegetPackages = () => {
@@ -35,8 +53,9 @@ function AdminTreatment() {
       });
   };
 
-  const handleSendWeightReason = (val) => {
+  const handleSendWeightReason = (val, doc_id) => {
     setSendWeightReason(val);
+    localStorage.setItem("weight_reason_doctor_id", doc_id);
   };
 
   useEffect(() => {
@@ -58,7 +77,7 @@ function AdminTreatment() {
                 <Option
                   key={res.id}
                   value={res.name}
-                  onClick={() => handleSendWeightReason(res.name)}
+                  onClick={() => handleSendWeightReason(res.name, res.user_id)}
                 >
                   {res.name}
                 </Option>
