@@ -35,9 +35,12 @@ export default function SurveyForm() {
     formdata.append("survey_user[language]", data.language);
     formdata.append(
       "survey_user[fat_deposit_body_part]",
-      selectedCheckboxes.join(", ")
+      JSON.stringify(selectedCheckboxes.join(", "))
     );
-    formdata.append("survey_user[user_weight_gain_reason]", data.question);
+    formdata.append(
+      "survey_user[user_weight_gain_reason]",
+      JSON.stringify(data?.question)
+    );
 
     axios
       .post(`/api/v2/survey_users`, formdata)
