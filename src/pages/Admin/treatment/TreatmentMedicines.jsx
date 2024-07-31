@@ -14,18 +14,34 @@ function TreatmentMedicines() {
   const [getMedicines, setGetMedicines] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const role = localStorage.getItem("role");
 
   const handleGetMedicines = () => {
-    axios
-      .get("/api/v1/medicines")
-      .then((res) => {
-        console.log(res.data);
-        setGetMedicines(res.data?.medicines);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      axios
+        .get(`/api/v1/medicines?user_id=${localStorage.getItem("main_id")}`)
+        .then((res) => {
+          console.log(res.data);
+          setGetMedicines(res.data?.medicines);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else if (role === "super_admin") {
+      axios
+        .get(
+          `/api/v1/medicines?user_id=${localStorage.getItem("map_doctor_id")}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          setGetMedicines(res.data?.medicines);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleToggleCheckboxes = () => {
@@ -102,7 +118,7 @@ function TreatmentMedicines() {
 
   useEffect(() => {
     handleGetMedicines();
-  }, []);
+  }, [context[0]]);
 
   return (
     <div className="w-full p-2">

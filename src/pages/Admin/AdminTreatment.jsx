@@ -55,7 +55,7 @@ function AdminTreatment() {
 
   const handleSendWeightReason = (val, doc_id) => {
     setSendWeightReason(val);
-    localStorage.setItem("weight_reason_doctor_id", doc_id);
+    localStorage.setItem("map_doctor_id", doc_id);
   };
 
   useEffect(() => {

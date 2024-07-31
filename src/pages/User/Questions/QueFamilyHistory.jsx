@@ -4,10 +4,18 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-function QueFamilyHistory({ onNext, onBack, onValidate }) {
+function QueFamilyHistory({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getFamily, setGetFamily] = useState([]);
-  const email = localStorage.getItem("client_email");
+  const [selectedFamilyReasons, setSelectedFamilyReasons] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -18,32 +26,33 @@ function QueFamilyHistory({ onNext, onBack, onValidate }) {
     mode: "onChange",
   });
 
-  const submittedData = async (d) => {
-    console.log("Family History: ", d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            family_reasons: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("Family History: ", res);
-          reset();
-          onNext();
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-    } catch (error) {
-      console.error(error);
-    }
+  const submittedData = async (data) => {
+    const formData = {
+      ...data,
+      selected_family_reasons: selectedFamilyReasons,
+    };
+
+    setStoreData((prev) => ({
+      ...prev,
+      familyHistory: formData,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your family history has been saved.",
+    });
+
+    onNext();
+    reset();
   };
 
   const handleChange = (event, newValue) => {
+    setSelectedFamilyReasons(newValue);
     setValue("selected_family_reasons", newValue, { shouldValidate: true });
-    console.log(newValue);
   };
 
   const handleGetFamily = () => {
@@ -63,6 +72,13 @@ function QueFamilyHistory({ onNext, onBack, onValidate }) {
 
   useEffect(() => {
     handleGetFamily();
+
+    if (storedData) {
+      reset({
+        additional_family_reasons: storedData.additional_family_reasons || "",
+      });
+      setSelectedFamilyReasons(storedData.selected_family_reasons || []);
+    }
   }, []);
 
   useEffect(() => {
@@ -89,6 +105,7 @@ function QueFamilyHistory({ onNext, onBack, onValidate }) {
                   multiple
                   placeholder="Choose..."
                   onChange={handleChange}
+                  value={selectedFamilyReasons}
                   sx={{
                     minWidth: "13rem",
                   }}
@@ -100,13 +117,11 @@ function QueFamilyHistory({ onNext, onBack, onValidate }) {
                     },
                   }}
                 >
-                  {getFamily.map((res) => {
-                    return (
-                      <Option key={res.id} value={res.details_in_english}>
-                        {res.details_in_english}
-                      </Option>
-                    );
-                  })}
+                  {getFamily.map((res) => (
+                    <Option key={res.id} value={res.details_in_english}>
+                      {res.details_in_english}
+                    </Option>
+                  ))}
                 </Select>
                 <div className="flex flex-col gap-2 mt-10">
                   <label>Family Disease:</label>

@@ -14,21 +14,39 @@ function TreatmentQuestionPart1() {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [questionsToBeAnswered, setQuestionsToBeAnswered] =
-    useState(selectedCheckboxes);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
+  const role = localStorage.getItem("role");
 
   const handleGetQuestionsPart1 = () => {
-    axios
-      .get("/api/v1/questions/part1")
-      .then((res) => {
-        console.log(res.data);
-        setGetQuestionsPart1(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      axios
+        .get(
+          `/api/v1/questions/part1?user_id=${localStorage.getItem("main_id")}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          setGetQuestionsPart1(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else if (role === "super_admin") {
+      axios
+        .get(
+          `/api/v1/questions/part1?user_id=${localStorage.getItem(
+            "map_doctor_id"
+          )}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          setGetQuestionsPart1(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleToggleCheckboxes = () => {
@@ -121,7 +139,6 @@ function TreatmentQuestionPart1() {
     } finally {
       setSelectedCheckboxes([]);
       setShowCheckboxes(false);
-      setQuestionsToBeAnswered(selectedCheckboxes.length);
     }
   };
 
@@ -143,16 +160,12 @@ function TreatmentQuestionPart1() {
       return acc;
     }, []);
     setSelectedCheckboxes(preSelectedQuestions);
-    setQuestionsToBeAnswered(selectedCheckboxes.length);
   }, [context]);
 
   useEffect(() => {
-    axios.get(`/api/v1/packages/find_packages?id=${15}`).then((res) => {
-      console.log(res);
-    });
     handleGetQuestionsPart1();
     context[1]();
-  }, []);
+  }, [context[0]]);
 
   return (
     <div className="w-full p-2">

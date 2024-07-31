@@ -14,18 +14,34 @@ function TreatmentExercise() {
   const [getExercise, setGetExercise] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const role = localStorage.getItem("role");
 
   const handleGetExercise = () => {
-    axios
-      .get("/api/v1/exercises")
-      .then((res) => {
-        console.log(res.data);
-        setGetExercise(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      axios
+        .get(`/api/v1/exercises?user_id=${localStorage.getItem("main_id")}`)
+        .then((res) => {
+          console.log(res.data);
+          setGetExercise(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else if (role === "super_admin") {
+      axios
+        .get(
+          `/api/v1/exercises?user_id=${localStorage.getItem("map_doctor_id")}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          setGetExercise(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleToggleCheckboxes = () => {
@@ -101,7 +117,7 @@ function TreatmentExercise() {
 
   useEffect(() => {
     handleGetExercise();
-  }, []);
+  }, [context[0]]);
 
   return (
     <div className="w-full p-2">

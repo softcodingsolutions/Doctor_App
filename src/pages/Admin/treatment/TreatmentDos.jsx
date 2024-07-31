@@ -14,23 +14,48 @@ function TreatmentDos() {
   const [getDos, setGetDos] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const role = localStorage.getItem("role");
 
   const handleGetDos = () => {
-    axios
-      .get("/api/v1/avoid_and_adds")
-      .then((res) => {
-        console.log(
-          "Dos",
-          res.data?.avoid_and_adds.filter((res) => res.category === "do")
-        );
-        setGetDos(
-          res.data?.avoid_and_adds.filter((res) => res.category === "do")
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      axios
+        .get(
+          `/api/v1/avoid_and_adds?user_id=${localStorage.getItem("main_id")}`
+        )
+        .then((res) => {
+          console.log(
+            "Dos",
+            res.data?.avoid_and_adds.filter((res) => res.category === "do")
+          );
+          setGetDos(
+            res.data?.avoid_and_adds.filter((res) => res.category === "do")
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else if (role === "super_admin") {
+      axios
+        .get(
+          `/api/v1/avoid_and_adds?user_id=${localStorage.getItem(
+            "map_doctor_id"
+          )}`
+        )
+        .then((res) => {
+          console.log(
+            "Dos",
+            res.data?.avoid_and_adds.filter((res) => res.category === "do")
+          );
+          setGetDos(
+            res.data?.avoid_and_adds.filter((res) => res.category === "do")
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleToggleCheckboxes = () => {
@@ -106,7 +131,7 @@ function TreatmentDos() {
 
   useEffect(() => {
     handleGetDos();
-  }, []);
+  }, [context[0]]);
 
   return (
     <div className="w-full p-2">

@@ -28,10 +28,9 @@ function ReportProgress() {
 
     setGetQues(data);
   };
-  console.log("User lyo", context[1]);
 
   const handleGetComplains = () => {
-    const data = context[1].personal_detail?.complaints?.selected_complains;
+    const data = context[1]?.personal_detail?.complaints?.selected_complains;
     const complainsArray = data.map((complain) => ({
       details: complain,
       isEffective: null,
@@ -44,8 +43,8 @@ function ReportProgress() {
     axios
       .get(`/api/v1/progress_reports?user_id=${context[0]}`)
       .then((res) => {
-        console.log("Progress Report: ", res.data.progress_reports);
-        setGetProgress(res.data.progress_reports);
+        console.log("Progress Report: ", res.data?.progress_reports);
+        setGetProgress(res.data?.progress_reports);
       })
       .catch((err) => {
         console.log(err);
@@ -225,7 +224,7 @@ function ReportProgress() {
                       </th>
                     </tr>
                   ) : (
-                    getProgess.map((val, index) => {
+                    getProgess?.map((val, index) => {
                       return (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
@@ -286,7 +285,7 @@ function ReportProgress() {
                               />
                             )}
 
-                            {val.progress_report === false && (
+                            {val?.progress_report === false && (
                               <TdComponent
                                 things={
                                   <button className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
@@ -329,7 +328,7 @@ function ReportProgress() {
                       </th>
                     </tr>
                   ) : (
-                    getComplains.map((val, index) => {
+                    getComplains?.map((val, index) => {
                       return (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
