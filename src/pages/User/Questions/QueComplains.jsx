@@ -4,10 +4,17 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import { Option, Select } from "@mui/joy";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-function QueComplains({ onNext, onBack, onValidate }) {
-  const email = localStorage.getItem("client_email");
+function QueComplains({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getComplain, setGetComplain] = useState([]);
+  const [selectedComplains, setSelectedComplains] = useState([]);
   const {
     register,
     handleSubmit,
@@ -19,31 +26,31 @@ function QueComplains({ onNext, onBack, onValidate }) {
   });
 
   const submittedData = async (d) => {
-    console.log("Complains: ", d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            complaints: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("Complains: ", res);
-          reset();
-          onNext();
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-    } catch (error) {
-      console.error(error);
-    }
+    const formData = {
+      ...d,
+      selected_complains: selectedComplains,
+    };
+
+    setStoreData((prev) => ({
+      ...prev,
+      complains: formData,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your complains has been saved.",
+    });
+    onNext();
+    reset();
   };
 
   const handleChange = (event, newValue) => {
-    setValue("selected_complains", newValue);
-    console.log(newValue);
+    setSelectedComplains(newValue);
+    setValue("selected_complains", newValue, { shouldValidate: true });
   };
 
   const handleGetComplain = () => {
@@ -61,6 +68,13 @@ function QueComplains({ onNext, onBack, onValidate }) {
 
   useEffect(() => {
     handleGetComplain();
+
+    if (storedData) {
+      reset({
+        additional_complains: storedData.additional_complains || "",
+      });
+      setSelectedComplains(storedData.selected_complains || []);
+    }
   }, []);
 
   useEffect(() => {
@@ -87,6 +101,7 @@ function QueComplains({ onNext, onBack, onValidate }) {
                   placeholder="Choose..."
                   multiple
                   onChange={handleChange}
+                  value={selectedComplains}
                   sx={{
                     minWidth: "13rem",
                   }}

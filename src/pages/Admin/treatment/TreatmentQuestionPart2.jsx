@@ -15,20 +15,39 @@ function TreatmentQuestionPart2() {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [questionsToBeAnswered, setQuestionsToBeAnswered] = useState(0);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
+  const role = localStorage.getItem("role");
 
   const handleGetQuestionsPart2 = () => {
-    axios
-      .get("/api/v1/questions/part2")
-      .then((res) => {
-        console.log(res.data);
-        setGetQuestionsPart2(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      axios
+        .get(
+          `/api/v1/questions/part2?user_id=${localStorage.getItem("main_id")}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          setGetQuestionsPart2(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else if (role === "super_admin") {
+      axios
+        .get(
+          `/api/v1/questions/part2?user_id=${localStorage.getItem(
+            "map_doctor_id"
+          )}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          setGetQuestionsPart2(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleToggleCheckboxes = () => {
@@ -120,7 +139,6 @@ function TreatmentQuestionPart2() {
     } finally {
       setSelectedCheckboxes([]);
       setShowCheckboxes(false);
-      setQuestionsToBeAnswered(selectedCheckboxes.length);
     }
   };
 
@@ -142,12 +160,11 @@ function TreatmentQuestionPart2() {
       return acc;
     }, []);
     setSelectedCheckboxes(preSelectedQuestions);
-    setQuestionsToBeAnswered(selectedCheckboxes.length);
   }, [context]);
 
   useEffect(() => {
     handleGetQuestionsPart2();
-  }, []);
+  }, [context[0]]);
 
   return (
     <div className="w-full p-2">

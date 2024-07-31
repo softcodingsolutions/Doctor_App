@@ -6,11 +6,17 @@ import UserDetailsInput from "../../../../components/User/UserDetailsInput";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Option, Select } from "@mui/joy";
+import Swal from "sweetalert2";
 
-function CustomerGeneralDetails({ onNext, onValidate }) {
+function CustomerGeneralDetails({
+  onNext,
+  onValidate,
+  setStoreData,
+  storedData,
+}) {
   const [getAdmin, setGetAdmin] = useState([]);
   const [getDoctors, setGetDoctors] = useState([]);
-  const [getDoctorId, setGetDoctorId] = useState("");
+  const [getDoctorId, setGetDoctorId] = useState(storedData?.doctorId || "");
   const [doctorError, setDoctorError] = useState(false);
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
@@ -62,73 +68,56 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
       return;
     }
 
-    console.log(d);
-    try {
-      const res = await axios.get(`/api/v1/users/app_creds`);
-      if (role === "doctor") {
-        await axios.post("/api/v1/users", {
-          user: {
-            first_name: d.firstname,
-            last_name: d.lastname,
-            email: d.email,
-            phone_number: d.mobile,
-            created_by_id: getAdmin.id,
-            creator: getAdmin.role,
-          },
-          personal_detail: {
-            city: d.city,
-            age: d.age,
-            address: d.address,
-            gender: d.gender,
-            overweight_since: d.overweight,
-            language: d.language,
-            reffered_by: d.refferedBy,
-            weight: d.weight,
-            height: d.height,
-            whatsapp_number: d.whatsapp,
-          },
-          client_id: res.data?.client_id,
-        });
-        localStorage.setItem("doctor_id", getAdmin.id);
-      } else if (role === "super_admin") {
-        await axios.post("/api/v1/users", {
-          user: {
-            first_name: d.firstname,
-            last_name: d.lastname,
-            email: d.email,
-            phone_number: d.mobile,
-            created_by_id: getDoctorId,
-            creator: "doctor",
-          },
-          personal_detail: {
-            city: d.city,
-            age: d.age,
-            address: d.address,
-            gender: d.gender,
-            overweight_since: d.overweight,
-            language: d.language,
-            reffered_by: d.refferedBy,
-            weight: d.weight,
-            height: d.height,
-            whatsapp_number: d.whatsapp,
-          },
-          client_id: res.data?.client_id,
-        });
-        localStorage.setItem("doctor_id", getDoctorId);
-      }
+    setStoreData((prev) => ({
+      ...prev,
+      generalDetails: d,
+      doctorId: getDoctorId,
+    }));
 
-      localStorage.setItem("client_email", d.email);
-
-      reset();
-      onNext();
-    } catch (error) {
-      console.error(error);
+    if (role === "doctor") {
+      localStorage.setItem("doctor_id", getAdmin.id);
+    } else if (role === "super_admin") {
+      localStorage.setItem("doctor_id", getDoctorId);
     }
+    localStorage.setItem("client_email", d.email);
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your info has been saved.",
+    });
+
+    onNext();
+    reset();
   };
+  
 
   useEffect(() => {
     handleGetAdmin();
     handleGetDoctors();
+
+    if (storedData) {
+      reset({
+        firstname: storedData.firstname || "",
+        lastname: storedData.lastname || "",
+        email: storedData.email || "",
+        mobile: storedData.mobile || "",
+        address: storedData.address || "",
+        refferedBy: storedData.refferedBy || "",
+        age: storedData.age || "",
+        height: storedData.height || "",
+        overweight: storedData.overweight || "select",
+        city: storedData.city || "",
+        language: storedData.language || "",
+        gender: storedData.gender || "select",
+        weight: storedData.weight || "",
+        whatsapp: storedData.whatsapp || "",
+      });
+      setGetDoctorId(storedData.doctorId || "");
+    }
   }, []);
 
   useEffect(() => {
@@ -255,6 +244,7 @@ function CustomerGeneralDetails({ onNext, onValidate }) {
                     </select>
                   </div>
                 </div>
+
                 <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput

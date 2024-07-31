@@ -13,6 +13,7 @@ function ReportTreatment() {
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [mappingPackages, setMappingPackages] = useState([]);
   const user_id = localStorage.getItem("userId");
+
   const [storeData, setStoreData] = useState({
     medicine: [],
     diet: [],
@@ -94,7 +95,6 @@ function ReportTreatment() {
           res.data?.matching_packages
         );
         setMappingPackages(res.data?.matching_packages);
-
 
         const data = res.data?.matching_packages.map((pack) => {
           return [pack.package.weight_reason, pack.meets_requirements];

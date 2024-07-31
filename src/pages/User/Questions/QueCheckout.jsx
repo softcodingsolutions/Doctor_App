@@ -4,13 +4,10 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FormLabel, Option, Select } from "@mui/joy";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function QueCheckout() {
-  const navigate = useNavigate();
-  const email = localStorage.getItem("client_email");
-  const { register, handleSubmit, reset, setValue, watch } = useForm();
+function QueCheckout({ setStoreData, onBack, handleCallUserApi }) {
+  const { register, handleSubmit, setValue, watch } = useForm();
   const [getPackages, setGetPackages] = useState([]);
   const [selectedPackage, setSelectedPackage] = useState(null);
 
@@ -76,37 +73,11 @@ function QueCheckout() {
 
   const submittedData = async (d) => {
     console.log(d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            package: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("Checkout: ", res);
-          if (res.data) {
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "Created!",
-              text: `New user has been created.`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-          localStorage.removeItem("client_email");
-          navigate("../../admin/customers/all-users");
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-    } catch (error) {
-      console.error(error);
-    }
-
-    reset();
+    setStoreData((prev) => ({
+      ...prev,
+      checkout: d,
+    }));
+    handleCallUserApi();
   };
 
   useEffect(() => {
@@ -261,7 +232,8 @@ function QueCheckout() {
                   className="border-2 border-black w-full p-2 rounded-md"
                 />
               </div>
-              <div className="flex w-full justify-center gap-2">
+              <div className="flex w-full justify-center gap-3 mt-2">
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

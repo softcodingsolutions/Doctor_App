@@ -15,18 +15,34 @@ function TreatmentNutrition() {
   const [getNutrition, setGetNutrition] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const role = localStorage.getItem("role");
 
   const handleGetNutrition = () => {
-    axios
-      .get("/api/v1/nutritions")
-      .then((res) => {
-        console.log(res.data);
-        setGetNutrition(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
+    if (role === "doctor") {
+      axios
+        .get(`/api/v1/nutritions?user_id=${localStorage.getItem("main_id")}`)
+        .then((res) => {
+          console.log(res.data);
+          setGetNutrition(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } else if (role === "super_admin") {
+      axios
+        .get(
+          `/api/v1/nutritions?user_id=${localStorage.getItem("map_doctor_id")}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          setGetNutrition(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    }
   };
 
   const handleToggleCheckboxes = () => {
@@ -102,7 +118,7 @@ function TreatmentNutrition() {
 
   useEffect(() => {
     handleGetNutrition();
-  }, []);
+  }, [context[0]]);
 
   return (
     <div className="w-full p-2">

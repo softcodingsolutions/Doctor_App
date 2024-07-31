@@ -7,10 +7,16 @@ import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsBu
 import PrevPageButton from "../../../../components/Admin/PrevPageButton";
 import { useForm } from "react-hook-form";
 
-function CustomerQuestionsPart1({ onNext, onBack, onValidate }) {
+function CustomerQuestionsPart1({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const email = localStorage.getItem("client_email");
+
   const {
     formState: { isValid },
   } = useForm({
@@ -61,34 +67,21 @@ function CustomerQuestionsPart1({ onNext, onBack, onValidate }) {
       });
     }
 
-    console.log("Selected Questions: ", selectedQuestions);
 
-    try {
-      const response = await axios.put(
-        `/api/v2/users/update_personal_details?email=${email}`,
-        {
-          personal_detail: {
-            user_selected_questions_one: JSON.stringify(selectedQuestions),
-          },
-        }
-      );
-      if (response.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Saved!",
-          text: `Your question has been saved.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        onNext();
-      }
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
-    } finally {
-      setSelectedCheckboxes([]);
-    }
+    setStoreData((prev) => ({
+      ...prev,
+      questions: selectedQuestions,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Saved!",
+      text: `Your question has been saved.`,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    onNext();
   };
 
   useEffect(() => {
@@ -96,8 +89,11 @@ function CustomerQuestionsPart1({ onNext, onBack, onValidate }) {
   }, []);
 
   useEffect(() => {
+    if (storedData) {
+      setSelectedCheckboxes(storedData.map((q) => q.id.toString()));
+    }
     onValidate(isValid);
-  }, [isValid, onValidate]);
+  }, [storedData, isValid, onValidate]);
 
   return (
     <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
@@ -137,6 +133,9 @@ function CustomerQuestionsPart1({ onNext, onBack, onValidate }) {
                         <td className="py-3 px-4 border-b border-b-gray-50 ">
                           <input
                             value={val.id}
+                            checked={selectedCheckboxes.includes(
+                              val.id.toString()
+                            )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
                           />
