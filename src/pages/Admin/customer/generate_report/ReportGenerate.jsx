@@ -80,7 +80,7 @@ export const BillDocument = ({ data }) => (
           <Text style={styles.Name}>
             Height : {data?.personal_detail?.height} cm
           </Text>
-          <Text style={styles.Name}>
+          <Text style={styles.Name}>  
             Weight : {data?.personal_detail?.weight} kg
           </Text>
         </View>

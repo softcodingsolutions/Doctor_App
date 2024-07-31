@@ -10,6 +10,7 @@ import {
   ModalDialog,
   Stack,
 } from "@mui/joy";
+import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ReactTransliterate } from "react-transliterate";
@@ -17,18 +18,27 @@ import { ReactTransliterate } from "react-transliterate";
 function AddHealthProblem(props) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState({
-    gujarati: "",
     english: "",
   });
   const { register, handleSubmit, reset } = useForm();
 
   const submittedData = (d) => {
     console.log(text);
-    console.log(d);
-    props.handleApi(text.gujarati, text.english);
+    props.handleApi(text.english);
+
+    const formData = new FormData();
+    formData.append("survey_helth_problem[problem]", text.english);
+    axios
+      .post("/api/v2/survey_helth_problems", formData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     reset();
     setText({
-      gujarati: "",
       english: "",
     });
   };
@@ -64,47 +74,18 @@ function AddHealthProblem(props) {
                 <FormLabel>{props.details} :-</FormLabel>
                 <Box className="flex flex-col items-center w-full">
                   <ReactTransliterate
-                    name={`question_english`}
-                    {...register(`question_english`)}
+                    name="question_english"
                     value={text.english}
                     lang="en"
                     onChangeText={(value) => {
-                      setText((prev) => {
-                        return {
-                          ...prev,
-                          english: value,
-                        };
-                      });
+                      setText((prev) => ({
+                        ...prev,
+                        english: value,
+                      }));
                     }}
-                    renderComponent={(props) => {
-                      return (
-                        <textarea {...props} placeholder="In English..." />
-                      );
-                    }}
-                    className="p-1 border border-gray-400 rounded-sm"
-                    rows={4}
-                    cols={30}
-                    required
-                  />
-
-                  <ReactTransliterate
-                    name={`question_gujarati`}
-                    {...register(`question_gujarati`)}
-                    value={text.gujarati}
-                    lang="gu"
-                    onChangeText={(value) => {
-                      setText((prev) => {
-                        return {
-                          ...prev,
-                          gujarati: value,
-                        };
-                      });
-                    }}
-                    renderComponent={(props) => {
-                      return (
-                        <textarea {...props} placeholder="In Gujarati..." />
-                      );
-                    }}
+                    renderComponent={(props) => (
+                      <textarea {...props} placeholder="In English..." />
+                    )}
                     className="p-1 border border-gray-400 rounded-sm"
                     rows={4}
                     cols={30}
@@ -112,7 +93,6 @@ function AddHealthProblem(props) {
                   />
                 </Box>
               </FormControl>
-
               <Button type="submit">Submit</Button>
             </Stack>
           </form>

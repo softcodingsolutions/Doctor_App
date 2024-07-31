@@ -54,25 +54,14 @@ export default function ConsultingTime() {
     setInputDoctor(e.target.value);
   }
 
-  function formatTime(time) {
-    try {
-      const date = new Date(time);
-      const options = {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        timeZone: "UTC",
-      };
-      const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
-        date
-      );
-      return formattedTime;
-    } catch (error) {
-      console.error("Error formatting time:", error);
-      return "Invalid time";
-    }
+  function formatTime(dateTimeString) {
+    const date = new Date(dateTimeString);
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
   }
-
   function handleAddDoctor() {
     if (inputTime && inputSlot !== "select" && inputDoctor !== "select") {
       const newDoctor = {

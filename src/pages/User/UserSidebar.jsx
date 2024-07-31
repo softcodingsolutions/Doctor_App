@@ -9,15 +9,15 @@ import { MdOutlineMedicalInformation } from "react-icons/md";
 function UserSidebar({ onSidebarHide, showSidebar, user }) {
   const navigate = useNavigate();
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
-  const [selected, setSelected] = useState("0");
+  const [selected, setSelected] = useState("1");
 
   const sidebarItems = [
-    {
-      id: "0",
-      title: "Dashboard",
-      to: "dashboard",
-      icons: <IoMdHome size={18} />,
-    },
+    // {
+    //   id: "0",
+    //   title: "Dashboard",
+    //   to: "dashboard",
+    //   icons: <IoMdHome size={18} />,
+    // },
     {
       id: "1",
       title: "Diagnosis Details",
