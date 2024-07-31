@@ -18,7 +18,6 @@ export default function SurveyForm() {
   });
 
   const onSubmit = (data) => {
-    // Adding selected checkboxes to data
     data.selectedCheckboxes = selectedCheckboxes;
     navigate("/surveyform2");
     localStorage.setItem("user_weight", data.weight);

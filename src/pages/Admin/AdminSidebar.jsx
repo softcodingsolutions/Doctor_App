@@ -9,6 +9,7 @@ import { MdOutlineGppGood } from "react-icons/md";
 import { Option, Select } from "@mui/joy";
 import { MdManageAccounts } from "react-icons/md";
 import { masterButtons } from "../../constants/admin/AdminConstants";
+import { AiFillDatabase } from "react-icons/ai";
 import img from "../../assets/images/icons_slime.png";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
@@ -92,7 +93,13 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       id: "9",
       title: "Survey Treatment",
       to: `master/${save ? save : "list-franchise"}`,
-      icons: <FaLightbulb size={18} />,
+      icons: <MdOutlineGppGood size={18} />,
+    },
+    {
+      id: "10",
+      title: "User Data",
+      to: `user-data`,
+      icons: <AiFillDatabase size={18} />,
     },
   ];
 

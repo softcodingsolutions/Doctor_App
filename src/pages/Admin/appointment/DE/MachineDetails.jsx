@@ -12,6 +12,7 @@ export default function MachineDetails() {
   const [editedQuantity, setEditedQuantity] = useState("");
   const [editedBrief, setEditedBrief] = useState("");
   const [editedSlot, setEditedSlot] = useState("");
+  const [editedDoctorId, setEditedDoctorId] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [inputVisible, setInputVisible] = useState(false);
   const [doctor, setDoctor] = useState([]);
@@ -117,12 +118,13 @@ export default function MachineDetails() {
     setSlot(e.target.value);
   };
 
-  const handleEditMachine = (index, machineName, quantity, brief, slot) => {
+  const handleEditMachine = (index, machineName, quantity, brief, slot, doctorId) => {
     setEditIndex(index);
     setEditedMachineName(machineName);
     setEditedQuantity(quantity);
     setEditedBrief(brief);
     setEditedSlot(slot);
+    setEditedDoctorId(doctorId);
   };
 
   const handleUpdateMachine = () => {
@@ -132,6 +134,7 @@ export default function MachineDetails() {
       quantity: editedQuantity,
       brief: editedBrief,
       slot_number: editedSlot,
+      user_id: editedDoctorId,
     };
 
     axios
@@ -144,6 +147,7 @@ export default function MachineDetails() {
         setEditedQuantity("");
         setEditedBrief("");
         setEditedSlot("");
+        setEditedDoctorId("");
       })
       .catch((err) => {
         console.log(err);
@@ -237,6 +241,9 @@ export default function MachineDetails() {
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                    Doctor Name
+                  </th>
+                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Machine Name
                   </th>
                   <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
@@ -268,6 +275,22 @@ export default function MachineDetails() {
                     <tr key={index} className="map">
                       {editIndex === index ? (
                         <>
+                          <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                            <select
+                              value={editedDoctorId}
+                              onChange={(e) => setEditedDoctorId(e.target.value)}
+                              className="border-2 rounded-md p-2"
+                            >
+                              <option disabled value="">
+                                Select Doctor
+                              </option>
+                              {doctor.map((res) => (
+                                <option key={res.id} value={res.id}>
+                                  {res.first_name + " " + res.last_name}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
                           <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                             <input
                               type="text"
@@ -329,6 +352,11 @@ export default function MachineDetails() {
                         <>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <span className="text-black text-base font-medium ml-1">
+                              {machine?.user?.first_name} {machine?.user?.last_name}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <span className="text-black text-base font-medium ml-1">
                               {machine.name}
                             </span>
                           </td>
@@ -355,7 +383,8 @@ export default function MachineDetails() {
                                   machine.name,
                                   machine.quantity,
                                   machine.brief,
-                                  machine.slot_number
+                                  machine.slot_number,
+                                  machine.user_id
                                 )
                               }
                               className="min-w-fit  border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"

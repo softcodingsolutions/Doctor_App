@@ -1,13 +1,10 @@
 import { CiViewList } from "react-icons/ci";
-import {
-  FaRegQuestionCircle,
-} from "react-icons/fa";
-
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 export const masterButtons = [
   {
     id: "1",
-    name: "health Problem",
+    name: "Health Problem",
     icons: <CiViewList size={18} />,
     to: "health-problem",
   },
@@ -17,6 +14,4 @@ export const masterButtons = [
     icons: <FaRegQuestionCircle size={18} />,
     to: "weight-gain-reason",
   },
- 
 ];
-

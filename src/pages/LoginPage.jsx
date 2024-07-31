@@ -65,7 +65,7 @@ function LoginPage() {
           } else if (res.data?.user?.role === "receptionist") {
             navigate("/receptionist/appointment/home");
           } else {
-            navigate("/user/dashboard");
+            navigate("/user/user-diagnosis/profile");
           }
           reset();
         });
@@ -84,7 +84,7 @@ function LoginPage() {
     } else if (role === "receptionist") {
       navigate("/receptionist/appointment/home");
     } else if (role === "patient") {
-      navigate("/user/dashboard");
+      navigate("/user/user-diagnosis/profile");
     }
   }, []);
 

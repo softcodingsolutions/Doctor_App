@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-
+import axios from 'axios';
 export default function SurveyForm2() {
   const navigate = useNavigate();
+  const [healthproblem,setHealthProblem] = useState([]);
   const [selectedCheckboxes2, setSelectedCheckboxes2] = useState([]);
   const {
     register,
@@ -32,18 +33,17 @@ export default function SurveyForm2() {
     navigate('/surveyform');
   };
 
-  const items2 = [
-    'High B.P',
-    'Diabetes',
-    'Heart Problem',
-    'Hypothyroidism',
-    'Infertility',
-    'Pcod/Pcos',
-    'Joint Pain',
-    'Back Pain',
-    'Did you observe that you have regained your body weight? શું તમારુ ઘટેલું વજન ફરીથી વધ્યું છે?',
-    'No Complain'
-  ];
+  const handleData =() =>{
+    axios.get(`/api/v2/survey_helth_problems`).then((res)=>{
+      console.log(res)
+      setHealthProblem(res.data.all_survey_helth_problems);
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+  useEffect(()=>{
+    handleData()
+  },[]);
 
   return (
     <div>
@@ -64,16 +64,16 @@ export default function SurveyForm2() {
           >
             <div className="grid py-2 my-1 p-3">
               <label className="text-xl text-[#799351] font-semibold">Kindly click your health problem ( If any )</label>
-              {items2.map((item, index) => (
-                <div key={item}>
+              {healthproblem.map((item, index) => (
+                <div key={index}>
                   <input
-                    value={item}
+                    value={item.problem}
                     onChange={handleCheckboxChange2}
                     type="checkbox"
                     id={`checkbox-${index}`}
                     className="mr-2"
                   />
-                  <label htmlFor={`checkbox-${index}`} className='p-2'>{item}</label>
+                  <label htmlFor={`checkbox-${index}`} className='p-2'>{item.problem}</label>
                 </div>
               ))}
             </div>
