@@ -1,10 +1,11 @@
 import React,{useEffect,useState} from 'react'
-import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import AddHealthProblem from '../../../components/Admin/AddHealthProblem';
-import { CloseFullscreen } from '@mui/icons-material';
+import { MdDelete } from "react-icons/md";
+import Swal from "sweetalert2";
+
 export default function Healthproblem() {
 const[healthproblem,setHealthProblem] = useState([]);
   const handleAddHealth = (english) => {
@@ -22,6 +23,38 @@ const[healthproblem,setHealthProblem] = useState([]);
   useEffect(() =>{
     handleData();
   },[])
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v2/survey_helth_problems/${id}`)
+          .then((res) => {
+            Swal.fire(
+              'Deleted!',
+              'The question has been deleted.',
+              'success'
+            );
+            handleData(); 
+          })
+          .catch((err) => {
+            console.log(err);
+            Swal.fire(
+              'Error!',
+              'There was an error deleting the question.',
+              'error'
+            );
+          });
+      }
+    });
+  };
 
   return (
     <div className="w-full p-2">
@@ -34,6 +67,7 @@ const[healthproblem,setHealthProblem] = useState([]);
                     name="Add Health Problem Questions"
                     title="Add New Question"
                     details="Details"
+                    refresh={handleData}
                   />
                 </div>
 
@@ -47,6 +81,7 @@ const[healthproblem,setHealthProblem] = useState([]);
                           />
                           <ThComponent name="In English" />
                           <ThComponent />
+                          <ThComponent />
                           <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                         </tr>
                     </thead>
@@ -57,7 +92,7 @@ const[healthproblem,setHealthProblem] = useState([]);
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                       colSpan={8}
                     >
-                      No Weight Reasons Found!
+                      No Health Problem Found!
                     </th>
                   </tr>
                 ) : (
@@ -69,7 +104,15 @@ const[healthproblem,setHealthProblem] = useState([]);
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.problem} />
-                        </td>    
+                        </td>  
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <button
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => handleDelete(val.id)}
+                          >
+                            <MdDelete size={20} />
+                          </button>
+                        </td>  
                       </tr>
                     );
                   })
