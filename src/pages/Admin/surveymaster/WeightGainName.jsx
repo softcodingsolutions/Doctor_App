@@ -4,17 +4,17 @@ import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
-import AddWeightGain from "../../../components/Admin/AddWeightGain";
+import AddWeightName from "../../../components/Admin/AddWeightName";
 
-export default function Weightgainreason() {
+export default function WeightGainName() {
   const [data, setData] = useState([]);
 
   const handleData = () => {
     axios
-      .get(`/api/v2/survey_questions`)
+      .get(`/api/v2/survey_weigh_reasons`)
       .then((res) => {
         console.log(res);
-        setData(res.data.all_survey_questions);
+        setData(res.data.all_survey_weigh_reasons);
       })
       .catch((err) => {
         console.log(err);
@@ -27,27 +27,31 @@ export default function Weightgainreason() {
 
   const handleDelete = (id) => {
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: "You won't be able to revert this!",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`/api/v2/survey_questions/${id}`)
+          .delete(`/api/v2/survey_weigh_reasons/${id}`)
           .then((res) => {
-            Swal.fire("Deleted!", "The question has been deleted.", "success");
-            handleData();
+            Swal.fire(
+              'Deleted!',
+              'The question has been deleted.',
+              'success'
+            );
+            handleData(); 
           })
           .catch((err) => {
             console.log(err);
             Swal.fire(
-              "Error!",
-              "There was an error deleting the question.",
-              "error"
+              'Error!',
+              'There was an error deleting the question.',
+              'error'
             );
           });
       }
@@ -59,13 +63,12 @@ export default function Weightgainreason() {
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
-            <div className="font-semibold text-xl">Weight Gain Questions</div>
-            <AddWeightGain
+            <div className="font-semibold text-xl">Weight Gain Reason</div>
+            <AddWeightName
               name="Add Weight Gain"
-              title="Add Weight Gain Questions"
+              title="Add Weight Gain Reason"
               details="Please provide the details"
-              handleApi={(gujarati, english) => {
-                console.log("Gujarati:", gujarati);
+              handleApi={( english) => {
                 console.log("English:", english);
               }}
               refresh={handleData}
@@ -81,7 +84,6 @@ export default function Weightgainreason() {
                     name="No."
                   />
                   <ThComponent name="In English" />
-                  <ThComponent name="In Gujarati" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -93,7 +95,7 @@ export default function Weightgainreason() {
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                       colSpan={8}
                     >
-                      No Weight Gain Question Found!
+                      No Weight Gain Reason Found!
                     </th>
                   </tr>
                 ) : (
@@ -104,10 +106,7 @@ export default function Weightgainreason() {
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.in_english} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.in_gujarati} />
+                          <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <button

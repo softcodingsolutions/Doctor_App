@@ -32,6 +32,7 @@ function AddHealthProblem(props) {
       .post("/api/v2/survey_helth_problems", formData)
       .then((res) => {
         console.log(res);
+        props.refresh();
       })
       .catch((err) => {
         console.log(err);
