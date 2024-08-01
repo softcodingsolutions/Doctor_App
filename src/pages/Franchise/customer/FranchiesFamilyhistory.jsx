@@ -4,9 +4,16 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import axios from "axios";
+import Swal from "sweetalert2";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function FranchiesFamilyhistory({ onNext, onBack, onValidate }) {
-  const email = localStorage.getItem("client_email");
+function FranchiesFamilyhistory({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getFamily, setGetFamily] = useState([]);
   const {
     register,
@@ -17,36 +24,35 @@ function FranchiesFamilyhistory({ onNext, onBack, onValidate }) {
   } = useForm({
     mode: "onChange",
   });
-  const [selectedDiseases, setSelectedDiseases] = useState([]);
+  const [selectedFamilyReasons, setSelectedFamilyReasons] = useState([]);
 
-  const submittedData = async (d) => {
-    d.family_reasons = selectedDiseases;
-    console.log(d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            family_reasons: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("family history", res);
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-      reset();
-      onNext();
-    } catch (error) {
-      console.error(error);
-    }
+  const submittedData = async (data) => {
+    const formData = {
+      ...data,
+      selected_family_reasons: selectedFamilyReasons,
+    };
+
+    setStoreData((prev) => ({
+      ...prev,
+      familyHistory: formData,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your family history has been saved.",
+    });
+
+    onNext();
+    reset();
   };
 
   const handleChange = (event, newValue) => {
-    setSelectedDiseases(newValue);
-    setValue("selected_family_reasons", newValue);
-    console.log(newValue);
+    setSelectedFamilyReasons(newValue);
+    setValue("selected_family_reasons", newValue, { shouldValidate: true });
   };
 
   const handleGetFamily = () => {
@@ -66,6 +72,13 @@ function FranchiesFamilyhistory({ onNext, onBack, onValidate }) {
 
   useEffect(() => {
     handleGetFamily();
+
+    if (storedData) {
+      reset({
+        additional_family_reasons: storedData.additional_family_reasons || "",
+      });
+      setSelectedFamilyReasons(storedData.selected_family_reasons || []);
+    }
   }, []);
 
   useEffect(() => {
@@ -92,6 +105,7 @@ function FranchiesFamilyhistory({ onNext, onBack, onValidate }) {
                   multiple
                   placeholder="Choose..."
                   onChange={handleChange}
+                  value={selectedFamilyReasons}
                   sx={{
                     minWidth: "13rem",
                   }}
@@ -126,14 +140,7 @@ function FranchiesFamilyhistory({ onNext, onBack, onValidate }) {
                 </div>
               </div>
               <div className="flex w-full justify-center gap-3">
-                <button
-                  type="button"
-                  name="Back"
-                  className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                  onClick={onBack}
-                >
-                  Back
-                </button>
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

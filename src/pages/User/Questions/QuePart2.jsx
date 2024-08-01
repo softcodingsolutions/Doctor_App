@@ -4,14 +4,11 @@ import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function QuePart2({ onBack }) {
+function QuePart2({ setStoreData, onBack, handleCallUserApi, storedData }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const email = localStorage.getItem("client_email");
-  const navigate = useNavigate();
 
   const handleGetQuestionsPart2 = () => {
     axios
@@ -59,37 +56,27 @@ function QuePart2({ onBack }) {
 
     console.log("Selected Questions: ", selectedQuestions);
 
-    try {
-      const response = await axios.put(
-        `/api/v2/users/update_personal_details?email=${email}`,
-        {
-          personal_detail: {
-            user_selected_questions_two: JSON.stringify(selectedQuestions),
-          },
-        }
-      );
-      if (response.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Sent!",
-          text: `Your details has been sent to the doctor.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        localStorage.removeItem("client_email");
-        localStorage.removeItem("doctor_id");
-        navigate("/user/dashboard");
-      }
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
-    } finally {
-      setSelectedCheckboxes([]);
-    }
+    setStoreData((prev) => ({
+      ...prev,
+      diagnosis: selectedQuestions,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Saved!",
+      text: `Your diagnosis questions has been saved.`,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+
+    handleCallUserApi();
   };
 
   useEffect(() => {
+    if (storedData) {
+      setSelectedCheckboxes(storedData.map((q) => q.id.toString()));
+    }
     handleGetQuestionsPart2();
   }, []);
 
@@ -131,6 +118,9 @@ function QuePart2({ onBack }) {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <input
                             value={val.id}
+                            checked={selectedCheckboxes.includes(
+                              val.id.toString()
+                            )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
                           />

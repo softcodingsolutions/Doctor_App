@@ -3,11 +3,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
-import axios from "axios";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
-  const email = localStorage.getItem("client_email");
+function FranchiesCurrentdiet({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const {
     register,
     handleSubmit,
@@ -18,27 +24,36 @@ function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
   });
 
   const submittedData = async (d) => {
-    console.log(d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            current_diet: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("Current_diet", res);
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-      reset();
-      onNext();
-    } catch (error) {
-      console.error(error);
-    }
+    setStoreData((prev) => ({
+      ...prev,
+      diet: d,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your diet has been saved.",
+    });
+    onNext();
+    reset();
   };
+
+  useEffect(() => {
+    if (storedData) {
+      reset({
+        Morning: storedData.Morning || "",
+        MidMorning: storedData.MidMorning || "",
+        Lunch: storedData.Lunch || "",
+        MidAfternoon: storedData.MidAfternoon || "",
+        Evening: storedData.Evening || "",
+        Dinner: storedData.Dinner || "",
+        PostDinner: storedData.PostDinner || "",
+      });
+    }
+  }, []);
 
   useEffect(() => {
     onValidate(isValid);
@@ -143,13 +158,7 @@ function FranchiesCurrentdiet({ onNext, onBack, onValidate }) {
                 </div>
               </div>
               <div className="flex w-full justify-center gap-3">
-                <button
-                  type="button"
-                  className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                  onClick={onBack}
-                >
-                  Back
-                </button>
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

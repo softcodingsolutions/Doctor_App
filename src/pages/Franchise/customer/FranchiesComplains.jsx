@@ -4,10 +4,18 @@ import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function FranchiesComplains({ onNext, onBack, onValidate }) {
-  const email = localStorage.getItem("client_email");
+function FranchiesComplains({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getComplain, setGetComplain] = useState([]);
+  const [selectedComplains, setSelectedComplains] = useState([]);
   const {
     register,
     handleSubmit,
@@ -19,31 +27,31 @@ function FranchiesComplains({ onNext, onBack, onValidate }) {
   });
 
   const submittedData = async (d) => {
-    console.log(d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            complaints: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-      reset();
-      onNext();
-    } catch (error) {
-      console.error(error);
-    }
+    const formData = {
+      ...d,
+      selected_complains: selectedComplains,
+    };
+
+    setStoreData((prev) => ({
+      ...prev,
+      complains: formData,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your complains has been saved.",
+    });
+    onNext();
+    reset();
   };
 
   const handleChange = (event, newValue) => {
-    setValue("selected_complains", newValue);
-    console.log(newValue);
+    setSelectedComplains(newValue);
+    setValue("selected_complains", newValue, { shouldValidate: true });
   };
 
   const handleGetComplain = () => {
@@ -61,6 +69,13 @@ function FranchiesComplains({ onNext, onBack, onValidate }) {
 
   useEffect(() => {
     handleGetComplain();
+
+    if (storedData) {
+      reset({
+        additional_complains: storedData.additional_complains || "",
+      });
+      setSelectedComplains(storedData.selected_complains || []);
+    }
   }, []);
 
   useEffect(() => {
@@ -87,6 +102,7 @@ function FranchiesComplains({ onNext, onBack, onValidate }) {
                   multiple
                   placeholder="Choose..."
                   onChange={handleChange}
+                  value={selectedComplains}
                   sx={{
                     minWidth: "13rem",
                   }}
@@ -119,13 +135,7 @@ function FranchiesComplains({ onNext, onBack, onValidate }) {
                 </div>
               </div>
               <div className="flex w-full justify-center gap-3">
-                <button
-                  name="Back"
-                  className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                  onClick={onBack}
-                >
-                  Back
-                </button>
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

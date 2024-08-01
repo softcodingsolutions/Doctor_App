@@ -5,11 +5,17 @@ import TdComponent from "../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function FranchiesDiagnosis({ onNext, onBack, onValidate }) {
+function FranchiesDiagnosis({
+  onBack,
+  onNext,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const email = localStorage.getItem("client_email");
   const {
     formState: { isValid },
   } = useForm({
@@ -61,35 +67,26 @@ function FranchiesDiagnosis({ onNext, onBack, onValidate }) {
     }
 
     console.log("Selected Questions: ", selectedQuestions);
+    setStoreData((prev) => ({
+      ...prev,
+      diagnosis: selectedQuestions,
+    }));
 
-    try {
-      const response = await axios.put(
-        `/api/v2/users/update_personal_details?email=${email}`,
-        {
-          personal_detail: {
-            user_selected_questions_two: JSON.stringify(selectedQuestions),
-          },
-        }
-      );
-      if (response.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Saved!",
-          text: `Your questions has been saved.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      onNext();
-      setSelectedCheckboxes([]);
-    }
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Saved!",
+      text: `Your diagnosis questions has been saved.`,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    onNext();
   };
 
   useEffect(() => {
+    if (storedData) {
+      setSelectedCheckboxes(storedData.map((q) => q.id.toString()));
+    }
     handleGetQuestionsPart2();
   }, []);
 
@@ -135,6 +132,9 @@ function FranchiesDiagnosis({ onNext, onBack, onValidate }) {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <input
                             value={val.id}
+                            checked={selectedCheckboxes.includes(
+                              val.id.toString()
+                            )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
                           />
@@ -157,13 +157,7 @@ function FranchiesDiagnosis({ onNext, onBack, onValidate }) {
             </table>
           </div>
           <div className="flex justify-center gap-2">
-            <button
-              name="Back"
-              className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-              onClick={onBack}
-            >
-              Back
-            </button>
+            <PrevPageButton back={onBack} />
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"

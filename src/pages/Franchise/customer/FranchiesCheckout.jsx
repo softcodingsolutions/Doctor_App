@@ -1,15 +1,13 @@
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 import { FormLabel, Option, Select } from "@mui/joy";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function FranchiesCheckout() {
-  const navigate = useNavigate();
-  const email = localStorage.getItem("client_email");
-  const { register, handleSubmit, reset, setValue, watch } = useForm();
+function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
+  const { register, handleSubmit, setValue, watch } = useForm();
   const [getPackages, setGetPackages] = useState([]);
   const [selectedPackage, setSelectedPackage] = useState(null);
 
@@ -74,27 +72,11 @@ function FranchiesCheckout() {
   }, [watchFromDate, selectedPackage, setValue]);
 
   const submittedData = async (d) => {
-    console.log(d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            package: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("Checkout: ", res);
-          localStorage.removeItem("client_email");
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-    } catch (error) {
-      console.error(error);
-    }
-    navigate("../../franchise/customers/all-users");
-    reset();
+    setStoreData((prev) => ({
+      ...prev,
+      checkout: d,
+    }));
+    handleCallUserApi();
   };
 
   useEffect(() => {
@@ -250,6 +232,7 @@ function FranchiesCheckout() {
                 />
               </div>
               <div className="flex w-full justify-center gap-2">
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

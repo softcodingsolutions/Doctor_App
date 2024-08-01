@@ -152,7 +152,7 @@ function LoginPage() {
                 className="ml-1 font-bold hover:scale-105"
               >
                 <Link to="/signup" className="text-base font-teachers">
-                  Sign up
+                  Sign Up
                 </Link>
               </Typography>
             </Typography>

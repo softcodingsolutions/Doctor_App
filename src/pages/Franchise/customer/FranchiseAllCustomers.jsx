@@ -61,7 +61,7 @@ function FranchiseAllCustomers() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
+      <div className="rounded-lg bg-card h-[93vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4 text-lg">
           <div className="flex gap-5 p-2 w-full">
             <input

@@ -105,7 +105,7 @@ function NewCustomer() {
               navigate("../../admin/customers/all-users");
             }
           });
-      } else if (role === "super_admin" || role === "receptionist") {
+      } else if (role === "super_admin") {
         await axios
           .post("/api/v1/users", {
             user: {

@@ -93,7 +93,6 @@ function CustomerGeneralDetails({
     onNext();
     reset();
   };
-  
 
   useEffect(() => {
     handleGetAdmin();
@@ -157,7 +156,7 @@ function CustomerGeneralDetails({
               </div>
             )}
           </div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[92%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">
               <div className="flex gap-10 text-lg">
                 <div className="flex flex-col">

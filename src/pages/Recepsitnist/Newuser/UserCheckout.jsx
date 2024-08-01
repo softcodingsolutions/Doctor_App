@@ -4,13 +4,10 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FormLabel, Option, Select } from "@mui/joy";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function UserCheckout() {
-  const navigate = useNavigate();
-  const email = localStorage.getItem("client_email");
-  const { register, handleSubmit, reset, watch, setValue } = useForm();
+function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
+  const { register, handleSubmit, watch, setValue } = useForm();
   const [getPackages, setGetPackages] = useState([]);
   const [selectedPackage, setSelectedPackage] = useState(null);
 
@@ -76,36 +73,11 @@ function UserCheckout() {
 
   const submittedData = async (d) => {
     console.log(d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            package: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("Checkout: ", res);
-          localStorage.removeItem("client_email");
-          if (res.data) {
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "User Created!",
-              text: `The user has been created.`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-    } catch (error) {
-      console.error(error);
-    }
-    navigate("/receptionist/appointment/create-appointment");
-    reset();
+    setStoreData((prev) => ({
+      ...prev,
+      checkout: d,
+    }));
+    handleCallUserApi();
   };
 
   useEffect(() => {
@@ -247,6 +219,7 @@ function UserCheckout() {
                 />
               </div>
               <div className="flex w-full justify-center gap-2">
+                <PrevPageButton back={onBack} />
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

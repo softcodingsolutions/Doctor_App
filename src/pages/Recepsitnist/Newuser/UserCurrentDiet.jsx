@@ -1,14 +1,19 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 
-function UserCurrentDiet({ onNext, onBack, onValidate }) {
-  const email = localStorage.getItem("client_email");
+function UserCurrentDiet({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const {
     register,
     handleSubmit,
@@ -19,27 +24,36 @@ function UserCurrentDiet({ onNext, onBack, onValidate }) {
   });
 
   const submittedData = async (d) => {
-    console.log(d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            current_diet: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("Current_diet", res);
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-      reset();
-      onNext();
-    } catch (error) {
-      console.error(error);
-    }
+    setStoreData((prev) => ({
+      ...prev,
+      diet: d,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your diet has been saved.",
+    });
+    onNext();
+    reset();
   };
+
+  useEffect(() => {
+    if (storedData) {
+      reset({
+        Morning: storedData.Morning || "",
+        MidMorning: storedData.MidMorning || "",
+        Lunch: storedData.Lunch || "",
+        MidAfternoon: storedData.MidAfternoon || "",
+        Evening: storedData.Evening || "",
+        Dinner: storedData.Dinner || "",
+        PostDinner: storedData.PostDinner || "",
+      });
+    }
+  }, []);
 
   useEffect(() => {
     onValidate(isValid);
