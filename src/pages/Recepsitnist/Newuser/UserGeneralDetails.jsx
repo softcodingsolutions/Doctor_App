@@ -6,11 +6,13 @@ import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Option, Select } from "@mui/joy";
+import Swal from "sweetalert2";
 
-function UserGeneralDetails({ onNext, onValidate }) {
+function UserGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(UserSchema),
@@ -44,42 +46,48 @@ function UserGeneralDetails({ onNext, onValidate }) {
       return;
     }
 
-    console.log(d);
-    try {
-      const res = await axios.get(`/api/v1/users/app_creds`);
-      await axios.post("/api/v1/users", {
-        user: {
-          first_name: d.firstname,
-          last_name: d.lastname,
-          email: d.email,
-          phone_number: d.mobile,
-          created_by_id: getDoctorId,
-          creator: "doctor",
-        },
-        personal_detail: {
-          city: d.city,
-          age: d.age,
-          gender: d.gender,
-          overweight_since: d.overweight,
-          language: d.language,
-          reffered_by: d.refferedBy,
-          weight: d.weight,
-          height: d.height,
-          address: d.address,
-          whatsapp_number: d.whatsapp,
-        },
-        client_id: res.data?.client_id,
-      });
-      localStorage.setItem("client_email", d.email);
-      localStorage.setItem("doctor_id", getDoctorId);
-      onNext();
-    } catch (error) {
-      console.error(error);
-    }
+    setStoreData((prev) => ({
+      ...prev,
+      generalDetails: d,
+      doctorId: getDoctorId,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your info has been saved.",
+    });
+
+    localStorage.setItem("client_email", d.email);
+    localStorage.setItem("doctor_id", getDoctorId);
+    onNext();
   };
 
   useEffect(() => {
     handleGetDoctors();
+
+    if (storedData) {
+      reset({
+        firstname: storedData.firstname || "",
+        lastname: storedData.lastname || "",
+        email: storedData.email || "",
+        mobile: storedData.mobile || "",
+        address: storedData.address || "",
+        refferedBy: storedData.refferedBy || "",
+        age: storedData.age || "",
+        height: storedData.height || "",
+        overweight: storedData.overweight || "select",
+        city: storedData.city || "",
+        language: storedData.language || "",
+        gender: storedData.gender || "select",
+        weight: storedData.weight || "",
+        whatsapp: storedData.whatsapp || "",
+      });
+      setGetDoctorId(storedData.doctorId || "");
+    }
   }, []);
 
   useEffect(() => {
@@ -189,10 +197,14 @@ function UserGeneralDetails({ onNext, onValidate }) {
                     </label>
                     <select
                       name="overweight"
+                      defaultValue="select"
                       placeholder="Select one"
                       {...register("overweight")}
                       className="py-1 px-2 rounded-md border border-black"
                     >
+                      <option value="select" disabled>
+                        Select One
+                      </option>
                       <option value="1-5">1-5 years</option>
                       <option value="6-10">6-10 years</option>
                       <option value="11-15">11-15 years</option>

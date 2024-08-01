@@ -5,11 +5,17 @@ import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import { useForm } from "react-hook-form";
+import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function FranchiesQuestions({ onNext, onBack, onValidate }) {
+function FranchiesQuestions({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const email = localStorage.getItem("client_email");
   const {
     formState: { isValid },
   } = useForm({
@@ -18,7 +24,9 @@ function FranchiesQuestions({ onNext, onBack, onValidate }) {
 
   const handleGetQuestionsPart1 = () => {
     axios
-      .get(`/api/v1/questions/part1?user_id=${localStorage.getItem('doctor_id')}`)
+      .get(
+        `/api/v1/questions/part1?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
         console.log(res.data);
         setGetQuestionsPart1(res.data);
@@ -58,32 +66,19 @@ function FranchiesQuestions({ onNext, onBack, onValidate }) {
       });
     }
 
-    console.log("Selected Questions: ", selectedQuestions);
+    setStoreData((prev) => ({
+      ...prev,
+      questions: selectedQuestions,
+    }));
 
-    try {
-      const response = await axios.put(
-        `/api/v2/users/update_personal_details?email=${email}`,
-        {
-          personal_detail: {
-            user_selected_questions_one: JSON.stringify(selectedQuestions),
-          },
-        }
-      );
-      if (response.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Added!",
-          text: `Your question has been added.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSelectedCheckboxes([]);
-    }
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Saved!",
+      text: `Your question has been saved.`,
+      showConfirmButton: false,
+      timer: 1500,
+    });
     onNext();
   };
 
@@ -93,7 +88,10 @@ function FranchiesQuestions({ onNext, onBack, onValidate }) {
 
   useEffect(() => {
     onValidate(isValid);
-  }, [isValid, onValidate]);
+    if (storedData) {
+      setSelectedCheckboxes(storedData.map((q) => q.id.toString()));
+    }
+  }, [storedData, isValid, onValidate]);
 
   return (
     <div className="w-full gap-2 m-3 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
@@ -133,6 +131,9 @@ function FranchiesQuestions({ onNext, onBack, onValidate }) {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <input
                             value={val.id}
+                            checked={selectedCheckboxes.includes(
+                              val.id.toString()
+                            )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
                           />
@@ -155,13 +156,7 @@ function FranchiesQuestions({ onNext, onBack, onValidate }) {
             </table>
           </div>
           <div className="flex justify-center gap-2">
-            <button
-              name="Back"
-              className="w-[20rem] p-1 text-white bg-black rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-              onClick={onBack}
-            >
-              Back
-            </button>
+            <PrevPageButton back={onBack} />
             <SaveUserDetailsButton
               function={handleSave}
               name="Save & Continue"

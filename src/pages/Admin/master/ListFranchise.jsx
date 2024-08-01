@@ -358,7 +358,9 @@ function ListFranchise() {
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.amount} />
+                          <TdComponent
+                            things={val.amount <= 0 ? "0" : val.amount}
+                          />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.commission} />

@@ -11,6 +11,10 @@ import UserComplains from "./UserComplains";
 import UserQuestionsPart1 from "./UserQuestionsPart1";
 import UserQuestionsPart2 from "./UserQuestionsPart2";
 import UserCheckout from "./UserCheckout";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const steps = [
   "General Details",
@@ -24,7 +28,18 @@ const steps = [
 
 function NewUser() {
   const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
+  const [storeData, setStoreData] = useState({
+    generalDetails: [],
+    diet: [],
+    familyHistory: [],
+    complains: [],
+    questions: [],
+    diagnosis: [],
+    checkout: [],
+    doctorId: "",
+  });
 
   const handleNextStep = () => {
     if (isGeneralDetailsValid || currentStep !== 0) {
@@ -39,6 +54,64 @@ function NewUser() {
   const handleValidation = (isValid) => {
     setIsGeneralDetailsValid(isValid);
   };
+
+  const handleCallUserApi = async () => {
+    console.log("Waah");
+    try {
+      const res = await axios.get(`/api/v1/users/app_creds`);
+
+      await axios
+        .post("/api/v1/users", {
+          user: {
+            first_name: storeData?.generalDetails?.firstname,
+            last_name: storeData?.generalDetails?.lastname,
+            email: storeData?.generalDetails?.email,
+            phone_number: storeData?.generalDetails?.mobile,
+            created_by_id: storeData?.doctorId,
+            creator: "doctor",
+          },
+          personal_detail: {
+            city: storeData?.generalDetails?.city,
+            age: storeData?.generalDetails?.age,
+            address: storeData?.generalDetails?.address,
+            gender: storeData?.generalDetails?.gender,
+            overweight_since: storeData?.generalDetails?.overweight,
+            language: storeData?.generalDetails?.language,
+            reffered_by: storeData?.generalDetails?.refferedBy,
+            weight: storeData?.generalDetails?.weight,
+            height: storeData?.generalDetails?.height,
+            whatsapp_number: storeData?.generalDetails?.whatsapp,
+            current_diet: JSON.stringify(storeData?.diet),
+            family_reasons: JSON.stringify(storeData?.familyHistory),
+            complaints: JSON.stringify(storeData?.complains),
+            user_selected_questions_one: JSON.stringify(storeData?.questions),
+            user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
+            package: JSON.stringify(storeData?.checkout),
+          },
+          client_id: res.data?.client_id,
+        })
+        .then((res) => {
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Created!",
+              text: `New user has been created.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            localStorage.removeItem("client_email");
+            navigate("/receptionist/appointment/create-appointment");
+          }
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("Store Data: ", storeData);
+  }, [storeData]);
 
   return (
     <div className="flex w-full">
@@ -72,12 +145,16 @@ function NewUser() {
         </Stepper>
         {currentStep === 0 && (
           <UserGeneralDetails
+            setStoreData={setStoreData}
             onNext={handleNextStep}
             onValidate={handleValidation}
+            storedData={storeData.generalDetails}
           />
         )}
         {currentStep === 1 && (
           <UserCurrentDiet
+            storedData={storeData.diet}
+            setStoreData={setStoreData}
             onNext={handleNextStep}
             onBack={handleBackStep}
             onValidate={handleValidation}
@@ -85,6 +162,8 @@ function NewUser() {
         )}
         {currentStep === 2 && (
           <UserFamilyHistory
+            storedData={storeData.familyHistory}
+            setStoreData={setStoreData}
             onNext={handleNextStep}
             onBack={handleBackStep}
             onValidate={handleValidation}
@@ -92,6 +171,8 @@ function NewUser() {
         )}
         {currentStep === 3 && (
           <UserComplains
+            storedData={storeData.complains}
+            setStoreData={setStoreData}
             onNext={handleNextStep}
             onBack={handleBackStep}
             onValidate={handleValidation}
@@ -99,6 +180,8 @@ function NewUser() {
         )}
         {currentStep === 4 && (
           <UserQuestionsPart1
+            storedData={storeData.questions}
+            setStoreData={setStoreData}
             onNext={handleNextStep}
             onBack={handleBackStep}
             onValidate={handleValidation}
@@ -106,12 +189,20 @@ function NewUser() {
         )}
         {currentStep === 5 && (
           <UserQuestionsPart2
+            storedData={storeData.diagnosis}
+            setStoreData={setStoreData}
             onNext={handleNextStep}
             onBack={handleBackStep}
             onValidate={handleValidation}
           />
         )}
-        {currentStep === 6 && <UserCheckout onBack={handleBackStep} />}
+        {currentStep === 6 && (
+          <UserCheckout
+            setStoreData={setStoreData}
+            onBack={handleBackStep}
+            handleCallUserApi={handleCallUserApi}
+          />
+        )}
       </div>
     </div>
   );

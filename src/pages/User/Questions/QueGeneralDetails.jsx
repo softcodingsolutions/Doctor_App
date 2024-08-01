@@ -3,10 +3,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
-import axios from "axios";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 
-function QueGeneralDetails({ onNext, onValidate }) {
+function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
   const {
     register,
     handleSubmit,
@@ -14,59 +14,60 @@ function QueGeneralDetails({ onNext, onValidate }) {
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(UserSchema),
+    mode: "onChange",
   });
-  const doctorId = localStorage.getItem("doctor_id");
 
-  const submittedData = async (d) => {
-    console.log(d);
-    try {
-      const res = await axios.get(`/api/v1/users/app_creds`);
-      await axios
-        .post("/api/v1/users", {
-          user: {
-            first_name: d.firstname,
-            last_name: d.lastname,
-            email: d.email,
-            phone_number: d.mobile,
-            created_by_id: doctorId,
-            creator: "doctor",
-          },
-          personal_detail: {
-            city: d.city,
-            age: d.age,
-            gender: d.gender,
-            address: d.address,
-            overweight_since: d.overweight,
-            language: d.language,
-            reffered_by: d.refferedBy,
-            weight: d.weight,
-            height: d.height,
-            whatsapp_number: d.whatsapp,
-          },
-          client_id: res.data?.client_id,
-        })
-        .then((res) => {
-          console.log("User Created: ", res.data);
-          localStorage.setItem("access_token", res.data?.user?.access_token);
-          localStorage.setItem("role", res.data?.user?.role);
-          localStorage.setItem("main_id", res.data?.user?.user?.id);
-        });
-      localStorage.setItem("client_email", d.email);
-      onNext();
-      reset();
-    } catch (error) {
-      console.error(error);
-    }
+  const submittedData = (d) => {
+    setStoreData((prev) => ({
+      ...prev,
+      generalDetails: d,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your info has been saved.",
+    });
+
+    onNext();
+    reset();
   };
+
+  useEffect(() => {
+    console.log("Effect ran with storedData:", storedData);
+    if (storedData) {
+      reset({
+        firstname: storedData?.firstname || "",
+        lastname: storedData?.lastname || "",
+        email: storedData?.email || "",
+        mobile: storedData?.mobile || "",
+        address: storedData?.address || "",
+        refferedBy: storedData?.refferedBy || "",
+        age: storedData?.age || "",
+        height: storedData?.height || "",
+        overweight: storedData?.overweight || "select",
+        city: storedData?.city || "",
+        language: storedData?.language || "",
+        gender: storedData?.gender || "select",
+        weight: storedData?.weight || "",
+        whatsapp: storedData?.whatsapp || "",
+      });
+    } else {
+      console.log("Stored data is not available");
+    }
+  }, [storedData, reset]);
 
   useEffect(() => {
     onValidate(isValid);
   }, [isValid, onValidate]);
 
   return (
-    <div className=" flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2 ">
+    <div className="flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2">
       <div className="w-full sm:flex items-end">
-        <div className="sm:flex-grow flex justify-end ">
+        <div className="sm:flex-grow flex justify-end">
           <button type="button" className="block sm:hidden hover:scale-110">
             <img
               src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
@@ -79,8 +80,8 @@ function QueGeneralDetails({ onNext, onValidate }) {
           <div className="text-xl font-semibold">General Details :-</div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">
-              <div className="flex gap-10">
-                <div className="flex flex-col ">
+              <div className="flex gap-10 text-lg">
+                <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
                       errors={errors.firstname}
@@ -149,10 +150,14 @@ function QueGeneralDetails({ onNext, onValidate }) {
                     </label>
                     <select
                       name="overweight"
+                      defaultValue="select"
                       placeholder="Select one"
                       {...register("overweight")}
                       className="py-1 px-2 rounded-md border border-black"
                     >
+                      <option value="select" disabled>
+                        Select One
+                      </option>
                       <option value="1-5">1-5 years</option>
                       <option value="6-10">6-10 years</option>
                       <option value="11-15">11-15 years</option>
@@ -160,7 +165,8 @@ function QueGeneralDetails({ onNext, onValidate }) {
                     </select>
                   </div>
                 </div>
-                <div className="flex flex-col ">
+
+                <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
                       errors={errors.lastname}
@@ -222,7 +228,7 @@ function QueGeneralDetails({ onNext, onValidate }) {
                         <option value="female">Female</option>
                       </select>
                       {errors.gender && (
-                        <span className="text-sm  text-red-500 -mt-2.5">
+                        <span className="text-base text-red-500 -mt-1.5">
                           {errors.gender?.message}
                         </span>
                       )}

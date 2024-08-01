@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
@@ -8,16 +7,21 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import { useForm } from "react-hook-form";
 
-function UserQuestionsPart1({ onNext, onBack, onValidate }) {
+function UserQuestionsPart1({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const email = localStorage.getItem("client_email");
-  const navigate = useNavigate();
   const {
     formState: { isValid },
   } = useForm({
     mode: "onChange",
   });
+
   const handleGetQuestionsPart1 = () => {
     axios
       .get(
@@ -62,33 +66,20 @@ function UserQuestionsPart1({ onNext, onBack, onValidate }) {
       });
     }
 
-    console.log("Selected Questions: ", selectedQuestions);
+    setStoreData((prev) => ({
+      ...prev,
+      questions: selectedQuestions,
+    }));
 
-    try {
-      const response = await axios.put(
-        `/api/v2/users/update_personal_details?email=${email}`,
-        {
-          personal_detail: {
-            user_selected_questions_one: JSON.stringify(selectedQuestions),
-          },
-        }
-      );
-      if (response.data) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Saved!",
-          text: `Your question has been saved.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSelectedCheckboxes([]);
-    }
-    navigate(onNext(), { state: { email: email } });
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Saved!",
+      text: `Your question has been saved.`,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    onNext();
   };
 
   useEffect(() => {
@@ -96,8 +87,11 @@ function UserQuestionsPart1({ onNext, onBack, onValidate }) {
   }, []);
 
   useEffect(() => {
+    if (storedData) {
+      setSelectedCheckboxes(storedData.map((q) => q.id.toString()));
+    }
     onValidate(isValid);
-  }, [isValid, onValidate]);
+  }, [storedData, isValid, onValidate]);
 
   return (
     <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[80vh] bg-white flex-wrap content-start p-2 px-4">
@@ -137,6 +131,9 @@ function UserQuestionsPart1({ onNext, onBack, onValidate }) {
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <input
                             value={val.id}
+                            checked={selectedCheckboxes.includes(
+                              val.id.toString()
+                            )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
                           />

@@ -16,7 +16,7 @@ import NutritionSupplements from "./pages/Admin/master/NutritionSupplements";
 import DietMaster from "./pages/Admin/master/DietMaster";
 import LabTest from "./pages/Admin/master/LabTest";
 import UserMain from "./pages/User/UserMain";
-import UserDashboard from "./pages/User/UserDashboard";
+// import UserDashboard from "./pages/User/UserDashboard";
 import WeightReason from "./pages/Admin/master/WeightReason";
 import AdminTreatment from "./pages/Admin/AdminTreatment";
 import TreatmentQuestionPart1 from "./pages/Admin/treatment/TreatmentQuestionPart1";

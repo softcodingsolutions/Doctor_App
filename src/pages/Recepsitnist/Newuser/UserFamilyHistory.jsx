@@ -4,10 +4,17 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-function UserFamilyHistory({ onNext, onBack, onValidate }) {
+function UserFamilyHistory({
+  onNext,
+  onBack,
+  onValidate,
+  storedData,
+  setStoreData,
+}) {
   const [getFamily, setGetFamily] = useState([]);
-  const email = localStorage.getItem("client_email");
+  const [selectedFamilyReasons, setSelectedFamilyReasons] = useState([]);
   const {
     register,
     handleSubmit,
@@ -18,32 +25,33 @@ function UserFamilyHistory({ onNext, onBack, onValidate }) {
     mode: "onChange",
   });
 
-  const submittedData = async (d) => {
-    console.log("Family History: ", d);
-    try {
-      await axios
-        .put(`/api/v2/users/update_personal_details?email=${email}`, {
-          personal_detail: {
-            family_reasons: JSON.stringify(d),
-          },
-        })
-        .then((res) => {
-          console.log("Family History: ", res);
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
-      reset();
-      onNext();
-    } catch (error) {
-      console.error(error);
-    }
+  const submittedData = async (data) => {
+    const formData = {
+      ...data,
+      selected_family_reasons: selectedFamilyReasons,
+    };
+
+    setStoreData((prev) => ({
+      ...prev,
+      familyHistory: formData,
+    }));
+
+    Swal.fire({
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      icon: "success",
+      title: "Saved!",
+      text: "Your family history has been saved.",
+    });
+
+    onNext();
+    reset();
   };
 
   const handleChange = (event, newValue) => {
-    setValue("selected_family_reasons", newValue);
-    console.log(newValue);
+    setSelectedFamilyReasons(newValue);
+    setValue("selected_family_reasons", newValue, { shouldValidate: true });
   };
 
   const handleGetFamily = () => {
@@ -63,6 +71,13 @@ function UserFamilyHistory({ onNext, onBack, onValidate }) {
 
   useEffect(() => {
     handleGetFamily();
+
+    if (storedData) {
+      reset({
+        additional_family_reasons: storedData.additional_family_reasons || "",
+      });
+      setSelectedFamilyReasons(storedData.selected_family_reasons || []);
+    }
   }, []);
 
   useEffect(() => {
@@ -70,11 +85,11 @@ function UserFamilyHistory({ onNext, onBack, onValidate }) {
   }, [isValid, onValidate]);
 
   return (
-    <div className="w-full">
-      <div className="rounded-lg bg-card h-[84vh] bg-white">
+    <div className="w-full p-2">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
           <div className="text-xl font-semibold">Family History</div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[91%]">
             <form
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center justify-between text-lg"
@@ -82,13 +97,14 @@ function UserFamilyHistory({ onNext, onBack, onValidate }) {
             >
               <div className="flex flex-col gap-2 justify-between w-full">
                 <h2>
-                  Choose the disease if any of your family member has or had
-                  that disease
+                  Choose a disease which any of your family members has or had
+                  one:
                 </h2>
                 <Select
                   multiple
                   placeholder="Choose..."
                   onChange={handleChange}
+                  value={selectedFamilyReasons}
                   sx={{
                     minWidth: "13rem",
                   }}
@@ -100,16 +116,14 @@ function UserFamilyHistory({ onNext, onBack, onValidate }) {
                     },
                   }}
                 >
-                  {getFamily.map((res) => {
-                    return (
-                      <Option key={res.id} value={res.details_in_english}>
-                        {res.details_in_english}
-                      </Option>
-                    );
-                  })}
+                  {getFamily.map((res) => (
+                    <Option key={res.id} value={res.details_in_english}>
+                      {res.details_in_english}
+                    </Option>
+                  ))}
                 </Select>
                 <div className="flex flex-col gap-2 mt-10">
-                  <label>Family Disease</label>
+                  <label>Family Disease:</label>
                   <textarea
                     rows={3}
                     className="border-2 w-full rounded-md p-2"
