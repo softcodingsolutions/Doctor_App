@@ -1,8 +1,7 @@
-import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
 function AdminListFollowUp() {
-  const context = useOutletContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
@@ -12,14 +11,17 @@ function AdminListFollowUp() {
   const [machineConsultingData, setMachineConsultingData] = useState([]);
   const [userDetails, setUserDetails] = useState({});
   const [packageDetail, setPackageDetail] = useState({});
+
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
-  }
+  };
+
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       setDebouncedSearchTerm(searchTerm);
     }
   };
+
   useEffect(() => {
     if (debouncedSearchTerm) {
       axios
@@ -50,18 +52,21 @@ function AdminListFollowUp() {
     setOpen(false);
     setOpenConsulting(true);
   };
+
   const formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
   };
+
   function formatTime(dateTimeString) {
     const date = new Date(dateTimeString);
     return date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
   }
+
   const formatPackageDuration = (fromDate, toDate) => {
     if (fromDate && toDate) {
       const options = { year: "numeric", month: "long", day: "numeric" };
@@ -94,14 +99,13 @@ function AdminListFollowUp() {
                   onChange={(e) => handleSearchTerm(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Search User through Case Number/Phone Number"
-                  className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="py-2 px-4 rounded-md border border-gray-800 w-full focus:outline-none focus:ring-1 focus:ring-black"
                 />
                 {open === false ? (
                   <button
                     type="button"
                     className="w-[10rem] text-white bg-[#1F2937] rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
                     onClick={handleMachineData}
-                    
                   >
                     Machine Data
                   </button>
@@ -110,7 +114,6 @@ function AdminListFollowUp() {
                     type="button"
                     className="w-[10rem] text-white rounded-md bg-[#1F2937] border border-gray-500 font-medium text-lg hover:scale-105"
                     onClick={handleConsultingData}
-                    
                   >
                     Consulting Data
                   </button>
@@ -152,8 +155,7 @@ function AdminListFollowUp() {
                     </div>
                   </div>
                   {openconsulting && (
-                  <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
-                    
+                    <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
                       <div className="flex w-full flex-col items-center p-4 h-full">
                         <div className="text-2xl font-semibold tracking-wide">
                           Consulting Time Slot
@@ -212,12 +214,10 @@ function AdminListFollowUp() {
                           </table>
                         </div>
                       </div>
-                  
-                  </div>
+                    </div>
                   )}
                   {open && (
-                  <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
-                   
+                    <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
                       <div className="flex w-full flex-col items-center p-4 h-full">
                         <div className="text-2xl font-semibold tracking-wide">
                           Machine Time Slot
@@ -284,13 +284,12 @@ function AdminListFollowUp() {
                           </table>
                         </div>
                       </div>
-                    
-                  </div>
+                    </div>
                   )}
                 </div>
               ) : (
-                <div className="flex justify-center pt-[12rem] text-xl font-medium text-center">
-                  NO DATA HAS BEEN SERACH!
+                <div className="flex justify-center pt-[15rem] text-xl font-medium text-center">
+                  NO DATA HAS BEEN SEARCH!
                 </div>
               )}
             </div>
