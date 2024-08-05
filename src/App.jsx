@@ -85,6 +85,15 @@ import SurveyOtp from "./pages/Survey/SurveyOtp";
 import SurveyResult from "./pages/Survey/SurveyResult";
 import Userdata from "./pages/Admin/surveyuserdata/Userdata";
 import WeightGainName from "./pages/Admin/surveymaster/WeightGainName";
+import SurveyDos from "./pages/Admin/surveymaster/SurveyDos";
+import SurveyDonts from "./pages/Admin/surveymaster/SurveyDonts";
+import SurveyExersice from "./pages/Admin/surveymaster/SurveyExersice";
+import Surveytreatment from "./pages/Admin/Surveytreatment";
+import SurveyHealthProblem from "./pages/Admin/surveytreatment/SurveyHealthProblem";
+import SurveyWeightGainQuestions from "./pages/Admin/surveytreatment/SurveyWeightGainQuestions";
+import SurveyTreatmentDos from "./pages/Admin/surveytreatment/SurveyTreatmentDos";
+import SurveyTreatmentDont from "./pages/Admin/surveytreatment/SurveyTreatmentDont";
+import SurveyTreatmentExercise from "./pages/Admin/surveytreatment/SurveyTreatmentExercise";
 function App() {
   return (
     <Router>
@@ -191,8 +200,18 @@ function App() {
             <Route path="health-problem" element={<Healthproblem />} />
             <Route path="weight-gain-reason" element={<Weightgainreason />} />
             <Route path="weight-gain-name" element={<WeightGainName />} />
+            <Route path="survey-dos" element={<SurveyDos />} />
+            <Route path="survey-donts" element={<SurveyDonts />} />
+            <Route path="survey-exercise" element={<SurveyExersice />} />
           </Route>
-          <Route path="user-data" element={<Userdata />}/>
+          <Route path="suvrey-treatment" element={<Surveytreatment />} >
+            {/* <Route path="survey-health-problem" element={<SurveyHealthProblem />} /> */}
+            <Route path="survey-weight-gain-questions" element={<SurveyWeightGainQuestions/>} />
+            <Route path="survey-treatment-dos" element={<SurveyTreatmentDos />}/>
+            <Route path="survey-treatment-donts" element={<SurveyTreatmentDont />} />
+            <Route path="survey-treatment-exercise" element={<SurveyTreatmentExercise/>}/>
+          </Route>
+          <Route path="user-data" element={<Userdata />} />
 
           {/* list follow up */}
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
