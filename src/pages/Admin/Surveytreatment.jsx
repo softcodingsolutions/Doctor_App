@@ -1,41 +1,48 @@
-import { Link, Outlet, useOutletContext } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import { masterButtons } from "../../constants/admin/SurveyConstants";
-
-const TRANSLATE_AMOUNT = 250;
+import { Option, Select } from "@mui/joy";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Outlet, useOutletContext } from "react-router-dom";
 
 function Surveytreatment() {
   const context = useOutletContext();
-  const [selectedId, setSelectedId] = useState(
-    localStorage.getItem("selectedMaster_id")
-      ? localStorage.getItem("selectedMaster_id")
-      : "1"
-  );
-  const [translate, setTranslate] = useState(0);
-  const [isLeftVisible, setIsLeftVisible] = useState(false);
-  const [isRightVisible, setIsRightVisible] = useState(true);
-  const containerRef = useRef();
+  const [getWeightReason, setGetWeightReason] = useState([]);
+  const [sendWeightReason, setSendWeightReason] = useState(null);
+  const [getPackages, setPackages] = useState([]);
+
+  const handleGetWeightReason = () => {
+    axios
+      .get("/api/v2/survey_weigh_reasons")
+      .then((res) => {
+        console.log("Weight Reasons: ", res.data?.all_survey_weigh_reasons);
+        setGetWeightReason(res.data?.all_survey_weigh_reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handlegetPackages = () => {
+    axios
+      .get("/api/v2/survey_weight_reason_packages")
+      .then((res) => {
+        console.log("Packages", res.data?.all_survey_weight_reason_packages);
+        setPackages(res.data?.all_survey_weight_reason_packages);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handleSendWeightReason = (val) => {
+    setSendWeightReason(val);
+  };
 
   useEffect(() => {
-    if (containerRef == null) return;
-
-    const observer = new ResizeObserver((entries) => {
-      const container = entries[0]?.target;
-      if (container == null) return;
-
-      setIsLeftVisible(translate > 0);
-      setIsRightVisible(
-        translate + container.clientWidth < container.scrollWidth
-      );
-    });
-
-    observer.observe(containerRef.current);
-    localStorage.setItem("selectedMaster_id", selectedId);
-    return () => {
-      observer.disconnect();
-    };
-  }, [translate, selectedId]);
+    handleGetWeightReason();
+    handlegetPackages();
+  }, []);
 
   return (
     <div className="flex w-full">
@@ -43,47 +50,33 @@ function Surveytreatment() {
         .
       </div>
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
-        <div className="w-full sm:flex p-2 items-end">
-          <div
-            ref={containerRef}
-            className="sm:flex-grow flex justify-between overflow-x-hidden"
+        <div className="w-fit p-2">
+          <div className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"></div>
+          <Select required placeholder="Select">
+            {getWeightReason?.map((res) => {
+              return (
+                <Option
+                  key={res.id}
+                  value={res.name}
+                  onClick={() => handleSendWeightReason(res.name)}
+                >
+                  {res.name}
+                </Option>
+              );
+            })}
+          </Select>
+          <button
+            onClick={context[0]}
+            type="button"
+            className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
           >
-            <div
-              style={{ transform: `translateX(-${translate}px)` }}
-              className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"
-            >
-              {masterButtons.map((res) => {
-                return (
-                  <Link
-                    to={res.to}
-                    onClick={() => setSelectedId(res.id)}
-                    key={res.id}
-                    className={clsx(
-                      "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
-                      selectedId === res.id
-                        ? "bg-[#1F2937] text-white"
-                        : "bg-white"
-                    )}
-                  >
-                    {res.icons}
-                    <span className="ml-1.5">{res.name}</span>
-                  </Link>
-                );
-              })}
-            </div>
-            <button
-              onClick={context[0]}
-              type="button"
-              className="absolute end-5 top-6 sm:hidden hover:scale-110 w-fit"
-            >
-              <img
-                src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
-                alt=""
-              />
-            </button>
-          </div>
+            <img
+              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+              alt=""
+            />
+          </button>
         </div>
-        <Outlet />
+        <Outlet context={[sendWeightReason, handlegetPackages, getPackages]} />
       </div>
     </div>
   );

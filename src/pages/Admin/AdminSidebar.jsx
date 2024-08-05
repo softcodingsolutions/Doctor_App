@@ -92,7 +92,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "9",
       title: "Survey Treatment",
-      to: `master/${save ? save : "list-franchise"}`,
+      to: `suvrey-treatment/survey-weight-gain-questions`,
       icons: <MdOutlineGppGood size={18} />,
     },
     {
