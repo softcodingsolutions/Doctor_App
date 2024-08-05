@@ -85,11 +85,16 @@ import SurveyOtp from "./pages/Survey/SurveyOtp";
 import SurveyResult from "./pages/Survey/SurveyResult";
 import Userdata from "./pages/Admin/surveyuserdata/Userdata";
 import WeightGainName from "./pages/Admin/surveymaster/WeightGainName";
+import AboutUs from "./pages/AboutUsPage/AboutUs";
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="about-us" element={<AboutUs />} />
+        <Route path="contact-us" element={<LandingPage />} />
+        <Route path="weight-loss" element={<LandingPage />} />
+        <Route path="hair-and-beauty" element={<LandingPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="forget-password" element={<ForgetPassword />} />
         <Route path="change-password" element={<ChangePassword />} />
@@ -192,7 +197,7 @@ function App() {
             <Route path="weight-gain-reason" element={<Weightgainreason />} />
             <Route path="weight-gain-name" element={<WeightGainName />} />
           </Route>
-          <Route path="user-data" element={<Userdata />}/>
+          <Route path="user-data" element={<Userdata />} />
 
           {/* list follow up */}
           <Route path="list-follow-up" element={<AdminListFollowUp />} />

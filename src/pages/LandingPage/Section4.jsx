@@ -16,7 +16,7 @@ function Section4({ scrollYProgress }) {
         <div className="border-[2.5px] rounded-md border-green-200 w-20 mt-3" />
       </div>
 
-      <div className="flex items-center justify-center mt-16 gap-10">
+      <div className="flex items-center justify-center mt-16 gap-10 ">
         <Card className="mt-6 w-96 hover:scale-105 transition-transform">
           <CardBody>
             <svg
@@ -32,10 +32,14 @@ function Section4({ scrollYProgress }) {
               />
               <path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z" />
             </svg>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
+            <Typography
+              variant="h5"
+              color="blue-gray"
+              className="mb-2 font-poppins"
+            >
               Personalized Treatments
             </Typography>
-            <Typography>
+            <Typography className="font-poppins">
               We analyze your body to identify reason of excess fat in your body
               and provide you with treatment and medicines to treat that reason
               for best results.
@@ -57,10 +61,14 @@ function Section4({ scrollYProgress }) {
               />
               <path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z" />
             </svg>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
+            <Typography
+              variant="h5"
+              color="blue-gray"
+              className="mb-2 font-poppins"
+            >
               Healthy nutrition
             </Typography>
-            <Typography>
+            <Typography className="font-poppins">
               Slim and Smile Ayu Care provides you with just the right advice on
               your diet specially tailored for you so that you always have very
               healthy nutrition.
@@ -82,10 +90,14 @@ function Section4({ scrollYProgress }) {
               />
               <path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z" />
             </svg>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
+            <Typography
+              variant="h5"
+              color="blue-gray"
+              className="mb-2 font-poppins"
+            >
               Easy Workout Routines
             </Typography>
-            <Typography>
+            <Typography className="font-poppins">
               Slim and Smile Ayu Care offers really easy workouts which you can
               quickly learn and practice. This will help you lose weight and
               also maintain that.
