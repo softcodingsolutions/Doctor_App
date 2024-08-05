@@ -11,10 +11,14 @@ function Section1({ scrollYProgress }) {
 
   const renderContent = (image, text1, text2, text3, text4, key) => (
     <div key={key} className="relative h-full">
-      <img src={image} alt={key} className="object-cover h-full w-screen" />
+      <img src={image} alt={key} className="object-cover h-full" />
       <div
         className={`absolute text-white top-72 ${
-          text1 === "Our " || text1 === "Successful " || text1 === "Personalized " ? "left-28" : "right-10"
+          text1 === "Our " ||
+          text1 === "Successful " ||
+          text1 === "Personalized "
+            ? "left-28"
+            : "right-10"
         } bg-opacity-50 space-y-8`}
       >
         <div

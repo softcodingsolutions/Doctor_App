@@ -1,6 +1,7 @@
 import { motion, useTransform } from "framer-motion";
 import { Typography } from "@material-tailwind/react";
 import icons_slime from "../../assets/images/icons_slime.png";
+import { Link } from "react-router-dom";
 
 function Section6({ scrollYProgress }) {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
@@ -9,27 +10,39 @@ function Section6({ scrollYProgress }) {
     {
       title: "Quick Links",
       items: [
-        "About us",
-        "Weight Loss Treatment",
-        "Hair & Beauty Treatment",
-        "Contact Us",
-        "Terms and Conditions",
+        { text: "About us", link: "about-us" },
+        { text: "Weight Loss Treatment", link: "weight-loss" },
+        { text: "Hair & Beauty Treatment", link: "hair-and-beauty" },
+        { text: "Contact Us", link: "contact-us" },
       ],
     },
     {
       title: "Our Speciality",
       items: [
-        "Obesity and PCOD",
-        "Obesity and Hypothyroidism",
-        "Obesity and Hypertension",
-        "Obesity and Diabetes Mellitus",
-        "Obesity and Menopause",
-        "Obesity and Stress",
+        { text: "Obesity and PCOD", link: "#" },
+        { text: "Obesity and Hypothyroidism", link: "#" },
+        { text: "Obesity and Hypertension", link: "#" },
+        { text: "Obesity and Diabetes Mellitus", link: "#" },
+        { text: "Obesity and Menopause", link: "#" },
+        { text: "Obesity and Stress", link: "#" },
       ],
     },
     {
       title: "Get In Touch",
-      items: ["Blog", "+91 9925490091", "inquiry@slimandsmile.com"],
+      items: [
+        {
+          text: "634/ Solaris Business Hub, Opp Parshwnath Jain Temple, Bhuyangdev Cross Road, Bhuyangdev, Ahmedabad-380052",
+          link: "https://www.google.com/maps/place/Solaris+Business+Hub/@23.0584752,72.5365274,17z/data=!3m1!4b1!4m6!3m5!1s0x395e855d754079cd:0x56eb1329773be8e8!8m2!3d23.0584752!4d72.5391023!16s%2Fg%2F11h7k78qh9?entry=ttu",
+        },
+        {
+          text: "+91 9925490091",
+          link: "tel:+919925490091",
+        },
+        {
+          text: "inquiry@slimandsmile.com",
+          link: "mailto:inquiry@slimandsmile.com",
+        },
+      ],
     },
   ];
 
@@ -44,7 +57,10 @@ function Section6({ scrollYProgress }) {
             variant="h5"
             className="flex w-full items-center justify-evenly gap-24 mt-10"
           >
-            <img src={icons_slime} className="w-72"/>
+            <Link to="/">
+              {" "}
+              <img src={icons_slime} className="w-72" />
+            </Link>
             <div className="font-poppins text-lg text-balance tracking-wide font-light w-1/2">
               Slim and Smile Ayu Care offers unique weight loss solutions which
               are in turn backed 100% by age old, tried and tested Ayurvedic
@@ -52,36 +68,59 @@ function Section6({ scrollYProgress }) {
             </div>
           </Typography>
           <div className="flex justify-evenly gap-10 w-full">
-            {LINKS.map(({ title, items }) => (
-              <ul key={title}>
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="mb-3 font-semibold opacity-70 font-poppins text-lg"
-                >
-                  {title}
-                </Typography>
-                {items.map((link) => (
-                  <li key={link}>
-                    <Typography
-                      as="a"
-                      href="#"
-                      color="gray"
-                      className="py-1.5 font-poppins transition-colors hover:text-black"
-                    >
-                      {link}
-                    </Typography>
-                  </li>
-                ))}
-              </ul>
-            ))}
+            {LINKS.map(({ title, items }) =>
+              title === "Our Speciality" ? (
+                <ul key={title} className="flex-1">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="mb-3 font-semibold opacity-70 font-poppins text-lg"
+                  >
+                    {title}
+                  </Typography>
+                  {items.map((item, index) => (
+                    <li key={index} className="break-words">
+                      <Typography
+                        as="a"
+                        color="gray"
+                        className="py-1.5 font-poppins transition-colors hover:text-black cursor-default"
+                      >
+                        {item.text}
+                      </Typography>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <ul key={title} className="flex-1">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="mb-3 font-semibold opacity-70 font-poppins text-lg"
+                  >
+                    {title}
+                  </Typography>
+                  {items.map((item, index) => (
+                    <li key={index} className="break-words">
+                      <Typography
+                        as="a"
+                        href={item.link}
+                        color="gray"
+                        className="py-1.5 font-poppins transition-colors hover:text-black"
+                      >
+                        {item.text}
+                      </Typography>
+                    </li>
+                  ))}
+                </ul>
+              )
+            )}
           </div>
           <div className="mt-12 flex w-full text-center items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
             <Typography
               variant="small"
               className="mb-4 text-center w-full font-normal text-base text-blue-gray-900 md:mb-0 "
             >
-              &copy; {currentYear} <a href="/">Slime & Smile</a>. All Rights
+              &copy; {currentYear} <a href="/">Slim & Smile</a>. All Rights
               Reserved.
             </Typography>
           </div>

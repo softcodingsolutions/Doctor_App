@@ -13,10 +13,10 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
 
   const handleGetPackages = () => {
     axios
-      .get("/api/v1/user_packages")
+      .get("/api/v1/payment_packages")
       .then((res) => {
         console.log(res.data);
-        setGetPackages(res.data?.user_packages);
+        setGetPackages(res.data?.payment_packages);
       })
       .catch((err) => {
         console.log(err);
@@ -26,7 +26,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
 
   const handleGetPrice = (name) => {
     const packageDetail = getPackages.find(
-      (pack) => pack.package_name === name
+      (pack) => pack.name === name
     );
     console.log("Package", packageDetail);
 
@@ -34,12 +34,12 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
       const today = new Date();
       const fromDate = today.toISOString().split("T")[0];
       const toDate = new Date();
-      toDate.setDate(today.getDate() + packageDetail.no_of_days);
+      toDate.setDate(today.getDate() + packageDetail.duration);
       const toDateString = toDate.toISOString().split("T")[0];
 
-      setValue("package_value", packageDetail.package_price);
-      setValue("package_total", packageDetail.package_price);
-      setValue("grand_total", packageDetail.package_price);
+      setValue("package_value", packageDetail.price);
+      setValue("package_total", packageDetail.price);
+      setValue("grand_total", packageDetail.price);
       setValue("from_date", fromDate);
       setValue("to_date", toDateString);
 
@@ -65,7 +65,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
     if (selectedPackage && watchFromDate) {
       const fromDate = new Date(watchFromDate);
       const toDate = new Date(fromDate);
-      toDate.setDate(fromDate.getDate() + selectedPackage.no_of_days);
+      toDate.setDate(fromDate.getDate() + selectedPackage.duration);
       const toDateString = toDate.toISOString().split("T")[0];
       setValue("to_date", toDateString);
     }
@@ -120,10 +120,10 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
                   {getPackages.map((pkg) => (
                     <Option
                       key={pkg.value}
-                      onClick={() => handleGetPrice(pkg.package_name)}
-                      value={pkg.package_name}
+                      onClick={() => handleGetPrice(pkg.name)}
+                      value={pkg.name}
                     >
-                      {pkg.package_name}
+                      {pkg.name}
                     </Option>
                   ))}
                 </Select>

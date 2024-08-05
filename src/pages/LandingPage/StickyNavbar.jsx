@@ -33,7 +33,7 @@ export function StickyNavbar() {
         className="p-1 font-normal"
       >
         <Link
-          to="#"
+          to="/"
           className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           Home
@@ -46,7 +46,7 @@ export function StickyNavbar() {
         className="p-1 font-normal"
       >
         <Link
-          to="#"
+          to="/about-us"
           className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           About Us
@@ -59,7 +59,7 @@ export function StickyNavbar() {
         className="p-1 font-normal"
       >
         <Link
-          to="#"
+          to="/weight-loss"
           className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           Weight Loss Treatment
@@ -72,7 +72,7 @@ export function StickyNavbar() {
         className="p-1 font-normal"
       >
         <Link
-          to="/"
+          to="/hair-and-beauty"
           className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           Hair & Beauty Treatment
@@ -85,7 +85,7 @@ export function StickyNavbar() {
         className="p-1 font-normal"
       >
         <Link
-          to="#"
+          to="/contact-us"
           className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
         >
           Contact Us

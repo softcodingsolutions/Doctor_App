@@ -34,7 +34,7 @@ function LandingPage() {
       <header>
         <StickyNavbar />
       </header>
-      <main ref={container} className="relative h-[575vh] bg-white">
+      <main ref={container} className="relative max-h-[575vh] bg-white font-poppins">
         <Section1 scrollYProgress={scrollYProgress} />
         <Section2 scrollYProgress={scrollYProgress} />
         <Section3 scrollYProgress={scrollYProgress} />

@@ -6,17 +6,68 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import AddNewPackage from "../../../components/Admin/AddNewPackage";
 import EditPackage from "../../../components/Admin/EditPackage";
+import { Option, Select } from "@mui/joy";
 
 function Packages() {
   const [getPackages, setGetPackages] = useState([]);
   const [editPackage, setEditPackage] = useState([]);
+  const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
 
   const handleGetPackages = () => {
     axios
-      .get("/api/v1/user_packages")
+      .get("/api/v1/payment_packages")
       .then((res) => {
         console.log(res.data);
-        setGetPackages(res.data?.user_packages);
+        setGetPackages(res.data?.payment_packages);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(res.data);
+              setGetPackages(res.data?.payment_packages);
+            } else {
+              console.log(
+                "Particular Doctor Package: ",
+                res.data?.payment_packages?.filter(
+                  (pac) => pac.user_id == getDoctorId
+                )
+              );
+              setGetPackages(
+                res.data?.payment_packages?.filter(
+                  (pac) => pac.user_id == getDoctorId
+                )
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Particular Doctor Package: ",
+            res.data?.payment_packages?.filter((pac) => pac.user_id == main_id)
+          );
+          setGetPackages(
+            res.data?.payment_packages?.filter((pac) => pac.user_id == main_id)
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -26,11 +77,15 @@ function Packages() {
 
   const handleAddPackage = (package_name, package_days, price) => {
     const formData = new FormData();
-    formData.append("user_package[package_name]", package_name);
-    formData.append("user_package[no_of_days]", package_days);
-    formData.append("user_package[package_price]", price);
+    formData.append("payment_package[name]", package_name);
+    formData.append("payment_package[duration]", package_days);
+    formData.append(
+      "payment_package[user_id]",
+      localStorage.getItem("main_id")
+    );
+    formData.append("payment_package[price]", price);
     axios
-      .post("api/v1/user_packages", formData)
+      .post("api/v1/payment_packages", formData)
       .then((res) => {
         console.log(res);
         if (res.data) {
@@ -57,9 +112,13 @@ function Packages() {
 
   const handleEditPackageApi = (package_name, package_days, price, id) => {
     const formData = new FormData();
-    formData.append("user_package[package_name]", package_name);
-    formData.append("user_package[no_of_days]", package_days);
-    formData.append("user_package[package_price]", price);
+    formData.append("payment_package[name]", package_name);
+    formData.append("payment_package[duration]", package_days);
+    formData.append(
+      "payment_package[user_id]",
+      localStorage.getItem("main_id")
+    );
+    formData.append("payment_package[price]", price);
     axios
       .put(`api/v1/user_packages/${id}`, formData)
       .then((res) => {
@@ -114,7 +173,8 @@ function Packages() {
 
   useEffect(() => {
     handleGetPackages();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   return (
     <div className="w-full p-2">
@@ -122,14 +182,36 @@ function Packages() {
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Packages List</div>
-            <AddNewPackage
-              handleApi={handleAddPackage}
-              name="Add New Package"
-              title="Add Package"
-              package_name="Name"
-              package_days="Days"
-              price="Price"
-            />
+            <div className="flex gap-3">
+              <AddNewPackage
+                handleApi={handleAddPackage}
+                name="Add New Package"
+                title="Add Package"
+                package_name="Name"
+                package_days="Days"
+                price="Price"
+              />
+              {role === "super_admin" && (
+                <Select
+                  required
+                  defaultValue={"all"}
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => setGetDoctorId(newValue)}
+                >
+                  <Option key={"all"} value="all">
+                    All
+                  </Option>
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -165,13 +247,13 @@ function Packages() {
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.package_name} />
+                          <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.no_of_days} />
+                          <TdComponent things={val.duration} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.package_price} />
+                          <TdComponent things={val.price} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <EditPackage

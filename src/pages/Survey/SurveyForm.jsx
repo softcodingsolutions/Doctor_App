@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SurveyInput from "../../components/Survey/SurveyInput";
 import { schema } from "./Schemas/SurveySchema";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -310,10 +310,7 @@ export default function SurveyForm() {
       </div>
       <footer>
         <div className="flex justify-center items-center text-center bg-[#FEFAF6] h-16">
-          <a
-            className="text-lg text-[#799351] font-semibold"
-            href="https://slimandsmile.com"
-          >
+          <a className="text-lg text-[#799351] font-semibold" href="/">
             Contact Us @ Slim And Smile
           </a>
         </div>
