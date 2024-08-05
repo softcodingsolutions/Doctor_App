@@ -89,12 +89,12 @@ import SurveyDos from "./pages/Admin/surveymaster/SurveyDos";
 import SurveyDonts from "./pages/Admin/surveymaster/SurveyDonts";
 import SurveyExersice from "./pages/Admin/surveymaster/SurveyExersice";
 import Surveytreatment from "./pages/Admin/Surveytreatment";
-import SurveyHealthProblem from "./pages/Admin/surveytreatment/SurveyHealthProblem";
 import SurveyWeightGainQuestions from "./pages/Admin/surveytreatment/SurveyWeightGainQuestions";
 import SurveyTreatmentDos from "./pages/Admin/surveytreatment/SurveyTreatmentDos";
 import SurveyTreatmentDont from "./pages/Admin/surveytreatment/SurveyTreatmentDont";
 import SurveyTreatmentExercise from "./pages/Admin/surveytreatment/SurveyTreatmentExercise";
 import AboutUs from "./pages/AboutUsPage/AboutUs";
+
 function App() {
   return (
     <Router>
