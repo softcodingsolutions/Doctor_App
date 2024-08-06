@@ -42,6 +42,7 @@ function QueCheckout({ setStoreData, onBack, handleCallUserApi }) {
       setValue("grand_total", packageDetail.price);
       setValue("from_date", fromDate);
       setValue("to_date", toDateString);
+      setValue("duration", packageDetail.duration);
 
       setSelectedPackage(packageDetail);
     }
@@ -64,8 +65,9 @@ function QueCheckout({ setStoreData, onBack, handleCallUserApi }) {
   useEffect(() => {
     if (selectedPackage && watchFromDate) {
       const fromDate = new Date(watchFromDate);
+      console.log("From Date:", fromDate);
       const toDate = new Date(fromDate);
-      toDate.setDate(fromDate.getDate() + selectedPackage.duration);
+      toDate.setDate(fromDate.getDate() + Number(selectedPackage.duration));
       const toDateString = toDate.toISOString().split("T")[0];
       setValue("to_date", toDateString);
     }
@@ -77,7 +79,7 @@ function QueCheckout({ setStoreData, onBack, handleCallUserApi }) {
       ...prev,
       checkout: d,
     }));
-    handleCallUserApi();
+    handleCallUserApi(d);
   };
 
   useEffect(() => {

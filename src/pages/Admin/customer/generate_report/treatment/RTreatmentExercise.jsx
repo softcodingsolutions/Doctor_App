@@ -79,6 +79,12 @@ function RTreatmentExercise() {
       ...prev,
       exercise: selectedExercise,
     }));
+
+    Swal.fire({
+        icon: "Success",
+        title: "Saved!",
+        text: "Your selected exercises have been saved.",
+      });
   };
 
   useEffect(() => {

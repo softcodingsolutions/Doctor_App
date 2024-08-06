@@ -82,7 +82,6 @@ function UserQuestions() {
             complaints: JSON.stringify(storeData?.complains),
             user_selected_questions_one: JSON.stringify(storeData?.questions),
             user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
-            package: JSON.stringify(storeData?.checkout),
           },
           client_id: res.data?.client_id,
         })

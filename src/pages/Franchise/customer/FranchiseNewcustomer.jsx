@@ -55,8 +55,9 @@ function FranchiseNewcustomer() {
     setIsGeneralDetailsValid(isValid);
   };
 
-  const handleCallUserApi = async () => {
+  const handleCallUserApi = async (checkout) => {
     console.log("Waah");
+    console.log("Checkout...", checkout);
     try {
       const res = await axios.get(`/api/v1/users/app_creds`);
 
@@ -86,23 +87,37 @@ function FranchiseNewcustomer() {
             complaints: JSON.stringify(storeData?.complains),
             user_selected_questions_one: JSON.stringify(storeData?.questions),
             user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
-            package: JSON.stringify(storeData?.checkout),
           },
           client_id: res.data?.client_id,
         })
         .then((res) => {
-          if (res.data) {
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "Created!",
-              text: `New user has been created.`,
-              showConfirmButton: false,
-              timer: 1500,
+          const formData = new FormData();
+          formData.append("user_package[user_id]", res.data?.user?.user?.id);
+          formData.append("user_package[no_of_days]", checkout?.duration);
+          formData.append("user_package[package_name]", checkout?.package_name);
+          formData.append("user_package[package_price]", checkout?.grand_total);
+          formData.append("user_package[starting_date]", checkout?.from_date);
+          formData.append("user_package[ending_date]", checkout?.to_date);
+          axios
+            .post("/api/v1/user_packages", formData)
+            .then((res) => {
+              console.log(res);
+              if (res.data) {
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Created!",
+                  text: `New user has been created.`,
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                localStorage.removeItem("client_email");
+                navigate("../../franchise/customers/all-users");
+              }
+            })
+            .catch((err) => {
+              alert(err.message);
             });
-            localStorage.removeItem("client_email");
-            navigate("../../franchise/customers/all-users");
-          }
         });
     } catch (error) {
       console.error(error);
