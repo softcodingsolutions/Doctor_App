@@ -45,7 +45,8 @@ function SurveyMain() {
       .then((res) => {
         console.log(res);
         setUserId(res.data.survey_user.id);
-       
+        console.log(res.data.survey_user.id);
+        localStorage.setItem("survey_userr_id", res.data.survey_user.id);
       })
       .catch((err) => {
         console.log(err);
@@ -65,13 +66,19 @@ function SurveyMain() {
       .catch((err) => {
         console.log(err);
       });
-    
-      await axios.get(`/api/v2/survey_users/send_otp?survey_user_id=${userId}`).then((res)=>{
-        console.log(res)
-      }).catch((err)=>{
-        console.log(err)
+
+    await axios
+      .get(
+        `/api/v2/survey_users/send_otp?survey_user_id=${localStorage.getItem(
+          "survey_user_id"
+        )}`
+      )
+      .then((res) => {
+        console.log(res);
       })
-    
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {

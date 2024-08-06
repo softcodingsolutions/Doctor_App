@@ -18,7 +18,7 @@ export default function SurveyForm3() {
   const [language, setLanguage] = useState("English");
   const [data, setData] = useState([]);
   const [code, setCode] = React.useState();
-  const [passcode,setPasscode] = useState();
+  const [passcode, setPasscode] = useState();
 
   const {
     register,
@@ -35,14 +35,23 @@ export default function SurveyForm3() {
   };
 
   const handlePasswordhandle = () => {
-    const formdata = new FormData()
-    formdata.append('otp',passcode);
-   axios.get(`/api/v2/survey_users/show_survey_user_details`,formdata).then((res)=>{
-    console.log(res)
-    navigate("/surveymain/surveyresult");
-   }).catch((err)=>{
-    console.log(err)
-   })
+    const formdata = new FormData();
+    formdata.append("otp", passcode);
+    console.log(localStorage.getItem("survey_user_id"));
+    axios
+      .get(
+        `/api/v2/survey_users/show_survey_user_details?survey_user_id=${localStorage.getItem(
+          "survey_user_id"
+        )}`,
+        formdata
+      )
+      .then((res) => {
+        console.log(res);
+        navigate("/surveymain/surveyresult");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleCheckboxChange3 = (e) => {
@@ -73,13 +82,13 @@ export default function SurveyForm3() {
 
   const submittedData3 = (data) => {
     const question = {
-        "english":selectedCheckboxes3,
-        "gujarati":selectedCheckboxes4
-    }
+      english: selectedCheckboxes3,
+      gujarati: selectedCheckboxes4,
+    };
     setCode(true);
     context[1]((prev) => ({
       ...prev,
-      weightGainQuestions:question,
+      weightGainQuestions: question,
     }));
     context[2](question);
   };
