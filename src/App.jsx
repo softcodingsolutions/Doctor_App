@@ -94,6 +94,7 @@ import SurveyTreatmentDos from "./pages/Admin/surveytreatment/SurveyTreatmentDos
 import SurveyTreatmentDont from "./pages/Admin/surveytreatment/SurveyTreatmentDont";
 import SurveyTreatmentExercise from "./pages/Admin/surveytreatment/SurveyTreatmentExercise";
 import AboutUs from "./pages/AboutUsPage/AboutUs";
+import SurveyMain from "./pages/Survey/SurveyMain";
 
 function App() {
   return (
@@ -209,12 +210,24 @@ function App() {
             <Route path="survey-donts" element={<SurveyDonts />} />
             <Route path="survey-exercise" element={<SurveyExersice />} />
           </Route>
-          <Route path="suvrey-treatment" element={<Surveytreatment />} >
+          <Route path="suvrey-treatment" element={<Surveytreatment />}>
             {/* <Route path="survey-health-problem" element={<SurveyHealthProblem />} /> */}
-            <Route path="survey-weight-gain-questions" element={<SurveyWeightGainQuestions/>} />
-            <Route path="survey-treatment-dos" element={<SurveyTreatmentDos />}/>
-            <Route path="survey-treatment-donts" element={<SurveyTreatmentDont />} />
-            <Route path="survey-treatment-exercise" element={<SurveyTreatmentExercise/>}/>
+            <Route
+              path="survey-weight-gain-questions"
+              element={<SurveyWeightGainQuestions />}
+            />
+            <Route
+              path="survey-treatment-dos"
+              element={<SurveyTreatmentDos />}
+            />
+            <Route
+              path="survey-treatment-donts"
+              element={<SurveyTreatmentDont />}
+            />
+            <Route
+              path="survey-treatment-exercise"
+              element={<SurveyTreatmentExercise />}
+            />
           </Route>
           <Route path="user-data" element={<Userdata />} />
 
@@ -247,11 +260,13 @@ function App() {
 
         {/* Survey */}
         <Route path="survey" element={<SurveyReport />} />
-        <Route path="surveyform" element={<SurveyForm />} />
-        <Route path="surveyform2" element={<SurveyForm2 />} />
-        <Route path="surveyform3" element={<SurveyForm3 />} />
-        <Route path="surveyOtp" element={<SurveyOtp />} />
-        <Route path="surveyresult" element={<SurveyResult />} />
+        <Route path="surveymain" element={<SurveyMain />}>
+          <Route path="surveyform" element={<SurveyForm />} />
+          <Route path="surveyform2" element={<SurveyForm2 />} />
+          <Route path="surveyform3" element={<SurveyForm3 />} />
+          <Route path="surveyOtp" element={<SurveyOtp />} />
+          <Route path="surveyresult" element={<SurveyResult />} />
+        </Route>
 
         {/* Franchise */}
         <Route path="franchise" element={<FranchiseMain />}>

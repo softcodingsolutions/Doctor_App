@@ -27,7 +27,7 @@ function AddWeightName(props) {
     props.handleApi(text.english);
 
     const formData = new FormData();
-    formData.append("survey_weigh_reason[name]", text.english);
+    formData.append("survey_weigh_reason[name]", d.name);
     axios
       .post("/api/v2/survey_weigh_reasons", formData)
       .then((res) => {
@@ -74,22 +74,11 @@ function AddWeightName(props) {
               <FormControl>
                 <FormLabel>{props.details} :-</FormLabel>
                 <Box className="flex flex-col items-center w-full">
-                  <ReactTransliterate
-                    name="question_english"
-                    value={text.english}
-                    lang="en"
-                    onChangeText={(value) => {
-                      setText((prev) => ({
-                        ...prev,
-                        english: value,
-                      }));
-                    }}
-                    renderComponent={(props) => (
-                      <textarea {...props} placeholder="In English..." />
-                    )}
-                    className="p-1 border border-gray-400 rounded-sm"
-                    rows={4}
-                    cols={30}
+                <input
+                    name="name"
+                    {...register("name")}
+                    placeholder="Name..."
+                    className="p-2 border w-full border-gray-400 rounded-sm mb-2"
                     required
                   />
                 </Box>
