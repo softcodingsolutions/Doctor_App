@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useNavigate, useOutlet, useOutletContext } from "react-router-dom";
+
 export default function SurveyForm2() {
   const navigate = useNavigate();
-  const [healthproblem,setHealthProblem] = useState([]);
+  const context = useOutletContext();
+  const [healthProblems, setHealthProblems] = useState([]);
   const [selectedCheckboxes2, setSelectedCheckboxes2] = useState([]);
   const {
     register,
@@ -26,24 +28,35 @@ export default function SurveyForm2() {
   };
 
   const submittedData2 = (d) => {
-    navigate("/surveyform3", { state: { ...d } });
+    const formData = new FormData();
+    
+    context[1]((prev)=>({
+      ...prev,
+      healthProblem: selectedCheckboxes2,
+    }))
+    
+
+    navigate("/surveymain/surveyform3", { state: { ...d, selectedCheckboxes2 } });
   };
 
   const handleBack = () => {
-    navigate('/surveyform');
+    navigate('/surveymain/surveyform');
   };
 
-  const handleData =() =>{
-    axios.get(`/api/v2/survey_helth_problems`).then((res)=>{
-      console.log(res)
-      setHealthProblem(res.data.all_survey_helth_problems);
-    }).catch((err)=>{
-      console.log(err)
-    })
-  }
-  useEffect(()=>{
-    handleData()
-  },[]);
+  const handleData = () => {
+    axios.get(`/api/v2/survey_helth_problems`)
+      .then((res) => {
+        console.log(res);
+        setHealthProblems(res.data.all_survey_helth_problems);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    handleData();
+  }, []);
 
   return (
     <div>
@@ -64,7 +77,7 @@ export default function SurveyForm2() {
           >
             <div className="grid py-2 my-1 p-3">
               <label className="text-xl text-[#799351] font-semibold">Kindly click your health problem ( If any )</label>
-              {healthproblem.map((item, index) => (
+              {healthProblems.map((item, index) => (
                 <div key={index}>
                   <input
                     value={item.problem}
@@ -72,6 +85,7 @@ export default function SurveyForm2() {
                     type="checkbox"
                     id={`checkbox-${index}`}
                     className="mr-2"
+                    name='items'
                   />
                   <label htmlFor={`checkbox-${index}`} className='p-2'>{item.problem}</label>
                 </div>

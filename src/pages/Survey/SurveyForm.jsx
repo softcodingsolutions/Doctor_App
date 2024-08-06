@@ -2,11 +2,13 @@ import { useState } from "react";
 import SurveyInput from "../../components/Survey/SurveyInput";
 import { schema } from "./Schemas/SurveySchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutlet, useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
 export default function SurveyForm() {
+  const context = useOutletContext();
+  console.log(context);
   const navigate = useNavigate();
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const {
@@ -18,37 +20,15 @@ export default function SurveyForm() {
   });
 
   const onSubmit = (data) => {
+    context[1]((prev)=>({
+      ...prev,
+      userDetails: data,
+    }))
+    navigate("/surveymain/surveyform2", { state: { ...data } })
     data.selectedCheckboxes = selectedCheckboxes;
-    navigate("/surveyform2");
     localStorage.setItem("user_weight", data.weight);
     localStorage.setItem("user_height", data.height);
-    const formdata = new FormData();
-    formdata.append("survey_user[first_name]", data.firstname);
-    formdata.append("survey_user[last_name]", data.lastname);
-    formdata.append("survey_user[email]", data.email);
-    formdata.append("survey_user[mobile_no]", data.mobile);
-    formdata.append("survey_user[age]", data.age);
-    formdata.append("survey_user[height]", data.height);
-    formdata.append("survey_user[weight]", data.weight);
-    formdata.append("survey_user[gender]", data.gender);
-    formdata.append("survey_user[language]", data.language);
-    formdata.append(
-      "survey_user[fat_deposit_body_part]",
-      JSON.stringify(selectedCheckboxes.join(", "))
-    );
-    formdata.append(
-      "survey_user[user_weight_gain_reason]",
-      JSON.stringify(data?.question)
-    );
-
-    axios
-      .post(`/api/v2/survey_users`, formdata)
-      .then((response) => {
-        console.log("Form submitted successfully", response);
-      })
-      .catch((error) => {
-        console.error("There was an error submitting the form", error);
-      });
+   
   };
 
   const handleCheckboxChange = (e) => {

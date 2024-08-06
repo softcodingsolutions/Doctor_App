@@ -118,7 +118,7 @@ export function StickyNavbar() {
             >
               <li>
                 <Link
-                  to="/surveyForm"
+                  to="/surveymain/surveyForm"
                   className="block px-4 py-2 text-base text-gray-800 hover:bg-green-200 "
                 >
                   Survey

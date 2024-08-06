@@ -83,7 +83,7 @@ export default function WeightGainName() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="No."
                   />
-                  <ThComponent name="In English" />
+                  <ThComponent name="Name" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>

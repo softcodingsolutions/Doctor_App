@@ -8,12 +8,15 @@ import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import { MenuItem, Select } from "@mui/joy";
 
 function SurveyWeightGainQuestions() {
   const context = useOutletContext();
   const [getQuestions, setGetQuestions] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+console.log(context[2]);
 
   const handleGetQuestions = () => {
     axios
@@ -41,6 +44,35 @@ function SurveyWeightGainQuestions() {
       setSelectedCheckboxes((prevState) =>
         prevState.filter((value) => value !== checkboxValue)
       );
+    }
+  };
+
+  const handleSendQuestionToBeAnswered = async (e) => {
+    console.log("min", e.target.value);
+    const formData = new FormData();
+    formData.append(
+      "survey_weight_reason_package[survey_weigh_reason]",
+      context[0] === "null" ? null : context[0]
+    );
+    formData.append(
+      "survey_weight_reason_package[number_of_question]",
+      e.target.value
+    );
+
+    try {
+      await axios
+        .post("/api/v2/survey_weight_reason_packages", formData)
+        .then((res) => {
+          console.log("min question list:", res);
+          e.target.value = "";
+          context[1]();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.message);
+        });
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -92,13 +124,23 @@ function SurveyWeightGainQuestions() {
   };
 
   useEffect(() => {
-    const preSelectedQuestion = context[2]?.reduce((acc, packages) => {
+    const defaultValue =
+      context[2]?.find((packages) => {
+        return (
+          context[0] === packages.survey_weigh_reason &&
+          packages.number_of_question
+        );
+      })?.number_of_question || 0;
+
+    setDefaultDropdownValue(defaultValue);
+
+    const preSelectedQuestions = context[2]?.reduce((acc, packages) => {
       if (context[0] === packages.survey_weigh_reason) {
-        acc = [...acc, ...packages.questions.map((q) => String(q.id))];
+        acc = [...acc, ...packages.number_of_question.map((q) => String(q.id))];
       }
       return acc;
     }, []);
-    setSelectedCheckboxes(preSelectedQuestion);
+    setSelectedCheckboxes(preSelectedQuestions);
   }, [context]);
 
   useEffect(() => {
@@ -120,6 +162,24 @@ function SurveyWeightGainQuestions() {
             {showCheckboxes && (
               <div className="font-[550] text-lg">
                 No. of Weight Gain Questions: {selectedCheckboxes.length}
+              </div>
+            )}
+
+            {!showCheckboxes && (
+              <div className="flex items-center gap-2 font-bold text-lg">
+                <span>No. of questions to be answered:</span>{" "}
+                {defaultDropdownValue}
+                <Select required placeholder="Select">
+                  {[...Array(selectedCheckboxes.length).keys()].map((index) => (
+                    <MenuItem
+                      key={index}
+                      value={index + 1}
+                      onClick={handleSendQuestionToBeAnswered}
+                    >
+                      {index + 1}
+                    </MenuItem>
+                  ))}
+                </Select>
               </div>
             )}
 
