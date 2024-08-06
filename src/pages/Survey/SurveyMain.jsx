@@ -3,12 +3,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { CloseFullscreen } from "@mui/icons-material";
 
 function SurveyMain() {
   const navigate = useNavigate();
   const [userId, setUserId] = useState("");
-  const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
   const [storeData, setStoreData] = useState({
     userDetails: [],
     healthProblem: [],
@@ -57,7 +55,10 @@ function SurveyMain() {
       JSON.stringify(storeData.healthProblem)
     );
     formData.append("survey_user_detail[questions]", JSON.stringify(question));
-    formData.append("survey_user_detail[survey_user_id]", userId);
+    formData.append(
+      "survey_user_detail[survey_user_id]",
+      localStorage.getItem("survey_user_id")
+    );
     await axios
       .post(`/api/v2/survey_user_details`, formData)
       .then((res) => {

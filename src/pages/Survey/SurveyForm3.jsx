@@ -7,29 +7,26 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useNavigate, useOutlet, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
+
 export default function SurveyForm3() {
   const context = useOutletContext();
   const navigate = useNavigate();
-  // const user_id = localStorage.getItem("user_id")
   const [selectedCheckboxes3, setSelectedCheckboxes3] = useState([]);
-  const [selectedCheckboxes4, setSelectedCheckboxes4] = useState([]);
   const [language, setLanguage] = useState("English");
   const [data, setData] = useState([]);
   const [code, setCode] = React.useState();
   const [passcode, setPasscode] = useState();
 
   const {
-    register,
     handleSubmit,
-    reset,
-    formState: { errors },
   } = useForm();
 
   const handleCodeClose = () => {
     setCode(false);
   };
+
   const handlePasscode = (e) => {
     setPasscode(e.target.value);
   };
@@ -57,40 +54,31 @@ export default function SurveyForm3() {
   const handleCheckboxChange3 = (e) => {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
+    const checkboxObject = data.find(
+      (item) =>
+        item.in_english === checkboxValue || item.in_gujarati === checkboxValue
+    );
 
-    if (isChecked) {
-      setSelectedCheckboxes3((prevState) => [...prevState, checkboxValue]);
+    if (isChecked && checkboxObject) {
+      setSelectedCheckboxes3((prevState) => [...prevState, checkboxObject]);
     } else {
       setSelectedCheckboxes3((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
+        prevState.filter(
+          (item) =>
+            item.in_english !== checkboxValue &&
+            item.in_gujarati !== checkboxValue
+        )
       );
     }
   };
 
-  const handleCheckboxChange4 = (e) => {
-    const checkboxValue = e.target.value;
-    const isChecked = e.target.checked;
-
-    if (isChecked) {
-      setSelectedCheckboxes4((prevState) => [...prevState, checkboxValue]);
-    } else {
-      setSelectedCheckboxes4((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
-      );
-    }
-  };
-
-  const submittedData3 = (data) => {
-    const question = {
-      english: selectedCheckboxes3,
-      gujarati: selectedCheckboxes4,
-    };
+  const submittedData3 = () => {
     setCode(true);
     context[1]((prev) => ({
       ...prev,
-      weightGainQuestions: question,
+      weightGainQuestions: selectedCheckboxes3,
     }));
-    context[2](question);
+    context[2](selectedCheckboxes3);
   };
 
   const handleBack = () => {
@@ -106,15 +94,17 @@ export default function SurveyForm3() {
       .get(`/api/v2/survey_questions`)
       .then((res) => {
         console.log(res);
-        setData(res.data.all_survey_questions);
+        setData(res?.data?.all_survey_questions);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     handleData();
   }, []);
+
   return (
     <div>
       <header className="bg-[#FEFAF6] h-20">
@@ -181,7 +171,7 @@ export default function SurveyForm3() {
                     <div key={index}>
                       <input
                         value={item.in_gujarati}
-                        onChange={handleCheckboxChange4}
+                        onChange={handleCheckboxChange3}
                         type="checkbox"
                         id={`checkbox-${index}`}
                         className="mr-2"
@@ -195,14 +185,13 @@ export default function SurveyForm3() {
             <div className="grid grid-cols-2 gap-2 m-2">
               <button
                 onClick={handleBack}
-                type="submit"
+                type="button"
                 className="w-[20rem] p-1 text-[#1F2937] rounded-md border border-gray-500 font-bold text-lg hover:scale-105"
                 style={{ backgroundColor: "#799351" }}
               >
                 Back
               </button>
               <button
-                onClick={handleSubmit}
                 type="submit"
                 className="w-[20rem] p-1 text-[#1F2937] rounded-md border border-gray-500 font-bold text-lg hover:scale-105"
                 style={{ backgroundColor: "#799351" }}
