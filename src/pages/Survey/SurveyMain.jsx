@@ -42,8 +42,9 @@ function SurveyMain() {
       .post(`/api/v2/survey_users`, formdata)
       .then((res) => {
         console.log(res);
-        setUserId(res.data?.survey_user.id);
-        localStorage.setItem("survey_user_id", res.data?.survey_user.id);
+        setUserId(res.data.survey_user.id);
+        console.log(res.data.survey_user.id);
+        localStorage.setItem("survey_userr_id", res.data.survey_user.id);
       })
       .catch((err) => {
         console.log(err);

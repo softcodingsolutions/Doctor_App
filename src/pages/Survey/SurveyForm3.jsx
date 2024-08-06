@@ -20,10 +20,7 @@ export default function SurveyForm3() {
   const [passcode, setPasscode] = useState();
 
   const {
-    register,
     handleSubmit,
-    reset,
-    formState: { errors },
   } = useForm();
 
   const handleCodeClose = () => {
@@ -35,12 +32,11 @@ export default function SurveyForm3() {
   };
 
   const handlePasswordhandle = () => {
-    console.log(passcode);
-
     const formdata = new FormData();
     formdata.append("otp", passcode);
+    console.log(localStorage.getItem("survey_user_id"));
     axios
-      .put(
+      .get(
         `/api/v2/survey_users/show_survey_user_details?survey_user_id=${localStorage.getItem(
           "survey_user_id"
         )}`,
@@ -76,7 +72,7 @@ export default function SurveyForm3() {
     }
   };
 
-  const submittedData3 = (data) => {
+  const submittedData3 = () => {
     setCode(true);
     context[1]((prev) => ({
       ...prev,
