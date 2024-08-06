@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Page,
   Text,
@@ -13,6 +13,7 @@ import iconsSlime from "../../../../assets/images/icons_slime.png";
 import { useOutletContext } from "react-router-dom";
 import NotoSansGujarati from "../../../../assets/fonts/NotoSansGujarati-Regular.ttf";
 import TiroDevanagariHindi from "../../../../assets/fonts/TiroDevanagariHindi-Regular.ttf";
+import { BsDownload } from "react-icons/bs";
 
 Font.register({
   family: "Noto Sans Gujarati",
@@ -80,235 +81,262 @@ export const BillDocument = ({ data }) => (
           <Text style={styles.Name}>
             Height : {data?.personal_detail?.height} cm
           </Text>
-          <Text style={styles.Name}>  
+          <Text style={styles.Name}>
             Weight : {data?.personal_detail?.weight} kg
           </Text>
         </View>
       </View>
       <View style={styles.body}>
-        <View style={styles.s}>
-          <Text style={styles.subtitle}>Diet</Text>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Name</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>English</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Gujarati</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Hindi</Text>
-              </View>
-            </View>
-            {data.treatment_packages?.[0]?.treatment_package?.diet?.map(
-              (diet, index) => (
-                <View style={styles.tableRow} key={index}>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.name}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.chart_english}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.chart_gujarati}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHindi}>
-                      {diet.chart_hindi}
-                    </Text>{" "}
-                  </View>
+        {/* Diet */}
+        {data.treatment_packages?.[0]?.treatment_package?.diet?.length !==
+          0 && (
+          <View style={styles.s}>
+            <Text style={styles.subtitle}>Diet</Text>
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Name</Text>
                 </View>
-              )
-            )}
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>English</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Gujarati</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Hindi</Text>
+                </View>
+              </View>
+              {data.treatment_packages?.[0]?.treatment_package?.diet?.map(
+                (diet, index) => (
+                  <View style={styles.tableRow} key={index}>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.name}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.chart_english}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>
+                        {diet.chart_gujarati}
+                      </Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCellHindi}>
+                        {diet.chart_hindi}
+                      </Text>{" "}
+                    </View>
+                  </View>
+                )
+              )}
+            </View>
           </View>
-        </View>
+        )}
 
-        <View style={styles.s}>
-          <Text style={styles.subtitle}>Dont</Text>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Name</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>English</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Gujarati</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Hindi</Text>
-              </View>
-            </View>
-            {data.treatment_packages?.[0]?.treatment_package?.dont?.map(
-              (diet, index) => (
-                <View style={styles.tableRow} key={index}>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.name}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>
-                      {diet.details_in_english}
-                    </Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>
-                      {diet.details_in_gujarati}
-                    </Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHindi}>
-                      {diet.details_in_hindi}
-                    </Text>{" "}
-                  </View>
+        {/* Don'ts */}
+        {data.treatment_packages?.[0]?.treatment_package?.dont?.length !==
+          0 && (
+          <View style={styles.s}>
+            <Text style={styles.subtitle}>Don'ts</Text>
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Name</Text>
                 </View>
-              )
-            )}
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>English</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Gujarati</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Hindi</Text>
+                </View>
+              </View>
+              {data.treatment_packages?.[0]?.treatment_package?.dont?.map(
+                (diet, index) => (
+                  <View style={styles.tableRow} key={index}>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.name}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>
+                        {diet.details_in_english}
+                      </Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>
+                        {diet.details_in_gujarati}
+                      </Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCellHindi}>
+                        {diet.details_in_hindi}
+                      </Text>{" "}
+                    </View>
+                  </View>
+                )
+              )}
+            </View>
           </View>
-        </View>
+        )}
 
-        <View style={styles.s}>
-          <Text style={styles.subtitle}>Dos</Text>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Name</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>English</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Gujarati</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Hindi</Text>
-              </View>
-            </View>
-            {data.treatment_packages?.[0]?.treatment_package?.dos?.map(
-              (diet, index) => (
-                <View style={styles.tableRow} key={index}>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.name}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>
-                      {diet.details_in_english}
-                    </Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>
-                      {diet.details_in_gujarati}
-                    </Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHindi}>
-                      {diet.details_in_hindi}
-                    </Text>{" "}
-                  </View>
+        {/* Dos */}
+        {data.treatment_packages?.[0]?.treatment_package?.dos?.length !== 0 && (
+          <View style={styles.s}>
+            <Text style={styles.subtitle}>Dos</Text>
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Name</Text>
                 </View>
-              )
-            )}
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>English</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Gujarati</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Hindi</Text>
+                </View>
+              </View>
+              {data.treatment_packages?.[0]?.treatment_package?.dos?.map(
+                (diet, index) => (
+                  <View style={styles.tableRow} key={index}>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.name}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>
+                        {diet.details_in_english}
+                      </Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>
+                        {diet.details_in_gujarati}
+                      </Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCellHindi}>
+                        {diet.details_in_hindi}
+                      </Text>{" "}
+                    </View>
+                  </View>
+                )
+              )}
+            </View>
           </View>
-        </View>
+        )}
 
-        <View style={styles.s}>
-          <Text style={styles.subtitle}>Exercise</Text>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Name</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>English</Text>
-              </View>
-            </View>
-            {data.treatment_packages?.[0]?.treatment_package?.exercise?.map(
-              (diet, index) => (
-                <View style={styles.tableRow} key={index}>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.name}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.details}</Text>
-                  </View>
+        {/* Medicines */}
+        {data.treatment_packages?.[0]?.treatment_package?.medicines?.length !==
+          0 && (
+          <View style={styles.s}>
+            <Text style={styles.subtitle}>Medicines</Text>
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Name</Text>
                 </View>
-              )
-            )}
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Dosage</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Time</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Quantity</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>With Milk</Text>
+                </View>
+              </View>
+              {data.treatment_packages?.[0]?.treatment_package?.medicines?.map(
+                (diet, index) => (
+                  <View style={styles.tableRow} key={index}>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.medicine_name}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.dosage}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.frequency}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.quantity}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCellHindi}>
+                        {diet.with_milk}
+                      </Text>{" "}
+                    </View>
+                  </View>
+                )
+              )}
+            </View>
           </View>
-        </View>
+        )}
 
-        <View style={styles.s}>
-          <Text style={styles.subtitle}>Medicines</Text>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Name</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Dosage</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Time</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Quantity</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>With Milk</Text>
-              </View>
-            </View>
-            {data.treatment_packages?.[0]?.treatment_package?.medicines?.map(
-              (diet, index) => (
-                <View style={styles.tableRow} key={index}>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.medicine_name}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.dosage}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.frequency}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.quantity}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHindi}>{diet.with_milk}</Text>{" "}
-                  </View>
+        {/* Exercises */}
+        {data.treatment_packages?.[0]?.treatment_package?.exercise?.length !==
+          0 && (
+          <View style={styles.s}>
+            <Text style={styles.subtitle}>Exercises</Text>
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Name</Text>
                 </View>
-              )
-            )}
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>English</Text>
+                </View>
+              </View>
+              {data.treatment_packages?.[0]?.treatment_package?.exercise?.map(
+                (diet, index) => (
+                  <View style={styles.tableRow} key={index}>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.name}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.details}</Text>
+                    </View>
+                  </View>
+                )
+              )}
+            </View>
           </View>
-        </View>
+        )}
 
-        <View style={styles.s}>
-          <Text style={styles.subtitle}>Nutrition</Text>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Name</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>Reason</Text>
-              </View>
-            </View>
-            {data.treatment_packages?.[0]?.treatment_package?.nutrition?.map(
-              (diet, index) => (
-                <View style={styles.tableRow} key={index}>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.name}</Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{diet.weight_reason}</Text>
-                  </View>
+        {/* Nutritions */}
+        {data.treatment_packages?.[0]?.treatment_package?.nutrition?.length !==
+          0 && (
+          <View style={styles.s}>
+            <Text style={styles.subtitle}>Nutrition</Text>
+            <View style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Name</Text>
                 </View>
-              )
-            )}
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Reason</Text>
+                </View>
+              </View>
+              {data.treatment_packages?.[0]?.treatment_package?.nutrition?.map(
+                (diet, index) => (
+                  <View style={styles.tableRow} key={index}>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.name}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text style={styles.tableCell}>{diet.weight_reason}</Text>
+                    </View>
+                  </View>
+                )
+              )}
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </Page>
   </Document>
@@ -343,15 +371,15 @@ const ReportGenerate = () => {
                     Loading document...
                   </button>
                 ) : (
-                  <button className="px-4 py-2 bg-green-500 text-white text-xl rounded shadow-md hover:bg-green-600">
-                    Download PDF
+                  <button className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white text-xl rounded shadow-md hover:bg-green-600">
+                    <BsDownload size={21} /> Download PDF
                   </button>
                 )
               }
             </PDFDownloadLink>
           ) : (
             <div className="bg-red-100 text-red-700 text-xl p-4 rounded border border-red-400">
-              You need to create the Treatment package
+              You need to create a Treatment Package!
             </div>
           )}
         </div>

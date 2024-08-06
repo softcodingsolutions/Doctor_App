@@ -89,7 +89,7 @@ function CustomerUserDiagnosis() {
         </div>
       </div>
 
-      {selectedId && <Outlet context={[id, getCustomer]} />}
+      {selectedId && <Outlet context={[id, getCustomer, handlegetUser]} />}
     </>
   );
 }

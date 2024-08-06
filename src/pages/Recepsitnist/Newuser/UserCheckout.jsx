@@ -13,7 +13,9 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
 
   const handleGetPackages = () => {
     axios
-      .get("/api/v1/payment_packages")
+      .get(
+        `/api/v1/payment_packages?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
         console.log(res.data);
         setGetPackages(res.data?.payment_packages);
@@ -32,7 +34,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
       const today = new Date();
       const fromDate = today.toISOString().split("T")[0];
       const toDate = new Date();
-      toDate.setDate(today.getDate() + packageDetail.duration);
+      toDate.setDate(today.getDate() + Number(selectedPackage.duration));
       const toDateString = toDate.toISOString().split("T")[0];
 
       setValue("package_value", packageDetail.price);
@@ -40,6 +42,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
       setValue("grand_total", packageDetail.price);
       setValue("from_date", fromDate);
       setValue("to_date", toDateString);
+      setValue("duration", Number(selectedPackage.duration));
 
       setSelectedPackage(packageDetail);
     }
@@ -63,7 +66,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
     if (selectedPackage && watchFromDate) {
       const fromDate = new Date(watchFromDate);
       const toDate = new Date(fromDate);
-      toDate.setDate(fromDate.getDate() + selectedPackage.duration);
+      toDate.setDate(fromDate.getDate() + Number(selectedPackage.duration));
       const toDateString = toDate.toISOString().split("T")[0];
       setValue("to_date", toDateString);
     }
@@ -75,7 +78,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
       ...prev,
       checkout: d,
     }));
-    handleCallUserApi();
+    handleCallUserApi(d);
   };
 
   useEffect(() => {

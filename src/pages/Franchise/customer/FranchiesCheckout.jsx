@@ -13,7 +13,9 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
 
   const handleGetPackages = () => {
     axios
-      .get("/api/v1/payment_packages")
+      .get(
+        `/api/v1/payment_packages?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
         console.log(res.data);
         setGetPackages(res.data?.payment_packages);
@@ -25,16 +27,15 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
   };
 
   const handleGetPrice = (name) => {
-    const packageDetail = getPackages.find(
-      (pack) => pack.name === name
-    );
+    const packageDetail = getPackages.find((pack) => pack.name === name);
     console.log("Package", packageDetail);
 
     if (packageDetail) {
+      const duration = Number(packageDetail.duration);
       const today = new Date();
       const fromDate = today.toISOString().split("T")[0];
       const toDate = new Date();
-      toDate.setDate(today.getDate() + packageDetail.duration);
+      toDate.setDate(today.getDate() + duration);
       const toDateString = toDate.toISOString().split("T")[0];
 
       setValue("package_value", packageDetail.price);
@@ -42,6 +43,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
       setValue("grand_total", packageDetail.price);
       setValue("from_date", fromDate);
       setValue("to_date", toDateString);
+      setValue("duration", duration);
 
       setSelectedPackage(packageDetail);
     }
@@ -65,7 +67,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
     if (selectedPackage && watchFromDate) {
       const fromDate = new Date(watchFromDate);
       const toDate = new Date(fromDate);
-      toDate.setDate(fromDate.getDate() + selectedPackage.duration);
+      toDate.setDate(fromDate.getDate() + Number(selectedPackage.duration));
       const toDateString = toDate.toISOString().split("T")[0];
       setValue("to_date", toDateString);
     }
@@ -76,7 +78,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
       ...prev,
       checkout: d,
     }));
-    handleCallUserApi();
+    handleCallUserApi(d);
   };
 
   useEffect(() => {

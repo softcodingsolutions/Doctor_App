@@ -3,6 +3,7 @@ import TdComponent from "../../../../components/TdComponent";
 import ThComponent from "../../../../components/ThComponent";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function ReportPackage() {
   const [getPackages, setGetPackages] = useState([]);
@@ -11,10 +12,12 @@ function ReportPackage() {
 
   const handleGetPackages = () => {
     axios
-      .get("/api/v1/user_packages")
+      .get(
+        `/api/v1/payment_packages?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
-        console.log("Packages to be given to users", res.data?.user_packages);
-        setGetPackages(res.data?.user_packages);
+        console.log("Packages to be given to users", res.data);
+        setGetPackages(res.data?.payment_packages);
       })
       .catch((err) => {
         console.log(err);
@@ -22,23 +25,45 @@ function ReportPackage() {
       });
   };
 
-  const handleGiveUserPackage = async (name) => {
-    console.log(name);
+  const handleGiveUserPackage = async (val) => {
+    console.log(val);
+    const duration = Number(val.duration);
+
+    const today = new Date();
+
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() + duration);
+
+    const startDateString = today.toISOString().split("T")[0];
+    const endDateString = endDate.toISOString().split("T")[0];
+
+    console.log("Starting Date:", startDateString);
+    console.log("Ending Date:", endDateString);
     try {
+      const formData = new FormData();
+      formData.append("user_package[user_id]", context[1].id);
+      formData.append("user_package[package_price]", val.price);
+      formData.append("user_package[no_of_days]", duration);
+      formData.append("user_package[package_name]", val.name);
+      formData.append("user_package[starting_date]", startDateString);
+      formData.append("user_package[ending_date]", endDateString);
       await axios
-        .put(
-          `/api/v2/users/update_personal_details?email=${context[1]?.email}`,
-          {
-            personal_detail: {
-              package: {
-                package_name: name,
-              },
-            },
-          }
-        )
+        .post("/api/v1/user_packages", formData)
         .then((res) => {
           console.log(res);
-          handleGetPackages();
+          if (res.data) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Package Assigned!",
+              text: `${
+                context[1]?.first_name + " " + context[1]?.last_name
+              } has been assigned the package from ${startDateString} to ${endDateString}.`,
+              showConfirmButton: true,
+            });
+            handleGetPackages();
+            context[2]();
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -84,8 +109,7 @@ function ReportPackage() {
                 ) : (
                   getPackages.map((val, index) => {
                     const isUserPackage =
-                      context[1]?.personal_detail?.package?.package_name ===
-                      val.package_name;
+                      context[1]?.user_packages?.[0]?.package_name == val.name;
                     return (
                       <tr
                         className={`${
@@ -97,20 +121,18 @@ function ReportPackage() {
                           <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.package_name} />
+                          <TdComponent things={val.name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.no_of_days} />
+                          <TdComponent things={val.duration} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.package_price} />
+                          <TdComponent things={val.price} />
                         </td>
                         {!isUserPackage ? (
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <button
-                              onClick={() =>
-                                handleGiveUserPackage(val.package_name)
-                              }
+                              onClick={() => handleGiveUserPackage(val)}
                               className="border border-gray-300 hover:text-white hover:bg-green-500 p-1 rounded-md"
                             >
                               Select

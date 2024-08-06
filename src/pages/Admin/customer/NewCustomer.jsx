@@ -55,57 +55,14 @@ function NewCustomer() {
     setIsGeneralDetailsValid(isValid);
   };
 
-  const handleCallUserApi = async () => {
+  const handleCallUserApi = async (checkout) => {
     console.log("Waah");
+    console.log("Checkout...", checkout);
+
     try {
       const res = await axios.get(`/api/v1/users/app_creds`);
 
-      if (role === "franchise") {
-        await axios
-          .post("/api/v1/users", {
-            user: {
-              first_name: storeData?.generalDetails?.firstname,
-              last_name: storeData?.generalDetails?.lastname,
-              email: storeData?.generalDetails?.email,
-              phone_number: storeData?.generalDetails?.mobile,
-              created_by_id: localStorage.getItem("main_id"),
-              creator: "franchise",
-            },
-            personal_detail: {
-              city: storeData?.generalDetails?.city,
-              age: storeData?.generalDetails?.age,
-              address: storeData?.generalDetails?.address,
-              gender: storeData?.generalDetails?.gender,
-              overweight_since: storeData?.generalDetails?.overweight,
-              language: storeData?.generalDetails?.language,
-              reffered_by: storeData?.generalDetails?.refferedBy,
-              weight: storeData?.generalDetails?.weight,
-              height: storeData?.generalDetails?.height,
-              whatsapp_number: storeData?.generalDetails?.whatsapp,
-              current_diet: JSON.stringify(storeData?.diet),
-              family_reasons: JSON.stringify(storeData?.familyHistory),
-              complaints: JSON.stringify(storeData?.complains),
-              user_selected_questions_one: JSON.stringify(storeData?.questions),
-              user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
-              package: JSON.stringify(storeData?.checkout),
-            },
-            client_id: res.data?.client_id,
-          })
-          .then((res) => {
-            if (res.data) {
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Created!",
-                text: `New user has been created.`,
-                showConfirmButton: false,
-                timer: 1500,
-              });
-              localStorage.removeItem("client_email");
-              navigate("../../admin/customers/all-users");
-            }
-          });
-      } else if (role === "super_admin") {
+      if (role === "super_admin") {
         await axios
           .post("/api/v1/users", {
             user: {
@@ -132,23 +89,54 @@ function NewCustomer() {
               complaints: JSON.stringify(storeData?.complains),
               user_selected_questions_one: JSON.stringify(storeData?.questions),
               user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
-              package: JSON.stringify(storeData?.checkout),
             },
             client_id: res.data?.client_id,
           })
           .then((res) => {
-            if (res.data) {
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Created!",
-                text: `New user has been created.`,
-                showConfirmButton: false,
-                timer: 1500,
+            console.log(storeData?.checkout);
+
+            const formData = new FormData();
+            formData.append("user_package[user_id]", res.data?.user?.user?.id);
+            formData.append(
+              "user_package[no_of_days]",
+              storeData?.checkout?.duration
+            );
+            formData.append(
+              "user_package[package_name]",
+              storeData?.checkout?.package_name
+            );
+            formData.append(
+              "user_package[package_price]",
+              storeData?.checkout?.grand_total
+            );
+            formData.append(
+              "user_package[starting_date]",
+              storeData?.checkout?.from_date
+            );
+            formData.append(
+              "user_package[ending_date]",
+              storeData?.checkout?.to_date
+            );
+            axios
+              .post("/api/v1/user_packages", formData)
+              .then((res) => {
+                console.log(res);
+                if (res.data) {
+                  Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Created!",
+                    text: `New user has been created.`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  localStorage.removeItem("client_email");
+                  navigate("../../admin/customers/all-users");
+                }
+              })
+              .catch((err) => {
+                alert(err.message);
               });
-              localStorage.removeItem("client_email");
-              navigate("../../admin/customers/all-users");
-            }
           });
       } else if (role === "doctor") {
         await axios
@@ -177,23 +165,52 @@ function NewCustomer() {
               complaints: JSON.stringify(storeData?.complains),
               user_selected_questions_one: JSON.stringify(storeData?.questions),
               user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
-              package: JSON.stringify(storeData?.checkout),
             },
             client_id: res.data?.client_id,
           })
           .then((res) => {
-            if (res.data) {
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Created!",
-                text: `New user has been created.`,
-                showConfirmButton: false,
-                timer: 1500,
+            const formData = new FormData();
+            formData.append("user_package[user_id]", res.data?.user?.user?.id);
+            formData.append(
+              "user_package[no_of_days]",
+              checkout?.duration
+            );
+            formData.append(
+              "user_package[package_name]",
+              checkout?.package_name
+            );
+            formData.append(
+              "user_package[package_price]",
+              checkout?.grand_total
+            );
+            formData.append(
+              "user_package[starting_date]",
+              checkout?.from_date
+            );
+            formData.append(
+              "user_package[ending_date]",
+              checkout?.to_date
+            );
+            axios
+              .post("/api/v1/user_packages", formData)
+              .then((res) => {
+                console.log(res);
+                if (res.data) {
+                  Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Created!",
+                    text: `New user has been created.`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  localStorage.removeItem("client_email");
+                  navigate("../../admin/customers/all-users");
+                }
+              })
+              .catch((err) => {
+                alert(err.message);
               });
-              localStorage.removeItem("client_email");
-              navigate("../../admin/customers/all-users");
-            }
           });
       }
     } catch (error) {

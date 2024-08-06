@@ -82,6 +82,12 @@ function RTreatmentNutrition() {
       ...prev,
       nutrition: selectedNutrition,
     }));
+
+    Swal.fire({
+      icon: "Success",
+      title: "Saved!",
+      text: "Your selected nutrition have been saved.",
+    });
   };
 
   useEffect(() => {

@@ -212,7 +212,6 @@ export default function RoleAssign() {
                   <option value="" disabled>
                     Select Role
                   </option>
-                  <option value="doctor">Doctor</option>
                   <option value="receptionist">Receptionist</option>
                 </select>
                 {errors.inputRole && (

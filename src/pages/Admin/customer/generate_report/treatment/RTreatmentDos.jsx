@@ -84,6 +84,12 @@ function RTreatmentDos() {
       ...prev,
       dos: selectedDos,
     }));
+
+    Swal.fire({
+        icon: "Success",
+        title: "Saved!",
+        text: "Your selected dos have been saved.",
+      });
   };
 
   useEffect(() => {

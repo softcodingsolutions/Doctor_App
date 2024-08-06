@@ -86,6 +86,12 @@ function RTreatmentDont() {
       ...prev,
       donts: selectedDonts,
     }));
+
+    Swal.fire({
+        icon: "Success",
+        title: "Saved!",
+        text: "Your selected donts have been saved.",
+      });
   };
 
   useEffect(() => {
