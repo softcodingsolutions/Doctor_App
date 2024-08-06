@@ -16,7 +16,6 @@ function SurveyWeightGainQuestions() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
-console.log(context[2]);
 
   const handleGetQuestions = () => {
     axios
@@ -39,7 +38,11 @@ console.log(context[2]);
     const isChecked = e.target.checked;
 
     if (isChecked) {
-      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
+      setSelectedCheckboxes((prevState) => {
+        const newState = [...prevState, checkboxValue];
+        // Remove duplicates
+        return [...new Set(newState)];
+      });
     } else {
       setSelectedCheckboxes((prevState) =>
         prevState.filter((value) => value !== checkboxValue)
@@ -48,23 +51,24 @@ console.log(context[2]);
   };
 
   const handleSendQuestionToBeAnswered = async (e) => {
-    console.log("min", e.target.value);
+    const selectedValue = e.target.value;
+    console.log("Selected value:", selectedValue);  
+
     const formData = new FormData();
     formData.append(
       "survey_weight_reason_package[survey_weigh_reason]",
-      context[0] === "null" ? null : context[0]
+      context[0] == "null" ? null : context[0]
     );
     formData.append(
       "survey_weight_reason_package[number_of_question]",
-      e.target.value
+      selectedValue
     );
 
     try {
       await axios
         .post("/api/v2/survey_weight_reason_packages", formData)
         .then((res) => {
-          console.log("min question list:", res);
-          e.target.value = "";
+          console.log("Min question list:", res);
           context[1]();
         })
         .catch((err) => {
@@ -80,6 +84,7 @@ console.log(context[2]);
     const selectedQuestions = selectedCheckboxes
       .map((id) => getQuestions.find((que) => que.id === Number(id)))
       .filter((que) => que);
+
     if (selectedQuestions.length === 0) {
       return Swal.fire({
         icon: "warning",
@@ -108,7 +113,7 @@ console.log(context[2]);
           position: "top-end",
           icon: "success",
           title: "Mapped!",
-          text: `Your questions has been mapped.`,
+          text: `Your questions have been mapped.`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -127,20 +132,24 @@ console.log(context[2]);
     const defaultValue =
       context[2]?.find((packages) => {
         return (
-          context[0] === packages.survey_weigh_reason &&
-          packages.number_of_question
+          context[0] == packages?.survey_weigh_reason &&
+          packages?.number_of_question
         );
       })?.number_of_question || 0;
+    console.log("Default value:", defaultValue);
 
     setDefaultDropdownValue(defaultValue);
 
     const preSelectedQuestions = context[2]?.reduce((acc, packages) => {
-      if (context[0] === packages.survey_weigh_reason) {
-        acc = [...acc, ...packages.number_of_question.map((q) => String(q.id))];
+      if (context[0] == packages?.survey_weigh_reason) {
+        const questionsIds = packages?.questions?.map((q) => String(q.id));
+        acc = new Set([...acc, ...questionsIds]);
       }
       return acc;
-    }, []);
-    setSelectedCheckboxes(preSelectedQuestions);
+    }, new Set());
+    console.log("Pre-selected questions:", Array.from(preSelectedQuestions));
+
+    setSelectedCheckboxes(Array.from(preSelectedQuestions));
   }, [context]);
 
   useEffect(() => {
@@ -161,7 +170,7 @@ console.log(context[2]);
 
             {showCheckboxes && (
               <div className="font-[550] text-lg">
-                No. of Weight Gain Questions: {selectedCheckboxes.length}
+                No. of Weight Gain Questions: {selectedCheckboxes?.length}
               </div>
             )}
 
@@ -170,15 +179,17 @@ console.log(context[2]);
                 <span>No. of questions to be answered:</span>{" "}
                 {defaultDropdownValue}
                 <Select required placeholder="Select">
-                  {[...Array(selectedCheckboxes.length).keys()].map((index) => (
-                    <MenuItem
-                      key={index}
-                      value={index + 1}
-                      onClick={handleSendQuestionToBeAnswered}
-                    >
-                      {index + 1}
-                    </MenuItem>
-                  ))}
+                  {[...Array(selectedCheckboxes?.length).keys()].map(
+                    (index) => (
+                      <MenuItem
+                        key={index}
+                        value={index + 1}
+                        onClick={handleSendQuestionToBeAnswered}
+                      >
+                        {index + 1}
+                      </MenuItem>
+                    )
+                  )}
                 </Select>
               </div>
             )}
@@ -230,9 +241,9 @@ console.log(context[2]);
                         className={`${
                           context[2]?.some(
                             (packages) =>
-                              context[0] === packages.survey_weigh_reason &&
+                              context[0] == packages?.survey_weigh_reason &&
                               packages?.questions?.some(
-                                (que) => que.id === val.id
+                                (que) => que.id == val.id
                               )
                           )
                             ? "bg-gray-400 "
@@ -248,9 +259,9 @@ console.log(context[2]);
                               type="checkbox"
                               defaultChecked={context[2]?.some(
                                 (packages) =>
-                                  context[0] === packages.weight_reason &&
-                                  packages.exercise?.some(
-                                    (exercise) => exercise.id === val.id
+                                  context[0] == packages.survey_weigh_reason &&
+                                  packages.questions?.some(
+                                    (que) => que.id == val.id
                                   )
                               )}
                             />
