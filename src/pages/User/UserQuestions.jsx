@@ -51,7 +51,7 @@ function UserQuestions() {
     setIsGeneralDetailsValid(isValid);
   };
 
-  const handleCallUserApi = async () => {
+  const handleCallUserApi = async (selectedQuestions) => {
     console.log("Waah");
     try {
       const res = await axios.get(`/api/v1/users/app_creds`);
@@ -81,7 +81,7 @@ function UserQuestions() {
             family_reasons: JSON.stringify(storeData?.familyHistory),
             complaints: JSON.stringify(storeData?.complains),
             user_selected_questions_one: JSON.stringify(storeData?.questions),
-            user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
+            user_selected_questions_two: JSON.stringify(selectedQuestions),
           },
           client_id: res.data?.client_id,
         })

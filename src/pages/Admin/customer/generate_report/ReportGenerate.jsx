@@ -303,10 +303,14 @@ export const BillDocument = ({ data }) => (
                       <Text style={styles.tableCell}>{diet.dosage}</Text>
                     </View>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.frequency}</Text>
+                      <Text style={styles.tableCell}>
+                        {diet.frequency?.join(", ")}
+                      </Text>
                     </View>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.quantity}</Text>
+                      <Text style={styles.tableCell}>
+                        {diet.quantity?.join(", ")}
+                      </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCellHindi}>
@@ -331,6 +335,7 @@ export const BillDocument = ({ data }) => (
                   flexDirection: "row",
                   backgroundColor: "black",
                   color: "white",
+                  fontWeight: "bold",
                 }}
               >
                 <View style={styles.tableCol}>
@@ -367,6 +372,7 @@ export const BillDocument = ({ data }) => (
                   flexDirection: "row",
                   backgroundColor: "black",
                   color: "white",
+                  fontWeight: "bold", // Ensures header text stands out
                 }}
               >
                 <View style={styles.tableCol}>
@@ -432,8 +438,9 @@ const ReportGenerate = () => {
               }
             </PDFDownloadLink>
           ) : (
-            <div className="bg-red-100 text-red-700 text-xl p-4 rounded border border-red-400">
-              You need to create a Treatment Package!
+            <div className="bg-red-100 text-red-800 text-xl p-4 rounded border border-red-400">
+              Your doctor will create a treatment package which you can download
+              later!
             </div>
           )}
         </div>
