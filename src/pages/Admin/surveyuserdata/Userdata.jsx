@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import axios from "axios";
 export default function Userdata() {
   const [data, setData] = useState([]);
+
   const handleShow = () => {
     axios
       .get(`/api/v2/survey_users`)
@@ -16,9 +16,11 @@ export default function Userdata() {
         console.log(err);
       });
   };
+
   useEffect(() => {
     handleShow();
   }, []);
+
   return (
     <div className="flex w-full">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">

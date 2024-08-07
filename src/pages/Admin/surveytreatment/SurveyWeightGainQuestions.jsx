@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import TdComponent from "../../../components/TdComponent";
-import PrevPageButton from "../../../components/Admin/PrevPageButton";
 import NextPageButton from "../../../components/Admin/NextPageButton";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";

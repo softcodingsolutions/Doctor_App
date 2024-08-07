@@ -30,13 +30,12 @@ function ReportProgress() {
   };
 
   const handleGetComplains = () => {
-    const data = context[1]?.personal_detail?.complaints?.selected_complains;
-    const complainsArray = data.map((complain) => ({
-      details: complain,
-      isEffective: null,
-    }));
-    console.log("Complains: ", complainsArray);
-    setGetComplains(complainsArray);
+    axios
+      .get(`/api/v1/users_complains?user_id=${context[1]?.id}`)
+      .then((res) => {
+        console.log("User Complains: ", res.data?.complains);
+        setGetComplains(res.data?.complains);
+      });
   };
 
   const handleGetProgress = () => {
@@ -88,6 +87,14 @@ function ReportProgress() {
       .put(`/api/v1/progress_reports/${id}`, formData)
       .then((res) => {
         console.log(res);
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Saved!",
+            text: "Your progress report has been saved.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         handleGetProgress();
       })
       .catch((err) => {
@@ -101,26 +108,21 @@ function ReportProgress() {
   };
 
   const feedbackComplains = (id, isEffective) => {
-    const updatedComplains = getComplains.map((complain, index) => ({
-      ...complain,
-      isEffective: index === id ? isEffective : complain.isEffective,
-    }));
-
     const formData = new FormData();
-    formData.append(
-      "personal_detail[complaints]",
-      JSON.stringify(updatedComplains)
-    );
-
-    console.log(updatedComplains);
+    formData.append("users_complain[is_solved]", isEffective);
 
     axios
-      .put(
-        `/api/v2/users/update_personal_details?user_id=${context[1]?.id}`,
-        formData
-      )
+      .put(`/api/v1/users_complains/${id}`, formData)
       .then((res) => {
         console.log(res);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Saved!",
+          text: "Your progress on complains has been saved.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         handleGetComplains();
       })
       .catch((err) => {
@@ -198,6 +200,7 @@ function ReportProgress() {
               />
             )}
           </div>
+          {/* progress */}
           {showProgress && (
             <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
               <table className="w-full min-w-[460px] z-0">
@@ -304,6 +307,7 @@ function ReportProgress() {
             </div>
           )}
 
+          {/* complain */}
           {showComplain && (
             <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
               <table className="w-full min-w-[460px] z-0">
@@ -335,31 +339,55 @@ function ReportProgress() {
                             <div className="flex items-center">{index + 1}</div>
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.details} />
+                            <TdComponent things={val.complain} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50 flex gap-5">
-                            <TdComponent
-                              things={
-                                <button
-                                  onClick={() => feedbackComplains(index, true)}
-                                  className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white"
-                                >
-                                  <FaRegThumbsUp size={20} />
-                                </button>
-                              }
-                            />
-                            <TdComponent
-                              things={
-                                <button
-                                  onClick={() =>
-                                    feedbackComplains(index, false)
+                            {val.is_solved === null && (
+                              <>
+                                <TdComponent
+                                  things={
+                                    <button
+                                      onClick={() =>
+                                        feedbackComplains(val.id, true)
+                                      }
+                                      className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white"
+                                    >
+                                      <FaRegThumbsUp size={20} />
+                                    </button>
                                   }
-                                  className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white"
-                                >
-                                  <FaRegThumbsDown size={20} />
-                                </button>
-                              }
-                            />
+                                />
+                                <TdComponent
+                                  things={
+                                    <button
+                                      onClick={() =>
+                                        feedbackComplains(val.id, false)
+                                      }
+                                      className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white"
+                                    >
+                                      <FaRegThumbsDown size={20} />
+                                    </button>
+                                  }
+                                />
+                              </>
+                            )}
+                            {val.is_solved === true && (
+                              <TdComponent
+                                things={
+                                  <div className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
+                                    <FaRegThumbsUp size={20} />
+                                  </div>
+                                }
+                              />
+                            )}
+                            {val.is_solved === false && (
+                              <TdComponent
+                                things={
+                                  <div className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
+                                    <FaRegThumbsDown size={20} />
+                                  </div>
+                                }
+                              />
+                            )}
                           </td>
                         </tr>
                       );
@@ -370,6 +398,7 @@ function ReportProgress() {
             </div>
           )}
 
+          {/* questions */}
           {showQues && (
             <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
               <table className="w-full min-w-[460px] z-0">

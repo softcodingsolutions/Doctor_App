@@ -93,30 +93,19 @@ function NewCustomer() {
             client_id: res.data?.client_id,
           })
           .then((res) => {
-            console.log(storeData?.checkout);
-
             const formData = new FormData();
             formData.append("user_package[user_id]", res.data?.user?.user?.id);
-            formData.append(
-              "user_package[no_of_days]",
-              storeData?.checkout?.duration
-            );
+            formData.append("user_package[no_of_days]", checkout?.duration);
             formData.append(
               "user_package[package_name]",
-              storeData?.checkout?.package_name
+              checkout?.package_name
             );
             formData.append(
               "user_package[package_price]",
-              storeData?.checkout?.grand_total
+              checkout?.grand_total
             );
-            formData.append(
-              "user_package[starting_date]",
-              storeData?.checkout?.from_date
-            );
-            formData.append(
-              "user_package[ending_date]",
-              storeData?.checkout?.to_date
-            );
+            formData.append("user_package[starting_date]", checkout?.from_date);
+            formData.append("user_package[ending_date]", checkout?.to_date);
             axios
               .post("/api/v1/user_packages", formData)
               .then((res) => {
@@ -171,10 +160,7 @@ function NewCustomer() {
           .then((res) => {
             const formData = new FormData();
             formData.append("user_package[user_id]", res.data?.user?.user?.id);
-            formData.append(
-              "user_package[no_of_days]",
-              checkout?.duration
-            );
+            formData.append("user_package[no_of_days]", checkout?.duration);
             formData.append(
               "user_package[package_name]",
               checkout?.package_name
@@ -183,14 +169,8 @@ function NewCustomer() {
               "user_package[package_price]",
               checkout?.grand_total
             );
-            formData.append(
-              "user_package[starting_date]",
-              checkout?.from_date
-            );
-            formData.append(
-              "user_package[ending_date]",
-              checkout?.to_date
-            );
+            formData.append("user_package[starting_date]", checkout?.from_date);
+            formData.append("user_package[ending_date]", checkout?.to_date);
             axios
               .post("/api/v1/user_packages", formData)
               .then((res) => {
