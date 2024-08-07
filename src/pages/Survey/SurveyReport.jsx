@@ -1,4 +1,14 @@
 import Table from "@mui/joy/Table";
+import { FaHouseChimney } from "react-icons/fa6";
+import {
+  useLocation,
+  useOutlet,
+  useOutletContext,
+  useNavigate,
+} from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 function createData(reason, total, male, female) {
   return { reason, total, male, female };
 }
@@ -103,9 +113,25 @@ const tableContainerStyle = {
 };
 
 export default function SurveyReport() {
+  const navigate = useNavigate();
+  const [count,setCount] = useState('');
+  const handleShow = () =>{
+    axios.get(`/api/v2/survey_users/survey_users_count`).then((res)=>{
+      console.log(res)
+      setCount(res.data.count);
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+  useEffect(()=>{
+    handleShow()
+  },[]);
+  const handleNext = () => {
+    navigate("/");
+  };
   return (
     <div className="">
-      <header className="bg-[#FEFAF6]">
+      <header className="bg-[#FEFAF6] ">
         <div className=" items-center absolute p-3">
           <img
             src="https://slimandsmile.com/assets/front/images/logo.png"
@@ -126,7 +152,17 @@ export default function SurveyReport() {
               Summary of participants in the campaign of 'Surveillance @
               Overweight'
             </h2>
-            <h4>Total number of Surveys: 4925</h4>
+            <h4>Total number of Surveys:{count}</h4>
+          </div>
+          <div className="flex justify-end pr-5 ">
+            <button
+              type="submit"
+              className="p-3 text-[#1F2937] rounded-md border border-gray-500 font-bold text-lg hover:scale-105"
+              style={{ backgroundColor: "#799351" }}
+              onClick={handleNext}
+            >
+              <FaHouseChimney size={28} />
+            </button>
           </div>
           <div className="grid grid-cols-2 bg-[#F6F5F2]">
             <div className="flex flex-col p-10 items-center border-1 ">

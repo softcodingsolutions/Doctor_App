@@ -42,6 +42,7 @@ function ChangePassword() {
       .then((res) => {
         console.log(res);
         alert("Successfully Reset Your Password \nNow you can Sign in with your new password!");
+        navigate("/login");
       })
       .catch((err) => {
         console.log(err);
@@ -85,6 +86,7 @@ function ChangePassword() {
                 {errors.confirmpassword?.message}
               </span>
             )}
+            <p>Only 15 min this link is valid</p>
             <Button
               type="submit"
               variant="gradient"
