@@ -103,7 +103,7 @@ function UserComplains({
                   onChange={handleChange}
                   value={selectedComplains}
                   sx={{
-                    minWidth: "13rem",
+                    maxWidth: "72rem",
                   }}
                   slotProps={{
                     listbox: {

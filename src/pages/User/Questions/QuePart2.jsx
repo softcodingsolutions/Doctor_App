@@ -70,7 +70,7 @@ function QuePart2({ setStoreData, onBack, handleCallUserApi, storedData }) {
       timer: 1500,
     });
 
-    handleCallUserApi();
+    handleCallUserApi(selectedQuestions);
   };
 
   useEffect(() => {
