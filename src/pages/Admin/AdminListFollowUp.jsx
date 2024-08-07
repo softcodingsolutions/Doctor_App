@@ -34,7 +34,7 @@ function AdminListFollowUp() {
           setConsultingData(res.data.consulting_appointments);
           setMachineConsultingData(res.data.machine_appointments);
           setUserDetails(res.data.user);
-          setPackageDetail(res.data.user.personal_detail.package);
+          setPackageDetail(res.data.user.user_packages[0]);
         })
         .catch((err) => {
           console.log(err);
@@ -140,16 +140,13 @@ function AdminListFollowUp() {
                       <div>
                         Package Name:{" "}
                         <span className="font-medium">
-                          {packageDetail.package_name}
+                        {packageDetail.package_name}
                         </span>
                       </div>
                       <div>
                         Package Duration:{" "}
                         <span className="font-medium">
-                          {formatPackageDuration(
-                            packageDetail.from_date,
-                            packageDetail.to_date
-                          )}
+                        {packageDetail.no_of_days} Days
                         </span>
                       </div>
                     </div>
