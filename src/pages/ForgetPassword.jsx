@@ -22,15 +22,17 @@ function ForgetPassword() {
 
   const submittedData = (d) => {
     console.log(d);
-    const formdata = new FormData
-    formdata.append('email', d.email)
-    axios.post(`/api/v2/reset_password_tokens`,formdata).then((res)=>{
-      console.log(res);
-      alert("Check your email!")
-    }).catch((err)=>{
-      console.log(err)
-    })
-    
+    const formdata = new FormData();
+    formdata.append("email", d.email);
+    axios
+      .post(`/api/v2/reset_password_tokens`, formdata)
+      .then((res) => {
+        console.log(res);
+        alert("The reset password link has been sent to your email!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
