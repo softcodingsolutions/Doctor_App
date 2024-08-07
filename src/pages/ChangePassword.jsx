@@ -86,7 +86,7 @@ function ChangePassword() {
                 {errors.confirmpassword?.message}
               </span>
             )}
-            <p>Only 15 min this link is valid</p>
+            <p>This Link will only be available for 15min</p>
             <Button
               type="submit"
               variant="gradient"
