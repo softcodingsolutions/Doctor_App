@@ -29,7 +29,7 @@ export default function Userdata() {
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-full sm:flex p-2 items-end">
           <div className="sm:flex-grow flex justify-between overflow-x-hidden">
-            <div>SURVEY USER DATA</div>
+            <div className="text-lg text-[#1F2937]  font-semibold tracking-wide">SURVEY USER DATA</div>
           </div>
         </div>
         <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">

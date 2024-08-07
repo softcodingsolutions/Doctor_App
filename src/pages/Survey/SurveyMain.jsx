@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import Swal from "sweetalert2";
 import axios from "axios";
 
 function SurveyMain() {
@@ -12,7 +11,8 @@ function SurveyMain() {
     healthProblem: [],
     weightGainQuestions: [],
   });
-
+  const [user,setUser] = useState({});
+  
   const handleCallUserApi = async (question) => {
     console.log("Waah");
     console.log("Checking...", storeData);
@@ -44,7 +44,7 @@ function SurveyMain() {
         console.log(res);
         setUserId(res.data.survey_user.id);
         console.log(res.data.survey_user.id);
-        localStorage.setItem("survey_userr_id", res.data.survey_user.id);
+        localStorage.setItem("survey_user_id", res.data.survey_user.id);
       })
       .catch((err) => {
         console.log(err);
@@ -88,7 +88,7 @@ function SurveyMain() {
 
   return (
     <div className="flex w-full items-center justify-center">
-      <Outlet context={[storeData, setStoreData, handleCallUserApi]} />
+      <Outlet context={[storeData, setStoreData, handleCallUserApi,user,setUser]} />
     </div>
   );
 }
