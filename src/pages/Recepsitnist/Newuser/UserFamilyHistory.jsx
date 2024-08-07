@@ -106,7 +106,7 @@ function UserFamilyHistory({
                   onChange={handleChange}
                   value={selectedFamilyReasons}
                   sx={{
-                    minWidth: "13rem",
+                    maxWidth: "72rem",
                   }}
                   slotProps={{
                     listbox: {

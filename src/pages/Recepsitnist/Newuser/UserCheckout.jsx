@@ -34,7 +34,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
       const today = new Date();
       const fromDate = today.toISOString().split("T")[0];
       const toDate = new Date();
-      toDate.setDate(today.getDate() + Number(selectedPackage.duration));
+      toDate.setDate(today.getDate() + Number(packageDetail.duration));
       const toDateString = toDate.toISOString().split("T")[0];
 
       setValue("package_value", packageDetail.price);
@@ -42,7 +42,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
       setValue("grand_total", packageDetail.price);
       setValue("from_date", fromDate);
       setValue("to_date", toDateString);
-      setValue("duration", Number(selectedPackage.duration));
+      setValue("duration", Number(packageDetail.duration));
 
       setSelectedPackage(packageDetail);
     }
