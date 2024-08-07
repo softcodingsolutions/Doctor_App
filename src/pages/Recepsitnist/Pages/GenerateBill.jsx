@@ -128,8 +128,9 @@ export default function GenerateBill() {
         .get(`/api/v2/users/search?id=${id}`)
         .then((res) => {
           const user = res.data.user;
+          console.log(res,"MEDICINE ")
           setUser(user);
-          setPackageDetail(user.personal_detail.package);
+          setPackageDetail(user.user_packages[0]);
           setMedicines(
             user.treatment_packages[0].treatment_package.medicines || []
           );
@@ -189,10 +190,7 @@ export default function GenerateBill() {
                 <div>
                   Package Duration:{" "}
                   <span className="font-medium">
-                    {formatPackageDuration(
-                      packageDetail.from_date,
-                      packageDetail.to_date
-                    )}
+                    {packageDetail.no_of_days} Days
                   </span>
                 </div>
               </div>

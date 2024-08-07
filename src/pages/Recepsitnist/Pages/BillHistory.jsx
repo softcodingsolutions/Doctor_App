@@ -27,7 +27,7 @@ export default function BillHistory() {
         .then((res) => {
           console.log(res, "BILL HISTORY");
           setUserDetails(res.data.user);
-          setPackageDetail(res.data.user.personal_detail.package);
+          setPackageDetail(res.data.user.user_packages[0]);
           setBills(res.data.bills);
         })
         .catch((err) => {
@@ -94,10 +94,7 @@ export default function BillHistory() {
                 <div>
                   Package Duration:{" "}
                   <span className="font-medium">
-                    {formatPackageDuration(
-                      packageDetail.from_date,
-                      packageDetail.to_date
-                    )}
+                    {packageDetail.no_of_days} Days
                   </span>
                 </div>
               </div>
