@@ -19,9 +19,7 @@ export default function SurveyForm3() {
   const [code, setCode] = React.useState();
   const [passcode, setPasscode] = useState();
 
-  const {
-    handleSubmit,
-  } = useForm();
+  const { handleSubmit } = useForm();
 
   const handleCodeClose = () => {
     setCode(false);
@@ -32,18 +30,20 @@ export default function SurveyForm3() {
   };
 
   const handlePasswordhandle = () => {
+    console.log(passcode, "otp");
     const formdata = new FormData();
     formdata.append("otp", passcode);
     console.log(localStorage.getItem("survey_user_id"));
     axios
-      .get(
+      .put(
         `/api/v2/survey_users/show_survey_user_details?survey_user_id=${localStorage.getItem(
           "survey_user_id"
         )}`,
         formdata
       )
-      .then((res) => {
-        console.log(res);
+      .then(async (res) => {
+        console.log(res, "DARA");
+        await context[4](res);
         navigate("/surveymain/surveyresult");
       })
       .catch((err) => {
