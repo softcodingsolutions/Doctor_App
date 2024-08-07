@@ -18,6 +18,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const [selected, setSelected] = useState(
     localStorage.getItem("sidebarSelected_id") || "1"
   );
+  const role = localStorage.getItem("role");
 
   const save = masterButtons.find(
     (res) => res.id == localStorage.getItem("selectedMaster_id")
@@ -186,28 +187,31 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
         </Select>
 
         {/* survey flow */}
-        <Select
-          style={{ backgroundColor: "transparent", color: "white" }}
-          className={clsx("xl:mt-4 mt-6 mx-1")}
-          value={selected}
-          placeholder="Survey"
-          onChange={handleSelectChange}
-        >
-          {surveyItems.map((res) => (
-            <Option key={res.id} value={res.id}>
-              {" "}
-              <Link
-                to={res.to}
-                key={res.id}
-                className={"w-full flex items-center space-x-2"}
-                onClick={() => setSelected(res.id)}
-              >
-                <div>{res.icons}</div>
-                <div>{res.title}</div>
-              </Link>
-            </Option>
-          ))}
-        </Select>
+        {role === "super_admin" && (
+          <Select
+            style={{ backgroundColor: "transparent", color: "white" }}
+            className={clsx("xl:mt-4 mt-6 mx-1")}
+            value={selected}
+            placeholder="Survey"
+            onChange={handleSelectChange}
+          >
+            {surveyItems.map((res) => (
+              <Option key={res.id} value={res.id}>
+                {" "}
+                <Link
+                  to={res.to}
+                  key={res.id}
+                  className={"w-full flex items-center space-x-2"}
+                  onClick={() => setSelected(res.id)}
+                >
+                  <div>{res.icons}</div>
+                  <div>{res.title}</div>
+                </Link>
+              </Option>
+            ))}
+          </Select>
+        )}
+
         <div className="flex-grow" />
       </div>
 

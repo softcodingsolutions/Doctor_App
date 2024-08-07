@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   s: { marginBottom: 20, justifyContent: "center" },
   heading: { margin: 10, padding: 10, display: "grid" },
   subtitle: { fontSize: 16, marginTop: 10 },
-  Name: { fontSize: 14, fontFamily: "Tiro Devanagari Hindi" },
+  Name: { fontSize: 16, fontFamily: "Tiro Devanagari Hindi" },
   table: { display: "table", width: "auto", margin: "10px 0" },
   tableRow: { flexDirection: "row" },
   tableCol: {
@@ -60,29 +60,47 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: "Tiro Devanagari Hindi",
   },
-  image: { width: 120, height: 50 },
+  image: { width: 140, height: 50 },
 });
 
 export const BillDocument = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
-        <Image style={styles.image} src={iconsSlime} />
+        <Image
+          style={styles.image}
+          className="border border-gray-300"
+          src={iconsSlime}
+        />
       </View>
       <View style={styles.heading}>
         <View>
           <Text style={styles.Name}>
-            Name : {data?.first_name || "No Name"} {data?.last_name || ""}
+            Name :{" "}
+            <Text style={{ fontSize: 14 }}>
+              {data?.first_name || "No Name"} {data?.last_name || ""}
+            </Text>
           </Text>
-          <Text style={styles.Name}>Email : {data?.email}</Text>
+          <Text style={styles.Name}>
+            Email : <Text style={{ fontSize: 14 }}>{data?.email}</Text>
+          </Text>
         </View>
         <View>
-          <Text style={styles.Name}>Case Number : {data?.case_number}</Text>
           <Text style={styles.Name}>
-            Height : {data?.personal_detail?.height} cm
+            Case Number :{" "}
+            <Text style={{ fontSize: 14 }}>{data?.case_number}</Text>
           </Text>
           <Text style={styles.Name}>
-            Weight : {data?.personal_detail?.weight} kg
+            Height :{" "}
+            <Text style={{ fontSize: 14 }}>
+              {data?.personal_detail?.height} cm
+            </Text>
+          </Text>
+          <Text style={styles.Name}>
+            Weight :{" "}
+            <Text style={{ fontSize: 14 }}>
+              {data?.personal_detail?.weight} kg
+            </Text>
           </Text>
         </View>
       </View>
@@ -93,7 +111,13 @@ export const BillDocument = ({ data }) => (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Diet</Text>
             <View style={styles.table}>
-              <View style={styles.tableRow}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>Name</Text>
                 </View>
@@ -137,9 +161,15 @@ export const BillDocument = ({ data }) => (
         {data.treatment_packages?.[0]?.treatment_package?.dont?.length !==
           0 && (
           <View style={styles.s}>
-            <Text style={styles.subtitle}>Don'ts</Text>
+            <Text style={styles.subtitle}>{"Don'ts"}</Text>
             <View style={styles.table}>
-              <View style={styles.tableRow}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>Name</Text>
                 </View>
@@ -186,7 +216,13 @@ export const BillDocument = ({ data }) => (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Dos</Text>
             <View style={styles.table}>
-              <View style={styles.tableRow}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>Name</Text>
                 </View>
@@ -234,7 +270,13 @@ export const BillDocument = ({ data }) => (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Medicines</Text>
             <View style={styles.table}>
-              <View style={styles.tableRow}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>Name</Text>
                 </View>
@@ -284,7 +326,13 @@ export const BillDocument = ({ data }) => (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Exercises</Text>
             <View style={styles.table}>
-              <View style={styles.tableRow}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>Name</Text>
                 </View>
@@ -314,7 +362,13 @@ export const BillDocument = ({ data }) => (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Nutrition</Text>
             <View style={styles.table}>
-              <View style={styles.tableRow}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>Name</Text>
                 </View>

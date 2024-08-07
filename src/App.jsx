@@ -201,7 +201,7 @@ function App() {
             <Route path="complains" element={<TreatmentComplains />} />
           </Route>
 
-          {/* Survey Master */}
+          {/* survey master */}
           <Route path="survey-master" element={<SurveyMaster />}>
             <Route path="health-problem" element={<Healthproblem />} />
             <Route path="weight-gain-reason" element={<Weightgainreason />} />
@@ -210,6 +210,8 @@ function App() {
             <Route path="survey-donts" element={<SurveyDonts />} />
             <Route path="survey-exercise" element={<SurveyExersice />} />
           </Route>
+
+          {/* survey treatment */}
           <Route path="suvrey-treatment" element={<Surveytreatment />}>
             {/* <Route path="survey-health-problem" element={<SurveyHealthProblem />} /> */}
             <Route
@@ -229,6 +231,8 @@ function App() {
               element={<SurveyTreatmentExercise />}
             />
           </Route>
+
+          {/* survey user data */}
           <Route path="user-data" element={<Userdata />} />
 
           {/* list follow up */}

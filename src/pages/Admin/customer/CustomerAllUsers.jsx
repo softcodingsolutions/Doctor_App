@@ -139,7 +139,12 @@ function CustomerAllUsers() {
                             <TdComponent things={val.phone_number} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.personal_detail?.city} />
+                            <TdComponent
+                              things={
+                                val.personal_detail?.city?.[0]?.toUpperCase() +
+                                val.personal_detail?.city?.slice(1)
+                              }
+                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             {val.creator === "super_admin" && (
