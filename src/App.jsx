@@ -95,6 +95,8 @@ import SurveyTreatmentDont from "./pages/Admin/surveytreatment/SurveyTreatmentDo
 import SurveyTreatmentExercise from "./pages/Admin/surveytreatment/SurveyTreatmentExercise";
 import AboutUs from "./pages/AboutUsPage/AboutUs";
 import SurveyMain from "./pages/Survey/SurveyMain";
+import WeightLossPage from "./pages/WeightLossTreatmentPage/WeightLossPage";
+import HairAndBeauty from "./pages/HairAndBeautyPage/HairAndBeauty";
 
 function App() {
   return (
@@ -103,8 +105,8 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="about-us" element={<AboutUs />} />
         <Route path="contact-us" element={<LandingPage />} />
-        <Route path="weight-loss" element={<LandingPage />} />
-        <Route path="hair-and-beauty" element={<LandingPage />} />
+        <Route path="weight-loss" element={<WeightLossPage />} />
+        <Route path="hair-and-beauty" element={<HairAndBeauty />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="forget-password" element={<ForgetPassword />} />
         <Route path="change-password" element={<ChangePassword />} />

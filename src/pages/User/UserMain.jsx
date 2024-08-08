@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import UserSidebar from "./UserSidebar";
 import axios from "axios";
 
 function UserMain() {
+  const navigate = useNavigate();
   const [showSidebar, onSetShowSidebar] = useState(false);
   const [user, setUser] = useState(0);
 
@@ -30,6 +31,17 @@ function UserMain() {
 
   useEffect(() => {
     handleGetUser();
+
+    if (localStorage.getItem("role" == "franchise")) {
+      navigate("/franchise/dashboard");
+    } else if (localStorage.getItem("role" == "receptionist")) {
+      navigate("/receptionist/appointment/home");
+    } else if (
+      localStorage.getItem("role" == "super_admin") ||
+      localStorage.getItem("role" == "doctor")
+    ) {
+      navigate("/admin/dashboard");
+    }
   }, []);
 
   return (

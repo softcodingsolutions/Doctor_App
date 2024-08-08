@@ -52,7 +52,7 @@ export default function MachineTimeslot() {
     setInputDoctor(e.target.value);
     axios
       .get(
-        `http://localhost:3000/api/v1/machine_details?doctor_id=${e.target.value}`
+        `/api/v1/machine_details?doctor_id=${e.target.value}`
       )
       .then((res) => {
         console.log(res.data);

@@ -2,7 +2,7 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { motion, useTransform } from "framer-motion";
 
 function Section4({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.83]);
 
   return (
     <motion.div
@@ -69,9 +69,10 @@ function Section4({ scrollYProgress }) {
               Healthy nutrition
             </Typography>
             <Typography className="font-poppins">
-              Slim and Smile Ayu Care provides you with just the right advice on
-              your diet specially tailored for you so that you always have very
-              healthy nutrition.
+              <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
+              Ayu Care provides you with just the right advice on your diet
+              specially tailored for you so that you always have very healthy
+              nutrition.
             </Typography>
           </CardBody>
         </Card>
@@ -98,9 +99,10 @@ function Section4({ scrollYProgress }) {
               Easy Workout Routines
             </Typography>
             <Typography className="font-poppins">
-              Slim and Smile Ayu Care offers really easy workouts which you can
-              quickly learn and practice. This will help you lose weight and
-              also maintain that.
+              <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
+              Ayu Care offers really easy workouts which you can quickly learn
+              and practice. This will help you lose weight and also maintain
+              that.
             </Typography>
           </CardBody>
         </Card>

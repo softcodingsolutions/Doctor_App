@@ -23,11 +23,11 @@ function AboutSection1({ scrollYProgress }) {
       {/* Content */}
       <div className="relative z-10 bg-gray-100 h-1/2 flex flex-col items-center justify-center">
         <div className=" text-black font-poppins text-balance tracking-wider text-xl text-center p-8 rounded-lg">
-          Slim and Smile Ayu Care is a renowned weight loss center based in
-          Gujarat, India, with a network of six strategically located clinics
-          throughout the state. Our treatments are grounded in Ayurvedic
-          principles, ensuring a holistic and comprehensive approach to weight
-          management and overall wellness.
+          <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
+          Care is a renowned weight loss center based in Gujarat, India, with a
+          network of six strategically located clinics throughout the state. Our
+          treatments are grounded in Ayurvedic principles, ensuring a holistic
+          and comprehensive approach to weight management and overall wellness.
         </div>
       </div>
     </motion.div>

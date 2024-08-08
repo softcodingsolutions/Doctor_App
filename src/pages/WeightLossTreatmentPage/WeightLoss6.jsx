@@ -1,3 +1,4 @@
+import { useTransform, motion } from "framer-motion";
 import {
   Card,
   CardBody,
@@ -6,45 +7,56 @@ import {
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import { motion, useTransform } from "framer-motion";
-import obesity1 from "../../assets/images/obesity1.jpg";
-import obesity2 from "../../assets/images/obesity2.jpg";
-import obesity3 from "../../assets/images/obesity3.jpg";
-import obesity4 from "../../assets/images/obesity4.jpg";
-import obesity5 from "../../assets/images/obesity5.jpg";
-import obesity6 from "../../assets/images/obesity6.jpg";
+import img1 from "../../assets/images/result01.jpg";
+import img2 from "../../assets/images/result02.jpg";
+import img3 from "../../assets/images/result03.jpg";
+import img4 from "../../assets/images/result04.jpg";
 
-function Section3({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.75]);
+function WeightLoss6({ scrollYProgress }) {
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
 
-  const renderContent = (id, title, src) => (
-    <Card key={id} className="mt-20 w-72">
-      <CardHeader color="blue-gray" className="relative h-56">
-        <img
-          src={src}
-          alt="card-image"
-          className="hover:scale-105 transition-transform"
-        />
+  const renderContent = (id, details, src) => (
+    <Card key={id} className=" w-72 h-[26rem]">
+      <CardHeader color="blue-gray">
+        <img src={src} alt="card-image" className="relative"/>
       </CardHeader>
       <CardBody>
-        <Typography variant="h5" color="blue-gray" className="mb-2">
-          {title}
+        <Typography variant="h7" color="blue-gray" className="leading-relaxed font-poppins">
+          {details}
         </Typography>
       </CardBody>
     </Card>
   );
 
   const cardContents = [
-    { id: 1, title: "Obesity & Stress", src: obesity1 },
-    { id: 2, title: "Obesity & PCOD", src: obesity2 },
-    { id: 3, title: "Obesity & Hypothyroidism", src: obesity3 },
-    { id: 4, title: "Obesity & Hypertension", src: obesity4 },
-    { id: 5, title: "Obesity & Diabetes Mellitus", src: obesity5 },
-    { id: 6, title: "Obesity & Menopause", src: obesity6 },
+    {
+      id: 1,
+      details:
+        "A weight loss of 57 kg (from 137 kg to 80 kg) achieved by one patient at Slim and Smile Ayu Care is one of our many successful outcomes.",
+      src: img1,
+    },
+    {
+      id: 2,
+      details:
+        "Dr. Manish Patel of Slim and Smile Ayu Care lost 30 kg and has successfully maintained the weight loss for over 15 years without regaining it.",
+      src: img2,
+    },
+    {
+      id: 3,
+      details:
+        "Successful weight loss of 30 kg, along with maintaining the weight loss through our Ayurvedic treatments and carefully crafted reverse diet plans.",
+      src: img3,
+    },
+    {
+      id: 4,
+      details:
+        "Weight loss journey from 81 kg to 69 kg, guided by Slim and Smile Ayu Care, with no side effects or weakness felt throughout the entire transformation.",
+      src: img4,
+    },
   ];
 
   const groupedCards = [];
-  const cardsPerGroup = 3;
+  const cardsPerGroup = 2;
   for (let i = 0; i < cardContents.length; i += cardsPerGroup) {
     groupedCards.push(cardContents.slice(i, i + cardsPerGroup));
   }
@@ -52,18 +64,22 @@ function Section3({ scrollYProgress }) {
   return (
     <motion.div
       style={{ scale }}
-      className="sticky top-0 h-screen bg-teal-50 flex flex-col items-center py-7"
+      className="sticky top-0 h-screen bg-deep-orange-50 flex flex-col items-center py-7"
     >
       <div className="flex flex-col items-center">
         <div className="text-4xl font-poppins font-medium mt-8">
-          Special Treatments for Obesity
+          Our results speak for themselves:
         </div>
-        <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />
+        <div className="text-lg font-poppins mt-1.5">
+          We have successfully treated over 10,000 obese patients in the past 20
+          years
+        </div>
+        <div className="border-[2.5px] rounded-md border-deep-orange-200 w-20 mt-3" />
       </div>
 
-      <div className="flex items-center justify-center mt-8">
+      <div className="flex items-center justify-center pt-14">
         <Carousel
-          className="flex w-2/3"
+          className="flex w-3/4"
           autoplay={true}
           loop={true}
           prevArrow={({ handlePrev }) => (
@@ -132,10 +148,10 @@ function Section3({ scrollYProgress }) {
             <div
               key={index}
               className="flex justify-center gap-4 w-full"
-              style={{ flex: "0 0 100%" }} // Ensure each group takes up full carousel item space
+              style={{ flex: "0 0 100%" }}
             >
               {group.map((card) =>
-                renderContent(card.id, card.title, card.src)
+                renderContent(card.id, card.details, card.src)
               )}
             </div>
           ))}
@@ -145,4 +161,4 @@ function Section3({ scrollYProgress }) {
   );
 }
 
-export default Section3;
+export default WeightLoss6;
