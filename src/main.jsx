@@ -4,7 +4,8 @@ import App from "./App.jsx";
 import "./index.css";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3000/";
+axios.defaults.baseURL =
+  "https://d29d-2401-4900-1f3f-21fd-ac0d-d74a-467-42a7.ngrok-free.app/";
 axios.defaults.headers.common["ngrok-skip-browser-warning"] = true;
 axios.interceptors.request.use(
   (config) => {

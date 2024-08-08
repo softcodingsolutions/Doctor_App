@@ -7,12 +7,13 @@ import {
   Collapse,
 } from "@material-tailwind/react";
 import icons_slime from "../../assets/images/icons_slime.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleResize = () => {
@@ -26,71 +27,32 @@ export function StickyNavbar() {
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <Link
-          to="/"
-          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
+      {[
+        { path: "/", label: "Home" },
+        { path: "/about-us", label: "About Us" },
+        { path: "/weight-loss", label: "Weight Loss Treatment" },
+        { path: "/hair-and-beauty", label: "Hair & Beauty Treatment" },
+        { path: "/contact-us", label: "Contact Us" },
+      ].map(({ path, label }) => (
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+          key={path}
         >
-          Home
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <Link
-          to="/about-us"
-          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
-        >
-          About Us
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <Link
-          to="/weight-loss"
-          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
-        >
-          Weight Loss Treatment
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <Link
-          to="/hair-and-beauty"
-          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
-        >
-          Hair & Beauty Treatment
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <Link
-          to="/contact-us"
-          className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2"
-        >
-          Contact Us
-        </Link>
-      </Typography>
+          <Link
+            to={path}
+            className={`flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base ${
+              location.pathname === path
+                ? "border-b-2 border-gray-900"
+                : "hover:border-b-2"
+            }`}
+          >
+            {label}
+          </Link>
+        </Typography>
+      ))}
       <div
         className="relative"
         onMouseEnter={() => setOpenDropdown(true)}

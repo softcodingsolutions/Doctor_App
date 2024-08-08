@@ -16,18 +16,21 @@ function AboutSection2({ scrollYProgress }) {
     >
       <div className="flex w-full p-14 items-center gap-20 justify-evenly">
         <div className="w-1/2 tracking-wide leading-relaxed">
-          At Slim and Smile Ayu Care, we specialize in providing 100% Ayurvedic
-          medications that are also FDA-approved, ensuring that concerns about
-          side effects are minimized. Our approach goes beyond merely addressing
-          excess weight; we focus on identifying and addressing the root causes
-          of weight gain, which is often a symptom of underlying issues rather
-          than the problem itself. By diagnosing the underlying causes, we
-          create customized plans that encompass diet, exercise, and medication
-          tailored specifically to each individual. This comprehensive approach
+          At <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
+          Ayu Care, we specialize in providing 100% Ayurvedic medications that
+          are also FDA-approved, ensuring that concerns about side effects are
+          minimized. Our approach goes beyond merely addressing excess weight;
+          we focus on identifying and addressing the root causes of weight gain,
+          which is often a symptom of underlying issues rather than the problem
+          itself. By diagnosing the underlying causes, we create customized
+          plans that encompass diet, exercise, and medication tailored
+          specifically to each individual. This comprehensive approach
           significantly reduces the likelihood of weight regain. While over 80%
           of individuals typically experience weight regain after losing it, our
-          tailored treatments at Slim and Smile Ayu Care result in a
-          substantially lower rate of weight recidivism among our patients.
+          tailored treatments at{" "}
+          <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
+          Care result in a substantially lower rate of weight recidivism among
+          our patients.
         </div>
         <Carousel
           prevArrow={({ handlePrev }) => (

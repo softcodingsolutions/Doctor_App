@@ -67,23 +67,26 @@ function AboutSection3({ scrollYProgress }) {
           Our modern lifestyle introduces numerous factors that can contribute
           to weight gain, including a sedentary lifestyle, excessive consumption
           of fast food and aerated drinks, high levels of stress, and the use of
-          contemporary medications. At Slim and Smile Ayu Care, we address the
-          specific triggers behind your weight gain with thorough attention and
-          care, ensuring that you achieve a reasonable and effective weight loss
-          tailored to your needs.
+          contemporary medications. At{" "}
+          <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
+          Care, we address the specific triggers behind your weight gain with
+          thorough attention and care, ensuring that you achieve a reasonable
+          and effective weight loss tailored to your needs.
         </div>
         <div className="tracking-wide  leading-relaxed">
           Under the expert guidance of Dr. Bhavesh Thakkar and Dr. Manish Patel,
-          Slim and Smile Ayu Care has been operating with excellence for many
-          years. Throughout its journey, the center has continuously evolved and
-          thrived, embodying its mission to bring joy to those striving for a
-          slimmer and healthier life.
+          <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
+          Care has been operating with excellence for many years. Throughout its
+          journey, the center has continuously evolved and thrived, embodying
+          its mission to bring joy to those striving for a slimmer and healthier
+          life.
         </div>
         <div className="tracking-wide  leading-relaxed">
-          Notably, Slim and Smile Ayu Care has garnered significant recognition,
-          including the prestigious 'Best Ayurveda Weight Loss Treatment' award,
-          presented by the former Health Minister of Gujarat, Shri Ashokbhai
-          Bhatt, in 2007.
+          Notably,{" "}
+          <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
+          Care has garnered significant recognition, including the prestigious
+          'Best Ayurveda Weight Loss Treatment' award, presented by the former
+          Health Minister of Gujarat, Shri Ashokbhai Bhatt, in 2007.
         </div>
       </div>
     </motion.div>

@@ -1,15 +1,11 @@
 import { useScroll } from "framer-motion";
-import { useEffect, useRef } from "react";
-import Section1 from "./Section1";
-import Section2 from "./Section2";
-import Section3 from "./Section3";
-import Section4 from "./Section4";
-import Section5 from "./Section5";
-import Section6 from "./Section6";
 import Lenis from "lenis";
-import { StickyNavbar } from "./StickyNavbar";
+import { useEffect, useRef } from "react";
+import { StickyNavbar } from "../LandingPage/StickyNavbar";
+import Section6 from "../LandingPage/Section6";
+import HairAndBeauty1 from "./HairAndBeauty1";
 
-function LandingPage() {
+function HairAndBeauty() {
   const container = useRef();
   const { scrollYProgress } = useScroll({
     target: container,
@@ -38,15 +34,12 @@ function LandingPage() {
         ref={container}
         className="relative max-h-[575vh] overflow-x-clip bg-white font-poppins"
       >
-        <Section1 scrollYProgress={scrollYProgress} />
-        <Section2 scrollYProgress={scrollYProgress} />
-        <Section3 scrollYProgress={scrollYProgress} />
-        <Section4 scrollYProgress={scrollYProgress} />
-        <Section5 scrollYProgress={scrollYProgress} />
+        <HairAndBeauty1 scrollYProgress={scrollYProgress} />
+
         <Section6 scrollYProgress={scrollYProgress} />
       </main>
     </>
   );
 }
 
-export default LandingPage;
+export default HairAndBeauty;

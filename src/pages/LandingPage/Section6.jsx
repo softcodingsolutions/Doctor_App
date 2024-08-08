@@ -1,7 +1,24 @@
 import { motion, useTransform } from "framer-motion";
 import { Typography } from "@material-tailwind/react";
 import icons_slime from "../../assets/images/icons_slime.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+// Custom Link component to handle scroll-to-top behavior
+const ScrollToTopLink = ({ to, children, ...props }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    navigate(to);
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  };
+
+  return (
+    <Link to={to} onClick={handleClick} {...props}>
+      {children}
+    </Link>
+  );
+};
 
 function Section6({ scrollYProgress }) {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
@@ -57,14 +74,13 @@ function Section6({ scrollYProgress }) {
             variant="h5"
             className="flex w-full items-center justify-evenly gap-24 mt-10"
           >
-            <Link to="/">
-              {" "}
+            <ScrollToTopLink to="/">
               <img src={icons_slime} className="w-72" />
-            </Link>
+            </ScrollToTopLink>
             <div className="font-poppins text-lg text-balance tracking-wide font-light w-1/2">
-              Slim and Smile Ayu Care offers unique weight loss solutions which
-              are in turn backed 100% by age old, tried and tested Ayurvedic
-              principles.
+              <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
+              Ayu Care offers unique weight loss solutions which are in turn
+              backed 100% by age old, tried and tested Ayurvedic principles.
             </div>
           </Typography>
           <div className="flex justify-evenly gap-10 w-full">
@@ -74,7 +90,7 @@ function Section6({ scrollYProgress }) {
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="mb-3 font-semibold opacity-70 font-poppins text-lg"
+                    className="mb-3 font-semibold opacity-80 font-poppins text-lg"
                   >
                     {title}
                   </Typography>
@@ -95,21 +111,24 @@ function Section6({ scrollYProgress }) {
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="mb-3 font-semibold opacity-70 font-poppins text-lg"
+                    className="mb-3 font-semibold opacity-80 font-poppins text-lg"
                   >
                     {title}
                   </Typography>
                   {items.map((item, index) => (
-                    <li key={index} className="break-words">
+                    <ScrollToTopLink
+                      to={"/" + item.link}
+                      key={index}
+                      className="break-words"
+                    >
                       <Typography
                         as="a"
-                        href={item.link}
                         color="gray"
                         className="py-1.5 font-poppins transition-colors hover:text-black"
                       >
                         {item.text}
                       </Typography>
-                    </li>
+                    </ScrollToTopLink>
                   ))}
                 </ul>
               )
@@ -120,7 +139,8 @@ function Section6({ scrollYProgress }) {
               variant="small"
               className="mb-4 text-center w-full font-normal text-base text-blue-gray-900 md:mb-0 "
             >
-              &copy; {currentYear} <a href="/">Slim & Smile</a>. All Rights
+              &copy; {currentYear}{" "}
+              <ScrollToTopLink to="/" className="font-semibold">Slim & Smile</ScrollToTopLink>. All Rights
               Reserved.
             </Typography>
           </div>
