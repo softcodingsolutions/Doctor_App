@@ -20,7 +20,7 @@ function RecepsitnistMain() {
         )}`
       )
       .then((res) => {
-        console.log("Admin", res.data?.user);
+        console.log("receptionist", res.data?.user);
         setAdmin(res.data?.user);
       })
       .catch((err) => {
@@ -35,6 +35,14 @@ function RecepsitnistMain() {
     if (!localStorage.getItem("access_token")) {
       localStorage.clear();
       navigate("/");
+    }
+    if (
+      localStorage.getItem("role") === "super_admin" ||
+      localStorage.getItem("role") === "doctor"
+    ) {
+      navigate("/admin/dashboard");
+    } else if (localStorage.getItem("role") === "franchise") {
+      navigate("/franchise/dashboard");
     }
   }, []);
 
