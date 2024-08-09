@@ -1,3 +1,4 @@
+// import UserDashboard from "./pages/User/UserDashboard";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AdminMain from "./pages/Admin/AdminMain";
@@ -16,7 +17,6 @@ import NutritionSupplements from "./pages/Admin/master/NutritionSupplements";
 import DietMaster from "./pages/Admin/master/DietMaster";
 import LabTest from "./pages/Admin/master/LabTest";
 import UserMain from "./pages/User/UserMain";
-// import UserDashboard from "./pages/User/UserDashboard";
 import WeightReason from "./pages/Admin/master/WeightReason";
 import AdminTreatment from "./pages/Admin/AdminTreatment";
 import TreatmentQuestionPart1 from "./pages/Admin/treatment/TreatmentQuestionPart1";
@@ -97,6 +97,7 @@ import AboutUs from "./pages/AboutUsPage/AboutUs";
 import SurveyMain from "./pages/Survey/SurveyMain";
 import WeightLossPage from "./pages/WeightLossTreatmentPage/WeightLossPage";
 import HairAndBeauty from "./pages/HairAndBeautyPage/HairAndBeauty";
+import ContactUs from "./pages/ContactUsPage/ContactUs";
 
 function App() {
   return (
@@ -104,7 +105,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="about-us" element={<AboutUs />} />
-        <Route path="contact-us" element={<LandingPage />} />
+        <Route path="contact-us" element={<ContactUs />} />
         <Route path="weight-loss" element={<WeightLossPage />} />
         <Route path="hair-and-beauty" element={<HairAndBeauty />} />
         <Route path="login" element={<LoginPage />} />

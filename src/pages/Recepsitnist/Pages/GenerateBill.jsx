@@ -49,38 +49,12 @@ export default function GenerateBill() {
       });
   };
 
-  const formatTime = (time) => {
-    const timeMap = {
-      morning: "Morning",
-      dinner: "Dinner",
-      lunch: "Lunch",
-      evening: "Evening",
-    };
-    return timeMap[time] || time;
-  };
-
   const formatDuration = (duration) => {
     const durationMap = {
       "before-meal": "Before-meal",
       "after-meal": "After-meal",
     };
     return durationMap[duration] || duration;
-  };
-
-  const formatPackageDuration = (fromDate, toDate) => {
-    if (fromDate && toDate) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      const from = new Date(fromDate).toLocaleDateString(undefined, options);
-      const to = new Date(toDate).toLocaleDateString(undefined, options);
-
-      const fromDateObj = new Date(fromDate);
-      const toDateObj = new Date(toDate);
-      const diffTime = Math.abs(toDateObj - fromDateObj);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      return `${from} - ${to} (${diffDays} days)`;
-    }
-    return "";
   };
 
   const handleTotalMedicine = (index, value) => {
@@ -106,14 +80,14 @@ export default function GenerateBill() {
           `/api/v2/users/search?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}`
         )
         .then((res) => {
-          const userId = res.data.user.id;
+          const userId = res?.data?.user?.id;
           setId(userId);
           return axios.get(
             `/api/v1/appointments/user_appointments_count/${userId}`
           );
         })
         .then((res) => {
-          console.log("Appointments Count:", res.data.appointments_count);
+          console.log("Appointments Count:", res?.data?.appointments_count);
         })
         .catch((err) => {
           console.log(err);
@@ -127,12 +101,12 @@ export default function GenerateBill() {
       axios
         .get(`/api/v2/users/search?id=${id}`)
         .then((res) => {
-          const user = res.data.user;
-          console.log(res,"MEDICINE ")
+          const user = res?.data?.user;
+          console.log(res, "MEDICINE ");
           setUser(user);
-          setPackageDetail(user.user_packages[0]);
+          setPackageDetail(user?.user_packages?.[0]);
           setMedicines(
-            user.treatment_packages[0].treatment_package.medicines || []
+            user?.treatment_packages?.[0]?.treatment_package?.medicines || []
           );
         })
         .catch((err) => {
@@ -172,25 +146,25 @@ export default function GenerateBill() {
                 <div>
                   Patient Name:{" "}
                   <span className="font-medium">
-                    {userDetails.first_name} {userDetails.last_name}
+                    {userDetails?.first_name} {userDetails?.last_name}
                   </span>
                 </div>
                 <div>
                   Case Number:{" "}
-                  <span className="font-medium">{userDetails.case_number}</span>
+                  <span className="font-medium">{userDetails?.case_number}</span>
                 </div>
               </div>
               <div className="text-lg font-bold mb-4">
                 <div>
                   Package Name:{" "}
                   <span className="font-medium">
-                    {packageDetail.package_name}
+                    {packageDetail?.package_name ?? "No Package Assigned"}
                   </span>
                 </div>
                 <div>
                   Package Duration:{" "}
                   <span className="font-medium">
-                    {packageDetail.no_of_days} Days
+                    {packageDetail?.no_of_days} Days
                   </span>
                 </div>
               </div>

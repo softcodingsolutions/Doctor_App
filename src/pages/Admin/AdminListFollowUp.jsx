@@ -31,10 +31,10 @@ function AdminListFollowUp() {
         .then((res) => {
           console.log(res, "List Follow Up");
           setData(res.data);
-          setConsultingData(res.data.consulting_appointments);
-          setMachineConsultingData(res.data.machine_appointments);
-          setUserDetails(res.data.user);
-          setPackageDetail(res.data.user.user_packages[0]);
+          setConsultingData(res.data?.consulting_appointments);
+          setMachineConsultingData(res.data?.machine_appointments);
+          setUserDetails(res.data?.user);
+          setPackageDetail(res.data?.user?.user_packages?.[0]);
         })
         .catch((err) => {
           console.log(err);
@@ -66,22 +66,6 @@ function AdminListFollowUp() {
       hour12: true,
     });
   }
-
-  const formatPackageDuration = (fromDate, toDate) => {
-    if (fromDate && toDate) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      const from = new Date(fromDate).toLocaleDateString(undefined, options);
-      const to = new Date(toDate).toLocaleDateString(undefined, options);
-
-      const fromDateObj = new Date(fromDate);
-      const toDateObj = new Date(toDate);
-      const diffTime = Math.abs(toDateObj - fromDateObj);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      return `${from} - ${to} (${diffDays} days)`;
-    }
-    return "";
-  };
 
   return (
     <div className="flex w-full">
@@ -126,13 +110,13 @@ function AdminListFollowUp() {
                       <div>
                         Patient Name:{" "}
                         <span className="font-medium">
-                          {userDetails.first_name} {userDetails.last_name}
+                          {userDetails?.first_name} {userDetails?.last_name}
                         </span>
                       </div>
                       <div>
                         Case Number:{" "}
                         <span className="font-medium">
-                          {userDetails.case_number}
+                          {userDetails?.case_number}
                         </span>
                       </div>
                     </div>
@@ -140,13 +124,13 @@ function AdminListFollowUp() {
                       <div>
                         Package Name:{" "}
                         <span className="font-medium">
-                        {packageDetail.package_name}
+                          {packageDetail?.package_name ?? "No Package Assigned"}
                         </span>
                       </div>
                       <div>
                         Package Duration:{" "}
                         <span className="font-medium">
-                        {packageDetail.no_of_days} Days
+                          {packageDetail?.no_of_days} Days
                         </span>
                       </div>
                     </div>

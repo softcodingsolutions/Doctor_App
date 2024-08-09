@@ -88,13 +88,13 @@ function ReportProgress() {
       .then((res) => {
         console.log(res);
         Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Saved!",
-            text: "Your progress report has been saved.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          position: "top-end",
+          icon: "success",
+          title: "Saved!",
+          text: "Your progress report has been saved.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         handleGetProgress();
       })
       .catch((err) => {
@@ -103,9 +103,9 @@ function ReportProgress() {
       });
   };
 
-  const feedbackQuestions = (val) => {
-    console.log(val);
-  };
+  //   const feedbackQuestions = (val) => {
+  //     console.log(val);
+  //   };
 
   const feedbackComplains = (id, isEffective) => {
     const formData = new FormData();
@@ -200,6 +200,7 @@ function ReportProgress() {
               />
             )}
           </div>
+
           {/* progress */}
           {showProgress && (
             <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -400,7 +401,7 @@ function ReportProgress() {
 
           {/* questions */}
           {showQues && (
-            <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+            <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
               <table className="w-full min-w-[460px] z-0">
                 <thead className="uppercase ">
                   <tr className="bg-[#1F2937] text-white rounded-md">

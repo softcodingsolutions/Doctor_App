@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import UserSidebar from "./UserSidebar";
 import axios from "axios";
+import Loader from "../Loader";
 
 function UserMain() {
   const navigate = useNavigate();
   const [showSidebar, onSetShowSidebar] = useState(false);
-  const [user, setUser] = useState(0);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const onSidebarHide = () => {
     onSetShowSidebar(true);
@@ -22,10 +24,12 @@ function UserMain() {
       .then((res) => {
         console.log(res.data?.user);
         setUser(res.data?.user);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
+        setLoading(false);
       });
   };
 
@@ -42,7 +46,11 @@ function UserMain() {
     ) {
       navigate("/admin/dashboard");
     }
-  }, []);
+  }, [navigate]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex">

@@ -14,6 +14,7 @@ import { useOutletContext } from "react-router-dom";
 import NotoSansGujarati from "../../../../assets/fonts/NotoSansGujarati-Regular.ttf";
 import TiroDevanagariHindi from "../../../../assets/fonts/TiroDevanagariHindi-Regular.ttf";
 import { BsDownload } from "react-icons/bs";
+import InsideLoader from "../../../InsideLoader";
 
 Font.register({
   family: "Noto Sans Gujarati",
@@ -427,9 +428,7 @@ const ReportGenerate = () => {
             >
               {({ blob, url, loading, error }) =>
                 loading ? (
-                  <button className="px-4 py-2 bg-blue-500 text-white text-xl rounded shadow-md hover:bg-blue-600">
-                    Loading document...
-                  </button>
+                  <InsideLoader />
                 ) : (
                   <button className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white text-xl rounded shadow-md hover:bg-green-600">
                     <BsDownload size={21} /> Download PDF

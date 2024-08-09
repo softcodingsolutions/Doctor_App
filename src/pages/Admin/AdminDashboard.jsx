@@ -3,11 +3,12 @@ import { useOutletContext } from "react-router-dom";
 import ThComponent from "../../components/ThComponent";
 import TdComponent from "../../components/TdComponent";
 import axios from "axios";
+import InsideLoader from "../InsideLoader";
 
 function AdminDashboard() {
   const [getConsultingTime, setGetConsultingTime] = useState([]);
-  const [getMachineTime, setGetMachineTime] = useState([]);
   const context = useOutletContext();
+  const [loading, setLoading] = useState(true);
 
   const handleGetConsultingTime = () => {
     axios
@@ -15,38 +16,31 @@ function AdminDashboard() {
       .then((res) => {
         console.log("Consulting Time: ", res.data?.consulting_times);
         setGetConsultingTime(res.data?.consulting_times);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
-      });
-  };
-
-  const handleGetMachineTime = () => {
-    axios
-      .get(`/api/v1/machine_consulting_times`)
-      .then((res) => {
-        console.log("Machine Consulting Time: ", res.data);
-        setGetMachineTime(res.data?.machine_consulting_times);
-      })
-      .catch((err) => {
-        alert(err.message);
+        setLoading(false);
       });
   };
 
   function formatTime(dateTimeString) {
     const date = new Date(dateTimeString);
     return date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
   }
 
   useEffect(() => {
     handleGetConsultingTime();
-    handleGetMachineTime();
   }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="flex w-full">
@@ -131,7 +125,6 @@ function AdminDashboard() {
                 </table>
               </div>
             </div>
-          
           </div>
         </div>
       </div>

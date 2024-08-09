@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import icons_slime from "../assets/images/icons_slime.png";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +15,6 @@ function ForgetPassword() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 

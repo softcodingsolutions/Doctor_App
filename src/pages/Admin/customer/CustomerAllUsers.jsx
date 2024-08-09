@@ -3,6 +3,7 @@ import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import InsideLoader from "../../InsideLoader";
 
 function CustomerAllUsers() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function CustomerAllUsers() {
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
+  const [loading, setLoading] = useState(true);
 
   const handleGetAllUsers = () => {
     if (role === "super_admin") {
@@ -21,12 +23,14 @@ function CustomerAllUsers() {
         console.log("Patients by Super Admin: ", patients);
         setGetCustomers(patients);
         setGetParticularCustomer(patients);
+        setLoading(false);
       });
     } else if (role === "doctor") {
       axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
         console.log("Patients by Doctor: ", res.data?.users);
         setGetCustomers(res.data?.users);
         setGetParticularCustomer(res.data?.users);
+        setLoading(false);
       });
     }
   };
@@ -64,6 +68,10 @@ function CustomerAllUsers() {
       setGetParticularCustomer(getCustomers);
     }
   }, [searchTerm, getCustomers]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

@@ -3,12 +3,10 @@ import Lenis from "lenis";
 import { useEffect, useRef } from "react";
 import { StickyNavbar } from "../LandingPage/StickyNavbar";
 import Section6 from "../LandingPage/Section6";
-import HairAndBeauty1 from "./HairAndBeauty1";
-import HairAndBeauty2 from "./HairAndBeauty2";
-import HairAndBeauty3 from "./HairAndBeauty3";
-import HairAndBeauty4 from "./HairAndBeauty4";
+import ContactUs1 from "./ContactUs1";
+import ContactUs2 from "./ContactUs2";
 
-function HairAndBeauty() {
+function ContactUs() {
   const container = useRef();
   const { scrollYProgress } = useScroll({
     target: container,
@@ -35,16 +33,14 @@ function HairAndBeauty() {
       </header>
       <main
         ref={container}
-        className="relative max-h-[500vh] overflow-x-clip bg-white font-poppins"
+        className="relative max-h-[310vh] overflow-x-clip bg-white font-poppins"
       >
-        <HairAndBeauty1 scrollYProgress={scrollYProgress} />
-        <HairAndBeauty2 scrollYProgress={scrollYProgress} />
-        <HairAndBeauty3 scrollYProgress={scrollYProgress} />
-        <HairAndBeauty4 scrollYProgress={scrollYProgress} />
+        <ContactUs1 scrollYProgress={scrollYProgress} />
+        <ContactUs2 scrollYProgress={scrollYProgress} />
         <Section6 scrollYProgress={scrollYProgress} />
       </main>
     </>
   );
 }
 
-export default HairAndBeauty;
+export default ContactUs;
