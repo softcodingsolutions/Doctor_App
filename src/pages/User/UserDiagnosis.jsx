@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useOutletContext } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { reportButtons } from "../../constants/admin/AdminConstants";
+import InsideLoader from "../InsideLoader";
 
 function UserDiagnosis() {
   const context = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
   const [getCustomer, setGetCustomer] = useState([]);
   const id = localStorage.getItem("main_id");
+  const [loading, setLoading] = useState(true);
 
   const handlegetUser = () => {
     axios
@@ -16,6 +18,7 @@ function UserDiagnosis() {
       .then((res) => {
         console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -42,8 +45,12 @@ function UserDiagnosis() {
     return true;
   });
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
-    <div className="flex w-full">
+    <div className="flex w-full font-poppins">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
@@ -78,7 +85,7 @@ function UserDiagnosis() {
                       )}
                     >
                       {res.icons}
-                      <span className="ml-1.5">{res.name}</span>
+                      <span className="ml-1.5 font-poppins">{res.name}</span>
                     </Link>
                   );
                 })}

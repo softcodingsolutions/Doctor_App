@@ -113,7 +113,7 @@ function UserQuestions() {
   }, [storeData]);
 
   return (
-    <div className="flex w-full p-2 items-center font-teachers">
+    <div className="flex w-full p-2 items-center font-poppins">
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <Stepper sx={{ width: "100%", height: "7%" }}>
           {steps.map((step, index) => (

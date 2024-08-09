@@ -120,7 +120,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   return (
     <div
       className={clsx(
-        "fixed inset-y-0 left-0 bg-card w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-[#1F2937] text-gray-100",
+        "fixed inset-y-0 left-0 bg-card font-poppins w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-[#1F2937] text-gray-100",
         showSidebar ? "flex" : "hidden"
       )}
     >
@@ -179,8 +179,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
                   setSelected(res.id);
                 }}
               >
-                <div>{res.icons}</div>
-                <div>{res.title}</div>
+                <div className="font-poppins">{res.icons}</div>
+                <div className="font-poppins"> {res.title}</div>
               </Link>
             </Option>
           ))}
@@ -204,8 +204,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
                   className={"w-full flex items-center space-x-2"}
                   onClick={() => setSelected(res.id)}
                 >
-                  <div>{res.icons}</div>
-                  <div>{res.title}</div>
+                  <div className="font-poppins">{res.icons}</div>
+                  <div className="font-poppins">{res.title}</div>
                 </Link>
               </Option>
             ))}
@@ -232,7 +232,12 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
           </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">
             {admin?.first_name?.toUpperCase()[0] + admin?.first_name?.slice(1)}{" "}
-            {admin?.last_name?.toUpperCase()[0] + admin?.last_name?.slice(1)}
+            {admin?.last_name?.toUpperCase()[0] + admin?.last_name?.slice(1)}{" "}
+            {role === "super_admin" ? (
+              <span className="font-normal text-[0.65rem]">(Admin)</span>
+            ) : (
+              <span className="font-normal text-[0.65rem]">(Doctor)</span>
+            )}
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <img

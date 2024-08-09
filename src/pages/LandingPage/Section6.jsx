@@ -137,11 +137,13 @@ function Section6({ scrollYProgress }) {
           <div className="mt-12 flex w-full text-center items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
             <Typography
               variant="small"
-              className="mb-4 text-center w-full font-normal text-base text-blue-gray-900 md:mb-0 "
+              className="mb-4 text-center w-full font-normal font-poppins text-base text-blue-gray-900 md:mb-0 "
             >
               &copy; {currentYear}{" "}
-              <ScrollToTopLink to="/" className="font-semibold">Slim & Smile</ScrollToTopLink>. All Rights
-              Reserved.
+              <ScrollToTopLink to="/" className="font-semibold">
+                Slim & Smile
+              </ScrollToTopLink>
+              . All Rights Reserved.
             </Typography>
           </div>
         </div>

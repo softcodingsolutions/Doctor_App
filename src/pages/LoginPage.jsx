@@ -13,10 +13,12 @@ import {
   Input,
   Button,
 } from "@material-tailwind/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Loader from "./Loader";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -28,6 +30,7 @@ function LoginPage() {
 
   const submittedData = (d) => {
     console.log(d);
+    setLoading(true);
     axios
       .get("/api/v1/users/app_creds")
       .then((res) => {
@@ -40,6 +43,7 @@ function LoginPage() {
           localStorage.setItem("access_token", res.data?.user?.access_token);
           localStorage.setItem("role", res.data?.user?.role);
           localStorage.setItem("main_id", res.data?.user?.not_a_number);
+          setLoading(false);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -51,21 +55,34 @@ function LoginPage() {
               toast.onmouseleave = Swal.resumeTimer;
             },
           });
-          Toast.fire({
-            icon: "success",
-            title: `Welcome ${res.data?.user?.email}!`,
-          });
+
           if (
             res.data?.user?.role === "super_admin" ||
             res.data?.user?.role === "doctor"
           ) {
             navigate("/admin/dashboard");
+            Toast.fire({
+              icon: "success",
+              title: `Welcome ${res.data?.user?.email}!`,
+            });
           } else if (res.data?.user?.role === "franchise") {
             navigate("/franchise/dashboard");
+            Toast.fire({
+              icon: "success",
+              title: `Welcome ${res.data?.user?.email}!`,
+            });
           } else if (res.data?.user?.role === "receptionist") {
             navigate("/receptionist/appointment/home");
+            Toast.fire({
+              icon: "success",
+              title: `Welcome ${res.data?.user?.email}!`,
+            });
           } else {
             navigate("/user/user-diagnosis/profile");
+            Toast.fire({
+              icon: "success",
+              title: `Welcome ${res.data?.user?.email}!`,
+            });
           }
           reset();
         });
@@ -87,6 +104,10 @@ function LoginPage() {
       navigate("/user/user-diagnosis/profile");
     }
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen font-teachers">

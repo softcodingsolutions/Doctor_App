@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import axios from "axios";
+import Loader from "../Loader";
 
 function AdminMain() {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState();
   const [showSidebar, onSetShowSidebar] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const onSidebarHide = () => {
     onSetShowSidebar(true);
@@ -22,10 +24,12 @@ function AdminMain() {
       .then((res) => {
         console.log("Admin", res.data?.user);
         setAdmin(res.data?.user);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
+        setLoading(false);
       });
   };
 
@@ -45,6 +49,10 @@ function AdminMain() {
       navigate("/user/dashboard");
     }
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex font-teachers">

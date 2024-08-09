@@ -1,7 +1,12 @@
 import { useOutletContext } from "react-router-dom";
+import InsideLoader from "../../../InsideLoader";
 
 function ReportProfile() {
   const getCustomer = useOutletContext();
+
+  if (!getCustomer[1]?.first_name) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

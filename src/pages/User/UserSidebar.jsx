@@ -1,6 +1,6 @@
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { IoCloseOutline } from "react-icons/io5";
-import { IoMdHome } from "react-icons/io";
+// import { IoMdHome } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useState } from "react";
@@ -76,7 +76,9 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
             onClick={() => setSelected(i.id)}
           >
             {i.icons}
-            <div className="block sm:hidden xl:block ml-2">{i.title}</div>
+            <div className="block sm:hidden xl:block ml-2 font-poppins">
+              {i.title}
+            </div>
             <div className="block sm:hidden xl:block flex-grow" />
           </Link>
         ))}
@@ -93,14 +95,15 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
               "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
             }
           >
-            <div className="text-lg font-semibold">
+            <div className="text-lg font-semibold font-poppins">
               {user.first_name?.toUpperCase()[0]}
               {user.last_name?.toUpperCase()[0]}
             </div>
           </div>
-          <div className="block sm:hidden xl:block ml-2 font-bold ">
-            {user.first_name} {user.last_name}
-          </div>
+            <div className="block sm:hidden xl:block ml-2 font-bold font-poppins">
+              {user.first_name} {user.last_name}{" "}
+              <span className="font-normal text-[0.65rem]">(Patient)</span>
+            </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <img
             src={`https://assets.codepen.io/3685267/res-react-dash-options.svg`}

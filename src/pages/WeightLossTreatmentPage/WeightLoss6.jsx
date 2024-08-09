@@ -16,12 +16,16 @@ function WeightLoss6({ scrollYProgress }) {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
 
   const renderContent = (id, details, src) => (
-    <Card key={id} className=" w-72 h-[26rem]">
+    <Card key={id} className=" w-72 h-[26rem] mt-5">
       <CardHeader color="blue-gray">
-        <img src={src} alt="card-image" className="relative"/>
+        <img src={src} alt="card-image" className="relative" />
       </CardHeader>
       <CardBody>
-        <Typography variant="h7" color="blue-gray" className="leading-relaxed font-poppins">
+        <Typography
+          variant="h7"
+          color="blue-gray"
+          className="leading-relaxed font-poppins"
+        >
           {details}
         </Typography>
       </CardBody>
@@ -64,7 +68,7 @@ function WeightLoss6({ scrollYProgress }) {
   return (
     <motion.div
       style={{ scale }}
-      className="sticky top-0 h-screen bg-deep-orange-50 flex flex-col items-center py-7"
+      className="sticky top-0 h-screen bg-deep-orange-50 flex flex-col items-center py-2"
     >
       <div className="flex flex-col items-center">
         <div className="text-4xl font-poppins font-medium mt-8">
