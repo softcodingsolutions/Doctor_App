@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import EditComplain from "../../../components/Admin/EditComplain";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function Complains() {
   const [getComplain, setGetComplain] = useState([]);
@@ -15,6 +16,7 @@ function Complains() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleGetComplain = () => {
     axios
@@ -25,6 +27,7 @@ function Complains() {
             if (getDoctorId === "all") {
               console.log(res.data);
               setGetComplain(res.data);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Complains: ",
@@ -33,6 +36,7 @@ function Complains() {
               setGetComplain(
                 res.data?.filter((comp) => comp.user_id == getDoctorId)
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -41,10 +45,12 @@ function Complains() {
             res.data?.filter((comp) => comp.user_id == main_id)
           );
           setGetComplain(res.data?.filter((comp) => comp.user_id == main_id));
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -195,6 +201,10 @@ function Complains() {
     handleGetComplain();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
 import axios from "axios";
+import InsideLoader from "../../../InsideLoader";
 
 export default function MachineDetails() {
   const [inputMachineName, setInputMachineName] = useState("");
@@ -17,6 +18,7 @@ export default function MachineDetails() {
   const [inputVisible, setInputVisible] = useState(false);
   const [doctor, setDoctor] = useState([]);
   const [doctorId, setDoctorId] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [slot, setSlot] = useState("");
 
   const handleShow = () => {
@@ -25,10 +27,12 @@ export default function MachineDetails() {
       .then((res) => {
         console.log(res.data, "Show ");
         setMachines(res.data?.machine_details);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
+        setLoading(false);
       });
 
     axios
@@ -39,9 +43,11 @@ export default function MachineDetails() {
           "Doctor"
         );
         setDoctor(res.data.users.filter((user) => user.role === "doctor"));
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -118,7 +124,14 @@ export default function MachineDetails() {
     setSlot(e.target.value);
   };
 
-  const handleEditMachine = (index, machineName, quantity, brief, slot, doctorId) => {
+  const handleEditMachine = (
+    index,
+    machineName,
+    quantity,
+    brief,
+    slot,
+    doctorId
+  ) => {
     setEditIndex(index);
     setEditedMachineName(machineName);
     setEditedQuantity(quantity);
@@ -162,6 +175,10 @@ export default function MachineDetails() {
   useEffect(() => {
     handleShow();
   }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">
@@ -278,7 +295,9 @@ export default function MachineDetails() {
                           <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                             <select
                               value={editedDoctorId}
-                              onChange={(e) => setEditedDoctorId(e.target.value)}
+                              onChange={(e) =>
+                                setEditedDoctorId(e.target.value)
+                              }
                               className="border-2 rounded-md p-2"
                             >
                               <option disabled value="">
@@ -352,7 +371,8 @@ export default function MachineDetails() {
                         <>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <span className="text-black text-base font-medium ml-1">
-                              {machine?.user?.first_name} {machine?.user?.last_name}
+                              {machine?.user?.first_name}{" "}
+                              {machine?.user?.last_name}
                             </span>
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">

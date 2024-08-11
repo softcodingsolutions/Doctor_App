@@ -7,13 +7,14 @@ import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../InsideLoader";
 
 function SurveyTreatmentExercise() {
   const context = useOutletContext();
   const [getExercise, setGetExercise] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
-  const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetExercise = () => {
     axios
@@ -21,9 +22,11 @@ function SurveyTreatmentExercise() {
       .then((res) => {
         console.log(res);
         setGetExercise(res.data?.all_survey_exercises);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -107,6 +110,10 @@ function SurveyTreatmentExercise() {
   useEffect(() => {
     handleGetExercise();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

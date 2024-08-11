@@ -1,91 +1,102 @@
-import React,{useEffect,useState} from 'react'
+import { useEffect, useState } from "react";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
-import AddHealthProblem from '../../../components/Admin/AddHealthProblem';
+import AddHealthProblem from "../../../components/Admin/AddHealthProblem";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
+import InsideLoader from "../../InsideLoader";
 
 export default function Healthproblem() {
-const[healthproblem,setHealthProblem] = useState([]);
-  const handleAddHealth = (english) => {
-    
+  const [healthproblem, setHealthProblem] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const handleData = () => {
+    axios
+      .get(`/api/v2/survey_helth_problems`)
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+        setHealthProblem(res.data?.all_survey_helth_problems);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
-  const handleData =() =>{
-    axios.get(`/api/v2/survey_helth_problems`).then((res)=>{
-      console.log(res)
-      setHealthProblem(res.data.all_survey_helth_problems);
-    }).catch((err)=>{
-      console.log(err)
-    })
-  }
-  useEffect(() =>{
-    handleData();
-  },[])
+  const handleAddHealth = () => {};
+
   const handleDelete = (id) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
           .delete(`/api/v2/survey_helth_problems/${id}`)
           .then((res) => {
-            Swal.fire(
-              'Deleted!',
-              'The question has been deleted.',
-              'success'
-            );
-            handleData(); 
+            console.log(res);
+            Swal.fire("Deleted!", "The question has been deleted.", "success");
+            handleData();
           })
           .catch((err) => {
             console.log(err);
             Swal.fire(
-              'Error!',
-              'There was an error deleting the question.',
-              'error'
+              "Error!",
+              "There was an error deleting the question.",
+              "error"
             );
           });
       }
     });
   };
 
+  useEffect(() => {
+    handleData();
+  }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full p-2">
-        <div className="rounded-lg bg-card h-[85vh] bg-white">
-            <div className="flex px-4 py-3 h-full flex-col space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="font-semibold text-xl">Health Problem Questions</div>
-                  <AddHealthProblem
-                    handleApi={handleAddHealth}
-                    name="Add Health Problem Questions"
-                    title="Add New Question"
-                    details="Details"
-                    refresh={handleData}
-                  />
-                </div>
+      <div className="rounded-lg bg-card h-[85vh] bg-white">
+        <div className="flex px-4 py-3 h-full flex-col space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="font-semibold text-xl">
+              Health Problem Questions
+            </div>
+            <AddHealthProblem
+              handleApi={handleAddHealth}
+              name="Add Health Problem Questions"
+              title="Add New Question"
+              details="Details"
+              refresh={handleData}
+            />
+          </div>
 
-                <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
-                  <table className="w-full min-w-[460px] z-0">
-                    <thead className="uppercase ">
-                        <tr className="bg-[#1F2937] text-white rounded-md">
-                          <ThComponent
-                            moreClasses={"rounded-tl-md rounded-bl-md"}
-                            name="No."
-                          />
-                          <ThComponent name="In English" />
-                          <ThComponent />
-                          <ThComponent />
-                          <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
-                        </tr>
-                    </thead>
-                    <tbody>
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+            <table className="w-full min-w-[460px] z-0">
+              <thead className="uppercase ">
+                <tr className="bg-[#1F2937] text-white rounded-md">
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="No."
+                  />
+                  <ThComponent name="In English" />
+                  <ThComponent />
+                  <ThComponent />
+                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
+                </tr>
+              </thead>
+              <tbody>
                 {healthproblem.length === 0 ? (
                   <tr>
                     <th
@@ -104,7 +115,7 @@ const[healthproblem,setHealthProblem] = useState([]);
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.problem} />
-                        </td>  
+                        </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <button
                             className="text-red-500 hover:text-red-700"
@@ -112,16 +123,16 @@ const[healthproblem,setHealthProblem] = useState([]);
                           >
                             <MdDelete size={20} />
                           </button>
-                        </td>  
+                        </td>
                       </tr>
                     );
                   })
                 )}
               </tbody>
-                  </table>
-                </div>
-            </div>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
-  )
+  );
 }

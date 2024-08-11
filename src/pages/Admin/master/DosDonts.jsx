@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import EditDosDonts from "../../../components/Admin/EditDosDonts";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function DosDonts() {
   const [getDos, setGetDos] = useState([]);
@@ -18,6 +19,7 @@ function DosDonts() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleGetDos = () => {
     axios
@@ -33,6 +35,7 @@ function DosDonts() {
               setGetDos(
                 res.data?.avoid_and_adds.filter((res) => res.category === "do")
               );
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Dos: ",
@@ -45,6 +48,7 @@ function DosDonts() {
                   (res) => res.category === "do" && res.user_id == getDoctorId
                 )
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -59,10 +63,12 @@ function DosDonts() {
               (res) => res.category === "do" && res.user_id == main_id
             )
           );
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -85,6 +91,7 @@ function DosDonts() {
                   (res) => res.category === "dont"
                 )
               );
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Dont: ",
@@ -97,6 +104,7 @@ function DosDonts() {
                   (res) => res.category === "dont" && res.user_id == getDoctorId
                 )
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -111,10 +119,12 @@ function DosDonts() {
               (res) => res.category === "dont" && res.user_id == main_id
             )
           );
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -314,6 +324,10 @@ function DosDonts() {
     showDos ? handleGetDos() : handleGetDonts();
   }, [showDos, showDonts, getDoctorId]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
@@ -334,6 +348,7 @@ function DosDonts() {
               </button>
               <button
                 onClick={() => {
+                  setLoading(true);
                   setShowDos(false);
                   setShowDonts(true);
                 }}

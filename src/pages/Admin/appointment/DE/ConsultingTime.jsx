@@ -1,20 +1,17 @@
 import { useState, useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
+import InsideLoader from "../../../InsideLoader";
 
 export default function ConsultingTime() {
   const [inputTime, setInputTime] = useState("");
   const [inputSlot, setInputSlot] = useState("select");
   const [inputDoctor, setInputDoctor] = useState("select");
   const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [inputVisible, setInputVisible] = useState(false);
   const [data, setData] = useState([]);
   const [doctorName, setDoctorNames] = useState({});
-
-  useEffect(() => {
-    handleShow();
-    handleData();
-  }, []);
 
   const handleShow = () => {
     axios
@@ -22,9 +19,11 @@ export default function ConsultingTime() {
       .then((res) => {
         console.log(res);
         setDoctorNames(res.data.users);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -35,9 +34,11 @@ export default function ConsultingTime() {
       .then((res) => {
         console.log(res);
         setData(res.data.consulting_times);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -57,11 +58,12 @@ export default function ConsultingTime() {
   function formatTime(dateTimeString) {
     const date = new Date(dateTimeString);
     return date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
   }
+
   function handleAddDoctor() {
     if (inputTime && inputSlot !== "select" && inputDoctor !== "select") {
       const newDoctor = {
@@ -105,6 +107,15 @@ export default function ConsultingTime() {
   const handleShowInput = () => {
     setInputVisible(!inputVisible);
   };
+
+  useEffect(() => {
+    handleShow();
+    handleData();
+  }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

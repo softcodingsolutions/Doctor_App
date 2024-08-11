@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import EditExercise from "../../../components/Admin/EditExercise";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function ExerciseYoga() {
   const [getExercise, setGetExercise] = useState([]);
@@ -15,6 +16,7 @@ function ExerciseYoga() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleGetExercise = () => {
     axios
@@ -25,6 +27,7 @@ function ExerciseYoga() {
             if (getDoctorId === "all") {
               console.log(res.data);
               setGetExercise(res.data);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Exercise: ",
@@ -33,6 +36,7 @@ function ExerciseYoga() {
               setGetExercise(
                 res.data?.filter((med) => med.user_id == getDoctorId)
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -41,11 +45,13 @@ function ExerciseYoga() {
             res.data?.filter((med) => med.user_id == main_id)
           );
           setGetExercise(res.data?.filter((med) => med.user_id == main_id));
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
+        setLoading(false);
       });
   };
 
@@ -220,6 +226,10 @@ function ExerciseYoga() {
     handleGetExercise();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

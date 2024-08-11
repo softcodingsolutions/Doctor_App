@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
 import { MenuItem, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function TreatmentQuestionPart1() {
   const context = useOutletContext();
@@ -16,6 +17,7 @@ function TreatmentQuestionPart1() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
   const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetQuestionsPart1 = () => {
     if (role === "doctor") {
@@ -26,9 +28,11 @@ function TreatmentQuestionPart1() {
         .then((res) => {
           console.log(res.data);
           setGetQuestionsPart1(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     } else if (role === "super_admin") {
@@ -40,10 +44,12 @@ function TreatmentQuestionPart1() {
         )
         .then((res) => {
           console.log(res.data);
+          setLoading(false);
           setGetQuestionsPart1(res.data);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     }
@@ -166,6 +172,10 @@ function TreatmentQuestionPart1() {
     handleGetQuestionsPart1();
     context[1]();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

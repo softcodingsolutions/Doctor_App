@@ -7,6 +7,7 @@ import ThComponent from "../../../components/ThComponent";
 import Swal from "sweetalert2";
 import EditMedicine from "../../../components/Admin/EditMedicine";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function Medicine() {
   const [getMedicines, setGetMedicines] = useState([]);
@@ -15,6 +16,7 @@ function Medicine() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleGetMedicines = () => {
     axios
@@ -25,6 +27,7 @@ function Medicine() {
             if (getDoctorId === "all") {
               console.log(res.data?.medicines);
               setGetMedicines(res.data?.medicines);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Med: ",
@@ -33,6 +36,7 @@ function Medicine() {
               setGetMedicines(
                 res.data?.medicines?.filter((med) => med.user_id == getDoctorId)
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -43,10 +47,12 @@ function Medicine() {
           setGetMedicines(
             res.data?.medicines?.filter((med) => med.user_id == main_id)
           );
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -211,6 +217,10 @@ function Medicine() {
     handleGetMedicines();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

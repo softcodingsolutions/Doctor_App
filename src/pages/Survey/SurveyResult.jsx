@@ -1,17 +1,14 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useLocation, useOutlet, useOutletContext,useNavigate } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 
 export default function SurveyResult() {
   const context = useOutletContext();
   const navigate = useNavigate();
-  const [dos, setDos] = useState(context?.[3]?.data?.details?.package?.do);
-  const [dont, setDonts] = useState(context?.[3]?.data?.details?.package?.dont);
-  const [exercise, setExercise] = useState(
-    context?.[3]?.data?.details?.package?.exercise
-  );
   const weight = parseFloat(localStorage.getItem("user_weight"));
   const height = parseFloat(localStorage.getItem("user_height")) / 100;
+  const dont = context?.[3]?.data?.details?.package?.dont;
+  const dos = context?.[3]?.data?.details?.package?.do;
+  const exercise = context?.[3]?.data?.details?.package?.exercise;
+
   const handleBMI = (w, h) => {
     if (w > 0 && h > 0) {
       const bmi = w / (h * h);
@@ -19,9 +16,11 @@ export default function SurveyResult() {
     }
     return "Invalid input";
   };
-  const handleNext = () =>{
-    navigate('/survey')
-  }
+
+  const handleNext = () => {
+    navigate("/survey");
+  };
+
   return (
     <div>
       <header className="bg-[#FEFAF6] h-20">
@@ -40,7 +39,7 @@ export default function SurveyResult() {
         <div className="w-[700px] flex flex-col  p-5 ">
           <div className="flex flex-row">
             <h1 className="text-lg text-[#1F2937]  font-semibold tracking-wide">
-              Your BMI Count is: {handleBMI(weight, height)} 
+              Your BMI Count is: {handleBMI(weight, height)}
             </h1>
           </div>
           <div className="flex flex-row">

@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
 import AddSurveyDos from "../../../components/Admin/AddSurveyDos";
+import InsideLoader from "../../InsideLoader";
 
 export default function SurveyDos() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleData = () => {
     axios
       .get(`/api/v2/survey_dos`)
       .then((res) => {
-        console.log(res,"DOS");
+        console.log(res, "DOS");
         setData(res.data.all_survey_do);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -39,6 +43,7 @@ export default function SurveyDos() {
         axios
           .delete(`/api/v2/survey_dos/${id}`)
           .then((res) => {
+            console.log(res);
             Swal.fire("Deleted!", "The question has been deleted.", "success");
             handleData();
           })
@@ -53,6 +58,10 @@ export default function SurveyDos() {
       }
     });
   };
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">
@@ -93,7 +102,7 @@ export default function SurveyDos() {
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
                       colSpan={8}
                     >
-                      No Dos  Found!
+                      No Dos Found!
                     </th>
                   </tr>
                 ) : (

@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Option, Select } from "@mui/joy";
 import ViewFranchiseDetails from "../../../components/Admin/ViewFranchiseDetails";
+import InsideLoader from "../../InsideLoader";
 
 function ListFranchise() {
   const [getFranchise, setGetFranchise] = useState([]);
@@ -14,6 +15,7 @@ function ListFranchise() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
   const [getFranchiseUsers, setGetFranchiseUsers] = useState([]);
 
   const handleAddFranchise = async (d) => {
@@ -114,6 +116,7 @@ function ListFranchise() {
             if (getDoctorId === "all") {
               console.log(res.data?.users);
               setGetFranchise(res.data?.users);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor: ",
@@ -126,6 +129,7 @@ function ListFranchise() {
                   (user) => user.created_by_id == getDoctorId
                 )
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -136,11 +140,13 @@ function ListFranchise() {
           setGetFranchise(
             res.data?.users.filter((user) => user.created_by_id == main_id)
           );
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
+        setLoading(false);
       });
   };
 
@@ -244,6 +250,10 @@ function ListFranchise() {
     handleGetFranchise();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

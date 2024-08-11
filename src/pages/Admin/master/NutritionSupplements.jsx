@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import EditNutrition from "../../../components/Admin/EditNutrition";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function NutritionSupplements() {
   const [getNutrition, setGetNutrition] = useState([]);
@@ -15,7 +16,7 @@ function NutritionSupplements() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
-
+  const [loading, setLoading] = useState(true);
   const handleAddNutrition = (nutrition_name, doc_id) => {
     const formData = new FormData();
     if (role === "doctor") {
@@ -94,6 +95,7 @@ function NutritionSupplements() {
             if (getDoctorId === "all") {
               console.log(res.data);
               setGetNutrition(res.data);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Exe: ",
@@ -102,6 +104,7 @@ function NutritionSupplements() {
               setGetNutrition(
                 res.data?.filter((exe) => exe.user_id == getDoctorId)
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -110,10 +113,12 @@ function NutritionSupplements() {
             res.data?.filter((exe) => exe.user_id == main_id)
           );
           setGetNutrition(res.data?.filter((exe) => exe.user_id == main_id));
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -195,6 +200,10 @@ function NutritionSupplements() {
     handleGetNutrition();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import ThComponent from "../../../components/ThComponent";
 import TdComponent from "../../../components/TdComponent";
 import axios from "axios";
+import InsideLoader from "../../InsideLoader";
 
 export default function Userdata() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleShow = () => {
     axios
@@ -12,15 +14,21 @@ export default function Userdata() {
       .then((res) => {
         console.log(res, "USER");
         setData(res.data.all_survey_users);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
   useEffect(() => {
     handleShow();
   }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="flex w-full">

@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
 import AddWeightGain from "../../../components/Admin/AddWeightGain";
+import InsideLoader from "../../InsideLoader";
 
 export default function Weightgainreason() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleData = () => {
     axios
@@ -15,8 +17,10 @@ export default function Weightgainreason() {
       .then((res) => {
         console.log(res);
         setData(res.data.all_survey_questions);
+        setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -39,6 +43,7 @@ export default function Weightgainreason() {
         axios
           .delete(`/api/v2/survey_questions/${id}`)
           .then((res) => {
+            console.log(res);
             Swal.fire("Deleted!", "The question has been deleted.", "success");
             handleData();
           })
@@ -53,6 +58,10 @@ export default function Weightgainreason() {
       }
     });
   };
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

@@ -69,11 +69,11 @@ function AdminListFollowUp() {
 
   return (
     <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+      <div className="w-full hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
       <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
-        <div className="w-full p-2 ">
+        <div className="w-full p-2">
           <div className="rounded-lg bg-card h-[95vh] bg-white">
             <div className="flex p-4 h-full flex-col space-y-4">
               <div className="flex gap-5 p-2 w-full">

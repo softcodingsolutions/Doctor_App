@@ -9,6 +9,7 @@ import { useOutletContext } from "react-router-dom";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
 import { MenuItem, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function TreatmentQuestionPart2() {
   const context = useOutletContext();
@@ -17,6 +18,7 @@ function TreatmentQuestionPart2() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
   const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetQuestionsPart2 = () => {
     if (role === "doctor") {
@@ -27,9 +29,11 @@ function TreatmentQuestionPart2() {
         .then((res) => {
           console.log(res.data);
           setGetQuestionsPart2(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     } else if (role === "super_admin") {
@@ -42,9 +46,11 @@ function TreatmentQuestionPart2() {
         .then((res) => {
           console.log(res.data);
           setGetQuestionsPart2(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     }
@@ -165,6 +171,10 @@ function TreatmentQuestionPart2() {
   useEffect(() => {
     handleGetQuestionsPart2();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

@@ -8,6 +8,7 @@ import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../InsideLoader";
 
 function TreatmentDiet() {
   const context = useOutletContext();
@@ -15,6 +16,7 @@ function TreatmentDiet() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetDiet = () => {
     if (role === "doctor") {
@@ -23,9 +25,11 @@ function TreatmentDiet() {
         .then((res) => {
           console.log(res.data);
           setGetDiet(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     } else if (role === "super_admin") {
@@ -34,9 +38,11 @@ function TreatmentDiet() {
         .then((res) => {
           console.log(res.data);
           setGetDiet(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     }
@@ -116,6 +122,10 @@ function TreatmentDiet() {
   useEffect(() => {
     handleGetDiet();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

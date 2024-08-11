@@ -8,6 +8,7 @@ import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../InsideLoader";
 
 function TreatmentExercise() {
   const context = useOutletContext();
@@ -15,6 +16,7 @@ function TreatmentExercise() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetExercise = () => {
     if (role === "doctor") {
@@ -23,9 +25,11 @@ function TreatmentExercise() {
         .then((res) => {
           console.log(res.data);
           setGetExercise(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     } else if (role === "super_admin") {
@@ -36,9 +40,11 @@ function TreatmentExercise() {
         .then((res) => {
           console.log(res.data);
           setGetExercise(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     }
@@ -118,6 +124,10 @@ function TreatmentExercise() {
   useEffect(() => {
     handleGetExercise();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

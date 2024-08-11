@@ -3,7 +3,7 @@ import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { WiTime2 } from "react-icons/wi";
 // import { FaUserDoctor } from "react-icons/fa6";
 import { GrVirtualMachine } from "react-icons/gr";
-import { LuCalendarClock } from "react-icons/lu";
+// import { LuCalendarClock } from "react-icons/lu";
 // import DoctorList from "./DE/DoctorList";
 import ConsultingTime from "./DE/ConsultingTime";
 import MachineDetails from "./DE/MachineDetails";
@@ -13,7 +13,7 @@ export default function DataEntry() {
   const [selectedId, setSelectedId] = useState("2");
   const [timeslot, setTimeslot] = useState(true);
   const [machines, setMachines] = useState(false);
-  const [machinestime, setMachinestime] = useState(false);
+//   const [machinestime, setMachinestime] = useState(false);
 
 
   const handleTimeslot = () => {

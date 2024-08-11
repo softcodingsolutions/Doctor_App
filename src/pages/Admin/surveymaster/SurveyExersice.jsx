@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
 import AddSurveyExercise from "../../../components/Admin/AddSurveyExercise";
-
+import InsideLoader from "../../InsideLoader";
 
 export default function SurveyExersice() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleData = () => {
     axios
@@ -16,9 +17,11 @@ export default function SurveyExersice() {
       .then((res) => {
         console.log(res);
         setData(res.data.all_survey_exercises);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -40,6 +43,7 @@ export default function SurveyExersice() {
         axios
           .delete(`/api/v2/survey_exercises/${id}`)
           .then((res) => {
+            console.log(res);
             Swal.fire("Deleted!", "The question has been deleted.", "success");
             handleData();
           })
@@ -54,6 +58,10 @@ export default function SurveyExersice() {
       }
     });
   };
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">
@@ -81,7 +89,7 @@ export default function SurveyExersice() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="No."
                   />
-                   <ThComponent name="Name" />
+                  <ThComponent name="Name" />
                   <ThComponent name="In English" />
                   <ThComponent name="In Gujarati" />
                   <ThComponent />

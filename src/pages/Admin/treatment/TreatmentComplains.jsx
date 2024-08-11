@@ -8,6 +8,7 @@ import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../InsideLoader";
 
 function TreatmentComplains() {
   const context = useOutletContext();
@@ -15,6 +16,7 @@ function TreatmentComplains() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetComplain = () => {
     if (role === "doctor") {
@@ -23,9 +25,11 @@ function TreatmentComplains() {
         .then((res) => {
           console.log(res.data);
           setGetComplain(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     } else if (role === "super_admin") {
@@ -36,9 +40,11 @@ function TreatmentComplains() {
         .then((res) => {
           console.log(res.data);
           setGetComplain(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     }
@@ -118,6 +124,10 @@ function TreatmentComplains() {
   useEffect(() => {
     handleGetComplain();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

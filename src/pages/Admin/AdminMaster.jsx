@@ -1,4 +1,4 @@
-import { Link, Outlet, useOutletContext } from "react-router-dom";
+import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
@@ -7,12 +7,9 @@ import { masterButtons } from "../../constants/admin/AdminConstants";
 const TRANSLATE_AMOUNT = 250;
 
 function AdminMaster() {
+  const location = useLocation();
+  const pathName = location.pathname?.slice(14);
   const context = useOutletContext();
-  const [selectedId, setSelectedId] = useState(
-    localStorage.getItem("selectedMaster_id")
-      ? localStorage.getItem("selectedMaster_id")
-      : "1"
-  );
   const [translate, setTranslate] = useState(0);
   const [isLeftVisible, setIsLeftVisible] = useState(false);
   const [isRightVisible, setIsRightVisible] = useState(true);
@@ -32,11 +29,10 @@ function AdminMaster() {
     });
 
     observer.observe(containerRef.current);
-    localStorage.setItem("selectedMaster_id", selectedId);
     return () => {
       observer.disconnect();
     };
-  }, [translate, selectedId]);
+  }, [translate]);
 
   return (
     <div className="flex w-full">
@@ -57,11 +53,10 @@ function AdminMaster() {
                 return (
                   <Link
                     to={res.to}
-                    onClick={() => setSelectedId(res.id)}
                     key={res.id}
                     className={clsx(
                       "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
-                      selectedId === res.id
+                      pathName == res.to
                         ? "bg-[#1F2937] text-white"
                         : "bg-white"
                     )}

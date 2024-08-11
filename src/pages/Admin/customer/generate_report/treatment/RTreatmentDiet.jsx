@@ -6,6 +6,7 @@ import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentB
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
 import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentDiet() {
   const { sendWeightReason, mappingPackages, setStoreData, storeData } =
@@ -14,6 +15,7 @@ function RTreatmentDiet() {
   const [getDiet, setGetDiet] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleGetDiet = () => {
     if (sendWeightReason) {
@@ -29,9 +31,11 @@ function RTreatmentDiet() {
       .then((res) => {
         console.log("All the Diet:", res.data);
         setGetDiet(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -101,9 +105,13 @@ function RTreatmentDiet() {
     handleGetDiet();
   }, [sendWeightReason]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[75vh] bg-white ">
+      <div className="rounded-lg bg-card h-[74vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (

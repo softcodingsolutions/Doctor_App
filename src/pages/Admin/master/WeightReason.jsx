@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import EditWeightReason from "../../../components/Admin/EditWeightReason";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function WeightReason() {
   const [getWeight, setGetWeight] = useState([]);
@@ -15,6 +16,7 @@ function WeightReason() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleGetWeight = () => {
     axios
@@ -22,9 +24,11 @@ function WeightReason() {
       .then((res) => {
         console.log(res.data);
         setGetWeight(res.data?.weight_reasons);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -194,6 +198,10 @@ function WeightReason() {
     handleGetWeight();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

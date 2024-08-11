@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../InsideLoader";
 
 function TreatmentMedicines() {
   const context = useOutletContext();
@@ -15,6 +16,7 @@ function TreatmentMedicines() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetMedicines = () => {
     if (role === "doctor") {
@@ -23,9 +25,11 @@ function TreatmentMedicines() {
         .then((res) => {
           console.log(res.data);
           setGetMedicines(res.data?.medicines);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     } else if (role === "super_admin") {
@@ -36,9 +40,11 @@ function TreatmentMedicines() {
         .then((res) => {
           console.log(res.data);
           setGetMedicines(res.data?.medicines);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     }
@@ -119,6 +125,10 @@ function TreatmentMedicines() {
   useEffect(() => {
     handleGetMedicines();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">
