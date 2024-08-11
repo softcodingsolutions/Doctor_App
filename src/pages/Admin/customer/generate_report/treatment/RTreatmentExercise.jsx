@@ -6,6 +6,7 @@ import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentB
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
 import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentExercise() {
   const { sendWeightReason, mappingPackages, setStoreData, storeData } =
@@ -14,6 +15,7 @@ function RTreatmentExercise() {
   const [getExercise, setGetExercise] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleGetExercise = () => {
     if (sendWeightReason) {
@@ -29,9 +31,11 @@ function RTreatmentExercise() {
       .then((res) => {
         console.log("All the Exercise:", res.data);
         setGetExercise(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -81,10 +85,10 @@ function RTreatmentExercise() {
     }));
 
     Swal.fire({
-        icon: "Success",
-        title: "Saved!",
-        text: "Your selected exercises have been saved.",
-      });
+      icon: "Success",
+      title: "Saved!",
+      text: "Your selected exercises have been saved.",
+    });
   };
 
   useEffect(() => {
@@ -103,9 +107,13 @@ function RTreatmentExercise() {
     handleGetExercise();
   }, [sendWeightReason]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[75vh] bg-white ">
+      <div className="rounded-lg bg-card h-[74vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (

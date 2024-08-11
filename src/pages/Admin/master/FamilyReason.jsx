@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import EditFamilyReason from "../../../components/Admin/EditFamilyReason";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function FamilyReason() {
   const [getFamily, setGetFamily] = useState([]);
@@ -15,6 +16,7 @@ function FamilyReason() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleGetFamily = () => {
     axios
@@ -22,6 +24,7 @@ function FamilyReason() {
       .then((res) => {
         console.log(res.data);
         setGetFamily(res.data?.family_reasons);
+        setLoading(false);
         if (role === "super_admin") {
           if (getDoctorId) {
             if (getDoctorId === "all") {
@@ -39,6 +42,7 @@ function FamilyReason() {
                   (fam) => fam.user_id == getDoctorId
                 )
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -49,10 +53,12 @@ function FamilyReason() {
           setGetFamily(
             res.data?.family_reasons?.filter((fam) => fam.user_id == main_id)
           );
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -223,6 +229,10 @@ function FamilyReason() {
     handleGetFamily();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

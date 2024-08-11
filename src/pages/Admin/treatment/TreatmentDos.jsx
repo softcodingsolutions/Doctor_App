@@ -8,6 +8,7 @@ import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../InsideLoader";
 
 function TreatmentDos() {
   const context = useOutletContext();
@@ -15,6 +16,7 @@ function TreatmentDos() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetDos = () => {
     if (role === "doctor") {
@@ -30,9 +32,11 @@ function TreatmentDos() {
           setGetDos(
             res.data?.avoid_and_adds.filter((res) => res.category === "do")
           );
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     } else if (role === "super_admin") {
@@ -50,9 +54,11 @@ function TreatmentDos() {
           setGetDos(
             res.data?.avoid_and_adds.filter((res) => res.category === "do")
           );
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.message);
         });
     }
@@ -132,6 +138,10 @@ function TreatmentDos() {
   useEffect(() => {
     handleGetDos();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

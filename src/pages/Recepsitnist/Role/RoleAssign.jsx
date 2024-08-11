@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import Swal from "sweetalert2";
+import InsideLoader from "../../InsideLoader";
 
 export default function RoleAssign() {
   const [inputFirstName, setInputFirstName] = useState("");
@@ -11,6 +12,7 @@ export default function RoleAssign() {
   const [inputRole, setInputRole] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const handleShow = () => {
     axios
@@ -18,10 +20,12 @@ export default function RoleAssign() {
       .then((res) => {
         console.log(res);
         setDoctors(res.data.users);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         alert(err.message);
+        setLoading(false);
       });
   };
 
@@ -136,9 +140,13 @@ export default function RoleAssign() {
     handleShow();
   }, []);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
-    <div className="w-full p-5">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
+    <div className="w-full p-2">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4">
           <div>
             <div>

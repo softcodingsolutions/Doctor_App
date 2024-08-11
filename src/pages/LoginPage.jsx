@@ -88,6 +88,7 @@ function LoginPage() {
         });
       })
       .catch((err) => {
+        setLoading(false);
         alert(err.message);
       });
   };

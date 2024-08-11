@@ -6,6 +6,7 @@ import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentB
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
 import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentDos() {
   const { sendWeightReason, mappingPackages, setStoreData, storeData } =
@@ -14,6 +15,7 @@ function RTreatmentDos() {
   const [getDos, setGetDos] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleGetDos = () => {
     if (sendWeightReason) {
@@ -25,7 +27,9 @@ function RTreatmentDos() {
     }
 
     axios
-      .get(`/api/v1/avoid_and_adds?user_id=${localStorage.getItem('doctor_id')}`)
+      .get(
+        `/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
         console.log(
           "All the Dos",
@@ -34,9 +38,11 @@ function RTreatmentDos() {
         setGetDos(
           res.data?.avoid_and_adds.filter((res) => res.category === "do")
         );
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -86,10 +92,10 @@ function RTreatmentDos() {
     }));
 
     Swal.fire({
-        icon: "Success",
-        title: "Saved!",
-        text: "Your selected dos have been saved.",
-      });
+      icon: "Success",
+      title: "Saved!",
+      text: "Your selected dos have been saved.",
+    });
   };
 
   useEffect(() => {
@@ -106,9 +112,13 @@ function RTreatmentDos() {
     handleGetDos();
   }, [sendWeightReason]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[75vh] bg-white ">
+      <div className="rounded-lg bg-card h-[74vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (

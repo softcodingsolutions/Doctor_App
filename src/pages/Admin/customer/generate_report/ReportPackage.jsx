@@ -4,9 +4,11 @@ import ThComponent from "../../../../components/ThComponent";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
+import InsideLoader from "../../../InsideLoader";
 
 function ReportPackage() {
   const [getPackages, setGetPackages] = useState([]);
+  const [loading, setLoading] = useState(true);
   const context = useOutletContext();
   console.log("User", context[1]);
 
@@ -18,9 +20,11 @@ function ReportPackage() {
       .then((res) => {
         console.log("Packages to be given to users", res.data);
         setGetPackages(res.data?.payment_packages);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -77,6 +81,10 @@ function ReportPackage() {
   useEffect(() => {
     handleGetPackages();
   }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

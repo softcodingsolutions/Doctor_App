@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import axios from "axios";
 import Swal from "sweetalert2";
 import AddWeightName from "../../../components/Admin/AddWeightName";
+import InsideLoader from "../../InsideLoader";
 
 export default function WeightGainName() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleData = () => {
     axios
@@ -15,9 +17,11 @@ export default function WeightGainName() {
       .then((res) => {
         console.log(res);
         setData(res.data.all_survey_weigh_reasons);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -27,36 +31,37 @@ export default function WeightGainName() {
 
   const handleDelete = (id) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
           .delete(`/api/v2/survey_weigh_reasons/${id}`)
           .then((res) => {
-            Swal.fire(
-              'Deleted!',
-              'The question has been deleted.',
-              'success'
-            );
-            handleData(); 
+            console.log(res);
+            Swal.fire("Deleted!", "The question has been deleted.", "success");
+            handleData();
           })
           .catch((err) => {
             console.log(err);
             Swal.fire(
-              'Error!',
-              'There was an error deleting the question.',
-              'error'
+              "Error!",
+              "There was an error deleting the question.",
+              "error"
             );
           });
       }
     });
   };
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">
@@ -68,7 +73,7 @@ export default function WeightGainName() {
               name="Add Weight Gain"
               title="Add Weight Gain Reason"
               details="Please provide the details"
-              handleApi={( english) => {
+              handleApi={(english) => {
                 console.log("English:", english);
               }}
               refresh={handleData}

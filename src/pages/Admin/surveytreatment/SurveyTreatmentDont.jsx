@@ -8,13 +8,14 @@ import NextPageButton from "../../../components/Admin/NextPageButton";
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../InsideLoader";
 
 function SurveyTreatmentDont() {
   const context = useOutletContext();
   const [getDonts, setGetDonts] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
-  const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState(true);
 
   const handleGetDonts = () => {
     axios
@@ -22,9 +23,11 @@ function SurveyTreatmentDont() {
       .then((res) => {
         console.log(res);
         setGetDonts(res.data?.all_survey_donts);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -108,6 +111,10 @@ function SurveyTreatmentDont() {
   useEffect(() => {
     handleGetDonts();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">
@@ -223,7 +230,10 @@ function SurveyTreatmentDont() {
           {!showCheckboxes && (
             <div className="flex justify-between">
               <PrevPageButton to="../survey-treatment-dos" />
-              <NextPageButton name="Exercise" to="../survey-treatment-exercise" />
+              <NextPageButton
+                name="Exercise"
+                to="../survey-treatment-exercise"
+              />
             </div>
           )}
           {showCheckboxes && (

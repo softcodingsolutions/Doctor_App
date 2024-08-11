@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import AddNewPackage from "../../../components/Admin/AddNewPackage";
 import EditPackage from "../../../components/Admin/EditPackage";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function Packages() {
   const [getPackages, setGetPackages] = useState([]);
@@ -15,18 +16,18 @@ function Packages() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleGetPackages = () => {
     axios
       .get("/api/v1/payment_packages")
       .then((res) => {
-        console.log(res.data);
-        setGetPackages(res.data?.payment_packages);
         if (role === "super_admin") {
           if (getDoctorId) {
             if (getDoctorId === "all") {
               console.log(res.data);
               setGetPackages(res.data?.payment_packages);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Package: ",
@@ -39,6 +40,7 @@ function Packages() {
                   (pac) => pac.user_id == getDoctorId
                 )
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -49,10 +51,12 @@ function Packages() {
           setGetPackages(
             res.data?.payment_packages?.filter((pac) => pac.user_id == main_id)
           );
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -175,6 +179,10 @@ function Packages() {
     handleGetPackages();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

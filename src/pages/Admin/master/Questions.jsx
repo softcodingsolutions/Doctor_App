@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import EditQuestion from "../../../components/Admin/EditQuestion";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function Questions() {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
@@ -18,6 +19,7 @@ function Questions() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleGetQuestionsPart1 = () => {
     axios
@@ -28,6 +30,7 @@ function Questions() {
             if (getDoctorId === "all") {
               console.log("Part1", res.data);
               setGetQuestionsPart1(res.data);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Part 1: ",
@@ -36,6 +39,7 @@ function Questions() {
               setGetQuestionsPart1(
                 res.data?.filter((que) => que.user_id == getDoctorId)
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -46,10 +50,12 @@ function Questions() {
           setGetQuestionsPart1(
             res.data?.filter((que) => que.user_id == main_id)
           );
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -63,6 +69,7 @@ function Questions() {
             if (getDoctorId === "all") {
               console.log("Part2", res.data);
               setGetQuestionsPart2(res.data);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Part 2: ",
@@ -71,6 +78,7 @@ function Questions() {
               setGetQuestionsPart2(
                 res.data?.filter((que) => que.user_id == getDoctorId)
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -81,10 +89,12 @@ function Questions() {
           setGetQuestionsPart2(
             res.data?.filter((que) => que.user_id == main_id)
           );
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -264,6 +274,10 @@ function Questions() {
     showPart2 ? handleGetQuestionsPart2() : handleGetQuestionsPart1();
   }, [showPart1, showPart2, getDoctorId]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
@@ -284,6 +298,7 @@ function Questions() {
               </button>
               <button
                 onClick={() => {
+                  setLoading(true);
                   setShowPart1(false);
                   setShowPart2(true);
                 }}

@@ -6,6 +6,7 @@ import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatme
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
+import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentNutrition() {
   const { sendWeightReason, mappingPackages, setStoreData, storeData } =
@@ -14,6 +15,7 @@ function RTreatmentNutrition() {
   const [getNutrition, setGetNutrition] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleGetNutrition = () => {
     if (sendWeightReason) {
@@ -29,9 +31,11 @@ function RTreatmentNutrition() {
       .then((res) => {
         console.log("All the Nutritions:", res.data);
         setGetNutrition(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -106,9 +110,13 @@ function RTreatmentNutrition() {
     handleGetNutrition();
   }, [sendWeightReason]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[75vh] bg-white ">
+      <div className="rounded-lg bg-card h-[74vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (

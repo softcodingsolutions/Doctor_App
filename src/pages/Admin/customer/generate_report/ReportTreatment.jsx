@@ -6,6 +6,7 @@ import { Option, Select } from "@mui/joy";
 import axios from "axios";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import Swal from "sweetalert2";
+import InsideLoader from "../../../InsideLoader";
 
 function ReportTreatment() {
   const getCustomers = useOutletContext();
@@ -14,6 +15,7 @@ function ReportTreatment() {
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [mappingPackages, setMappingPackages] = useState([]);
   const user_id = localStorage.getItem("userId");
+  const [loading, setLoading] = useState(false);
 
   const [storeData, setStoreData] = useState({
     medicine: [],
@@ -25,6 +27,7 @@ function ReportTreatment() {
   });
 
   const submitDataToCreateTreatmentPackage = () => {
+    setLoading(true);
     console.log(storeData);
     const formData = new FormData();
     formData.append("treatment_package[weight_reason]", sendWeightReason[0]);
@@ -58,9 +61,10 @@ function ReportTreatment() {
           .post("/api/v1/user_treatments", newData)
           .then((res) => {
             console.log(res);
+            setLoading(false);
             Swal.fire({
               title: "Assigned!",
-              text: "Your treatment package has been assigned.",
+              text: "Your treatment package has been assigned to the user.",
               icon: "success",
             });
             getCustomers[2]();
@@ -118,9 +122,13 @@ function ReportTreatment() {
     handleGetWeightReason();
   }, [selectedId]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
+      <div className="rounded-lg bg-card h-[88vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="w-full sm:flex p-1 items-end">
             <div className="sm:flex-grow flex flex-col justify-between overflow-x-hidden">

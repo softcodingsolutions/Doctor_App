@@ -1,11 +1,6 @@
 import Table from "@mui/joy/Table";
 import { FaHouseChimney } from "react-icons/fa6";
-import {
-  useLocation,
-  useOutlet,
-  useOutletContext,
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -114,21 +109,28 @@ const tableContainerStyle = {
 
 export default function SurveyReport() {
   const navigate = useNavigate();
-  const [count,setCount] = useState('');
-  const handleShow = () =>{
-    axios.get(`/api/v2/survey_users/survey_users_count`).then((res)=>{
-      console.log(res)
-      setCount(res.data.count);
-    }).catch((err)=>{
-      console.log(err)
-    })
-  }
-  useEffect(()=>{
-    handleShow()
-  },[]);
+  const [count, setCount] = useState("");
+
+  const handleShow = () => {
+    axios
+      .get(`/api/v2/survey_users/survey_users_count`)
+      .then((res) => {
+        console.log(res);
+        setCount(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    handleShow();
+  }, []);
+
   const handleNext = () => {
     navigate("/");
   };
+
   return (
     <div className="">
       <header className="bg-[#FEFAF6] ">

@@ -6,6 +6,7 @@ import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentB
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
 import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentDont() {
   const { sendWeightReason, mappingPackages, setStoreData, storeData } =
@@ -14,6 +15,7 @@ function RTreatmentDont() {
   const [getDonts, setGetDonts] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleGetDonts = () => {
     if (sendWeightReason) {
@@ -36,9 +38,11 @@ function RTreatmentDont() {
         setGetDonts(
           res.data?.avoid_and_adds.filter((res) => res.category === "dont")
         );
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -88,10 +92,10 @@ function RTreatmentDont() {
     }));
 
     Swal.fire({
-        icon: "Success",
-        title: "Saved!",
-        text: "Your selected donts have been saved.",
-      });
+      icon: "Success",
+      title: "Saved!",
+      text: "Your selected donts have been saved.",
+    });
   };
 
   useEffect(() => {
@@ -108,9 +112,13 @@ function RTreatmentDont() {
     handleGetDonts();
   }, [sendWeightReason]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[75vh] bg-white ">
+      <div className="rounded-lg bg-card h-[74vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (

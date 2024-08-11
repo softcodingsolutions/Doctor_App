@@ -8,12 +8,14 @@ import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons
 import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
+import InsideLoader from "../../InsideLoader";
 
 function SurveyTreatmentDos() {
   const context = useOutletContext();
   const [getDos, setGetDos] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleGetDos = () => {
     axios
@@ -21,9 +23,11 @@ function SurveyTreatmentDos() {
       .then((res) => {
         console.log(res, "Dos");
         setGetDos(res?.data?.all_survey_do);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -70,7 +74,10 @@ function SurveyTreatmentDos() {
     );
 
     try {
-      const response = await axios.post("/api/v2/survey_weight_reason_packages", formData);
+      const response = await axios.post(
+        "/api/v2/survey_weight_reason_packages",
+        formData
+      );
       if (response.data) {
         Swal.fire({
           position: "top-end",
@@ -104,6 +111,10 @@ function SurveyTreatmentDos() {
   useEffect(() => {
     handleGetDos();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

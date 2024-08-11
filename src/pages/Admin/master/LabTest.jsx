@@ -6,10 +6,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
 import EditLabTest from "../../../components/Admin/EditLabTest";
+import InsideLoader from "../../InsideLoader";
 
 function LabTest() {
   const [getTests, setGetTests] = useState([]);
   const [editTests, setEditTests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleGetTests = () => {
     axios
@@ -17,9 +19,11 @@ function LabTest() {
       .then((res) => {
         console.log(res.data);
         setGetTests(res.data?.lab_managements);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -115,6 +119,10 @@ function LabTest() {
   useEffect(() => {
     handleGetTests();
   }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

@@ -7,6 +7,7 @@ import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatme
 import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentButtons";
 import Swal from "sweetalert2";
 import { Box, Chip, Option, Select } from "@mui/joy";
+import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentMedicine() {
   const { sendWeightReason, mappingPackages, setStoreData, storeData } =
@@ -15,6 +16,7 @@ function RTreatmentMedicine() {
   const [getMedicines, setGetMedicines] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [dropdownValues, setDropdownValues] = useState({});
 
@@ -28,13 +30,15 @@ function RTreatmentMedicine() {
     }
 
     axios
-      .get(`/api/v1/medicines?user_id=${localStorage.getItem('doctor_id')}}`)
+      .get(`/api/v1/medicines?user_id=${localStorage.getItem("doctor_id")}}`)
       .then((res) => {
         console.log("All the medicines:", res.data?.medicines);
         setGetMedicines(res.data?.medicines);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -151,10 +155,14 @@ function RTreatmentMedicine() {
     handleGetMedicines();
   }, [sendWeightReason]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[75vh] bg-white ">
-        <div className="flex px-4 py-3 h-full flex-col space-y-4">
+      <div className="rounded-lg bg-card h-[74vh] bg-white ">
+        <div className="flex px-4 py-2 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (
               <SelectTreatmentButton
@@ -177,7 +185,7 @@ function RTreatmentMedicine() {
             )}
           </div>
 
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[95%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">

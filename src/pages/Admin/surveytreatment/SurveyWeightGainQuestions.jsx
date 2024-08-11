@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
 import { MenuItem, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function SurveyWeightGainQuestions() {
   const context = useOutletContext();
@@ -15,6 +16,7 @@ function SurveyWeightGainQuestions() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleGetQuestions = () => {
     axios
@@ -22,9 +24,11 @@ function SurveyWeightGainQuestions() {
       .then((res) => {
         console.log("Questions: ", res?.data?.all_survey_questions);
         setGetQuestions(res?.data?.all_survey_questions);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -51,7 +55,7 @@ function SurveyWeightGainQuestions() {
 
   const handleSendQuestionToBeAnswered = async (e) => {
     const selectedValue = e.target.value;
-    console.log("Selected value:", selectedValue);  
+    console.log("Selected value:", selectedValue);
 
     const formData = new FormData();
     formData.append(
@@ -154,6 +158,10 @@ function SurveyWeightGainQuestions() {
   useEffect(() => {
     handleGetQuestions();
   }, [context[0]]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

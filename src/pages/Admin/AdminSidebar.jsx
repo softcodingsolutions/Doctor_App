@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { MdOutlineGppGood } from "react-icons/md";
 import { Option, Select } from "@mui/joy";
 import { MdManageAccounts } from "react-icons/md";
-import { masterButtons } from "../../constants/admin/AdminConstants";
 import { AiFillDatabase } from "react-icons/ai";
 import img from "../../assets/images/icons_slime.png";
 
@@ -19,10 +18,6 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     localStorage.getItem("sidebarSelected_id") || "1"
   );
   const role = localStorage.getItem("role");
-
-  const save = masterButtons.find(
-    (res) => res.id == localStorage.getItem("selectedMaster_id")
-  )?.to;
 
   const handleSelectChange = (event) => {
     if (event) {
@@ -72,7 +67,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "3",
       title: "Master",
-      to: `master/${save ? save : "list-franchise"}`,
+      to: `master/list-franchise`,
       icons: <FaLightbulb size={18} />,
     },
     {
@@ -192,7 +187,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             style={{ backgroundColor: "transparent", color: "white" }}
             className={clsx("xl:mt-4 mt-6 mx-1")}
             value={selected}
-            placeholder="Survey"
+            placeholder="Survey Flow"
             onChange={handleSelectChange}
           >
             {surveyItems.map((res) => (

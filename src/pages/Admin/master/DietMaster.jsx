@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import EditDiet from "../../../components/Admin/EditDiet";
 import { Option, Select } from "@mui/joy";
+import InsideLoader from "../../InsideLoader";
 
 function DietMaster() {
   const [getDiet, setGetDiet] = useState([]);
@@ -15,6 +16,7 @@ function DietMaster() {
   const main_id = localStorage.getItem("main_id");
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const handleAddDiet = (
     diet_code,
@@ -91,6 +93,7 @@ function DietMaster() {
             if (getDoctorId === "all") {
               console.log(res.data);
               setGetDiet(res.data);
+              setLoading(false);
             } else {
               console.log(
                 "Particular Doctor Diet: ",
@@ -99,6 +102,7 @@ function DietMaster() {
               setGetDiet(
                 res.data?.filter((diet) => diet.user_id == getDoctorId)
               );
+              setLoading(false);
             }
           }
         } else if (role === "doctor") {
@@ -107,10 +111,12 @@ function DietMaster() {
             res.data?.filter((diet) => diet.user_id == main_id)
           );
           setGetDiet(res.data?.filter((diet) => diet.user_id == main_id));
+          setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -226,6 +232,10 @@ function DietMaster() {
     handleGetDiet();
     handleGetDoctors();
   }, [getDoctorId]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

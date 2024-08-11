@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import AddNewProgresReport from "../../../../components/Admin/AddNewProgresReport";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { FaRegThumbsDown } from "react-icons/fa6";
+import InsideLoader from "../../../InsideLoader";
 
 function ReportProgress() {
   const [getProgess, setGetProgress] = useState([]);
@@ -15,6 +16,7 @@ function ReportProgress() {
   const [showQues, setShowQues] = useState(false);
   const [showComplain, setShowComplain] = useState(false);
   const [showProgress, setShowProgress] = useState(true);
+  const [loading, setLoading] = useState(true);
   const role = localStorage.getItem("role");
   const context = useOutletContext();
 
@@ -35,6 +37,12 @@ function ReportProgress() {
       .then((res) => {
         console.log("User Complains: ", res.data?.complains);
         setGetComplains(res.data?.complains);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        alert(err.message);
       });
   };
 
@@ -44,9 +52,11 @@ function ReportProgress() {
       .then((res) => {
         console.log("Progress Report: ", res.data?.progress_reports);
         setGetProgress(res.data?.progress_reports);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         alert(err.message);
       });
   };
@@ -136,6 +146,10 @@ function ReportProgress() {
     handleGetComplains();
     handleGetQues();
   }, [showProgress, showQues, showComplain]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">
