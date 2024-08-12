@@ -29,7 +29,7 @@ function WeightReason() {
       .catch((err) => {
         console.log(err);
         setLoading(false);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -47,7 +47,7 @@ function WeightReason() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -81,7 +81,7 @@ function WeightReason() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else {
       formData.append("weight_reason[name]", reason_name);
@@ -106,7 +106,7 @@ function WeightReason() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -188,7 +188,7 @@ function WeightReason() {
           })
           .catch((err) => {
             console.log(err);
-            alert(err.message);
+            alert(err.response?.data?.message + "!");
           });
       }
     });

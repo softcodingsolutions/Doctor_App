@@ -39,7 +39,7 @@ function RTreatmentMedicine() {
       .catch((err) => {
         console.log(err);
         setLoading(false);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 

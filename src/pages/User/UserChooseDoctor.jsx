@@ -10,6 +10,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import Loader from "../Loader";
 
 const staticDoctors = [
   {
@@ -29,6 +30,7 @@ const staticDoctors = [
 function UserChooseDoctor() {
   const navigate = useNavigate();
   const [getDoctors, setGetDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleGetDoctors = () => {
     axios
@@ -41,10 +43,12 @@ function UserChooseDoctor() {
         setGetDoctors(
           res.data?.users?.filter((user) => user.role === "doctor")
         );
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        setLoading(false);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -75,6 +79,10 @@ function UserChooseDoctor() {
     }
     handleGetDoctors();
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex items-center justify-center w-full gap-8 h-[100vh] p-4 flex-wrap">

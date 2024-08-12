@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 const steps = [
   "General Details",
@@ -28,6 +29,7 @@ function UserQuestions() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState({
     generalDetails: [],
     diet: [],
@@ -54,6 +56,7 @@ function UserQuestions() {
   const handleCallUserApi = async (selectedQuestions) => {
     console.log("Waah");
     try {
+      setLoading(true);
       const res = await axios.get(`/api/v1/users/app_creds`);
 
       await axios
@@ -89,21 +92,27 @@ function UserQuestions() {
           localStorage.setItem("access_token", res.data?.user?.access_token);
           localStorage.setItem("role", res.data?.user?.role);
           localStorage.setItem("main_id", res.data?.user?.user?.id);
+          setLoading(false);
           if (res.data) {
             Swal.fire({
-              position: "top-end",
+              position: "center",
               icon: "success",
               title: "Sent Successfully!",
               text: `Your details has been sent to the doctor.`,
-              showConfirmButton: false,
-              timer: 2000,
+              showConfirmButton: true,
             });
             localStorage.removeItem("client_email");
             localStorage.removeItem("doctor_id");
             navigate("/user/user-diagnosis/profile");
           }
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.response?.data?.message);
+          setLoading(false);
         });
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
@@ -112,9 +121,13 @@ function UserQuestions() {
     console.log("Store Data: ", storeData);
   }, [storeData]);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="flex w-full p-2 items-center font-poppins">
-      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+    <div className="flex w-full px-3 py-2 items-center font-poppins">
+      <div className=" h-full flex-grow overflow-auto flex flex-wrap content-start">
         <Stepper sx={{ width: "100%", height: "7%" }}>
           {steps.map((step, index) => (
             <Step

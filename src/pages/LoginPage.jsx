@@ -38,58 +38,66 @@ function LoginPage() {
         formData.append("email", d.email);
         formData.append("password", d.password);
         formData.append("client_id", res.data?.client_id);
-        axios.post("/api/v1/users/login", formData).then((res) => {
-          console.log(res);
-          localStorage.setItem("access_token", res.data?.user?.access_token);
-          localStorage.setItem("role", res.data?.user?.role);
-          localStorage.setItem("main_id", res.data?.user?.not_a_number);
-          setLoading(false);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
+        axios
+          .post("/api/v1/users/login", formData)
+          .then((res) => {
+            console.log(res);
+            localStorage.setItem("access_token", res.data?.user?.access_token);
+            localStorage.setItem("role", res.data?.user?.role);
+            localStorage.setItem("main_id", res.data?.user?.not_a_number);
+            setLoading(false);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
 
-          if (
-            res.data?.user?.role === "super_admin" ||
-            res.data?.user?.role === "doctor"
-          ) {
-            navigate("/admin/dashboard");
-            Toast.fire({
-              icon: "success",
-              title: `Welcome ${res.data?.user?.email}!`,
-            });
-          } else if (res.data?.user?.role === "franchise") {
-            navigate("/franchise/dashboard");
-            Toast.fire({
-              icon: "success",
-              title: `Welcome ${res.data?.user?.email}!`,
-            });
-          } else if (res.data?.user?.role === "receptionist") {
-            navigate("/receptionist/appointment/home");
-            Toast.fire({
-              icon: "success",
-              title: `Welcome ${res.data?.user?.email}!`,
-            });
-          } else {
-            navigate("/user/user-diagnosis/profile");
-            Toast.fire({
-              icon: "success",
-              title: `Welcome ${res.data?.user?.email}!`,
-            });
-          }
-          reset();
-        });
+            if (
+              res.data?.user?.role === "super_admin" ||
+              res.data?.user?.role === "doctor"
+            ) {
+              navigate("/admin/dashboard");
+              Toast.fire({
+                icon: "success",
+                title: `Welcome ${res.data?.user?.email}!`,
+              });
+            } else if (res.data?.user?.role === "franchise") {
+              navigate("/franchise/customers/all-users");
+              Toast.fire({
+                icon: "success",
+                title: `Welcome ${res.data?.user?.email}!`,
+              });
+            } else if (res.data?.user?.role === "receptionist") {
+              navigate("/receptionist/appointment/home");
+              Toast.fire({
+                icon: "success",
+                title: `Welcome ${res.data?.user?.email}!`,
+              });
+            } else {
+              navigate("/user/user-diagnosis/profile");
+              Toast.fire({
+                icon: "success",
+                title: `Welcome ${res.data?.user?.email}!`,
+              });
+            }
+            reset();
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+            alert(err.response?.data?.message + "!");
+          });
       })
       .catch((err) => {
         setLoading(false);
-        alert(err.message);
+        console.log(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -98,7 +106,7 @@ function LoginPage() {
     if (role === "super_admin") {
       navigate("/admin/dashboard");
     } else if (role === "franchise") {
-      navigate("/franchise/dashboard");
+      navigate("/franchise/customers/all-users");
     } else if (role === "receptionist") {
       navigate("/receptionist/appointment/home");
     } else if (role === "patient") {

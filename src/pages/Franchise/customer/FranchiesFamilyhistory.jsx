@@ -66,7 +66,7 @@ function FranchiesFamilyhistory({
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -87,8 +87,8 @@ function FranchiesFamilyhistory({
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[88vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-4">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
+        <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="text-xl font-semibold">Family History</div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form

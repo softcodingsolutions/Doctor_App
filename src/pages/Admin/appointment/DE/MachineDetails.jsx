@@ -31,7 +31,7 @@ export default function MachineDetails() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
         setLoading(false);
       });
 
@@ -48,7 +48,7 @@ export default function MachineDetails() {
       .catch((err) => {
         console.log(err);
         setLoading(false);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -103,7 +103,7 @@ export default function MachineDetails() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   }
 
@@ -116,7 +116,7 @@ export default function MachineDetails() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -164,7 +164,7 @@ export default function MachineDetails() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 

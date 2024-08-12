@@ -37,7 +37,7 @@ export default function CreateAppointment() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+       alert(err.response?.data?.message + "!");
       });
   };
 
@@ -49,7 +49,7 @@ export default function CreateAppointment() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+       alert(err.response?.data?.message + "!");
       });
 
     axios
@@ -60,7 +60,7 @@ export default function CreateAppointment() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+       alert(err.response?.data?.message + "!");
       });
   };
 
@@ -100,7 +100,7 @@ export default function CreateAppointment() {
             })
             .catch((err) => {
               console.log(err);
-              alert(err.message);
+             alert(err.response?.data?.message + "!");
             });
         })
         .catch((err) => {

@@ -50,7 +50,7 @@ function ExerciseYoga() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+       alert(err.response?.data?.message + "!");
         setLoading(false);
       });
   };
@@ -69,7 +69,7 @@ function ExerciseYoga() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+       alert(err.response?.data?.message + "!");
       });
   };
 
@@ -105,7 +105,7 @@ function ExerciseYoga() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+         alert(err.response?.data?.message + "!");
         });
     } else {
       formData.append("exercise[name]", exercise_name);
@@ -131,7 +131,7 @@ function ExerciseYoga() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+         alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -216,7 +216,7 @@ function ExerciseYoga() {
           })
           .catch((err) => {
             console.log(err);
-            alert(err.message);
+           alert(err.response?.data?.message + "!");
           });
       }
     });

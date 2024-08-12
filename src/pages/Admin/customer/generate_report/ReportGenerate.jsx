@@ -421,7 +421,12 @@ const ReportGenerate = () => {
     <div className="w-full p-2">
       <div className="rounded-lg  bg-card h-[85vh] bg-white">
         <div className="flex px-4 items-center justify-center py-3 h-full flex-col space-y-4">
-          {pdfData?.treatment_packages?.length > 0 ? (
+          {pdfData?.treatment_packages?.length === 0 ? (
+            <div className="bg-red-100 text-red-800 text-xl p-4 rounded border border-red-400">
+              Your doctor will create a treatment package which you can download
+              later!
+            </div>
+          ) : (
             <PDFDownloadLink
               document={<BillDocument data={pdfData} />}
               fileName="ReportGenerate.pdf"
@@ -436,11 +441,6 @@ const ReportGenerate = () => {
                 )
               }
             </PDFDownloadLink>
-          ) : (
-            <div className="bg-red-100 text-red-800 text-xl p-4 rounded border border-red-400">
-              Your doctor will create a treatment package which you can download
-              later!
-            </div>
           )}
         </div>
       </div>

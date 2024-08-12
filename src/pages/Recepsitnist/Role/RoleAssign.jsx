@@ -24,7 +24,7 @@ export default function RoleAssign() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
         setLoading(false);
       });
   };
@@ -99,12 +99,12 @@ export default function RoleAssign() {
             })
             .catch((err) => {
               console.log(err);
-              alert(err.message);
+              alert(err.response?.data?.message + "!");
             });
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -130,7 +130,7 @@ export default function RoleAssign() {
           })
           .catch((err) => {
             console.log(err);
-            alert(err.message);
+            alert(err.response?.data?.message + "!");
           });
       }
     });

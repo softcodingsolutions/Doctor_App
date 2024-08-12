@@ -76,7 +76,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
             />
           </button>
         </div>
-        <div className="w-full flex-grow gap-1 overflow-auto flex rounded-lg bg-card h-[94vh] bg-white flex-wrap content-start p-2 px-4">
+        <div className="w-full flex-grow gap-1 overflow-auto flex rounded-lg bg-card h-[88vh] bg-white flex-wrap content-start p-2 px-4">
           <div className="text-xl font-semibold">General Details :-</div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">

@@ -1,28 +1,7 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 
 function Appointment() {
   const context = useOutletContext();
-  const [sendWeightReason, setSendWeightReason] = useState(null);
-  const [getPackages, setPackages] = useState([]);
-
-  const handlegetPackages = () => {
-    axios
-      .get("/api/v1/packages")
-      .then((res) => {
-        console.log("Packages", res.data?.packages);
-        +setPackages(res.data?.packages);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
-      });
-  };
-
-  useEffect(() => {
-    handlegetPackages();
-  }, []);
 
   return (
     <div className="flex w-full">
@@ -42,7 +21,7 @@ function Appointment() {
             />
           </button>
         </div>
-        <Outlet context={[sendWeightReason, handlegetPackages, getPackages]} />
+        <Outlet />
       </div>
     </div>
   );

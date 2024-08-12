@@ -26,9 +26,9 @@ export default function BillHistory() {
         )
         .then((res) => {
           console.log(res, "BILL HISTORY");
-          setUserDetails(res.data.user);
-          setPackageDetail(res.data.user.user_packages[0]);
-          setBills(res.data.bills);
+          setUserDetails(res.data?.user);
+          setPackageDetail(res.data?.user?.user_packages?.[0]);
+          setBills(res.data?.bills);
         })
         .catch((err) => {
           console.log(err);
@@ -36,22 +36,6 @@ export default function BillHistory() {
         });
     }
   }, [debouncedSearchTerm]);
-
-  const formatPackageDuration = (fromDate, toDate) => {
-    if (fromDate && toDate) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      const from = new Date(fromDate).toLocaleDateString(undefined, options);
-      const to = new Date(toDate).toLocaleDateString(undefined, options);
-
-      const fromDateObj = new Date(fromDate);
-      const toDateObj = new Date(toDate);
-      const diffTime = Math.abs(toDateObj - fromDateObj);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      return `${from} - ${to} (${diffDays} days)`;
-    }
-    return "";
-  };
 
   return (
     <div className="w-full p-5 bg-gray-100">
@@ -76,25 +60,25 @@ export default function BillHistory() {
                 <div>
                   Patient Name:{" "}
                   <span className="font-medium">
-                    {userDetails.first_name} {userDetails.last_name}
+                    {userDetails.first_name} {userDetails?.last_name}
                   </span>
                 </div>
                 <div>
                   Case Number:{" "}
-                  <span className="font-medium">{userDetails.case_number}</span>
+                  <span className="font-medium">{userDetails?.case_number}</span>
                 </div>
               </div>
               <div className="text-lg font-bold mb-4">
                 <div>
                   Package Name:{" "}
                   <span className="font-medium">
-                    {packageDetail.package_name}
+                    {packageDetail?.package_name ?? "Will be given by doctor"}
                   </span>
                 </div>
                 <div>
                   Package Duration:{" "}
                   <span className="font-medium">
-                    {packageDetail.no_of_days} Days
+                    {packageDetail?.no_of_days} Days
                   </span>
                 </div>
               </div>

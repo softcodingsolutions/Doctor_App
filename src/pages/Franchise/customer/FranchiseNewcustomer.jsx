@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../Loader";
 
 const steps = [
   "General Details",
@@ -30,6 +31,7 @@ function FranchiseNewcustomer() {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState({
     generalDetails: [],
     diet: [],
@@ -59,6 +61,7 @@ function FranchiseNewcustomer() {
     console.log("Waah");
     console.log("Checkout...", checkout);
     try {
+      setLoading(true);
       const res = await axios.get(`/api/v1/users/app_creds`);
 
       await axios
@@ -102,6 +105,7 @@ function FranchiseNewcustomer() {
             .post("/api/v1/user_packages", formData)
             .then((res) => {
               console.log(res);
+              setLoading(false);
               if (res.data) {
                 Swal.fire({
                   position: "top-end",
@@ -116,10 +120,12 @@ function FranchiseNewcustomer() {
               }
             })
             .catch((err) => {
-              alert(err.message);
+              setLoading(false);
+              alert(err.response?.data?.message + "!");
             });
         });
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
@@ -128,14 +134,18 @@ function FranchiseNewcustomer() {
     console.log("Store Data: ", storeData);
   }, [storeData]);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+    <div className="flex w-screen ">
+      <div className="h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
 
-      <div className="gap-1 overflow-auto justify-center flex flex-wrap content-start p-2">
-        <Stepper sx={{ width: "80%", height: "8%" }}>
+      <div className="gap-1 overflow-auto justify-center flex flex-wrap py-2 px-5">
+        <Stepper sx={{ width: "100%", height: "8%" }}>
           {steps.map((step, index) => (
             <Step
               key={step}
