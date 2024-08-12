@@ -9,6 +9,7 @@ import Stack from "@mui/joy/Stack";
 import MedicalTable from "./MedicalTable";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import InsideLoader from "../../InsideLoader";
 
 export default function MedicalInventory() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function MedicalInventory() {
   const [choice, setChoice] = useState("");
   const [content, setContent] = useState("");
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleShow = () => {
     axios
@@ -26,16 +28,19 @@ export default function MedicalInventory() {
       .then((res) => {
         console.log(res, "Medicine");
         setData(res.data.medicines);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        setLoading(false);
+        alert(err.response?.data?.message + "!");
       });
   };
 
   const handleBill = () => {
     navigate(`../generatebill`);
   };
+
   const handleQuantityChange = (e) => {
     setInputQuantity(e.target.value);
   };
@@ -74,13 +79,17 @@ export default function MedicalInventory() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
   useEffect(() => {
     handleShow();
   }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-5">

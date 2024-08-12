@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -24,11 +24,11 @@ export default function Consulting(props) {
       .then((res) => {
         console.log(res);
         alert("Successfully create your Consulting Appointment!");
-        navigate("/receptionist/appointment/home")
+        navigate("/receptionist/appointment/home");
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -41,7 +41,7 @@ export default function Consulting(props) {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 

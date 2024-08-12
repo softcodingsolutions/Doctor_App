@@ -60,7 +60,7 @@ function ListFranchise() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else {
       await axios
@@ -102,7 +102,7 @@ function ListFranchise() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -145,7 +145,7 @@ function ListFranchise() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
         setLoading(false);
       });
   };
@@ -159,7 +159,7 @@ function ListFranchise() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -194,7 +194,7 @@ function ListFranchise() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -222,7 +222,7 @@ function ListFranchise() {
           })
           .catch((err) => {
             console.log(err);
-            alert(err.message);
+            alert(err.response?.data?.message + "!");
           });
       }
     });
@@ -242,7 +242,7 @@ function ListFranchise() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 

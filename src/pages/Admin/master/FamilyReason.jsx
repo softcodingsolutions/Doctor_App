@@ -59,7 +59,7 @@ function FamilyReason() {
       .catch((err) => {
         console.log(err);
         setLoading(false);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -77,7 +77,7 @@ function FamilyReason() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -106,7 +106,7 @@ function FamilyReason() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else {
       formData.append("family_reason[details_in_hindi]", hindi);
@@ -131,7 +131,7 @@ function FamilyReason() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -160,7 +160,7 @@ function FamilyReason() {
           })
           .catch((err) => {
             console.log(err);
-            alert(err.message);
+            alert(err.response?.data?.message + "!");
           });
       }
     });
@@ -195,7 +195,7 @@ function FamilyReason() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else {
       formData.append("family_reason[details_in_hindi]", hindi);
@@ -220,7 +220,7 @@ function FamilyReason() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };

@@ -33,7 +33,7 @@ function TreatmentQuestionPart1() {
         .catch((err) => {
           console.log(err);
           setLoading(false);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else if (role === "super_admin") {
       axios
@@ -50,7 +50,7 @@ function TreatmentQuestionPart1() {
         .catch((err) => {
           console.log(err);
           setLoading(false);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -91,7 +91,7 @@ function TreatmentQuestionPart1() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } catch (err) {
       console.error(err);

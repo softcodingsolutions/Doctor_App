@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import RecepsitnistSidebar from "./RecepsitnistSidebar";
 import axios from "axios";
+import Loader from "../Loader";
 
 function RecepsitnistMain() {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState();
   const [showSidebar, onSetShowSidebar] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const onSidebarHide = () => {
     onSetShowSidebar(true);
@@ -22,10 +24,12 @@ function RecepsitnistMain() {
       .then((res) => {
         console.log("receptionist", res.data?.user);
         setAdmin(res.data?.user);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
+        setLoading(false);
       });
   };
 
@@ -45,6 +49,10 @@ function RecepsitnistMain() {
       navigate("/franchise/dashboard");
     }
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex font-teachers">

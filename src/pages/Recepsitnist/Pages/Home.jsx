@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import InsideLoader from "../../InsideLoader";
 
 export default function Home() {
   const [filteredDoctors, setFilteredDoctors] = useState([]);
@@ -9,6 +10,7 @@ export default function Home() {
   );
   const [consultingTimes, setConsultingTimes] = useState([]);
   const [machineConsultingTimes, setMachineConsultingTimes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
@@ -27,19 +29,21 @@ export default function Home() {
         console.log(res.data.machine_details, "Machine Time");
         setConsultingTimes(res.data?.cosulting_times);
         setMachineConsultingTimes(res.data?.machine_details);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        setLoading(false);
+        alert(err.response?.data?.message + "!");
       });
   };
 
   function formatTime(dateTimeString) {
     const date = new Date(dateTimeString);
     return date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
   }
 
@@ -57,13 +61,17 @@ export default function Home() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   }, []);
 
   useEffect(() => {
     handleAppointment();
   }, [consultingTime, doctorList]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-5">
@@ -120,13 +128,14 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody>
-                      {consultingTimes.length > 0 ? 
-                        (consultingTimes.map((data, index) => {
+                      {consultingTimes.length > 0 ? (
+                        consultingTimes.map((data, index) => {
                           return (
                             <tr key={index} className="map">
                               <td className="py-3 px-4 border-b border-b-gray-50">
                                 <span className="text-black text-base font-medium ml-1">
-                                  {data.doctor.first_name} {data.doctor.last_name}
+                                  {data.doctor.first_name}{" "}
+                                  {data.doctor.last_name}
                                 </span>
                               </td>
                               <td className="py-3 px-4 border-b border-b-gray-50">
@@ -146,15 +155,17 @@ export default function Home() {
                               </td>
                             </tr>
                           );
-                        })) : 
-                        (
-                          <tr>
-                            <td colSpan="4" className="py-3 px-4 text-center justify-center">
-                              No Appointment is created for Consulting Time
-                            </td>
-                          </tr>
-                        )
-                      }
+                        })
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="4"
+                            className="py-3 px-4 text-center justify-center"
+                          >
+                            No Appointment is created for Consulting Time
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -187,13 +198,14 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody>
-                      {machineConsultingTimes.length > 0 ?
-                        (machineConsultingTimes.map((data, index) => {
+                      {machineConsultingTimes.length > 0 ? (
+                        machineConsultingTimes.map((data, index) => {
                           return (
                             <tr key={index} className="map">
                               <td className="py-3 px-4 border-b border-b-gray-50">
                                 <span className="text-black text-base font-medium ml-1">
-                                  {data.doctor.first_name} {data.doctor.last_name}
+                                  {data.doctor.first_name}{" "}
+                                  {data.doctor.last_name}
                                 </span>
                               </td>
                               <td className="py-3 px-4 border-b border-b-gray-50">
@@ -218,16 +230,15 @@ export default function Home() {
                               </td>
                             </tr>
                           );
-                        }))
-                        :
-                        (
-                          <tr>
-                            <td colSpan="5" className="py-3 px-4 text-center">
-                              No Appointment is created for Machine Consulting Time
-                            </td>
-                          </tr>
-                        )
-                      }
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan="5" className="py-3 px-4 text-center">
+                            No Appointment is created for Machine Consulting
+                            Time
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>

@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { reportButtons } from "../../../constants/admin/AdminConstants";
+import InsideLoader from "../../InsideLoader";
 
 function CustomerUserDiagnosis() {
   const [selectedId, setSelectedId] = useState("1");
   const [getCustomer, setGetCustomer] = useState([]);
   const [getAdmin, setGetAdmin] = useState([]);
   const id = localStorage.getItem("userId");
+  const [loading, setLoading] = useState(true);
 
   const handlegetUser = () => {
     axios
@@ -18,6 +20,7 @@ function CustomerUserDiagnosis() {
         setGetCustomer(res.data?.user);
         if (res.data?.user?.creator === "doctor") {
           localStorage.setItem("doctor_id", res.data?.user.created_by_id);
+          setLoading(false);
         } else if (res.data?.user?.creator === "franchise") {
           axios
             .get(`/api/v2/users/search?id=${res.data?.user?.created_by_id}`)
@@ -26,13 +29,18 @@ function CustomerUserDiagnosis() {
                 "User created by franchise's doctor: ",
                 res.data?.user
               );
+              setLoading(false);
               localStorage.setItem("doctor_id", res.data?.user?.created_by_id);
+            })
+            .catch((err) => {
+              console.log(err);
+              setLoading(false);
             });
         }
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
 
     axios
@@ -43,13 +51,17 @@ function CustomerUserDiagnosis() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
   useEffect(() => {
     handlegetUser();
   }, []);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   const reportButtonsMain = reportButtons.filter((button) => {
     if (button.id === "4") {

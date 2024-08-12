@@ -22,7 +22,7 @@ export default function DoctorList() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -82,12 +82,12 @@ export default function DoctorList() {
           })
           .catch((err) => {
             console.log(err);
-            alert(err.message);
+            alert(err.response?.data?.message + "!");
           });
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   }
 
@@ -102,7 +102,7 @@ export default function DoctorList() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 

@@ -71,12 +71,12 @@ function ReportTreatment() {
           })
           .catch((err) => {
             console.log(err);
-            alert(err.message);
+            alert(err.response?.data?.message + "!");
           });
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -88,7 +88,7 @@ function ReportTreatment() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -109,7 +109,7 @@ function ReportTreatment() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 

@@ -14,6 +14,7 @@ import QueCheckout from "../../User/Questions/QueCheckout";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../Loader";
 
 const steps = [
   "General Details",
@@ -29,6 +30,7 @@ function NewCustomer() {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState({
     generalDetails: [],
     diet: [],
@@ -60,6 +62,7 @@ function NewCustomer() {
     console.log("Checkout...", checkout);
 
     try {
+      setLoading(true);
       const res = await axios.get(`/api/v1/users/app_creds`);
 
       if (role === "super_admin") {
@@ -110,6 +113,7 @@ function NewCustomer() {
               .post("/api/v1/user_packages", formData)
               .then((res) => {
                 console.log(res);
+                setLoading(false);
                 if (res.data) {
                   Swal.fire({
                     position: "top-end",
@@ -124,7 +128,8 @@ function NewCustomer() {
                 }
               })
               .catch((err) => {
-                alert(err.message);
+                setLoading(false);
+                alert(err.response?.data?.message + "!");
               });
           });
       } else if (role === "doctor") {
@@ -175,6 +180,7 @@ function NewCustomer() {
               .post("/api/v1/user_packages", formData)
               .then((res) => {
                 console.log(res);
+                setLoading(false);
                 if (res.data) {
                   Swal.fire({
                     position: "top-end",
@@ -189,11 +195,13 @@ function NewCustomer() {
                 }
               })
               .catch((err) => {
-                alert(err.message);
+                setLoading(false);
+                alert(err.response?.data?.message + "!");
               });
           });
       }
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
@@ -201,6 +209,10 @@ function NewCustomer() {
   useEffect(() => {
     console.log("Store Data: ", storeData);
   }, [storeData]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex w-full">

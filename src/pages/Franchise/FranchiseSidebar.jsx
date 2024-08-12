@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IoMdHome } from "react-icons/io";
+// import { IoMdHome } from "react-icons/io";
 import { IoCloseOutline, IoPersonSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
@@ -8,15 +8,15 @@ import { FaPlus } from "react-icons/fa";
 function FranchiseSidebar({ franchise, onSidebarHide, showSidebar }) {
   const navigate = useNavigate();
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
-  const [selected, setSelected] = useState("1");
+  const [selected, setSelected] = useState("2");
 
   const sidebarItems = [
-    {
-      id: "1",
-      title: "Dashboard",
-      to: "dashboard",
-      icons: <IoMdHome size={18} />,
-    },
+    // {
+    //   id: "1",
+    //   title: "Dashboard",
+    //   to: "dashboard",
+    //   icons: <IoMdHome size={18} />,
+    // },
     {
       id: "2",
       title: "Customers",

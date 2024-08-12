@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import FranchiseSidebar from "./FranchiseSidebar";
 import axios from "axios";
 import { Outlet, useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 function FranchiseMain() {
   const navigate = useNavigate();
   const [franchise, setFranchise] = useState();
   const [showSidebar, onSetShowSidebar] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const onSidebarHide = () => {
     onSetShowSidebar(true);
@@ -22,10 +24,12 @@ function FranchiseMain() {
       .then((res) => {
         console.log(res.data?.user);
         setFranchise(res.data?.user);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        setLoading(false);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -37,6 +41,10 @@ function FranchiseMain() {
       navigate("/");
     }
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex font-teachers">

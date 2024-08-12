@@ -3,6 +3,7 @@ import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InsideLoader from "../../InsideLoader";
 
 function FranchiseAllCustomers() {
   const navigate = useNavigate();
@@ -10,19 +11,28 @@ function FranchiseAllCustomers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const mainId = localStorage.getItem("main_id");
+  const [loading, setLoading] = useState(true);
 
   const handleGetAllUsers = () => {
-    axios.get("/api/v1/users").then((res) => {
-      const patients = res.data?.users?.filter(
-        (user) =>
-          user.role === "patient" &&
-          user.creator === "franchise" &&
-          user.created_by_id == mainId
-      );
-      console.log(patients);
-      setGetCustomers(patients);
-      setGetParticularCustomer(patients);
-    });
+    axios
+      .get("/api/v1/users")
+      .then((res) => {
+        const patients = res.data?.users?.filter(
+          (user) =>
+            user.role === "patient" &&
+            user.creator === "franchise" &&
+            user.created_by_id == mainId
+        );
+        console.log(patients);
+        setGetCustomers(patients);
+        setGetParticularCustomer(patients);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.response?.data?.message);
+        setLoading(false);
+      });
   };
 
   const handleDiagnosis = (val) => {
@@ -58,6 +68,10 @@ function FranchiseAllCustomers() {
       setGetParticularCustomer(getCustomers);
     }
   }, [searchTerm, getCustomers]);
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="w-full p-2">

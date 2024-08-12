@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Box from "@mui/joy/Box";
 import { useNavigate } from "react-router-dom";
@@ -7,17 +7,12 @@ export default function Indooractivity(props) {
   const navigate = useNavigate();
   const [consultingTime, setConsultingTime] = useState("");
   const [machine, setMachine] = useState("");
-  const [filteredTimeSlots, setFilteredTimeSlots] = useState([]);
-  const [allocatedMachines, setAllocatedMachines] = useState([]);
   const [bookedSlot, setBookedSlot] = useState([]);
   const [available, setAvailable] = useState([]);
   const [inputSlot, setInputSlot] = useState("select");
   const [inputTime, setInputTime] = useState("select");
   const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    handleAppointmentCount();
-  }, [props.doctor]);
+  const times = generateSlotTimes(inputSlot);
 
   function generateSlotTimes(slot) {
     function generateTimes() {
@@ -42,8 +37,6 @@ export default function Indooractivity(props) {
     return [];
   }
 
-  const times = generateSlotTimes(inputSlot);
-
   function handleSlotChange(e) {
     setInputSlot(e.target.value);
   }
@@ -65,29 +58,13 @@ export default function Indooractivity(props) {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
-      });
-  };
-
-  const handleAppointmentCount = () => {
-    axios
-      .get(`/api/v1/appointments`)
-      .then((res) => {
-        console.log(res, "AppointmentCount");
-        const allocatedMachines = res.data.appointments.map(
-          (data) => data.machine_consulting_time_id
-        );
-        setAllocatedMachines(allocatedMachines);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
   function formatTime(time) {
     try {
-      const [hours, minutes] = time.split(':');
+      const [hours, minutes] = time.split(":");
       const date = new Date();
       date.setHours(parseInt(hours));
       date.setMinutes(parseInt(minutes));
@@ -99,29 +76,17 @@ export default function Indooractivity(props) {
       } else {
         hour = hour === 0 ? 12 : hour;
       }
-      const formattedTime = `${hour}:${minutes.padStart(2, '0')} ${period}`;
+      const formattedTime = `${hour}:${minutes.padStart(2, "0")} ${period}`;
       return formattedTime;
     } catch (error) {
       console.error("Error formatting time:", error);
       return "Invalid time";
     }
   }
-  
 
   const handleMachine = (e) => {
     const selectedMachineId = e.target.value;
     setMachine(selectedMachineId);
-    filterTimeSlots(selectedMachineId);
-  };
-
-  const filterTimeSlots = (machineId) => {
-    const selectedMachine = props.machine.find(
-      (machine) => machine.id === parseInt(machineId)
-    );
-    const consultingTimes = selectedMachine
-      ? selectedMachine.machine_consulting_times
-      : [];
-    setFilteredTimeSlots(consultingTimes);
   };
 
   const handleTimeChange = (e) => {
@@ -132,7 +97,7 @@ export default function Indooractivity(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage(""); 
+    setErrorMessage("");
     const formattedDate = formatDate(consultingTime);
     const formdata = new FormData();
     formdata.append("appointment[user_id]", props.user);
@@ -151,7 +116,7 @@ export default function Indooractivity(props) {
         alert("Successfully create your Machine Consulting Appointment!");
         navigate("/receptionist/appointment/home");
         document.querySelector('input[type="date"]').value = "";
-        handleConsulting(""); 
+        handleConsulting("");
       })
       .catch((err) => {
         console.log(err.response.data.message);

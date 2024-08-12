@@ -69,7 +69,7 @@ function DosDonts() {
       .catch((err) => {
         console.log(err);
         setLoading(false);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -125,7 +125,7 @@ function DosDonts() {
       .catch((err) => {
         console.log(err);
         setLoading(false);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -143,7 +143,7 @@ function DosDonts() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -181,7 +181,7 @@ function DosDonts() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else {
       formData.append("avoid_and_add[category]", do_dont);
@@ -208,7 +208,7 @@ function DosDonts() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -257,7 +257,7 @@ function DosDonts() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else {
       formData.append("avoid_and_add[category]", do_dont);
@@ -284,7 +284,7 @@ function DosDonts() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -313,7 +313,7 @@ function DosDonts() {
           })
           .catch((err) => {
             console.log(err);
-            alert(err.message);
+            alert(err.response?.data?.message + "!");
           });
       }
     });

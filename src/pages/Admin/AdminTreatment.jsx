@@ -21,7 +21,7 @@ function AdminTreatment() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else if (role === "doctor") {
       axios
@@ -35,7 +35,7 @@ function AdminTreatment() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
@@ -49,7 +49,7 @@ function AdminTreatment() {
       })
       .catch((err) => {
         console.log(err);
-        alert(err.message);
+        alert(err.response?.data?.message + "!");
       });
   };
 

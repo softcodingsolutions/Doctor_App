@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import Loader from "../../Loader";
 
 const steps = [
   "General Details",
@@ -30,6 +31,7 @@ function NewUser() {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [storeData, setStoreData] = useState({
     generalDetails: [],
     diet: [],
@@ -59,6 +61,7 @@ function NewUser() {
     console.log("Waah");
     console.log("Checking...", checkout);
     try {
+      setLoading(true);
       const res = await axios.get(`/api/v1/users/app_creds`);
 
       await axios
@@ -102,6 +105,7 @@ function NewUser() {
             .post("/api/v1/user_packages", formData)
             .then((res) => {
               console.log(res);
+              setLoading(false);
               if (res.data) {
                 Swal.fire({
                   position: "top-end",
@@ -116,10 +120,12 @@ function NewUser() {
               }
             })
             .catch((err) => {
-              alert(err.message);
+              setLoading(false);
+              alert(err.response?.data?.message + "!");
             });
         });
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
@@ -127,6 +133,10 @@ function NewUser() {
   useEffect(() => {
     console.log("Store Data: ", storeData);
   }, [storeData]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex w-full">

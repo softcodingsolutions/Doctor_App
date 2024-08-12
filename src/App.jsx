@@ -54,7 +54,7 @@ import SurveyForm2 from "./pages/Survey/SurveyForm2";
 import SurveyForm3 from "./pages/Survey/SurveyForm3";
 import DataEntry from "./pages/Admin/appointment/DataEntry";
 import FranchiseMain from "./pages/Franchise/FranchiseMain";
-import FranchiseDashboard from "./pages/Franchise/FranchiseDashboard";
+// import FranchiseDashboard from "./pages/Franchise/FranchiseDashboard";
 import FranchiseCustomers from "./pages/Franchise/FranchiseCustomers";
 import FranchiseAllCustomers from "./pages/Franchise/customer/FranchiseAllCustomers";
 import FranchiseNewcustomer from "./pages/Franchise/customer/FranchiseNewcustomer";
@@ -98,6 +98,7 @@ import SurveyMain from "./pages/Survey/SurveyMain";
 import WeightLossPage from "./pages/WeightLossTreatmentPage/WeightLossPage";
 import HairAndBeauty from "./pages/HairAndBeautyPage/HairAndBeauty";
 import ContactUs from "./pages/ContactUsPage/ContactUs";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
@@ -277,7 +278,7 @@ function App() {
 
         {/* Franchise */}
         <Route path="franchise" element={<FranchiseMain />}>
-          <Route path="dashboard" element={<FranchiseDashboard />} />
+          {/* <Route path="dashboard" element={<FranchiseDashboard />} /> */}
 
           {/* user created by franchise */}
           <Route path="new-user" element={<FranchiseNewcustomer />}>
@@ -313,7 +314,7 @@ function App() {
         </Route>
 
         {/* Error */}
-        <Route path="*" element={<div>Not Found!</div>} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Router>
   );

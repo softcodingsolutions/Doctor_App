@@ -37,7 +37,7 @@ function TreatmentDos() {
         .catch((err) => {
           console.log(err);
           setLoading(false);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     } else if (role === "super_admin") {
       axios
@@ -59,7 +59,7 @@ function TreatmentDos() {
         .catch((err) => {
           console.log(err);
           setLoading(false);
-          alert(err.message);
+          alert(err.response?.data?.message + "!");
         });
     }
   };
