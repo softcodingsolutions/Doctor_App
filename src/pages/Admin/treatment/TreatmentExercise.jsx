@@ -17,6 +17,7 @@ function TreatmentExercise() {
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const role = localStorage.getItem("role");
   const [loading, setLoading] = useState(true);
+  const main_id = localStorage.getItem("main_id");
 
   const handleGetExercise = () => {
     if (role === "doctor") {
@@ -87,6 +88,7 @@ function TreatmentExercise() {
       "package[weight_reason]",
       context[0] === "null" ? null : context[0]
     );
+    formData.append("package[user_id]", main_id);
     formData.append("package[exercise]", JSON.stringify(selectedExercise));
 
     try {

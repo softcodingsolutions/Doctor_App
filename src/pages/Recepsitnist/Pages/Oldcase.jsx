@@ -22,7 +22,7 @@ export default function Oldcase(props) {
             defaultValue={"select"}
             required
           >
-            <option value="select" disabled>
+            <option value="select" selected>
               Select
             </option>
             <option value="consulting">Consulting</option>

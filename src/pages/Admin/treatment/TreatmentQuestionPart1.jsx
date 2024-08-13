@@ -15,8 +15,9 @@ function TreatmentQuestionPart1() {
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
+  const [defaultDropdownValue, setDefaultDropdownValue] = useState();
   const role = localStorage.getItem("role");
+  const main_id = localStorage.getItem("main_id");
   const [loading, setLoading] = useState(true);
 
   const handleGetQuestionsPart1 = () => {
@@ -79,6 +80,7 @@ function TreatmentQuestionPart1() {
       "package[weight_reason]",
       context[0] === "null" ? null : context[0]
     );
+    formData.append("package[user_id]", main_id);
     formData.append("package[number_of_question_one]", e.target.value);
 
     try {
@@ -86,8 +88,12 @@ function TreatmentQuestionPart1() {
         .post("/api/v1/packages", formData)
         .then((res) => {
           console.log("min question list:", res);
-          e.target.value = "";
           context[1]();
+          Swal.fire({
+            icon: "success",
+            title: `${e.target.value} questions are to be answered!`,
+            showCancelButtons: true,
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -121,6 +127,7 @@ function TreatmentQuestionPart1() {
       "package[weight_reason]",
       context[0] === "null" ? null : context[0]
     );
+    formData.append("package[user_id]", main_id);
     formData.append(
       "package[questions_part_one]",
       JSON.stringify(selectedQuestions)

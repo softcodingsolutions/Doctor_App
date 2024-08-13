@@ -7,39 +7,16 @@ import { useNavigate } from "react-router-dom";
 export default function CreateAppointment() {
   const navigate = useNavigate();
   const [doctorList, setDoctorList] = useState("");
+  const [doctorName, setDoctorName] = useState("");
   const [Case, setCase] = useState("new");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [doctorName, setDoctorNames] = useState({});
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
   const [machineList, setMachineList] = useState([]);
   const [machineConsultingTime, setMachineConsultingTime] = useState([]);
-
-  const handleDoctorList = (e) => {
-    setDoctorList(e.target.value);
-    console.log(e.target.value);
-    axios
-      .get(
-        `/api/v1/machine_details?doctor_id=${e.target.value}`
-      )
-      .then((res) => {
-        console.log(res, "DATA");
-        console.log(res.data.machine_details, "Machine Details");
-        setMachineList(res.data.machine_details);
-        console.log(
-          res.data.machine_details.map((res) => res),
-          "ConsultingTime"
-        );
-        setMachineConsultingTime(res.data.machine_details.map((res) => res));
-      })
-      .catch((err) => {
-        console.log(err);
-       alert(err.response?.data?.message + "!");
-      });
-  };
 
   const handleShow = () => {
     axios
@@ -49,18 +26,7 @@ export default function CreateAppointment() {
       })
       .catch((err) => {
         console.log(err);
-       alert(err.response?.data?.message + "!");
-      });
-
-    axios
-      .get("api/v1/users")
-      .then((res) => {
-        console.log("all the users: ", res);
-        setDoctorNames(res.data.users);
-      })
-      .catch((err) => {
-        console.log(err);
-       alert(err.response?.data?.message + "!");
+        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -86,6 +52,8 @@ export default function CreateAppointment() {
           setMobileNumber(res.data.user.phone_number);
           setEmail(res.data.user.email);
           setUserId(res.data.user.id);
+          setDoctorList(res.data.doctor.id);
+          setDoctorName(res.data.doctor);
           const userId = res.data.user.id;
           axios
             .get(`/api/v1/appointments/user_appointments_count/${userId}`)
@@ -100,7 +68,7 @@ export default function CreateAppointment() {
             })
             .catch((err) => {
               console.log(err);
-             alert(err.response?.data?.message + "!");
+              alert(err.response?.data?.message + "!");
             });
         })
         .catch((err) => {
@@ -115,6 +83,24 @@ export default function CreateAppointment() {
     localStorage.removeItem("doctor_id");
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`/api/v1/machine_details?doctor_id=${doctorList}`)
+      .then((res) => {
+        console.log(res, "DATA");
+        console.log(res.data.machine_details, "Machine Details");
+        setMachineList(res.data.machine_details);
+        console.log(
+          res.data.machine_details.map((res) => res),
+          "ConsultingTime"
+        );
+        setMachineConsultingTime(res.data.machine_details.map((res) => res));
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.response?.data?.message + "!");
+      });
+  }, [doctorList]);
   const handleMove = () => {
     navigate("../new-user/general-details");
   };
@@ -148,27 +134,10 @@ export default function CreateAppointment() {
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <form className="text-lg">
               <div className="flex gap-5 m-5">
-                <label className="text-lg text-end w-1/3 mr-2">
-                  Select Doctor
-                </label>
-
-                <select
-                  onChange={handleDoctorList}
-                  value={doctorList}
-                  defaultValue={"select"}
-                  className="py-1 px-2 rounded-md border border-black w-[40vh]"
-                >
-                  <option value="select" selected>
-                    Select Doctor
-                  </option>
-                  {Object.values(doctorName)
-                    .filter((doctor) => doctor.role === "doctor")
-                    .map((name) => (
-                      <option key={name.id} value={name.id}>
-                        {name.first_name} {name.last_name}
-                      </option>
-                    ))}
-                </select>
+                <label className="text-lg text-end w-1/3 mr-2">Doctor</label>
+                <h2 className="py-1 px-2 rounded-md border border-black w-[40vh]">
+                  {doctorName.first_name} {doctorName.last_name}
+                </h2>
               </div>
               <div className="flex gap-5 m-5">
                 {Case === "old" ? (
