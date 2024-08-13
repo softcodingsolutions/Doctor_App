@@ -40,22 +40,11 @@ function ViewFranchiseDetails(props) {
                 <ThComponent name="Email" />
                 <ThComponent name="Phone" />
                 <ThComponent name="City" />
-                <ThComponent
-                  moreClasses={"rounded-tr-md rounded-br-md"}
-                />
+                <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
               </tr>
             </thead>
             <tbody>
-              {props?.users?.length === 0 ? (
-                <tr>
-                  <th
-                    className="uppercase tracking-wide font-medium pt-[5rem] text-lg"
-                    colSpan={8}
-                  >
-                    No Users Found!
-                  </th>
-                </tr>
-              ) : (
+              {props?.users?.length > 0 ? (
                 props?.users?.map((val) => {
                   return (
                     <tr key={val.id}>
@@ -99,6 +88,15 @@ function ViewFranchiseDetails(props) {
                     </tr>
                   );
                 })
+              ) : (
+                <tr>
+                  <th
+                    className="uppercase tracking-wide font-medium pt-[5rem] text-lg"
+                    colSpan={8}
+                  >
+                    No Users Found!
+                  </th>
+                </tr>
               )}
             </tbody>
           </table>

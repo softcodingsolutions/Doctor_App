@@ -99,6 +99,8 @@ import WeightLossPage from "./pages/WeightLossTreatmentPage/WeightLossPage";
 import HairAndBeauty from "./pages/HairAndBeautyPage/HairAndBeauty";
 import ContactUs from "./pages/ContactUsPage/ContactUs";
 import ErrorPage from "./pages/ErrorPage";
+import RecepsitnistCustomers from "./pages/Recepsitnist/RecepsitnistCustomers";
+import RecepAllUsers from "./pages/Recepsitnist/RecepAllUser";
 
 function App() {
   return (
@@ -251,14 +253,19 @@ function App() {
 
         {/* Receptionist */}
         <Route path="receptionist" element={<RecepsitnistMain />}>
-          <Route path="appointment" element={<Appointment />}>
-            <Route path="home" element={<Home />} />
-            <Route path="generatebill" element={<GenerateBill />} />
+          <Route path="customers" element={<RecepsitnistCustomers />}>
+            <Route path="all-users" element={<RecepAllUsers />} />
 
             {/* user created by receptionist */}
             <Route path="new-user" element={<NewUser />}>
               <Route path="general-details" element={<UserGeneralDetails />} />
             </Route>
+          </Route>
+
+          {/* appointment */}
+          <Route path="appointment" element={<Appointment />}>
+            <Route path="home" element={<Home />} />
+            <Route path="generatebill" element={<GenerateBill />} />
 
             <Route path="create-appointment" element={<CreateAppointment />} />
             <Route path="medical-inventory" element={<MedicalInventory />} />

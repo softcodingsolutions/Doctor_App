@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export default function CreateAppointment() {
-  const navigate = useNavigate();
   const [doctorList, setDoctorList] = useState("");
   const [doctorName, setDoctorName] = useState("");
   const [Case, setCase] = useState("new");
@@ -101,9 +99,6 @@ export default function CreateAppointment() {
         alert(err.response?.data?.message + "!");
       });
   }, [doctorList]);
-  const handleMove = () => {
-    navigate("../new-user/general-details");
-  };
 
   return (
     <div className="w-full p-5">
@@ -120,15 +115,6 @@ export default function CreateAppointment() {
               placeholder="Search User through Case Number/Phone Number/Email"
               className="py-1 px-2 rounded-md border border-black w-full"
             />
-            <button
-              type="button"
-              className="w-[10rem] text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-              name="Save & Continue"
-              onClick={handleMove}
-              style={{ backgroundColor: "black" }}
-            >
-              NEW USER
-            </button>
           </div>
 
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
@@ -136,7 +122,9 @@ export default function CreateAppointment() {
               <div className="flex gap-5 m-5">
                 <label className="text-lg text-end w-1/3 mr-2">Doctor</label>
                 <h2 className="py-1 px-2 rounded-md border border-black w-[40vh]">
-                  {doctorName.first_name} {doctorName.last_name}
+                  {doctorName
+                    ? doctorName.first_name + " " + doctorName.last_name
+                    : "Doctor Name"}
                 </h2>
               </div>
               <div className="flex gap-5 m-5">

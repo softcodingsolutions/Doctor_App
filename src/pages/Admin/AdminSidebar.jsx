@@ -76,7 +76,12 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "treatment/question-part1",
       icons: <MdOutlineGppGood size={18} />,
     },
-  ];
+  ].filter((item) => {
+    if (item.id === "5" && localStorage.getItem("role") === "super_admin") {
+      return false;
+    }
+    return true;
+  });
 
   const surveyItems = [
     {

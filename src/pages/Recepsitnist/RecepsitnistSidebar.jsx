@@ -6,7 +6,7 @@ import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { MdMenuBook } from "react-icons/md";
 import { MdApps } from "react-icons/md";
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline,IoPersonSharp } from "react-icons/io5";
 
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -21,6 +21,12 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       title: "Home",
       to: "appointment/home",
       icons: <MdApps size={19} />,
+    },
+    {
+      id: "5",
+      title: "Customers",
+      to: "/receptionist/customers/all-users",
+      icons: <IoPersonSharp size={18} />,
     },
     {
       id: "2",
