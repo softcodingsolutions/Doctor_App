@@ -12,14 +12,21 @@ export default function ConsultingTime() {
   const [inputVisible, setInputVisible] = useState(false);
   const [data, setData] = useState([]);
   const [doctorName, setDoctorNames] = useState({});
+  const main_id = localStorage.getItem("main_id");
+  const role = localStorage.getItem("role");
 
   const handleShow = () => {
     axios
       .get(`api/v1/users`)
       .then((res) => {
-        console.log(res);
-        setDoctorNames(res.data.users);
-        setLoading(false);
+        console.log(res.data?.users);
+        if (role === "super_admin") {
+          setDoctorNames(res.data?.users);
+          setLoading(false);
+        } else if (role === "doctor") {
+          setDoctorNames(res.data?.users?.filter((res) => res.id == main_id));
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);

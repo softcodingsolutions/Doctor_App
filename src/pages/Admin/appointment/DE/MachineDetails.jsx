@@ -20,6 +20,8 @@ export default function MachineDetails() {
   const [doctorId, setDoctorId] = useState(0);
   const [loading, setLoading] = useState(true);
   const [slot, setSlot] = useState("");
+  const main_id = localStorage.getItem("main_id");
+  const role = localStorage.getItem("role");
 
   const handleShow = () => {
     axios
@@ -42,7 +44,19 @@ export default function MachineDetails() {
           res.data.users.filter((user) => user.role === "doctor"),
           "Doctor"
         );
-        setDoctor(res.data.users.filter((user) => user.role === "doctor"));
+
+        console.log(res.data?.users);
+        if (role === "super_admin") {
+          setDoctor(res.data.users.filter((user) => user.role === "doctor"));
+          setLoading(false);
+        } else if (role === "doctor") {
+          setDoctor(
+            res.data?.users?.filter(
+              (user) => user.role === "doctor" && user.id == main_id
+            )
+          );
+          setLoading(false);
+        }
         setLoading(false);
       })
       .catch((err) => {
