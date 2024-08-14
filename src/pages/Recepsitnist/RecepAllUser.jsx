@@ -116,11 +116,11 @@ function RecepAllUsers() {
                           <td className="py-3 px-4 border-b border-b-gray-50 break-all">
                             <TdComponent
                               things={
-                                val.first_name[0]?.toUpperCase() +
-                                val.first_name?.slice(1) +
+                                val?.first_name?.[0]?.toUpperCase() +
+                                val?.first_name?.slice(1) +
                                 " " +
-                                val.last_name[0]?.toUpperCase() +
-                                val.last_name?.slice(1)
+                               val?.last_name?.[0]?.toUpperCase() +
+                                val?.last_name?.slice(1)
                               }
                             />
                           </td>
@@ -140,7 +140,7 @@ function RecepAllUsers() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
 
-                            <div className="text-black font-medium ml-1 text-wrap text-base">{val.doctor.first_name + " " + val.doctor.last_name}</div>
+                            <div className="text-black font-medium ml-1 text-wrap text-base">{val?.doctor?.first_name + " " + val?.doctor?.last_name}</div>
                           </td>
                         </tr>
                       )

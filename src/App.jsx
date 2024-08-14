@@ -101,6 +101,7 @@ import ContactUs from "./pages/ContactUsPage/ContactUs";
 import ErrorPage from "./pages/ErrorPage";
 import RecepsitnistCustomers from "./pages/Recepsitnist/RecepsitnistCustomers";
 import RecepAllUsers from "./pages/Recepsitnist/RecepAllUser";
+import Indooractivity from "./pages/Recepsitnist/Pages/Indooractivity";
 
 function App() {
   return (
@@ -243,16 +244,17 @@ function App() {
 
           {/* list follow up */}
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
+        </Route>
 
+        {/* Receptionist */}
+        <Route path="receptionist" element={<RecepsitnistMain />}>
           {/* appointment */}
           <Route path="appointment" element={<AdminAppointment />}>
             <Route path="data-entry" element={<DataEntry />} />
             <Route path="data-mapping" element={<FranchiseNewcustomer />} />
           </Route>
-        </Route>
 
-        {/* Receptionist */}
-        <Route path="receptionist" element={<RecepsitnistMain />}>
+          {/* all users */}
           <Route path="customers" element={<RecepsitnistCustomers />}>
             <Route path="all-users" element={<RecepAllUsers />} />
 
@@ -268,9 +270,17 @@ function App() {
             <Route path="generatebill" element={<GenerateBill />} />
 
             <Route path="create-appointment" element={<CreateAppointment />} />
-            <Route path="medical-inventory" element={<MedicalInventory />} />
-            <Route path="bill-history" element={<BillHistory />} />
+            <Route
+              path="Create-machine-appointment"
+              element={<Indooractivity />}
+            />
           </Route>
+
+          {/* medical inventory */}
+          <Route path="medical-inventory" element={<MedicalInventory />} />
+
+          {/* bill history */}
+          <Route path="bill-history" element={<BillHistory />} />
         </Route>
 
         {/* Survey */}

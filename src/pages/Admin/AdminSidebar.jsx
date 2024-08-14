@@ -50,12 +50,6 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "create-role/role-assign",
       icons: <MdManageAccounts size={18} />,
     },
-    {
-      id: "6",
-      title: "Appointment",
-      to: `appointment/data-entry`,
-      icons: <FaLightbulb size={18} />,
-    },
   ].filter((item) => {
     if (item.id === "7" && localStorage.getItem("role") !== "super_admin") {
       return false;
