@@ -146,7 +146,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
                   hook={register("to_date")}
                 />
               </div>
-              <div className="md:flex w-full justify-between">
+              {/* <div className="md:flex w-full justify-between">
                 <UserDetailsInput
                   name="possibility_group"
                   type="text"
@@ -154,7 +154,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
                   placeholder="NaN"
                   hook={register("possibility_group")}
                 />
-              </div>
+              </div> */}
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
                   name="package_value"

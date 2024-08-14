@@ -161,7 +161,7 @@ function QueCheckout({ setStoreData, onBack, handleCallUserApi }) {
                   />
                 </>
               </div>
-              <div className="md:flex w-full justify-between">
+              {/* <div className="md:flex w-full justify-between">
                 <UserDetailsInput
                   name="possibility_group"
                   type="text"
@@ -169,7 +169,7 @@ function QueCheckout({ setStoreData, onBack, handleCallUserApi }) {
                   placeholder="NaN"
                   hook={register("possibility_group")}
                 />
-              </div>
+              </div> */}
               <div className="md:flex w-full justify-between">
                 <UserDetailsInput
                   name="package_value"
