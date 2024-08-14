@@ -20,7 +20,7 @@ function CustomerGeneralDetails({
   const [doctorError, setDoctorError] = useState(false);
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
-
+  const [weightLossDoctor, setWeightLossDoctor] = useState();
   const {
     register,
     handleSubmit,
@@ -131,6 +131,37 @@ function CustomerGeneralDetails({
             <div className="text-xl font-semibold">General Details</div>
             {role === "super_admin" && (
               <div className="flex items-center gap-2">
+                <div className="text-xl font-semibold">Select Doctor:</div>
+                <Select
+                  placeholder="Select"
+                  value={getDoctorId}
+                  onChange={(e, newValue) => {
+                    setGetDoctorId(newValue);
+                    setDoctorError(false);
+                  }}
+                >
+                  {getDoctors?.map((res) => {
+                    return (
+                      <Option
+                        key={res.id}
+                        value={res.id}
+                        onClick={() => setWeightLossDoctor(res.first_name)}
+                      >
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+                {doctorError && (
+                  <span className="text-base text-red-500">
+                    Please select a doctor.
+                  </span>
+                )}
+              </div>
+            )}
+            {/* display hidden */}
+            {role === "super_admin" && (
+              <div className="flex items-center gap-2 invisible">
                 <div className="text-lg font-semibold">Select Doctor:</div>
                 <Select
                   placeholder="Select"
@@ -174,32 +205,14 @@ function CustomerGeneralDetails({
                   </div>
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
-                      errors={errors.email}
-                      name="email"
-                      type="email"
-                      label="Email"
-                      placeholder="name@email.com"
-                      hook={register("email", {
+                      errors={errors.lastname}
+                      name="lastname"
+                      type="text"
+                      label="Last Name"
+                      placeholder="lastname"
+                      hook={register("lastname", {
                         required: true,
                       })}
-                    />
-                  </div>
-                  <div className="flex gap-5 m-2">
-                    <UserDetailsInput
-                      name="address"
-                      type="text"
-                      label="Address"
-                      placeholder="address"
-                      hook={register("address")}
-                    />
-                  </div>
-                  <div className="flex gap-5 m-2">
-                    <UserDetailsInput
-                      name="refferedBy"
-                      type="text"
-                      label="Reffered By"
-                      placeholder="reffered by"
-                      hook={register("refferedBy")}
                     />
                   </div>
                   <div className="flex gap-5 m-2">
@@ -214,45 +227,31 @@ function CustomerGeneralDetails({
                   </div>
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
-                      errors={errors.height}
-                      name="height"
-                      type="number"
-                      label="Height(cm)"
-                      placeholder="height"
-                      hook={register("height")}
+                      name="address"
+                      type="text"
+                      label="Address"
+                      placeholder="address"
+                      hook={register("address")}
                     />
                   </div>
-                  <div className="flex gap-5 m-5">
-                    <label className="text-lg text-end w-1/3 mr-2">
-                      Overweight Since:
-                    </label>
-                    <select
-                      name="overweight"
-                      defaultValue="select"
-                      placeholder="Select one"
-                      {...register("overweight")}
-                      className="py-1 px-2 rounded-md border border-black"
-                    >
-                      <option value="select" disabled>
-                        Select One
-                      </option>
-                      <option value="1-5">1-5 years</option>
-                      <option value="6-10">6-10 years</option>
-                      <option value="11-15">11-15 years</option>
-                      <option value="16-20">16-20 years</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
-                      errors={errors.lastname}
-                      name="lastname"
+                      errors={errors.city}
+                      name="city"
                       type="text"
-                      label="Last Name"
-                      placeholder="lastname"
-                      hook={register("lastname", {
+                      label="City"
+                      placeholder="city"
+                      hook={register("city")}
+                    />
+                  </div>
+                  <div className="flex gap-5 m-2">
+                    <UserDetailsInput
+                      errors={errors.email}
+                      name="email"
+                      type="email"
+                      label="Email"
+                      placeholder="name@email.com"
+                      hook={register("email", {
                         required: true,
                       })}
                     />
@@ -271,14 +270,17 @@ function CustomerGeneralDetails({
                   </div>
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
-                      errors={errors.city}
-                      name="city"
-                      type="text"
-                      label="City"
-                      placeholder="city"
-                      hook={register("city")}
+                      errors={errors.whatsapp}
+                      name="whatsapp"
+                      type="number"
+                      label="Whatsapp Number"
+                      placeholder="whatsapp number"
+                      hook={register("whatsapp")}
                     />
                   </div>
+                </div>
+
+                <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
                       name="language"
@@ -297,7 +299,7 @@ function CustomerGeneralDetails({
                         name="gender"
                         defaultValue="select"
                         {...register("gender")}
-                        className="py-1 px-2 rounded-md border border-black w-[40vh]"
+                        className="py-1 px-2 rounded-md border border-black w-[38.5vh]"
                       >
                         <option value="select" disabled>
                           Select One
@@ -314,6 +316,16 @@ function CustomerGeneralDetails({
                   </div>
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
+                      errors={errors.height}
+                      name="height"
+                      type="number"
+                      label="Height(cm)"
+                      placeholder="height"
+                      hook={register("height")}
+                    />
+                  </div>
+                  <div className="flex gap-5 m-2">
+                    <UserDetailsInput
                       errors={errors.weight}
                       name="weight"
                       type="number"
@@ -324,17 +336,39 @@ function CustomerGeneralDetails({
                   </div>
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput
-                      errors={errors.whatsapp}
-                      name="whatsapp"
-                      type="number"
-                      label="Whatsapp Number"
-                      placeholder="whatsapp number"
-                      hook={register("whatsapp")}
+                      name="refferedBy"
+                      type="text"
+                      label="Reffered By"
+                      placeholder="reffered by"
+                      hook={register("refferedBy")}
                     />
                   </div>
+                  {(weightLossDoctor?.toLowerCase() === "bhavesh" ||
+                    getAdmin?.first_name?.toLowerCase() === "bhavesh") && (
+                    <div className="flex gap-5 m-5">
+                      <label className="text-lg text-end w-1/3 mr-2">
+                        Overweight Since:
+                      </label>
+                      <select
+                        name="overweight"
+                        defaultValue="select"
+                        placeholder="Select one"
+                        {...register("overweight")}
+                        className="py-1 px-2 rounded-md border border-black"
+                      >
+                        <option value="select" disabled>
+                          Select One
+                        </option>
+                        <option value="1-5">1-5 years</option>
+                        <option value="6-10">6-10 years</option>
+                        <option value="11-15">11-15 years</option>
+                        <option value="16-20">16-20 years</option>
+                      </select>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="flex w-full justify-center mt-12">
+              <div className="flex w-full justify-center mt-8">
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

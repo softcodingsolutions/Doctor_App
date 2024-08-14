@@ -119,7 +119,6 @@ function App() {
 
         {/* User */}
         <Route path="user" element={<UserMain />}>
-          {/* <Route path="dashboard" element={<UserDashboard />} /> */}
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
             <Route path="profile" element={<ReportProfile />} />
             <Route path="questions" element={<ReportQuestions />} />
