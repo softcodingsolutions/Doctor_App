@@ -7,11 +7,12 @@ import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Stack from "@mui/joy/Stack";
 import MedicalTable from "./MedicalTable";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
 import InsideLoader from "../../InsideLoader";
 
 export default function MedicalInventory() {
+  const context = useOutletContext();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
@@ -92,85 +93,104 @@ export default function MedicalInventory() {
   }
 
   return (
-    <div className="w-full p-5">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
-        <div className="flex flex-col px-4 py-3 h-full space-y-4">
-          <div className="text-xl font-semibold">Medical Inventory</div>
-          <div className="flex gap-5">
-            <Button variant="outlined" color="neutral" onClick={handleBill}>
-              Generate Bill
-            </Button>
+    <div className="flex w-full">
+      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+        .
+      </div>
+      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+        <div className="w-fit p-2">
+          <button
+            onClick={context[0]}
+            type="button"
+            className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
+          >
+            <img
+              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+              alt=""
+            />
+          </button>
+        </div>
+        <div className="w-full p-5">
+          <div className="rounded-lg bg-card h-[90vh] bg-white">
+            <div className="flex flex-col px-4 py-3 h-full space-y-4">
+              <div className="text-xl font-semibold">Medical Inventory</div>
+              <div className="flex gap-5">
+                <Button variant="outlined" color="neutral" onClick={handleBill}>
+                  Generate Bill
+                </Button>
+              </div>
+              <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+                <MedicalTable data={data} refreshData={handleShow} />
+              </div>
+            </div>
           </div>
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
-            <MedicalTable data={data} refreshData={handleShow} />
-          </div>
+          <Modal open={open} onClose={() => setOpen(false)}>
+            <ModalDialog>
+              <form>
+                <Stack spacing={2}>
+                  <FormControl>
+                    <FormLabel>Category</FormLabel>
+                    <select
+                      className="py-1 px-2 rounded-md border border-black"
+                      onChange={handleChoice}
+                      value={choice}
+                      required
+                    >
+                      <option value="" disabled>
+                        Select
+                      </option>
+                      <option value="consulting">Consulting</option>
+                      <option value="indooractivity">Indoor Activity</option>
+                    </select>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Medicine Name</FormLabel>
+                    <Input
+                      placeholder="Enter Medicine name"
+                      onChange={handleName}
+                      autoFocus
+                      required
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <div className="flex gap-3">
+                      <FormLabel>Quantity</FormLabel>
+                      <input
+                        className="border-2 rounded-md p-2"
+                        type="number"
+                        onChange={handleQuantityChange}
+                        value={inputQuantity}
+                        placeholder="Quantity"
+                        min="0"
+                      />
+                      <FormLabel>Cost</FormLabel>
+                      <input
+                        className="border-2 rounded-md p-2"
+                        type="number"
+                        onChange={handleCostChange}
+                        value={inputCost}
+                        placeholder="Cost per medicine"
+                        min="0"
+                      />
+                    </div>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Content</FormLabel>
+                    <Input
+                      placeholder="Content"
+                      value={content}
+                      onChange={handleContent}
+                      autoFocus
+                      required
+                    />
+                  </FormControl>
+                  <Button onClick={handleSubmit}>Add</Button>
+                </Stack>
+              </form>
+            </ModalDialog>
+          </Modal>
         </div>
       </div>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <ModalDialog>
-          <form>
-            <Stack spacing={2}>
-              <FormControl>
-                <FormLabel>Category</FormLabel>
-                <select
-                  className="py-1 px-2 rounded-md border border-black"
-                  onChange={handleChoice}
-                  value={choice}
-                  required
-                >
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  <option value="consulting">Consulting</option>
-                  <option value="indooractivity">Indoor Activity</option>
-                </select>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Medicine Name</FormLabel>
-                <Input
-                  placeholder="Enter Medicine name"
-                  onChange={handleName}
-                  autoFocus
-                  required
-                />
-              </FormControl>
-              <FormControl>
-                <div className="flex gap-3">
-                  <FormLabel>Quantity</FormLabel>
-                  <input
-                    className="border-2 rounded-md p-2"
-                    type="number"
-                    onChange={handleQuantityChange}
-                    value={inputQuantity}
-                    placeholder="Quantity"
-                    min="0"
-                  />
-                  <FormLabel>Cost</FormLabel>
-                  <input
-                    className="border-2 rounded-md p-2"
-                    type="number"
-                    onChange={handleCostChange}
-                    value={inputCost}
-                    placeholder="Cost per medicine"
-                    min="0"
-                  />
-                </div>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Content</FormLabel>
-                <Input
-                  placeholder="Content"
-                  value={content}
-                  onChange={handleContent}
-                  autoFocus
-                  required
-                />
-              </FormControl>
-              <Button onClick={handleSubmit}>Add</Button>
-            </Stack>
-          </form>
-        </ModalDialog>
-      </Modal>
     </div>
   );
 }

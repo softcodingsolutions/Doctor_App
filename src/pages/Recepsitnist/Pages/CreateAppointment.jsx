@@ -104,7 +104,7 @@ export default function CreateAppointment() {
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
-          <div className="text-xl font-semibold">Create Appointment</div>
+          <div className="text-xl font-semibold">Create Consulting Appointment</div>
 
           <div className="flex gap-5 p-2 w-full">
             <input

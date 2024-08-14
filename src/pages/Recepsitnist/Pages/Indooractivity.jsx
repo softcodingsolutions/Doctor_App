@@ -1,101 +1,135 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import Box from "@mui/joy/Box";
-import { useNavigate } from "react-router-dom";
+import { TiTick } from "react-icons/ti";
+import { GiCancel } from "react-icons/gi";
+import { Dialog } from "@headlessui/react"; // Import the Dialog component from Headless UI
 
-export default function Indooractivity(props) {
-  const navigate = useNavigate();
-  const [consultingTime, setConsultingTime] = useState("");
-  const [machine, setMachine] = useState("");
-  const [bookedSlot, setBookedSlot] = useState([]);
-  const [available, setAvailable] = useState([]);
-  const [inputSlot, setInputSlot] = useState("select");
-  const [inputTime, setInputTime] = useState("select");
-  const [errorMessage, setErrorMessage] = useState("");
-  const times = generateSlotTimes(inputSlot);
+const generateTimeSlots = () => {
+  const slots = [];
+  let currentTime = new Date();
+  currentTime.setHours(8, 0, 0, 0);
 
-  function generateSlotTimes(slot) {
-    function generateTimes() {
-      const times = [];
-      let current = new Date("1970-01-01T00:00:00Z");
-      const end = new Date("1970-01-01T23:59:59Z");
-      while (current <= end) {
-        const timeString = current.toISOString().substr(11, 5);
-        times.push(timeString);
-        current = new Date(current.getTime() + 30 * 60000);
-      }
-      return times;
-    }
-    const times = generateTimes();
-    if (slot === "morning") {
-      return times.filter((time) => time >= "06:00" && time < "12:00");
-    } else if (slot === "afternoon") {
-      return times.filter((time) => time >= "12:00" && time < "18:00");
-    } else if (slot === "evening") {
-      return times.filter((time) => time >= "18:00" && time < "23:59");
-    }
-    return [];
+  while (currentTime.getHours() < 21) {
+    const timeString = currentTime.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    slots.push(timeString);
+    currentTime.setMinutes(currentTime.getMinutes() + 30);
   }
 
-  function handleSlotChange(e) {
-    setInputSlot(e.target.value);
-  }
+  return slots;
+};
 
-  const handleConsulting = (time) => {
-    const value = consultingTime;
+const UserTable = ({ userName, machines, timeSlots, handleButtonClick }) => (
+  <div className="m-2">
+    <div className="text-lg font-medium text-center mt-5">
+      {userName} (Weight Loss)
+    </div>
+    <table className="divide-y divide-gray-200 overflow-auto">
+      <thead className="bg-gray-100">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+            Time
+          </th>
+          {machines
+            .filter((machine) => machine?.user?.first_name === userName)
+            .map((machine) => (
+              <th
+                key={machine.id}
+                className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider"
+              >
+                {machine.name}
+              </th>
+            ))}
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {timeSlots.map((time, index) => (
+          <tr key={index}>
+            <td className="px-6 py-3 text-left text-xs font-medium text-gray-900">
+              {time}
+            </td>
+            {machines
+              .filter((machine) => machine?.user?.first_name === userName)
+              .map((machine) => (
+                <td
+                  key={machine.id}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-900"
+                >
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => handleButtonClick(machine.id, "1", time)}
+                      className="rounded"
+                    >
+                      <TiTick size={20} color="green" />
+                    </button>
+                    {/* Uncomment if needed */}
+                    {/* <button
+                      onClick={() => handleButtonClick(machine.id, "2", time)}
+                      className="rounded"
+                    >
+                      <GiCancel size={20} color="red" />
+                    </button> */}
+                  </div>
+                </td>
+              ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
+export default function Indooractivity() {
+  const [machines, setMachines] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogData, setDialogData] = useState({
+    name: "",
+    number: "",
+    machineName: "",
+    time: "",
+  });
+  const timeSlots = generateTimeSlots();
+
+  useEffect(() => {
     axios
-      .get(
-        `/api/v1/appointments/fetch_machine_details?date=${formatDate(
-          value
-        )}&time=${time}&machine_detail_id=${machine}`
-      )
+      .get(`/api/v1/machine_details`)
       .then((res) => {
-        console.log(res, "CHECKBOX BUTTONS DATA");
-        setAvailable(res.data.availab_slot);
-        setBookedSlot(res.data.booked_slot);
-        console.log("Available Slots: ", res.data.availab_slot);
-        console.log("Booked Slots: ", res.data.booked_slot);
+        setMachines(res.data.machine_details);
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
+        console.error(err);
+        alert(err.response?.data?.message || "An error occurred!");
       });
-  };
+  }, []);
 
-  function formatTime(time) {
-    try {
-      const [hours, minutes] = time.split(":");
-      const date = new Date();
-      date.setHours(parseInt(hours));
-      date.setMinutes(parseInt(minutes));
-      let period = "AM";
-      let hour = date.getHours();
-      if (hour >= 12) {
-        period = "PM";
-        hour = hour > 12 ? hour - 12 : hour;
-      } else {
-        hour = hour === 0 ? 12 : hour;
-      }
-      const formattedTime = `${hour}:${minutes.padStart(2, "0")} ${period}`;
-      return formattedTime;
-    } catch (error) {
-      console.error("Error formatting time:", error);
-      return "Invalid time";
+  const handleButtonClick = (machineId, buttonType, time) => {
+    const machine = machines.find((m) => m.id === machineId);
+    if (machine) {
+      setDialogData({
+        name: "",
+        number: "",
+        machineName: machine.name,
+        time: time,
+      });
+      setIsDialogOpen(true);
     }
-  }
-
-  const handleMachine = (e) => {
-    const selectedMachineId = e.target.value;
-    setMachine(selectedMachineId);
+    console.log(
+      `Button ${buttonType} clicked for machine ID ${machineId} at time ${time}`
+    );
   };
 
-  const handleTimeChange = (e) => {
-    const selectedTime = e.target.value;
-    setInputTime(selectedTime);
-    handleConsulting(selectedTime);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDialogData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     e.preventDefault();
     setErrorMessage("");
     const formattedDate = formatDate(consultingTime);
@@ -103,20 +137,13 @@ export default function Indooractivity(props) {
     formdata.append("appointment[user_id]", props.user);
     formdata.append("appointment[date]", formattedDate);
     formdata.append("appointment[doctor_id]", props.doctor);
-    formdata.append("appointment[time]", inputTime);
+    formdata.append("appointment[time]", time);
     formdata.append("appointment[machine_detail_id]", machine);
     axios
       .post(`/api/v1/appointments`, formdata)
       .then((res) => {
         console.log(res);
-        setMachine("");
-        setConsultingTime("");
-        setInputTime("");
-        setMachine("");
         alert("Successfully create your Machine Consulting Appointment!");
-        navigate("/receptionist/appointment/home");
-        document.querySelector('input[type="date"]').value = "";
-        handleConsulting("");
       })
       .catch((err) => {
         console.log(err.response.data.message);
@@ -124,129 +151,96 @@ export default function Indooractivity(props) {
       });
   };
 
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  const renderBoxes = (count, isChecked) => {
-    const boxes = [];
-    for (let i = 0; i < count; i++) {
-      boxes.push(
-        <Box
-          key={i}
-          component="input"
-          type="checkbox"
-          checked={isChecked}
-          sx={{
-            width: 30,
-            height: 30,
-            borderRadius: "20%",
-            margin: "5px",
-          }}
-          readOnly
-        />
-      );
-    }
-    return boxes;
-  };
+  const closeDialog = () => setIsDialogOpen(false);
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="text-lg">
-        <div>
-          <h2 className="text-lg font-semibold text-center mt-5">
-            Indoor Activity Time Slot
-          </h2>
-        </div>
-        <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">
-            Select Machine:{" "}
-          </label>
-          <select
-            className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            onChange={handleMachine}
-            value={machine}
-          >
-            <option value="">Select</option>
-            {props.machine.map((detail) => (
-              <option key={detail.id} value={detail.id}>
-                {detail.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">
-            Select the Date:{" "}
-          </label>
-          <input
-            type="date"
-            placeholder="select date"
-            className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            onChange={(e) => setConsultingTime(e.target.value)}
+      <h2 className="text-lg font-semibold text-center mt-5">
+        Indoor Activity Time Slot
+      </h2>
+      <div className="flex justify-center">
+        {["Bhavesh", "Rupali", "Nidhi"].map((userName) => (
+          <UserTable
+            key={userName}
+            userName={userName}
+            machines={machines}
+            timeSlots={timeSlots}
+            handleButtonClick={handleButtonClick}
           />
-        </div>
-        <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">
-            Select Machine Timeslot:{" "}
-          </label>
-          <select
-            name="slot"
-            value={inputSlot}
-            onChange={handleSlotChange}
-            className="py-1 px-2 rounded-md border border-black"
-          >
-            <option value="select" disabled>
-              Select Slot
-            </option>
-            <option value="morning">Morning</option>
-            <option value="afternoon">Afternoon</option>
-            <option value="evening">Evening</option>
-          </select>
+        ))}
+      </div>
 
-          <select
-            name="time"
-            value={inputTime}
-            onChange={handleTimeChange}
-            className="py-1 px-2 rounded-md border border-black"
-          >
-            <option value="select" disabled>
-              Select Time
-            </option>
-            {times.map((time, index) => (
-              <option key={index} value={time}>
-                {formatTime(time)}
-              </option>
-            ))}
-          </select>
-        </div>
-        {errorMessage && (
-          <div className="text-red-500 text-center mt-4">{errorMessage}</div>
-        )}
-        {machine && (
-          <div className="flex w-full justify-center mt-10">
-            <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-              {renderBoxes(bookedSlot, true)}
-              {renderBoxes(available, false)}
-            </Box>
+      {/* Dialog Component */}
+      <Dialog open={isDialogOpen} onClose={closeDialog}>
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <div className="bg-white rounded p-6 max-w-sm w-full">
+            <h3 className="text-lg font-semibold">Patient Details</h3>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={dialogData.name}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Number
+              </label>
+              <input
+                type="text"
+                name="number"
+                value={dialogData.number}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Machine Name
+              </label>
+              <input
+                type="text"
+                value={dialogData.machineName}
+                readOnly
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Time
+              </label>
+              <input
+                type="text"
+                value={dialogData.time}
+                readOnly
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                onClick={closeDialog}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Close
+              </button>
+            </div>
           </div>
-        )}
-
-        <div className="flex w-full justify-center mt-10">
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="w-[20rem] text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-            style={{ backgroundColor: "black" }}
-          >
-            Submit
-          </button>
         </div>
-      </form>
+      </Dialog>
     </div>
   );
 }

@@ -9,6 +9,8 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { useState } from "react";
+import InsideLoader from "./InsideLoader";
 
 function ForgetPassword() {
   const navigate = useNavigate();
@@ -17,21 +19,30 @@ function ForgetPassword() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const submittedData = (d) => {
     console.log(d);
+    setLoading(true);
     const formdata = new FormData();
     formdata.append("email", d.email);
     axios
       .post(`/api/v2/reset_password_tokens`, formdata)
       .then((res) => {
+        setLoading(false);
         console.log(res);
         alert("The reset password link has been sent to your email!");
+        navigate("/");
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
+
+  if (loading) {
+    return <InsideLoader />;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen font-teachers">

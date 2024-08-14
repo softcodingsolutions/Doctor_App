@@ -80,6 +80,9 @@ export default function Newcase(props) {
   return (
     <div>
       <form className="text-lg">
+        <div className="flex justify-center gap-5 ">
+          <label className="text-lg font-semibold text-center mr-2 ">New Case </label>
+        </div>
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">Name </label>
           <input

@@ -75,10 +75,10 @@ export default function Consulting(props) {
   return (
     <div>
       <form>
-        <div>
-          <h2 className="text-lg font-semibold text-center mt-5">
-            Consulting Time Slot
-          </h2>
+        <div className="flex justify-center gap-5 ">
+          <label className="text-lg font-semibold text-center mr-2 ">
+            Old Case{" "}
+          </label>
         </div>
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">

@@ -6,7 +6,8 @@ import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { MdMenuBook } from "react-icons/md";
 import { MdApps } from "react-icons/md";
-import { IoCloseOutline,IoPersonSharp } from "react-icons/io5";
+import { FaLightbulb } from "react-icons/fa";
+import { IoCloseOutline, IoPersonSharp } from "react-icons/io5";
 
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -30,20 +31,32 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
     },
     {
       id: "2",
-      title: "Appointment",
+      title: "Consulting Appointment",
       to: "appointment/create-appointment",
       icons: <IoIosPaper size={18} />,
     },
     {
+        id: "7",
+        title: "Indoor Activity Appointment",
+        to: "appointment/create-machine-appointment",
+        icons: <IoIosPaper size={18} />,
+      },
+    {
+      id: "6",
+      title: "Consulting/Machine Details",
+      to: `/receptionist/appointment/data-entry`,
+      icons: <FaLightbulb size={18} />,
+    },
+    {
       id: "3",
       title: "Medical Inventory",
-      to: "appointment/medical-inventory",
+      to: "medical-inventory",
       icons: <FaClinicMedical size={18} />,
     },
     {
       id: "4",
       title: "Bill History",
-      to: "appointment/bill-history",
+      to: "bill-history",
       icons: <MdMenuBook size={18} />,
     },
   ];
