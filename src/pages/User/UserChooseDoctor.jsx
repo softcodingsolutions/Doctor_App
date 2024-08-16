@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loader from "../Loader";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 const staticDoctors = [
   {
@@ -52,9 +53,10 @@ function UserChooseDoctor() {
       });
   };
 
-  const handleGetDoctorId = (val) => {
+  const handleGetDoctorId = (val, first_name) => {
     console.log(val);
     localStorage.setItem("doctor_id", val);
+    localStorage.setItem("doctorFirstName", first_name);
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",
@@ -85,46 +87,56 @@ function UserChooseDoctor() {
   }
 
   return (
-    <div className="flex items-center justify-center w-full gap-8 h-[100vh] p-4 flex-wrap">
-      {getDoctors.map((val, index) => {
-        return (
-          <Card
-            key={val.id}
-            className="w-96 hover:scale-105 transition-transform shadow-lg cursor-pointer"
-          >
-            <CardHeader floated={false} className="h-80">
-              <img src={staticDoctors[index].img} alt="profile-picture" />
-            </CardHeader>
-            <CardBody className="text-center">
-              <Typography
-                variant="h4"
-                color="blue-gray"
-                className="mb-2 font-teachers"
-              >
-                {val.first_name + " " + val.last_name}
-              </Typography>
-              <Typography
-                color="blue-gray"
-                className="font-medium font-teachers"
-                textGradient
-              >
-                {staticDoctors[index].specialist}
-              </Typography>
-            </CardBody>
-            <CardFooter className="flex items-center w-full justify-center pt-0">
-              <Button
-                onClick={() => handleGetDoctorId(val.id)}
-                className="w-full font-teachers"
-                variant="soft"
-                size="sm"
-              >
-                Select
-              </Button>
-            </CardFooter>
-          </Card>
-        );
-      })}
-    </div>
+    <>
+      <button
+        className="absolute top-8 left-10"
+        onClick={() => {
+          navigate("/login");
+        }}
+      >
+        <IoArrowBackCircle size={45}/>
+      </button>
+      <div className="flex items-center justify-center w-full gap-8 h-[100vh] p-4 flex-wrap">
+        {getDoctors.map((val, index) => {
+          return (
+            <Card
+              key={val.id}
+              className="w-96 hover:scale-105 transition-transform shadow-lg cursor-pointer"
+            >
+              <CardHeader floated={false} className="h-80">
+                <img src={staticDoctors[index].img} alt="profile-picture" />
+              </CardHeader>
+              <CardBody className="text-center">
+                <Typography
+                  variant="h4"
+                  color="blue-gray"
+                  className="mb-2 font-teachers"
+                >
+                  {val.first_name + " " + val.last_name}
+                </Typography>
+                <Typography
+                  color="blue-gray"
+                  className="font-medium font-teachers"
+                  textGradient
+                >
+                  {staticDoctors[index].specialist}
+                </Typography>
+              </CardBody>
+              <CardFooter className="flex items-center w-full justify-center pt-0">
+                <Button
+                  onClick={() => handleGetDoctorId(val.id, val.first_name)}
+                  className="w-full font-teachers"
+                  variant="soft"
+                  size="sm"
+                >
+                  Select
+                </Button>
+              </CardFooter>
+            </Card>
+          );
+        })}
+      </div>
+    </>
   );
 }
 

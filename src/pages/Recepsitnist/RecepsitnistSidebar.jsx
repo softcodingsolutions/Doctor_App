@@ -43,7 +43,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       },
     {
       id: "6",
-      title: "Consulting/Machine Details",
+      title: "Consulting / Machine Details",
       to: `/receptionist/appointment/data-entry`,
       icons: <FaLightbulb size={18} />,
     },
@@ -115,8 +115,8 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
             onClick={() => setSelected(i.id)}
           >
             {i.icons}
-            <div className="block sm:hidden xl:block ml-2">{i.title}</div>
-            <div className="block sm:hidden xl:block flex-grow" />
+            <div className="block sm:hidden xl:block ml-2 font-poppins">{i.title}</div>
+            <div className="block sm:hidden xl:block flex-grow " />
           </Link>
         ))}
 

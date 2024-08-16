@@ -1,5 +1,5 @@
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import { FaLightbulb, FaWpforms } from "react-icons/fa";
+import { FaLightbulb } from "react-icons/fa";
 import { IoPersonSharp, IoCloseOutline } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import { Option, Select } from "@mui/joy";
 import { MdManageAccounts } from "react-icons/md";
 import { AiFillDatabase } from "react-icons/ai";
 import img from "../../assets/images/icons_slime.png";
+import { CiViewList } from "react-icons/ci";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     }
   };
 
-  const sidebarItems = [
+  const doctorSidebarItems = [
     {
       id: "1",
       title: "Dashboard",
@@ -39,59 +40,64 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <IoPersonSharp size={18} />,
     },
     {
-      id: "4",
-      title: "List Follow Up",
-      to: "list-follow-up",
-      icons: <FaWpforms size={18} />,
+      id: "3",
+      title: "List Franchise",
+      icons: <CiViewList size={18} />,
+      to: "list-franchise",
     },
+  ];
+
+  const adminSidebarItems = [
     {
-      id: "7",
+      id: "4",
       title: "Create Role",
       to: "create-role/role-assign",
       icons: <MdManageAccounts size={18} />,
     },
-  ].filter((item) => {
-    if (item.id === "7" && localStorage.getItem("role") !== "super_admin") {
-      return false;
-    }
-    return true;
-  });
+    {
+      id: "5",
+      title: "List Franchise",
+      icons: <CiViewList size={18} />,
+      to: "list-franchise",
+    },
+    {
+      id: "6",
+      title: "Master",
+      to: `master/questions`,
+      icons: <FaLightbulb size={18} />,
+    },
+  ];
 
   const masterItems = [
     {
-      id: "3",
+      id: "7",
       title: "Master",
-      to: `master/list-franchise`,
+      to: `master/questions`,
       icons: <FaLightbulb size={18} />,
     },
     {
-      id: "5",
+      id: "8",
       title: "Treatment",
       to: "treatment/question-part1",
       icons: <MdOutlineGppGood size={18} />,
     },
-  ].filter((item) => {
-    if (item.id === "5" && localStorage.getItem("role") === "super_admin") {
-      return false;
-    }
-    return true;
-  });
+  ];
 
   const surveyItems = [
     {
-      id: "8",
+      id: "9",
       title: "Survey Master",
       to: `survey-master/health-problem`,
       icons: <FaLightbulb size={18} />,
     },
     {
-      id: "9",
+      id: "10",
       title: "Survey Treatment",
       to: `suvrey-treatment/survey-weight-gain-questions`,
       icons: <MdOutlineGppGood size={18} />,
     },
     {
-      id: "10",
+      id: "11",
       title: "User Data",
       to: `user-data`,
       icons: <AiFillDatabase size={18} />,
@@ -137,48 +143,68 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       </div>
 
       <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
-        {sidebarItems.map((i) => (
-          <Link
-            to={i.to}
-            key={i.id}
-            className={clsx(
-              "w-full mt-6 flex items-center px-3 py-1.5 sm:px-0 xl:px-3 text-base justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer",
-              selected === i.id ? "sidebar-item-selected" : "sidebar-item"
-            )}
-            onClick={() => setSelected(i.id)}
-          >
-            {i.icons}
-            <div className="block sm:hidden xl:block ml-2">{i.title}</div>
-            <div className="block sm:hidden xl:block flex-grow" />
-          </Link>
-        ))}
+        {role === "doctor" &&
+          doctorSidebarItems.map((i) => (
+            <Link
+              to={i.to}
+              key={i.id}
+              className={clsx(
+                "w-full mt-6 flex items-center px-3 py-1.5 sm:px-0 xl:px-3 text-base justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer",
+                selected === i.id ? "sidebar-item-selected" : "sidebar-item"
+              )}
+              onClick={() => setSelected(i.id)}
+            >
+              {i.icons}
+              <div className="block sm:hidden xl:block ml-2">{i.title}</div>
+              <div className="block sm:hidden xl:block flex-grow" />
+            </Link>
+          ))}
+
+        {role === "super_admin" &&
+          adminSidebarItems.map((i) => (
+            <Link
+              to={i.to}
+              key={i.id}
+              className={clsx(
+                "w-full mt-6 flex items-center px-3 py-1.5 sm:px-0 xl:px-3 text-base justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer",
+                selected === i.id ? "sidebar-item-selected" : "sidebar-item"
+              )}
+              onClick={() => setSelected(i.id)}
+            >
+              {i.icons}
+              <div className="block sm:hidden xl:block ml-2">{i.title}</div>
+              <div className="block sm:hidden xl:block flex-grow" />
+            </Link>
+          ))}
 
         {/* treatment flow */}
-        <Select
-          style={{ backgroundColor: "transparent", color: "white" }}
-          className={clsx("xl:mt-4 mt-6 mx-1")}
-          value={selected}
-          placeholder="Treatment Flow"
-          onChange={handleSelectChange}
-        >
-          {masterItems.map((res) => (
-            <Option key={res.id} value={res.id}>
-              {" "}
-              <Link
-                to={res.to}
-                key={res.id}
-                className={"w-full flex items-center space-x-2"}
-                onClick={() => {
-                  localStorage.removeItem("doctor_id");
-                  setSelected(res.id);
-                }}
-              >
-                <div className="font-poppins">{res.icons}</div>
-                <div className="font-poppins"> {res.title}</div>
-              </Link>
-            </Option>
-          ))}
-        </Select>
+        {role === "doctor" && (
+          <Select
+            style={{ backgroundColor: "transparent", color: "white" }}
+            className={clsx("xl:mt-4 mt-6 mx-1")}
+            value={selected}
+            placeholder="Treatment Flow"
+            onChange={handleSelectChange}
+          >
+            {masterItems.map((res) => (
+              <Option key={res.id} value={res.id}>
+                {" "}
+                <Link
+                  to={res.to}
+                  key={res.id}
+                  className={"w-full flex items-center space-x-2"}
+                  onClick={() => {
+                    localStorage.removeItem("doctor_id");
+                    setSelected(res.id);
+                  }}
+                >
+                  <div className="font-poppins">{res.icons}</div>
+                  <div className="font-poppins"> {res.title}</div>
+                </Link>
+              </Option>
+            ))}
+          </Select>
+        )}
 
         {/* survey flow */}
         {role === "super_admin" && (
@@ -205,7 +231,6 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
             ))}
           </Select>
         )}
-
         <div className="flex-grow" />
       </div>
 
