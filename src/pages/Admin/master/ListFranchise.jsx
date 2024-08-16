@@ -8,8 +8,10 @@ import Swal from "sweetalert2";
 import { Option, Select } from "@mui/joy";
 import ViewFranchiseDetails from "../../../components/Admin/ViewFranchiseDetails";
 import InsideLoader from "../../InsideLoader";
+import { useOutletContext } from "react-router-dom";
 
 function ListFranchise() {
+  const context = useOutletContext();
   const [getFranchise, setGetFranchise] = useState([]);
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
@@ -20,6 +22,7 @@ function ListFranchise() {
 
   const handleAddFranchise = async (d) => {
     console.log(d);
+    setLoading(true);
     if (role === "doctor") {
       await axios
         .get("/api/v1/users/app_creds")
@@ -50,6 +53,7 @@ function ListFranchise() {
             })
             .then((res) => {
               console.log(res);
+              setLoading(false);
               handleGetFranchise();
               Swal.fire({
                 title: "Added!",
@@ -60,6 +64,7 @@ function ListFranchise() {
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
           alert(err.response?.data?.message + "!");
         });
     } else {
@@ -256,164 +261,189 @@ function ListFranchise() {
   }
 
   return (
-    <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
-        <div className="flex px-4 py-3 h-full flex-col space-y-4">
-          <div className="flex items-center">
-            <div className="font-semibold text-xl">Franchise List</div>
-            <div className="flex-grow" />
-            <div className="flex gap-3">
-              <AddListFranchise
-                handleApi={handleAddFranchise}
-                name="Add Franchise"
-                role={role}
-                title="Add New Franchise"
-                first_name="First Name"
-                last_name="Last Name"
-                email="Email"
-                mobile="Mobile"
-                city="City"
-                state="State"
-                doctors={getDoctors}
-                pincode="Pincode"
-                language="Language"
-                password="Password"
-                amount="Amount"
-                commission="Commission"
-                type_of_admin="Admin Type"
-                possibility_group="Possibility Group"
-              />
-              {role === "super_admin" && (
-                <Select
-                  required
-                  defaultValue={"all"}
-                  placeholder="Select"
-                  value={getDoctorId}
-                  onChange={(e, newValue) => setGetDoctorId(newValue)}
-                >
-                  <Option key={"all"} value="all">
-                    All
-                  </Option>
-                  {getDoctors?.map((res) => {
-                    return (
-                      <Option key={res.id} value={res.id}>
-                        {res.first_name + " " + res.last_name}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              )}
-            </div>
-          </div>
-
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
-            <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase ">
-                <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="No."
+    <div className="flex w-full">
+      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+        .
+      </div>
+      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+        <div className="w-fit p-1">
+          <button
+            onClick={context[0]}
+            type="button"
+            className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
+          >
+            <img
+              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+              alt=""
+            />
+          </button>
+        </div>
+        <div className="w-full p-2">
+          <div className="rounded-lg bg-card h-[91vh] bg-white">
+            <div className="flex px-4 py-3 h-full flex-col space-y-4">
+              <div className="flex items-center">
+                <div className="font-semibold text-xl">Franchise List</div>
+                <div className="flex-grow" />
+                <div className="flex gap-3">
+                  <AddListFranchise
+                    handleApi={handleAddFranchise}
+                    name="Add Franchise"
+                    role={role}
+                    title="Add New Franchise"
+                    first_name="First Name"
+                    last_name="Last Name"
+                    email="Email"
+                    mobile="Mobile"
+                    city="City"
+                    state="State"
+                    doctors={getDoctors}
+                    pincode="Pincode"
+                    language="Language"
+                    password="Password"
+                    amount="Amount"
+                    commission="Commission"
+                    type_of_admin="Admin Type"
+                    possibility_group="Possibility Group"
                   />
-                  <ThComponent name="Franchise Name" />
-                  <ThComponent name="Email" />
-                  <ThComponent name="Password" />
-                  <ThComponent name="Mobile No." />
-                  <ThComponent name="City" />
-                  <ThComponent name="Possibility Group" />
-                  <ThComponent name="Amount" />
-                  <ThComponent name="Commission (in %)" />
-                  <ThComponent />
-                  <ThComponent />
-                  <ThComponent />
-                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
-                </tr>
-              </thead>
-              <tbody>
-                {getFranchise.length === 0 ? (
-                  <tr>
-                    <th
-                      className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
-                      colSpan={10}
+                  {role === "super_admin" && (
+                    <Select
+                      required
+                      defaultValue={"all"}
+                      placeholder="Select"
+                      value={getDoctorId}
+                      onChange={(e, newValue) => setGetDoctorId(newValue)}
                     >
-                      No Franchise Found!
-                    </th>
-                  </tr>
-                ) : (
-                  getFranchise.map((val, index) => {
-                    return (
-                      <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">{index + 1}</div>
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={val.first_name + " " + val.last_name}
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.email} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.show_password} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.phone_number} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.personal_detail?.city} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={val.possibility_group ? "Yes" : "No"}
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={val.amount <= 0 ? "0" : val.amount}
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.commission} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => handleAddAmount(val.id)}
-                                className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-[#33a92b] hover:text-white"
-                              >
-                                Add Amount
-                              </button>
-                            }
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <ViewFranchiseDetails
-                            function={() => {
-                              handleGetFranchiseUsers(val.id);
-                            }}
-                            franchiseId={val.id}
-                            users={getFranchiseUsers}
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent
-                            things={
-                              <button
-                                onClick={() => handleFranchiseDelete(val.id)}
-                                className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
-                              >
-                                <MdDelete size={20} />
-                              </button>
-                            }
-                          />
-                        </td>
+                      <Option key={"all"} value="all">
+                        All
+                      </Option>
+                      {getDoctors?.map((res) => {
+                        return (
+                          <Option key={res.id} value={res.id}>
+                            {res.first_name + " " + res.last_name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </div>
+              </div>
+
+              <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+                <table className="w-full min-w-[460px] z-0">
+                  <thead className="uppercase ">
+                    <tr className="bg-[#1F2937] text-white rounded-md">
+                      <ThComponent
+                        moreClasses={"rounded-tl-md rounded-bl-md"}
+                        name="No."
+                      />
+                      <ThComponent name="Franchise Name" />
+                      <ThComponent name="Email" />
+                      <ThComponent name="Password" />
+                      <ThComponent name="Mobile No." />
+                      <ThComponent name="City" />
+                      <ThComponent name="Possibility Group" />
+                      <ThComponent name="Amount" />
+                      <ThComponent name="Commission (in %)" />
+                      <ThComponent />
+                      <ThComponent />
+                      <ThComponent />
+                      <ThComponent
+                        moreClasses={"rounded-tr-md rounded-br-md"}
+                      />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {getFranchise.length === 0 ? (
+                      <tr>
+                        <th
+                          className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
+                          colSpan={10}
+                        >
+                          No Franchise Found!
+                        </th>
                       </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+                    ) : (
+                      getFranchise.map((val, index) => {
+                        return (
+                          <tr key={val.id}>
+                            <td className="py-2 px-4 border-b border-b-gray-50">
+                              <div className="flex items-center">
+                                {index + 1}
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent
+                                things={val.first_name + " " + val.last_name}
+                              />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.email} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.show_password} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.phone_number} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.personal_detail?.city} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent
+                                things={val.possibility_group ? "Yes" : "No"}
+                              />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent
+                                things={val.amount <= 0 ? "0" : val.amount}
+                              />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.commission} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent
+                                things={
+                                  <button
+                                    onClick={() => handleAddAmount(val.id)}
+                                    className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-[#33a92b] hover:text-white"
+                                  >
+                                    Add Amount
+                                  </button>
+                                }
+                              />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <ViewFranchiseDetails
+                                function={() => {
+                                  handleGetFranchiseUsers(val.id);
+                                }}
+                                franchiseId={val.id}
+                                users={getFranchiseUsers}
+                              />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent
+                                things={
+                                  <button
+                                    onClick={() =>
+                                      handleFranchiseDelete(val.id)
+                                    }
+                                    className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
+                                  >
+                                    <MdDelete size={20} />
+                                  </button>
+                                }
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>

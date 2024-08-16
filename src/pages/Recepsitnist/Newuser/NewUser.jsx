@@ -116,7 +116,7 @@ function NewUser() {
                   timer: 1500,
                 });
                 localStorage.removeItem("client_email");
-                navigate("/receptionist/appointment/create-appointment");
+                navigate("/receptionist/customers/all-users");
               }
             })
             .catch((err) => {
@@ -146,7 +146,7 @@ function NewUser() {
             <Step
               key={step}
               orientation="vertical"
-              className="font-teachers"
+              className="font-poppins"
               indicator={
                 <StepIndicator
                   variant={currentStep <= index ? "outlined" : "solid"}

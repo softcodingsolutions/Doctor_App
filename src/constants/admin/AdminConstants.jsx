@@ -21,12 +21,6 @@ import { TbReport } from "react-icons/tb";
 
 export const masterButtons = [
   {
-    id: "1",
-    name: "List Franchise",
-    icons: <CiViewList size={18} />,
-    to: "list-franchise",
-  },
-  {
     id: "2",
     name: "Questions",
     icons: <FaRegQuestionCircle size={18} />,

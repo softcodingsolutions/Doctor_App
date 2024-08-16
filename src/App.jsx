@@ -174,9 +174,11 @@ function App() {
             </Route>
           </Route>
 
+          {/* list-franchise */}
+          <Route path="list-franchise" element={<ListFranchise />} />
+
           {/* master */}
           <Route path="master" element={<AdminMaster />}>
-            <Route path="list-franchise" element={<ListFranchise />} />
             <Route path="questions" element={<Questions />} />
             <Route path="medicine" element={<Medicine />} />
             <Route path="diet" element={<DietMaster />} />
