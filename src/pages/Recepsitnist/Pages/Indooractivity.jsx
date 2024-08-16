@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { TiTick } from "react-icons/ti";
+import { Dialog } from "@headlessui/react";
 import { GiCancel } from "react-icons/gi";
-import { Dialog } from "@headlessui/react"; // Import the Dialog component from Headless UI
-
 const generateTimeSlots = () => {
   const slots = [];
   let currentTime = new Date();
@@ -22,102 +21,138 @@ const generateTimeSlots = () => {
   return slots;
 };
 
-const UserTable = ({ userName, machines, timeSlots, handleButtonClick }) => (
-  <div className="m-2">
-    <div className="text-lg font-medium text-center mt-5">
-      {userName} (Weight Loss)
-    </div>
-    <table className="divide-y divide-gray-200 overflow-auto">
-      <thead className="bg-gray-100">
-        <tr>
-          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
-            Time
-          </th>
-          {machines
-            .filter((machine) => machine?.user?.first_name === userName)
-            .map((machine) => (
-              <th
-                key={machine.id}
-                className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider"
-              >
-                {machine.name}
-              </th>
-            ))}
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        {timeSlots.map((time, index) => (
-          <tr key={index}>
-            <td className="px-6 py-3 text-left text-xs font-medium text-gray-900">
-              {time}
-            </td>
+const UserTable = ({
+  userName,
+  machines,
+  timeSlots,
+  handleButtonClick,
+  appointments,
+}) => {
+  const getCheckedCount = (machineId, time) => {
+    return appointments.filter(
+      (appointment) =>
+        appointment.machine_id === machineId && appointment.time === time
+    ).length;
+  };
+
+  return (
+    <div className="m-2">
+      <div className="text-lg font-medium text-center mt-5">{userName}</div>
+      <table className="divide-y divide-gray-200 overflow-auto">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+              Time
+            </th>
             {machines
               .filter((machine) => machine?.user?.first_name === userName)
               .map((machine) => (
-                <td
+                <th
                   key={machine.id}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-900"
+                  className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider"
                 >
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleButtonClick(machine.id, "1", time)}
-                      className="rounded"
-                    >
-                      <TiTick size={20} color="green" />
-                    </button>
-                    {/* Uncomment if needed */}
-                    {/* <button
-                      onClick={() => handleButtonClick(machine.id, "2", time)}
-                      className="rounded"
-                    >
-                      <GiCancel size={20} color="red" />
-                    </button> */}
-                  </div>
-                </td>
+                  {machine.name}
+                </th>
               ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {timeSlots.map((time, index) => (
+            <tr key={index}>
+              <td className="px-6 py-3 text-left text-xs font-medium text-gray-900">
+                {time}
+              </td>
+              {machines
+                .filter((machine) => machine?.user?.first_name === userName)
+                .map((machine) => {
+                  const checkedCount = getCheckedCount(machine.id, time);
+
+                  return (
+                    <td
+                      key={machine.id}
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-900"
+                    >
+                      <div className="flex space-x-2">
+                        {Array.from({ length: machine.quantity }).map(
+                          (_, index) => (
+                            <div key={index}>
+                              <input
+                                type="checkbox"
+                                checked={checkedCount > 0}
+                                onChange={() =>
+                                  handleButtonClick(
+                                    machine.id,
+                                    machine.doctor_id,
+                                    time
+                                  )
+                                }
+                                className="rounded"
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </td>
+                  );
+                })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 export default function Indooractivity() {
   const [machines, setMachines] = useState([]);
+  const [machineQuantity, setMachinesQuantity] = useState();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogData, setDialogData] = useState({
     name: "",
     number: "",
     machineName: "",
+    doctorId: "",
+    doctorName: "",
     time: "",
+    caseNumber: "",
   });
+  const [consultingTime, setConsultingTime] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const timeSlots = generateTimeSlots();
+  const [appointments, setAppointments] = useState([]);
 
-  useEffect(() => {
+  const handleMachineAllocation = () => {
+    setLoading(true);
     axios
-      .get(`/api/v1/machine_details`)
+      .get(`api/v1/appointments?date=${consultingTime}&doctor_id=${doctorList}`)
       .then((res) => {
-        setMachines(res.data.machine_details);
+        setAppointments(res.data.machine_details || []);
       })
       .catch((err) => {
         console.error(err);
         alert(err.response?.data?.message || "An error occurred!");
       });
-  }, []);
-
-  const handleButtonClick = (machineId, buttonType, time) => {
+  };
+  const handleButtonClick = (machineId, doctorId, time) => {
     const machine = machines.find((m) => m.id === machineId);
+
+    const doctorName = machine?.user?.first_name || "Doctor not assigned";
+    const actualDoctorId = machine?.user?.id || "ID not assigned";
     if (machine) {
       setDialogData({
-        name: "",
-        number: "",
+        ...dialogData,
+        machineId,
         machineName: machine.name,
-        time: time,
+        doctorId: actualDoctorId,
+        doctorName,
+        time,
       });
       setIsDialogOpen(true);
     }
+
     console.log(
-      `Button ${buttonType} clicked for machine ID ${machineId} at time ${time}`
+      `Button clicked for machine ID ${machineId}, doctor ID ${doctorId} at time ${time}`
     );
   };
 
@@ -129,35 +164,89 @@ export default function Indooractivity() {
     }));
   };
 
-  const handleSubmit = () => {
+  const resetDialog = () => {
+    setDialogData({
+      name: "",
+      number: "",
+      machineName: "",
+      doctorId: "",
+      doctorName: "",
+      time: "",
+      caseNumber: "",
+    });
+  };
+
+  const formatDate = (date) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(date).toLocaleDateString(undefined, options);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage("");
+
     const formattedDate = formatDate(consultingTime);
     const formdata = new FormData();
-    formdata.append("appointment[user_id]", props.user);
     formdata.append("appointment[date]", formattedDate);
-    formdata.append("appointment[doctor_id]", props.doctor);
-    formdata.append("appointment[time]", time);
-    formdata.append("appointment[machine_detail_id]", machine);
+    formdata.append("appointment[time]", dialogData.time);
+    formdata.append("appointment[machine_detail_id]", dialogData.machineId);
+    formdata.append("appointment[doctor_id]", dialogData.doctorId);
+
     axios
-      .post(`/api/v1/appointments`, formdata)
+      .post(
+        `/api/v1/appointments?case_number=${dialogData.caseNumber}`,
+        formdata
+      )
       .then((res) => {
         console.log(res);
-        alert("Successfully create your Machine Consulting Appointment!");
+        alert("Successfully created your Machine Consulting Appointment!");
+        setIsDialogOpen(false);
+        resetDialog();
       })
       .catch((err) => {
-        console.log(err.response.data.message);
-        setErrorMessage(err.response.data.message);
+        console.error(err.response?.data?.message || "An error occurred!");
+        if (err.response?.data?.message === "No Machines are available") {
+        }
+        alert(err.response?.data?.message || "An error occurred!");
+        setIsDialogOpen(false);
       });
   };
 
-  const closeDialog = () => setIsDialogOpen(false);
+  const handleConsulting = (e) => {
+    setConsultingTime(e.target.value);
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    resetDialog();
+  };
+
+
+  useEffect(() => {
+    axios
+      .get(`/api/v1/machine_details`)
+      .then((res) => {
+        setMachines(res.data.machine_details);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.response?.data?.message || "An error occurred!");
+      });
+  }, []);
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold text-center mt-5">
-        Indoor Activity Time Slot
-      </h2>
+    <div className="flex w-full flex-col justify-center text-center">
+      <div className="flex justify-center">
+        <h2 className="text-xl font-semibold ">Indoor Activity Time Slot</h2>
+      </div>
+      <div className="flex justify-center mt-5">
+        <input
+          type="date"
+          placeholder="select date"
+          className="py-1 px-2 rounded-md border border-black w-[40vh]"
+          onChange={handleConsulting}
+        />
+      </div>
       <div className="flex justify-center">
         {["Bhavesh", "Rupali", "Nidhi"].map((userName) => (
           <UserTable
@@ -166,11 +255,11 @@ export default function Indooractivity() {
             machines={machines}
             timeSlots={timeSlots}
             handleButtonClick={handleButtonClick}
+            appointments={appointments}
           />
         ))}
       </div>
 
-      {/* Dialog Component */}
       <Dialog open={isDialogOpen} onClose={closeDialog}>
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
@@ -190,7 +279,7 @@ export default function Indooractivity() {
             </div>
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700">
-                Number
+                Mobile Number
               </label>
               <input
                 type="text"
@@ -202,11 +291,34 @@ export default function Indooractivity() {
             </div>
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700">
+                Case Number
+              </label>
+              <input
+                type="text"
+                name="caseNumber"
+                value={dialogData.caseNumber}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700">
                 Machine Name
               </label>
               <input
                 type="text"
                 value={dialogData.machineName}
+                readOnly
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Doctor
+              </label>
+              <input
+                type="text"
+                value={dialogData.doctorName}
                 readOnly
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
