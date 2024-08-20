@@ -36,11 +36,11 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <IoIosPaper size={18} />,
     },
     {
-        id: "7",
-        title: "Indoor Activity Appointment",
-        to: "appointment/create-machine-appointment",
-        icons: <IoIosPaper size={18} />,
-      },
+      id: "7",
+      title: "Indoor Activity Appointment",
+      to: "appointment/create-machine-appointment",
+      icons: <IoIosPaper size={18} />,
+    },
     {
       id: "6",
       title: "Consulting / Machine Details",
@@ -115,7 +115,9 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
             onClick={() => setSelected(i.id)}
           >
             {i.icons}
-            <div className="block sm:hidden xl:block ml-2 font-poppins">{i.title}</div>
+            <div className="block sm:hidden xl:block ml-2 font-teachers">
+              {i.title}
+            </div>
             <div className="block sm:hidden xl:block flex-grow " />
           </Link>
         ))}
@@ -139,7 +141,8 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
             </div>
           </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">
-            {admin?.first_name} {admin?.last_name}
+            {admin?.first_name} {admin?.last_name}{" "}
+            <span className="font-normal text-[0.80rem]">(Receptionist)</span>
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <img

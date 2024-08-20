@@ -43,7 +43,7 @@ export function StickyNavbar() {
         >
           <Link
             to={path}
-            className={`flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base ${
+            className={`flex hover:scale-105 border-black transition-transform font-teachers font-medium border-x-0 border-y-0 p-1 items-center text-base ${
               location.pathname === path
                 ? "border-b-2 border-gray-900"
                 : "hover:border-b-2"
@@ -64,7 +64,7 @@ export function StickyNavbar() {
           color="blue-gray"
           className="p-1 font-normal"
         >
-          <div className="flex hover:scale-105 border-black transition-transform font-poppins font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2 cursor-pointer">
+          <div className="flex hover:scale-105 border-black transition-transform font-teachers font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2 cursor-pointer">
             Survey & Report
           </div>
         </Typography>
@@ -107,7 +107,7 @@ export function StickyNavbar() {
         <img src={icons_slime} />
         <div className="flex items-center gap-4">
           <div className="mr-4 hidden lg:block">{navList}</div>
-          <div className="flex items-center gap-x-1 font-poppins">
+          <div className="flex items-center gap-x-1 font-teachers">
             <Button
               onClick={() => {
                 navigate("/login");

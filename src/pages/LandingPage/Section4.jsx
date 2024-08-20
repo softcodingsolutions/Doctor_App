@@ -10,7 +10,7 @@ function Section4({ scrollYProgress }) {
       className="sticky cursor-default top-0 h-screen bg-green-100 flex flex-col items-center py-7"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-poppins font-medium mt-8">
+        <div className="text-4xl font-teachers font-medium mt-8">
           Why Choose Us?
         </div>
         <div className="border-[2.5px] rounded-md border-green-200 w-20 mt-3" />
@@ -35,11 +35,11 @@ function Section4({ scrollYProgress }) {
             <Typography
               variant="h5"
               color="blue-gray"
-              className="mb-2 font-poppins"
+              className="mb-2 font-teachers"
             >
               Personalized Treatments
             </Typography>
-            <Typography className="font-poppins">
+            <Typography className="font-teachers">
               We analyze your body to identify reason of excess fat in your body
               and provide you with treatment and medicines to treat that reason
               for best results.
@@ -64,11 +64,11 @@ function Section4({ scrollYProgress }) {
             <Typography
               variant="h5"
               color="blue-gray"
-              className="mb-2 font-poppins"
+              className="mb-2 font-teachers"
             >
               Healthy nutrition
             </Typography>
-            <Typography className="font-poppins">
+            <Typography className="font-teachers">
               <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
               Ayu Care provides you with just the right advice on your diet
               specially tailored for you so that you always have very healthy
@@ -94,11 +94,11 @@ function Section4({ scrollYProgress }) {
             <Typography
               variant="h5"
               color="blue-gray"
-              className="mb-2 font-poppins"
+              className="mb-2 font-teachers"
             >
               Easy Workout Routines
             </Typography>
-            <Typography className="font-poppins">
+            <Typography className="font-teachers">
               <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
               Ayu Care offers really easy workouts which you can quickly learn
               and practice. This will help you lose weight and also maintain

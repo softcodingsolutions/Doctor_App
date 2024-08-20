@@ -35,7 +35,7 @@ function AboutUs() {
       </header>
       <main
         ref={container}
-        className="relative h-[500vh] bg-white font-poppins"
+        className="relative h-[500vh] bg-white font-teachers"
       >
         <AboutSection1 scrollYProgress={scrollYProgress} />
         <AboutSection2 scrollYProgress={scrollYProgress} />

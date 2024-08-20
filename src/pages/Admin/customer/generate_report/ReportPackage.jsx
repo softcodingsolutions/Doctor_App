@@ -10,6 +10,8 @@ function ReportPackage() {
   const [getPackages, setGetPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const context = useOutletContext();
+  const role = localStorage.getItem("role");
+
   console.log("User", context[1]);
 
   const handleGetPackages = () => {
@@ -88,7 +90,11 @@ function ReportPackage() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
+      <div
+        className={`rounded-lg bg-card ${
+          role === "patient" ? "h-[85vh]" : "h-[89vh]"
+        } bg-white`}
+      >
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">

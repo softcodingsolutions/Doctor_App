@@ -50,7 +50,7 @@ function UserDiagnosis() {
   }
 
   return (
-    <div className="flex w-full font-poppins">
+    <div className="flex w-full font-teachers">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
@@ -85,7 +85,7 @@ function UserDiagnosis() {
                       )}
                     >
                       {res.icons}
-                      <span className="ml-1.5 font-poppins">{res.name}</span>
+                      <span className="ml-1.5 font-teachers">{res.name}</span>
                     </Link>
                   );
                 })}

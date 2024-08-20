@@ -116,7 +116,7 @@ function FranchiseNewcustomer() {
                   timer: 1500,
                 });
                 localStorage.removeItem("client_email");
-                navigate("../../franchise/customers/all-users");
+                navigate("../../franchise/patients/all-users");
               }
             })
             .catch((err) => {
@@ -150,7 +150,7 @@ function FranchiseNewcustomer() {
             <Step
               key={step}
               orientation="vertical"
-              className="font-poppins"
+              className="font-teachers"
               indicator={
                 <StepIndicator
                   variant={currentStep <= index ? "outlined" : "solid"}

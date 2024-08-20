@@ -36,7 +36,7 @@ function LandingPage() {
       </header>
       <main
         ref={container}
-        className="relative max-h-[575vh] overflow-x-clip bg-white font-poppins"
+        className="relative max-h-[575vh] overflow-x-clip bg-white font-teachers"
       >
         <Section1 scrollYProgress={scrollYProgress} />
         <Section2 scrollYProgress={scrollYProgress} />

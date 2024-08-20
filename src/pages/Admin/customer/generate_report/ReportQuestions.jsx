@@ -7,11 +7,17 @@ function ReportQuestions() {
   const context = useOutletContext();
   const [showPart1, setShowPart1] = useState(true);
   const [showPart2, setShowPart2] = useState(false);
+  const role = localStorage.getItem("role");
+
   console.log("User", context[1]);
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
+      <div
+        className={`rounded-lg bg-card ${
+          role === "patient" ? "h-[85vh]" : "h-[89vh]"
+        } bg-white`}
+      >
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Questions List</div>
@@ -41,7 +47,7 @@ function ReportQuestions() {
             </div>
           </div>
 
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -68,28 +74,33 @@ function ReportQuestions() {
                       </th>
                     </tr>
                   ) : (
-                    context[1]?.personal_detail?.user_selected_questions_one.map((val, index) => {
-                      return (
-                        <tr key={val.id}>
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">{index + 1}</div>
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question_in_english} />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question_in_hindi} />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question_in_gujarati} />
-                          </td>
-                        </tr>
-                      );
-                    })
+                    context[1]?.personal_detail?.user_selected_questions_one.map(
+                      (val, index) => {
+                        return (
+                          <tr key={val.id}>
+                            <td className="py-2 px-4 border-b border-b-gray-50">
+                              <div className="flex items-center">
+                                {index + 1}
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.question_in_english} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.question_in_hindi} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.question_in_gujarati} />
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )
                   )
                 ) : null}
                 {showPart2 ? (
-                  context[1]?.personal_detail?.user_selected_questions_two.length === 0 ? (
+                  context[1]?.personal_detail?.user_selected_questions_two
+                    .length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -99,24 +110,28 @@ function ReportQuestions() {
                       </th>
                     </tr>
                   ) : (
-                    context[1]?.personal_detail?.user_selected_questions_two.map((val, index) => {
-                      return (
-                        <tr key={val.id}>
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">{index + 1}</div>
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question_in_english} />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question_in_hindi} />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.question_in_gujarati} />
-                          </td>
-                        </tr>
-                      );
-                    })
+                    context[1]?.personal_detail?.user_selected_questions_two.map(
+                      (val, index) => {
+                        return (
+                          <tr key={val.id}>
+                            <td className="py-2 px-4 border-b border-b-gray-50">
+                              <div className="flex items-center">
+                                {index + 1}
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.question_in_english} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.question_in_hindi} />
+                            </td>
+                            <td className="py-3 px-4 border-b border-b-gray-50">
+                              <TdComponent things={val.question_in_gujarati} />
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )
                   )
                 ) : null}
               </tbody>

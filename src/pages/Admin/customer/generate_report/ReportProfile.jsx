@@ -9,17 +9,21 @@ function ReportProfile() {
   }
 
   return (
-    <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[82vh] bg-white">
+    <div className="w-full p-2 ">
+      <div className="rounded-lg bg-card h-[69vh] bg-white">
         <div className="flex p-5 h-full flex-col items-center">
-          <div className="flex w-4/5 justify-between text-lg font-semibold mt-1">
+          <div className="flex w-4/5 justify-between text-lg font-semibold mt-2">
             <div className="flex flex-col gap-3">
               <div className="flex justify-between w-[25rem]">
                 <div className="w-2/3 text-right break-words">
                   Patient Name:
                 </div>
                 <div className="w-1/2 pl-3">
-                  {getCustomer[1]?.first_name + " " + getCustomer[1]?.last_name}
+                  {getCustomer[1]?.first_name?.[0]?.toUpperCase() +
+                    getCustomer[1]?.first_name?.slice(1) +
+                    " " +
+                    getCustomer[1]?.last_name?.[0]?.toUpperCase() +
+                    getCustomer[1]?.last_name?.slice(1)}
                 </div>
               </div>
               <div className="flex justify-between w-[25rem]">
@@ -112,14 +116,14 @@ function ReportProfile() {
                 <div className="w-1/2 text-right break-words">Email:</div>
                 <div className="w-1/2 pl-3">{getCustomer[1]?.email}</div>
               </div>
-              <div className="flex justify-between w-[25rem]">
+              {/* <div className="flex justify-between w-[25rem]">
                 <div className="w-1/2 text-right break-words">
                   Whatsapp Number:
                 </div>
                 <div className="w-1/2 pl-3">
                   {getCustomer[1]?.personal_detail?.whatsapp_number}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

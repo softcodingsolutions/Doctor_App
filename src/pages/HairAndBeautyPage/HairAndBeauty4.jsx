@@ -9,7 +9,7 @@ function HairAndBeauty4({ scrollYProgress }) {
       className="sticky top-0 h-screen bg-orange-50 flex flex-col items-center py-2"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-poppins font-medium mt-8">Skin Care</div>
+        <div className="text-4xl font-teachers font-medium mt-8">Skin Care</div>
         <div className="border-[2.5px] rounded-md border-orange-200 w-20 mt-3" />
       </div>
       <div className="w-full pt-12 flex flex-col justify-center px-16 gap-10">

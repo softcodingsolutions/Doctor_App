@@ -37,7 +37,7 @@ function FranchiseAllCustomers() {
 
   const handleDiagnosis = (val) => {
     localStorage.setItem("userId", val);
-    navigate(`../user-diagnosis/profile`);
+    navigate(`../user-diagnosis/questions`);
   };
 
   const handleAddUsers = () => {
@@ -102,6 +102,7 @@ function FranchiseAllCustomers() {
                   />
                   <ThComponent name="Name" />
                   <ThComponent name="Email" />
+                  <ThComponent name="Age" />
                   <ThComponent name="Mobile" />
                   <ThComponent name="City" />
                   <ThComponent />
@@ -130,17 +131,31 @@ function FranchiseAllCustomers() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
-                              things={val.first_name + " " + val.last_name}
+                              things={
+                                val.first_name[0]?.toUpperCase() +
+                                val.first_name?.slice(1) +
+                                " " +
+                                val.last_name[0]?.toUpperCase() +
+                                val.last_name?.slice(1)
+                              }
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.email} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.personal_detail?.age} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.personal_detail?.city} />
+                            <TdComponent
+                              things={
+                                val.personal_detail?.city[0]?.toUpperCase() +
+                                val.personal_detail?.city?.slice(1)
+                              }
+                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent

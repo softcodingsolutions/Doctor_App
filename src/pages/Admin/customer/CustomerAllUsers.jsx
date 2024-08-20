@@ -37,7 +37,7 @@ function CustomerAllUsers() {
 
   const handleDiagnosis = (val) => {
     localStorage.setItem("userId", val);
-    navigate(`../user-diagnosis/profile`);
+    navigate(`../user-diagnosis/questions`);
   };
 
   const handleAddUsers = () => {
@@ -145,7 +145,7 @@ function CustomerAllUsers() {
                             <TdComponent things={val.email} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val?.personal_detail?.age} />
+                            <TdComponent things={val.personal_detail?.age} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
