@@ -6,7 +6,7 @@ import Button from "@mui/joy/Button";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 export default function GenerateBill() {
-  const context = useOutletContext()
+  const context = useOutletContext();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
@@ -18,7 +18,7 @@ export default function GenerateBill() {
   const [totalQuantities, setTotalQuantities] = useState([]);
 
   const handleInventory = () => {
-    navigate(`../medical-inventory`);
+    navigate(`/receptionist/bill-history`);
   };
 
   const handleBill = () => {
@@ -42,7 +42,6 @@ export default function GenerateBill() {
       .then((res) => {
         console.log("Bill created successfully", res);
         alert("Bill created successfully");
-        navigate(`../medical-inventory`);
       })
       .catch((err) => {
         console.log("Error creating bill", err);
@@ -119,144 +118,141 @@ export default function GenerateBill() {
 
   return (
     <div className="flex w-full">
-    <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-      .
-    </div>
-    <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
-      <div className="w-fit p-2">
-        <button
-          onClick={context[0]}
-          type="button"
-          className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
-        >
-          <img
-            src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
-            alt=""
-          />
-        </button>
+      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+        .
       </div>
-      <div className="w-full p-5 bg-gray-100">
-      <div className="rounded-lg bg-white shadow-lg overflow-hidden">
-        <div className="flex flex-col px-4 py-6 space-y-2">
-          <div className="text-2xl font-semibold text-center">
-            Generate Bill
-          </div>
-          <div>
-            <Button
-              variant="outlined"
-              color="neutral"
-              onClick={handleInventory}
-            >
-              <IoMdArrowRoundBack size={24} />
-            </Button>
-          </div>
-          <div className="flex gap-5 w-full py-3">
-            <input
-              type="text"
-              onKeyDown={handleKeyDown}
-              placeholder="Search case number or phone number"
-              className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+        <div className="w-fit p-2">
+          <button
+            onClick={context[0]}
+            type="button"
+            className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
+          >
+            <img
+              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+              alt=""
             />
-          </div>
-          <div className="w-full">
-            <div className="flex gap-48">
-              <div className="text-lg font-bold mb-4">
-                <div>
-                  Patient Name:{" "}
-                  <span className="font-medium">
-                    {userDetails?.first_name} {userDetails?.last_name}
-                  </span>
-                </div>
-                <div>
-                  Case Number:{" "}
-                  <span className="font-medium">{userDetails?.case_number}</span>
-                </div>
+          </button>
+        </div>
+        <div className="w-full p-5 bg-gray-100">
+          <div className="rounded-lg bg-white shadow-lg overflow-hidden">
+            <div className="flex flex-col px-4 py-6 space-y-2">
+              <div className="text-2xl font-semibold text-center">
+                Generate Bill
               </div>
-              <div className="text-lg font-bold mb-4">
-                <div>
-                  Package Name:{" "}
-                  <span className="font-medium">
-                    {packageDetail?.package_name ?? "No Package Assigned"}
-                  </span>
-                </div>
-                <div>
-                  Package Duration:{" "}
-                  <span className="font-medium">
-                    {packageDetail?.no_of_days} Days
-                  </span>
-                </div>
+              <div className="flex gap-5">
+                <Button variant="outlined" color="neutral" onClick={handleInventory}>
+                  Bill History
+                </Button>
               </div>
-            </div>
-            <div className="bg-white shadow-md rounded-lg overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                      Medicine Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                      Medicine Intake
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                      Assigned Medicine
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                      Total Medicine
-                    </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                      With Milk
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {medicines.map((med, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-base font-medium ">
-                        {med.medicine_name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-base ">
-                        {formatDuration(med.dosage)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-base ">
-                        {med.quantity}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-base ">
-                        <input
-                          type="number"
-                          className="border border-blue-gray-400 rounded-md p-2"
-                          min={0}
-                          onChange={(e) =>
-                            handleTotalMedicine(index, e.target.value)
-                          }
-                        />
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-base ">
-                        {med.with_milk ? "Yes" : "No"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="m-5 justify-end flex gap-4">
-              <div>
-                <label className="font-semibold">Total Price: </label>
+              <div className="flex gap-5 w-full py-3">
                 <input
                   type="text"
-                  className="border border-blue-gray-400 rounded-md p-2"
-                  onChange={handlePrice}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Search case number or phone number"
+                  className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <Button variant="solid" color="primary" onClick={handleBill}>
-                Generate
-              </Button>
+              <div className="w-full">
+                <div className="flex gap-48">
+                  <div className="text-lg font-bold mb-4">
+                    <div>
+                      Patient Name:{" "}
+                      <span className="font-medium">
+                        {userDetails?.first_name} {userDetails?.last_name}
+                      </span>
+                    </div>
+                    <div>
+                      Case Number:{" "}
+                      <span className="font-medium">
+                        {userDetails?.case_number}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-lg font-bold mb-4">
+                    <div>
+                      Package Name:{" "}
+                      <span className="font-medium">
+                        {packageDetail?.package_name ?? "No Package Assigned"}
+                      </span>
+                    </div>
+                    <div>
+                      Package Duration:{" "}
+                      <span className="font-medium">
+                        {packageDetail?.no_of_days} Days
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          Medicine Name
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          Medicine Intake
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          Assigned Medicine
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          Total Medicine
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          With Milk
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {medicines.map((med, index) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap text-base font-medium ">
+                            {med.medicine_name}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-base ">
+                            {formatDuration(med.dosage)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-base ">
+                            {med.quantity}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-base ">
+                            <input
+                              type="number"
+                              className="border border-blue-gray-400 rounded-md p-2"
+                              min={0}
+                              onChange={(e) =>
+                                handleTotalMedicine(index, e.target.value)
+                              }
+                            />
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-base ">
+                            {med.with_milk ? "Yes" : "No"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="m-5 justify-end flex gap-4">
+                  <div>
+                    <label className="font-semibold">Total Price: </label>
+                    <input
+                      type="text"
+                      className="border border-blue-gray-400 rounded-md p-2"
+                      onChange={handlePrice}
+                    />
+                  </div>
+                  <Button variant="solid" color="primary" onClick={handleBill}>
+                    Generate
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    </div>
-  </div>
-  
   );
 }

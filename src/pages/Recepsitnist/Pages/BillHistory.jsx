@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import Button from "@mui/joy/Button";
+
 
 export default function BillHistory() {
   const context = useOutletContext();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [userDetails, setUserDetails] = useState({});
@@ -14,6 +17,9 @@ export default function BillHistory() {
     setSearchTerm(value);
   };
 
+  const handleInventory = () =>{
+    navigate('../generatebill')
+  }
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       setDebouncedSearchTerm(searchTerm);
@@ -63,6 +69,11 @@ export default function BillHistory() {
               <div className="text-2xl font-semibold text-center mb-4">
                 Bill History
               </div>
+              <div className="flex gap-5">
+                <Button variant="outlined" color="neutral" onClick={handleInventory}>
+                  Generate Bill
+                </Button>
+              </div>
               <div className="flex gap-5 p-2 w-full mb-4">
                 <input
                   type="text"
@@ -86,6 +97,12 @@ export default function BillHistory() {
                       Case Number:{" "}
                       <span className="font-medium">
                         {userDetails?.case_number}
+                      </span>
+                    </div>
+                    <div>
+                      Doctor Name:{" "}
+                      <span className="font-medium">
+                        {userDetails?.doctor?.first_name} {userDetails?.doctor?.last_name}
                       </span>
                     </div>
                   </div>
