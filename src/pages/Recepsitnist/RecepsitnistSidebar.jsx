@@ -48,16 +48,16 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <FaLightbulb size={18} />,
     },
     {
+      id: "4",
+      title: "Generate Bill",
+      to: "./generatebill",
+      icons: <MdMenuBook size={18} />,
+    },
+    {
       id: "3",
       title: "Medical Inventory",
       to: "medical-inventory",
       icons: <FaClinicMedical size={18} />,
-    },
-    {
-      id: "4",
-      title: "Bill History",
-      to: "bill-history",
-      icons: <MdMenuBook size={18} />,
     },
   ];
 

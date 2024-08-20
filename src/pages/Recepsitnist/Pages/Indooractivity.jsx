@@ -20,6 +20,23 @@ const generateTimeSlots = () => {
 
   return slots;
 };
+const getCheckedCount = (appointments, machineId, time, slotNumber) => {
+  const startTime = new Date(`1970-01-01T${time}`);
+  const endTime = new Date(startTime.getTime() + slotNumber * 30 * 60000); // Add slot number * 30 minutes
+
+  return appointments.some((appointment) => {
+    const appointmentTime = new Date(`1970-01-01T${appointment.time}`);
+    const appointmentEndTime = new Date(
+      appointmentTime.getTime() + slotNumber * 30 * 60000
+    );
+
+    return (
+      appointment.machine_id === machineId &&
+      appointmentTime <= startTime &&
+      appointmentEndTime > startTime
+    );
+  });
+};
 
 const UserTable = ({
   userName,
@@ -28,13 +45,6 @@ const UserTable = ({
   handleButtonClick,
   appointments,
 }) => {
-  const getCheckedCount = (machineId, time) => {
-    return appointments.filter(
-      (appointment) =>
-        appointment.machine_id === machineId && appointment.time === time
-    ).length;
-  };
-
   return (
     <div className="m-2">
       <div className="text-lg font-medium text-center mt-5">{userName}</div>
@@ -65,33 +75,26 @@ const UserTable = ({
               {machines
                 .filter((machine) => machine?.user?.first_name === userName)
                 .map((machine) => {
-                  const checkedCount = getCheckedCount(machine.id, time);
+                  const checked = getCheckedCount(
+                    appointments,
+                    machine.id,
+                    time,
+                    machine.slot_number
+                  );
 
                   return (
                     <td
                       key={machine.id}
                       className="px-6 py-3 text-left text-xs font-medium text-gray-900"
                     >
-                      <div className="flex space-x-2">
-                        {Array.from({ length: machine.quantity }).map(
-                          (_, index) => (
-                            <div key={index}>
-                              <input
-                                type="checkbox"
-                                checked={checkedCount > 0}
-                                onChange={() =>
-                                  handleButtonClick(
-                                    machine.id,
-                                    machine.doctor_id,
-                                    time
-                                  )
-                                }
-                                className="rounded"
-                              />
-                            </div>
-                          )
-                        )}
-                      </div>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() =>
+                          handleButtonClick(machine.id, machine.doctor_id, time)
+                        }
+                        className="rounded"
+                      />
                     </td>
                   );
                 })}
@@ -105,7 +108,6 @@ const UserTable = ({
 
 export default function Indooractivity() {
   const [machines, setMachines] = useState([]);
-  const [machineQuantity, setMachinesQuantity] = useState();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogData, setDialogData] = useState({
     name: "",
@@ -220,7 +222,6 @@ export default function Indooractivity() {
     setIsDialogOpen(false);
     resetDialog();
   };
-
 
   useEffect(() => {
     axios

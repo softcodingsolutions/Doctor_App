@@ -38,9 +38,7 @@ export default function MedicalInventory() {
       });
   };
 
-  const handleBill = () => {
-    navigate(`../generatebill`);
-  };
+
 
   const handleQuantityChange = (e) => {
     setInputQuantity(e.target.value);
@@ -114,11 +112,7 @@ export default function MedicalInventory() {
           <div className="rounded-lg bg-card h-[90vh] bg-white">
             <div className="flex flex-col px-4 py-3 h-full space-y-4">
               <div className="text-xl font-semibold">Medical Inventory</div>
-              <div className="flex gap-5">
-                <Button variant="outlined" color="neutral" onClick={handleBill}>
-                  Generate Bill
-                </Button>
-              </div>
+              
               <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
                 <MedicalTable data={data} refreshData={handleShow} />
               </div>
