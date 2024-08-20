@@ -213,6 +213,7 @@ export default function Indooractivity() {
 
   const handleConsulting = (e) => {
     setConsultingTime(e.target.value);
+    console.log(e.target.value);
   };
 
   const closeDialog = () => {

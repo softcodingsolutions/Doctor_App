@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useDebounce } from "use-debounce";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "@mui/joy/Button";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 export default function GenerateBill() {
+  const context = useOutletContext()
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
@@ -117,7 +118,24 @@ export default function GenerateBill() {
   }, [id]);
 
   return (
-    <div className="w-full p-5 bg-gray-100">
+    <div className="flex w-full">
+    <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+      .
+    </div>
+    <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+      <div className="w-fit p-2">
+        <button
+          onClick={context[0]}
+          type="button"
+          className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
+        >
+          <img
+            src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+            alt=""
+          />
+        </button>
+      </div>
+      <div className="w-full p-5 bg-gray-100">
       <div className="rounded-lg bg-white shadow-lg overflow-hidden">
         <div className="flex flex-col px-4 py-6 space-y-2">
           <div className="text-2xl font-semibold text-center">
@@ -237,5 +255,8 @@ export default function GenerateBill() {
         </div>
       </div>
     </div>
+    </div>
+  </div>
+  
   );
 }
