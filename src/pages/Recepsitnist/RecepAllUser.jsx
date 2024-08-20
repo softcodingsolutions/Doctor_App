@@ -86,6 +86,7 @@ function RecepAllUsers() {
                   />
                   <ThComponent name="Name" />
                   <ThComponent name="Email" />
+                  <ThComponent name="Age" />
                   <ThComponent name="Mobile" />
                   <ThComponent name="City" />
                   <ThComponent name="Doctor Name" />
@@ -119,13 +120,16 @@ function RecepAllUsers() {
                                 val?.first_name?.[0]?.toUpperCase() +
                                 val?.first_name?.slice(1) +
                                 " " +
-                               val?.last_name?.[0]?.toUpperCase() +
+                                val?.last_name?.[0]?.toUpperCase() +
                                 val?.last_name?.slice(1)
                               }
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.email} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.personal_detail?.age} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
@@ -139,8 +143,11 @@ function RecepAllUsers() {
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-
-                            <div className="text-black font-medium ml-1 text-wrap text-base">{val?.doctor?.first_name + " " + val?.doctor?.last_name}</div>
+                            <div className="text-black font-medium ml-1 text-wrap text-base">
+                              {val?.doctor?.first_name +
+                                " " +
+                                val?.doctor?.last_name}
+                            </div>
                           </td>
                         </tr>
                       )

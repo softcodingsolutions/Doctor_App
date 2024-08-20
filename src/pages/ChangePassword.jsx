@@ -41,7 +41,9 @@ function ChangePassword() {
       )
       .then((res) => {
         console.log(res);
-        alert("Successfully Reset Your Password \nNow you can Sign in with your new password!");
+        alert(
+          "Successfully Reset Your Password \nNow you can Sign in with your new password!"
+        );
         navigate("/login");
       })
       .catch((err) => {

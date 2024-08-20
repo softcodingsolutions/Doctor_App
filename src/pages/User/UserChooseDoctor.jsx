@@ -94,7 +94,7 @@ function UserChooseDoctor() {
           navigate("/login");
         }}
       >
-        <IoArrowBackCircle size={45}/>
+        <IoArrowBackCircle size={45} />
       </button>
       <div className="flex items-center justify-center w-full gap-8 h-[100vh] p-4 flex-wrap">
         {getDoctors.map((val, index) => {
@@ -112,7 +112,11 @@ function UserChooseDoctor() {
                   color="blue-gray"
                   className="mb-2 font-teachers"
                 >
-                  {val.first_name + " " + val.last_name}
+                  {val.first_name[0]?.toUpperCase() +
+                    val.first_name?.slice(1) +
+                    +" " +
+                    val.last_name[0]?.toUpperCase() +
+                    val.last_name?.slice(1)}
                 </Typography>
                 <Typography
                   color="blue-gray"

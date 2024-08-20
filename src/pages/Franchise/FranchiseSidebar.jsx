@@ -19,8 +19,8 @@ function FranchiseSidebar({ franchise, onSidebarHide, showSidebar }) {
     // },
     {
       id: "2",
-      title: "Customers",
-      to: "customers/all-users",
+      title: "Patients",
+      to: "patients/all-users",
       icons: <IoPersonSharp size={18} />,
     },
   ];
@@ -99,7 +99,8 @@ function FranchiseSidebar({ franchise, onSidebarHide, showSidebar }) {
             </div>
           </div>
           <div className="block sm:hidden xl:block ml-2 font-bold ">
-            {franchise?.first_name} {franchise?.last_name}
+            {franchise?.first_name} {franchise?.last_name}{" "}
+            <span className="font-normal text-[0.80rem]">(Franchise)</span>
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <img

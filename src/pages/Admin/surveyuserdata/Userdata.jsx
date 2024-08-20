@@ -76,7 +76,10 @@ export default function Userdata() {
                         </div>
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        {val.first_name} {val.last_name}
+                        {val.first_name[0]?.toUpperCase() +
+                          val.first_name?.slice(1)}{" "}
+                        {val.last_name[0]?.toUpperCase() +
+                          val.last_name?.slice(1)}
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">
                         <TdComponent things={val.email} />

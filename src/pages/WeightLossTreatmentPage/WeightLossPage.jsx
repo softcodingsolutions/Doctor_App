@@ -37,7 +37,7 @@ function WeightLossPage() {
       </header>
       <main
         ref={container}
-        className="relative h-[700vh] bg-white font-poppins"
+        className="relative h-[700vh] bg-white font-teachers"
       >
         <WeightLoss1 scrollYProgress={scrollYProgress} />
         <WeightLoss2 scrollYProgress={scrollYProgress} />

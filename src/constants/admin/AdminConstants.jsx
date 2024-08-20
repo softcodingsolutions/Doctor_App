@@ -89,12 +89,12 @@ export const masterButtons = [
 ];
 
 export const reportButtons = [
-  {
-    id: "1",
-    name: "Profile",
-    icons: <CiViewList size={18} />,
-    to: "profile",
-  },
+//   {
+//     id: "1",
+//     name: "Profile",
+//     icons: <CiViewList size={18} />,
+//     to: "profile",
+//   },
   {
     id: "2",
     name: "Questions",

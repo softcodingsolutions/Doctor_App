@@ -14,6 +14,7 @@ function TreatmentLabTests() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [getPackages, setPackages] = useState([]);
+  const role = localStorage.getItem("role");
 
   const handleGetWeightReason = () => {
     axios
@@ -138,7 +139,11 @@ function TreatmentLabTests() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
+      <div
+        className={`rounded-lg bg-card ${
+          role === "patient" ? "h-[85vh]" : "h-[89vh]"
+        } bg-white`}
+      >
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
           <div className="flex gap-5 text-center items-center justify-between">
             <div className="flex items-center w-fit mb-2">

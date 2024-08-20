@@ -154,7 +154,7 @@ function App() {
           <Route path="patients" element={<AdminCustomers />}>
             <Route path="all-users" element={<CustomerAllUsers />} />
             <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
-              <Route path="profile" element={<ReportProfile />} />
+              {/* <Route path="profile" element={<ReportProfile />} /> */}
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />
@@ -311,7 +311,7 @@ function App() {
           <Route path="patients" element={<FranchiseCustomers />}>
             <Route path="all-users" element={<FranchiseAllCustomers />} />
             <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
-              <Route path="profile" element={<ReportProfile />} />
+              {/* <Route path="profile" element={<ReportProfile />} /> */}
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />

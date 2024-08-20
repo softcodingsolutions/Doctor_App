@@ -16,6 +16,7 @@ function ReportTreatment() {
   const [mappingPackages, setMappingPackages] = useState([]);
   const user_id = localStorage.getItem("userId");
   const [loading, setLoading] = useState(false);
+  const role = localStorage.getItem("role");
 
   const [storeData, setStoreData] = useState({
     medicine: [],
@@ -128,7 +129,11 @@ function ReportTreatment() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[88vh] bg-white">
+      <div
+        className={`rounded-lg bg-card ${
+          role === "patient" ? "h-[85vh]" : "h-[89vh]"
+        } bg-white`}
+      >
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="w-full sm:flex p-1 items-end">
             <div className="sm:flex-grow flex flex-col justify-between overflow-x-hidden">

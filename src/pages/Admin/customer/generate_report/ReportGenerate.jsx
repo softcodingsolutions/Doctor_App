@@ -406,6 +406,7 @@ export const BillDocument = ({ data }) => (
 const ReportGenerate = () => {
   const [pdfData, setPdfData] = useState({});
   const customer = useOutletContext();
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     const customerData = customer[1];
@@ -419,7 +420,11 @@ const ReportGenerate = () => {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg  bg-card h-[85vh] bg-white">
+      <div
+        className={`rounded-lg bg-card ${
+          role === "patient" ? "h-[85vh]" : "h-[89vh]"
+        } bg-white`}
+      >
         <div className="flex px-4 items-center justify-center py-3 h-full flex-col space-y-4">
           {pdfData?.treatment_packages?.length === 0 ? (
             <div className="bg-red-100 text-red-800 text-xl p-4 rounded border border-red-400">

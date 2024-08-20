@@ -76,7 +76,7 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
             onClick={() => setSelected(i.id)}
           >
             {i.icons}
-            <div className="block sm:hidden xl:block ml-2 font-poppins">
+            <div className="block sm:hidden xl:block ml-2 font-teachers">
               {i.title}
             </div>
             <div className="block sm:hidden xl:block flex-grow" />
@@ -95,15 +95,15 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
               "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
             }
           >
-            <div className="text-lg font-semibold font-poppins">
+            <div className="text-lg font-semibold font-teachers">
               {user.first_name?.toUpperCase()[0]}
               {user.last_name?.toUpperCase()[0]}
             </div>
           </div>
-            <div className="block sm:hidden xl:block ml-2 font-bold font-poppins">
-              {user.first_name} {user.last_name}{" "}
-              <span className="font-normal text-[0.65rem]">(Patient)</span>
-            </div>
+          <div className="block sm:hidden xl:block ml-2 font-bold font-teachers">
+            {user.first_name} {user.last_name}{" "}
+            <span className="font-normal text-[0.80rem]">(Patient)</span>
+          </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <img
             src={`https://assets.codepen.io/3685267/res-react-dash-options.svg`}

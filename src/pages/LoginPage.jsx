@@ -71,7 +71,7 @@ function LoginPage() {
                 title: `Welcome ${res.data?.user?.email}!`,
               });
             } else if (res.data?.user?.role === "franchise") {
-              navigate("/franchise/customers/all-users");
+              navigate("/franchise/patients/all-users");
               Toast.fire({
                 icon: "success",
                 title: `Welcome ${res.data?.user?.email}!`,
@@ -109,7 +109,7 @@ function LoginPage() {
     if (role === "super_admin") {
       navigate("/admin/dashboard");
     } else if (role === "franchise") {
-      navigate("/franchise/customers/all-users");
+      navigate("/franchise/patients/all-users");
     } else if (role === "receptionist") {
       navigate("/receptionist/appointment/home");
     } else if (role === "patient") {
