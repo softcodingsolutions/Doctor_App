@@ -58,11 +58,14 @@ function LoginPage() {
               },
             });
 
-            if (
-              res.data?.user?.role === "super_admin" ||
-              res.data?.user?.role === "doctor"
-            ) {
+            if (res.data?.user?.role === "doctor") {
               navigate("/admin/dashboard");
+              Toast.fire({
+                icon: "success",
+                title: `Welcome ${res.data?.user?.email}!`,
+              });
+            } else if (res.data?.user?.role === "super_admin") {
+              navigate("/admin/create-role/role-assign");
               Toast.fire({
                 icon: "success",
                 title: `Welcome ${res.data?.user?.email}!`,

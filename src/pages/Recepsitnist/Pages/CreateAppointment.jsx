@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
+import InsideLoader from "../../InsideLoader";
 
 export default function CreateAppointment() {
   const [doctorList, setDoctorList] = useState("");
@@ -15,6 +16,7 @@ export default function CreateAppointment() {
   const [userId, setUserId] = useState("");
   const [machineList, setMachineList] = useState([]);
   const [machineConsultingTime, setMachineConsultingTime] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleShow = () => {
     axios
@@ -35,6 +37,7 @@ export default function CreateAppointment() {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       setDebouncedSearchTerm(searchTerm);
+      setLoading(true);
     }
   };
 
@@ -45,6 +48,7 @@ export default function CreateAppointment() {
           `/api/v2/users/search?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&email=${debouncedSearchTerm}`
         )
         .then((res) => {
+          setLoading(false);
           console.log("search", res);
           setName(res.data.user.first_name);
           setMobileNumber(res.data.user.phone_number);
@@ -100,11 +104,17 @@ export default function CreateAppointment() {
       });
   }, [doctorList]);
 
+  if (loading) {
+    return <InsideLoader />;
+  }
+
   return (
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
-          <div className="text-xl font-semibold">Create Consulting Appointment</div>
+          <div className="text-xl font-semibold">
+            Create Consulting Appointment
+          </div>
 
           <div className="flex gap-5 p-2 w-full">
             <input

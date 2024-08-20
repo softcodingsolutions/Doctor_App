@@ -25,8 +25,8 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
     },
     {
       id: "5",
-      title: "Customers",
-      to: "/receptionist/customers/all-users",
+      title: "Patients",
+      to: "/receptionist/patients/all-users",
       icons: <IoPersonSharp size={18} />,
     },
     {
