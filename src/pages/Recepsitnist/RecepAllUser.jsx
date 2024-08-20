@@ -58,7 +58,7 @@ function RecepAllUsers() {
   }
 
   return (
-    <div className="w-full p-2">
+    <div className="w-full p-2 text-lg">
       <div className="rounded-lg bg-card h-[92vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
           <div className="flex gap-5 p-2 w-full">
@@ -77,7 +77,7 @@ function RecepAllUsers() {
             </button>
           </div>
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
-            <table className="w-full min-w-[460px] z-0">
+            <table className="w-full min-w-[460px] z-0 ">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent
@@ -113,7 +113,7 @@ function RecepAllUsers() {
                               {val.case_number}
                             </div>
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50 break-all">
+                          <td className="py-3 px-4 border-b border-b-gray-50 break-all ">
                             <TdComponent
                               things={
                                 val?.first_name?.[0]?.toUpperCase() +

@@ -3,6 +3,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
 import axios from "axios";
 import InsideLoader from "../../../InsideLoader";
+import Swal from "sweetalert2";
 
 export default function MachineDetails() {
   const [inputMachineName, setInputMachineName] = useState("");
@@ -20,8 +21,6 @@ export default function MachineDetails() {
   const [doctorId, setDoctorId] = useState(0);
   const [loading, setLoading] = useState(true);
   const [slot, setSlot] = useState("");
-  const main_id = localStorage.getItem("main_id");
-  const role = localStorage.getItem("role");
 
   const handleShow = () => {
     axios
@@ -44,19 +43,7 @@ export default function MachineDetails() {
           res.data.users.filter((user) => user.role === "doctor"),
           "Doctor"
         );
-
-        console.log(res.data?.users);
-        if (role === "super_admin") {
-          setDoctor(res.data.users.filter((user) => user.role === "doctor"));
-          setLoading(false);
-        } else if (role === "doctor") {
-          setDoctor(
-            res.data?.users?.filter(
-              (user) => user.role === "doctor" && user.id == main_id
-            )
-          );
-          setLoading(false);
-        }
+        setDoctor(res.data.users.filter((user) => user.role === "doctor"));
         setLoading(false);
       })
       .catch((err) => {
@@ -112,6 +99,14 @@ export default function MachineDetails() {
         formdata.append("machine_detail[slot_number]", slot);
         axios.post(`/api/v1/machine_details`, formdata).then((res) => {
           console.log(res);
+          Swal.fire({
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            icon: "success",
+            title: "Added!",
+            text: "A new machine has been added.",
+          });
           handleShow();
         });
       })

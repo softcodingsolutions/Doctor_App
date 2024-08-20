@@ -14,11 +14,11 @@ import { CiViewList } from "react-icons/ci";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
   const [selected, setSelected] = useState(
-    localStorage.getItem("sidebarSelected_id") || "1"
+    localStorage.getItem("sidebarSelected_id") || role === "doctor" ? "1" : "4"
   );
-  const role = localStorage.getItem("role");
 
   const handleSelectChange = (event) => {
     if (event) {
@@ -35,8 +35,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     },
     {
       id: "2",
-      title: "Customers",
-      to: "customers/all-users",
+      title: "Patients",
+      to: "patients/all-users",
       icons: <IoPersonSharp size={18} />,
     },
     {

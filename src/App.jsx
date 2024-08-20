@@ -151,7 +151,7 @@ function App() {
           </Route>
 
           {/* customers */}
-          <Route path="customers" element={<AdminCustomers />}>
+          <Route path="patients" element={<AdminCustomers />}>
             <Route path="all-users" element={<CustomerAllUsers />} />
             <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
               <Route path="profile" element={<ReportProfile />} />
@@ -256,7 +256,7 @@ function App() {
           </Route>
 
           {/* all users */}
-          <Route path="customers" element={<RecepsitnistCustomers />}>
+          <Route path="patients" element={<RecepsitnistCustomers />}>
             <Route path="all-users" element={<RecepAllUsers />} />
 
             {/* user created by receptionist */}
@@ -307,7 +307,7 @@ function App() {
           </Route>
 
           {/* Franchise Customers */}
-          <Route path="customers" element={<FranchiseCustomers />}>
+          <Route path="patients" element={<FranchiseCustomers />}>
             <Route path="all-users" element={<FranchiseAllCustomers />} />
             <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
               <Route path="profile" element={<ReportProfile />} />

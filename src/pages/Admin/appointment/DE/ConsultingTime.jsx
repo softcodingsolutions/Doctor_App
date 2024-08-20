@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import InsideLoader from "../../../InsideLoader";
+import Swal from "sweetalert2";
 
 export default function ConsultingTime() {
   const [inputTime, setInputTime] = useState("");
@@ -12,21 +13,14 @@ export default function ConsultingTime() {
   const [inputVisible, setInputVisible] = useState(false);
   const [data, setData] = useState([]);
   const [doctorName, setDoctorNames] = useState({});
-  const main_id = localStorage.getItem("main_id");
-  const role = localStorage.getItem("role");
 
   const handleShow = () => {
     axios
       .get(`api/v1/users`)
       .then((res) => {
         console.log(res.data?.users);
-        if (role === "super_admin") {
-          setDoctorNames(res.data?.users);
-          setLoading(false);
-        } else if (role === "doctor") {
-          setDoctorNames(res.data?.users?.filter((res) => res.id == main_id));
-          setLoading(false);
-        }
+        setDoctorNames(res.data?.users);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -89,6 +83,14 @@ export default function ConsultingTime() {
         .post(`/api/v1/consulting_times?id=${inputDoctor}`, formdata)
         .then((res) => {
           console.log(res, "ADD");
+          Swal.fire({
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            icon: "success",
+            title: "Added!",
+            text: "A new consulting time has been added.",
+          });
           handleData();
         })
         .catch((err) => {

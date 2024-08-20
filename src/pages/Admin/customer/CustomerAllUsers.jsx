@@ -102,6 +102,7 @@ function CustomerAllUsers() {
                   />
                   <ThComponent name="Name" />
                   <ThComponent name="Email" />
+                  <ThComponent name="Age" />
                   <ThComponent name="Mobile" />
                   <ThComponent name="City" />
                   <ThComponent name="Registration Through" />
@@ -142,6 +143,9 @@ function CustomerAllUsers() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.email} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val?.personal_detail?.age} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
