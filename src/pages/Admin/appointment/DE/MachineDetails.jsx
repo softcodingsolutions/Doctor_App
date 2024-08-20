@@ -7,12 +7,12 @@ import Swal from "sweetalert2";
 
 export default function MachineDetails() {
   const [inputMachineName, setInputMachineName] = useState("");
-  const [inputQuantity, setInputQuantity] = useState("");
-  const [inputBrief, setInputBrief] = useState("");
+  // const [inputQuantity, setInputQuantity] = useState("");
+  // const [inputBrief, setInputBrief] = useState("");
   const [machines, setMachines] = useState([]);
   const [editedMachineName, setEditedMachineName] = useState("");
-  const [editedQuantity, setEditedQuantity] = useState("");
-  const [editedBrief, setEditedBrief] = useState("");
+  // const [editedQuantity, setEditedQuantity] = useState("");
+  // const [editedBrief, setEditedBrief] = useState("");
   const [editedSlot, setEditedSlot] = useState("");
   const [editedDoctorId, setEditedDoctorId] = useState("");
   const [editIndex, setEditIndex] = useState(null);
@@ -62,28 +62,28 @@ export default function MachineDetails() {
     setInputMachineName(e.target.value);
   }
 
-  function handleQuantityChange(e) {
-    const value = e.target.value;
-    if (value >= 0) {
-      setInputQuantity(value);
-    }
-  }
+  // function handleQuantityChange(e) {
+  //   const value = e.target.value;
+  //   if (value >= 0) {
+  //     setInputQuantity(value);
+  //   }
+  // }
 
-  function handleBriefChange(e) {
-    setInputBrief(e.target.value);
-  }
+  // function handleBriefChange(e) {
+  //   setInputBrief(e.target.value);
+  // }
 
   function handleAddMachine() {
-    if (inputMachineName && inputQuantity && inputBrief && doctorId) {
+    if (inputMachineName && doctorId) {
       const newMachine = {
         machineName: inputMachineName,
-        quantity: inputQuantity,
-        brief: inputBrief,
+        // quantity: inputQuantity,
+        // brief: inputBrief,
       };
       setMachines([...machines, newMachine]);
       setInputMachineName("");
-      setInputQuantity("");
-      setInputBrief("");
+      // setInputQuantity("");
+      // setInputBrief("");
       setSlot("");
     }
 
@@ -92,8 +92,8 @@ export default function MachineDetails() {
       .then((res) => {
         const formdata = new FormData();
         formdata.append("machine_detail[name]", inputMachineName);
-        formdata.append("machine_detail[quantity]", inputQuantity);
-        formdata.append("machine_detail[brief]", inputBrief);
+        // formdata.append("machine_detail[quantity]", inputQuantity);
+        // formdata.append("machine_detail[brief]", inputBrief);
         formdata.append("machine_detail[user_id]", doctorId);
         formdata.append("client_id", res.data?.client_id);
         formdata.append("machine_detail[slot_number]", slot);
@@ -136,15 +136,15 @@ export default function MachineDetails() {
   const handleEditMachine = (
     index,
     machineName,
-    quantity,
-    brief,
+    // quantity,
+    // brief,
     slot,
     doctorId
   ) => {
     setEditIndex(index);
     setEditedMachineName(machineName);
-    setEditedQuantity(quantity);
-    setEditedBrief(brief);
+    // setEditedQuantity(quantity);
+    // setEditedBrief(brief);
     setEditedSlot(slot);
     setEditedDoctorId(doctorId);
   };
@@ -153,8 +153,8 @@ export default function MachineDetails() {
     const machine = machines[editIndex];
     const updatedMachine = {
       name: editedMachineName,
-      quantity: editedQuantity,
-      brief: editedBrief,
+      // quantity: editedQuantity,
+      // brief: editedBrief,
       slot_number: editedSlot,
       user_id: editedDoctorId,
     };
@@ -166,8 +166,8 @@ export default function MachineDetails() {
         handleShow();
         setEditIndex(null);
         setEditedMachineName("");
-        setEditedQuantity("");
-        setEditedBrief("");
+        // setEditedQuantity("");
+        // setEditedBrief("");
         setEditedSlot("");
         setEditedDoctorId("");
       })
@@ -225,7 +225,7 @@ export default function MachineDetails() {
                   value={inputMachineName}
                   placeholder="Machine Name"
                 />
-                <input
+                {/* <input
                   className="border-2 rounded-md p-2"
                   type="number"
                   onChange={handleQuantityChange}
@@ -239,7 +239,7 @@ export default function MachineDetails() {
                   onChange={handleBriefChange}
                   value={inputBrief}
                   placeholder="Brief"
-                />
+                /> */}
                 <div className="flex flex-col">
                   <input
                     className="border-2 rounded-md p-2"
@@ -272,15 +272,15 @@ export default function MachineDetails() {
                   <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Machine Name
                   </th>
-                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  {/* <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Quantity
-                  </th>
+                  </th> */}
                   <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Slot
                   </th>
-                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  {/* <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Brief
-                  </th>
+                  </th> */}
                   <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                     Action
                   </th>
@@ -330,7 +330,7 @@ export default function MachineDetails() {
                               className="border-2 rounded-md p-2"
                             />
                           </td>
-                          <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          {/* <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                             <input
                               type="number"
                               value={editedQuantity}
@@ -341,7 +341,7 @@ export default function MachineDetails() {
                               className="border-2 rounded-md p-2"
                               min="0"
                             />
-                          </td>
+                          </td> */}
                           <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                             <input
                               type="number"
@@ -352,7 +352,7 @@ export default function MachineDetails() {
                               min="0"
                             />
                           </td>
-                          <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          {/* <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                             <input
                               type="text"
                               value={editedBrief}
@@ -360,7 +360,7 @@ export default function MachineDetails() {
                               placeholder="Brief"
                               className="border-2 rounded-md p-2"
                             />
-                          </td>
+                          </td> */}
                           <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                             <button
                               onClick={handleUpdateMachine}
@@ -389,29 +389,29 @@ export default function MachineDetails() {
                               {machine.name}
                             </span>
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          {/* <td className="py-3 px-4 border-b border-b-gray-50">
                             <span className="text-black text-base font-medium ml-1">
                               {machine.quantity}
                             </span>
-                          </td>
+                          </td> */}
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <span className="text-black text-base font-medium ml-1">
                               {machine.slot_number}
                             </span>
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          {/* <td className="py-3 px-4 border-b border-b-gray-50">
                             <span className="text-black text-base font-medium ml-1">
                               {machine.brief}
                             </span>
-                          </td>
+                          </td> */}
                           <td className="py-3 px-4 border-b border-b-gray-50 flex items-center gap-2">
                             <button
                               onClick={() =>
                                 handleEditMachine(
                                   index,
                                   machine.name,
-                                  machine.quantity,
-                                  machine.brief,
+                                  // machine.quantity,
+                                  // machine.brief,
                                   machine.slot_number,
                                   machine.user_id
                                 )

@@ -268,16 +268,17 @@ function App() {
           {/* appointment */}
           <Route path="appointment" element={<Appointment />}>
             <Route path="home" element={<Home />} />
-            <Route path="generatebill" element={<GenerateBill />} />
-
             <Route path="create-appointment" element={<CreateAppointment />} />
             <Route
               path="Create-machine-appointment"
               element={<Indooractivity />}
             />
           </Route>
+          {/* generate bill */}
+          <Route path="generatebill" element={<GenerateBill />} />
 
           {/* medical inventory */}
+          
           <Route path="medical-inventory" element={<MedicalInventory />} />
 
           {/* bill history */}
