@@ -17,10 +17,7 @@ export default function GenerateBill() {
   const [price, setPrice] = useState("");
   const [totalQuantities, setTotalQuantities] = useState([]);
 
-  const handleInventory = () => {
-    navigate(`/receptionist/bill-history`);
-  };
-
+ 
   const handleBill = () => {
     const billItems = medicines.map((med, index) => ({
       medicine_name: med.medicine_name,
@@ -140,11 +137,7 @@ export default function GenerateBill() {
               <div className="text-2xl font-semibold text-center">
                 Generate Bill
               </div>
-              <div className="flex gap-5">
-                <Button variant="outlined" color="neutral" onClick={handleInventory}>
-                  Bill History
-                </Button>
-              </div>
+              
               <div className="flex gap-5 w-full py-3">
                 <input
                   type="text"

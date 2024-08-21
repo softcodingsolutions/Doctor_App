@@ -81,39 +81,44 @@ export default function Newcase(props) {
     <div>
       <form className="text-lg">
         <div className="flex justify-center gap-5 ">
-          <label className="text-lg font-semibold text-center mr-2 ">New Case </label>
+          <lebal className="text-lg font-semibold text-center mr-2 ">
+            New Case{" "}
+          </lebal>
         </div>
+        {props.name && (
+          <div>
+            <div className="flex gap-5 m-2">
+              <lebal className="text-lg text-end w-1/3 mr-2">Name :</lebal>
+              <input
+                type="text"
+                className="py-1 px-2  border-black w-[40vh]"
+                value={props.name}
+              />
+            </div>
+            <div className="flex gap-5 m-2">
+              <lebal className="text-lg text-end w-1/3 mr-2">
+                Mobile Number :
+              </lebal>
+              <input
+                type="text"
+                className="py-1 px-2  border-black w-[40vh]"
+                value={props.number}
+              />
+            </div>
+            <div className="flex gap-5 m-2">
+              <lebal className="text-lg text-end w-1/3 mr-2">Email id :</lebal>
+              <input
+                type="email"
+                className="py-1 px-2  border-black w-[40vh]"
+                value={props.email}
+              />
+            </div>
+          </div>
+        )}
         <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">Name </label>
-          <input
-            type="text"
-            placeholder="Enter name"
-            className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            value={props.name}
-          />
-        </div>
-        <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">Mobile Number </label>
-          <input
-            type="text"
-            placeholder="Enter number"
-            className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            value={props.number}
-          />
-        </div>
-        <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">Email id </label>
-          <input
-            type="email"
-            placeholder="Enter email"
-            className="py-1 px-2 rounded-md border border-black w-[40vh]"
-            value={props.email}
-          />
-        </div>
-        <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">
+          <lebal className="text-lg text-end w-1/3 mr-2">
             Select the Date{" "}
-          </label>
+          </lebal>
           <input
             type="date"
             placeholder="select date"
@@ -122,9 +127,9 @@ export default function Newcase(props) {
           />
         </div>
         <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">
+          <lebal className="text-lg text-end w-1/3 mr-2">
             Select the Slot{" "}
-          </label>
+          </lebal>
           <select
             className="py-1 px-2 rounded-md border border-black w-[40vh]"
             onChange={handleSlot}
@@ -149,7 +154,7 @@ export default function Newcase(props) {
             style={{ backgroundColor: "black" }}
             onClick={handleSubmit}
           >
-            Submit
+            Create Appointment
           </button>
         </div>
       </form>

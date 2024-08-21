@@ -33,16 +33,18 @@ export default function Consulting(props) {
   };
 
   const handleData = () => {
-    axios
-      .get(`/api/v1/consulting_times/user/${props.doctor}`)
-      .then((res) => {
-        console.log(res.data.consulting_times, "ConsultingTime");
-        setData(res.data.consulting_times);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
+    if (props.doctor) {
+      axios
+        .get(`/api/v1/consulting_times/user/${props.doctor}`)
+        .then((res) => {
+          console.log(res.data.consulting_times, "ConsultingTime");
+          setData(res.data.consulting_times);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.response?.data?.message + "!");
+        });
+    }
   };
 
   const handleConsulting = (e) => {
@@ -80,6 +82,36 @@ export default function Consulting(props) {
             Old Case{" "}
           </label>
         </div>
+        {props.name && (
+          <div>
+            <div className="flex gap-5 m-2">
+              <label className="text-lg text-end w-1/3 mr-2">Name :</label>
+              <input
+                type="text"
+                className="py-1 px-2  border-black w-[40vh]"
+                value={props.name}
+              />
+            </div>
+            <div className="flex gap-5 m-2">
+              <label className="text-lg text-end w-1/3 mr-2">
+                Mobile Number:
+              </label>
+              <input
+                type="text"
+                className="py-1 px-2  border-black w-[40vh]"
+                value={props.nubmer}
+              />
+            </div>
+            <div className="flex gap-5 m-2">
+              <label className="text-lg text-end w-1/3 mr-2">Email :</label>
+              <input
+                type="text"
+                className="py-1 px-2  border-black w-[40vh]"
+                value={props.email}
+              />
+            </div>
+          </div>
+        )}
         <div className="flex gap-5 m-2">
           <label className="text-lg text-end w-1/3 mr-2">
             Select the Date:{" "}
@@ -118,7 +150,7 @@ export default function Consulting(props) {
             style={{ backgroundColor: "black" }}
             onClick={handleSubmit}
           >
-            Submit
+            Create Appointment
           </button>
         </div>
       </form>
