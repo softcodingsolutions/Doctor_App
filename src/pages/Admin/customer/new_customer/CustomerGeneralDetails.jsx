@@ -113,7 +113,6 @@ function CustomerGeneralDetails({
         language: storedData.language || "",
         gender: storedData.gender || "select",
         weight: storedData.weight || "",
-        whatsapp: storedData.whatsapp || "",
       });
       setGetDoctorId(storedData.doctorId || "");
     }
@@ -266,16 +265,6 @@ function CustomerGeneralDetails({
                       hook={register("mobile", {
                         required: true,
                       })}
-                    />
-                  </div>
-                  <div className="flex gap-5 m-2">
-                    <UserDetailsInput
-                      errors={errors.whatsapp}
-                      name="whatsapp"
-                      type="number"
-                      label="Whatsapp Number"
-                      placeholder="whatsapp number"
-                      hook={register("whatsapp")}
                     />
                   </div>
                 </div>

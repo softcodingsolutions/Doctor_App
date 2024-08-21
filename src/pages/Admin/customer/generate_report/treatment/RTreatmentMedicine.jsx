@@ -8,16 +8,18 @@ import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentB
 import Swal from "sweetalert2";
 import { Box, Chip, Option, Select } from "@mui/joy";
 import InsideLoader from "../../../../InsideLoader";
+import { debounce } from "lodash";
 
 function RTreatmentMedicine() {
   const { sendWeightReason, mappingPackages, setStoreData, storeData } =
     useOutletContext();
   const [getPredictionMedicine, setGetPredictionMedicine] = useState([]);
   const [getMedicines, setGetMedicines] = useState([]);
+  const [filteredMedicines, setFilteredMedicines] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [dropdownValues, setDropdownValues] = useState({});
 
   const handleGetMedicines = () => {
@@ -42,6 +44,23 @@ function RTreatmentMedicine() {
         alert(err.response?.data?.message + "!");
       });
   };
+
+  const handleSearchTerm = (value) => {
+    setSearchTerm(value);
+    filterMedicines(value); // Call the filter function
+  };
+
+  // Debounce the search to reduce unnecessary filtering
+  const filterMedicines = debounce((term) => {
+    if (term) {
+      const filtered = getMedicines.filter((medicine) =>
+        medicine.medicine_name.toLowerCase().includes(term.toLowerCase())
+      );
+      setFilteredMedicines(filtered);
+    } else {
+      setFilteredMedicines(getMedicines); // Show all medicines if search term is empty
+    }
+  }, 300);
 
   const handleToggleCheckboxes = () => {
     setShowCheckboxes(!showCheckboxes);
@@ -155,13 +174,17 @@ function RTreatmentMedicine() {
     handleGetMedicines();
   }, [sendWeightReason]);
 
+  useEffect(() => {
+    filterMedicines(searchTerm);
+  }, [getMedicines, searchTerm]);
+
   if (loading) {
     return <InsideLoader />;
   }
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[74vh] bg-white ">
+      <div className="rounded-lg bg-card h-[80vh] bg-white ">
         <div className="flex px-4 py-2 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             {!showCheckboxes && (
@@ -173,6 +196,20 @@ function RTreatmentMedicine() {
 
             {showCheckboxes && (
               <div className="font-[550] text-lg">
+                No. of medicines checked: {selectedCheckboxes.length}
+              </div>
+            )}
+
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => handleSearchTerm(e.target.value)}
+              placeholder="Search for Medicines"
+              className="py-2 px-4 rounded-md border border-gray-800 w-1/2 focus:outline-none focus:ring-1 focus:ring-black"
+            />
+
+            {showCheckboxes && (
+              <div className="font-[550] text-lg invisible">
                 No. of medicines checked: {selectedCheckboxes.length}
               </div>
             )}
@@ -205,7 +242,7 @@ function RTreatmentMedicine() {
                 </tr>
               </thead>
               <tbody>
-                {getMedicines.length === 0 ? (
+                {filteredMedicines.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -215,7 +252,7 @@ function RTreatmentMedicine() {
                     </th>
                   </tr>
                 ) : (
-                  getMedicines.map((val, index) => {
+                  filteredMedicines.map((val, index) => {
                     return (
                       <tr
                         className={`${

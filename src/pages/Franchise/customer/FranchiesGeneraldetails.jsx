@@ -61,7 +61,6 @@ function FranchiesGeneraldetails({
         language: storedData.language || "",
         gender: storedData.gender || "select",
         weight: storedData.weight || "",
-        whatsapp: storedData.whatsapp || "",
       });
     }
   }, []);
@@ -156,16 +155,6 @@ function FranchiesGeneraldetails({
                       })}
                     />
                   </div>
-                  <div className="flex gap-5 m-2">
-                    <UserDetailsInput
-                      errors={errors.whatsapp}
-                      name="whatsapp"
-                      type="number"
-                      label="Whatsapp Number"
-                      placeholder="whatsapp number"
-                      hook={register("whatsapp")}
-                    />
-                  </div>
                 </div>
 
                 <div className="flex flex-col">
@@ -231,7 +220,8 @@ function FranchiesGeneraldetails({
                       hook={register("refferedBy")}
                     />
                   </div>
-                  {context[1]?.doctor?.first_name?.toLowerCase() === "bhavesh" && (
+                  {context[1]?.doctor?.first_name?.toLowerCase() ===
+                    "bhavesh" && (
                     <div className="flex gap-5 m-5">
                       <label className="text-lg text-end w-1/3 mr-2">
                         Overweight Since:

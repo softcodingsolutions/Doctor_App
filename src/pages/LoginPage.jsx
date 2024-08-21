@@ -83,7 +83,7 @@ function LoginPage() {
                 title: `Welcome ${res.data?.user?.email}!`,
               });
             } else {
-              navigate("/user/user-diagnosis/profile");
+              navigate("/user/user-diagnosis/past-history");
               Toast.fire({
                 icon: "success",
                 title: `Welcome ${res.data?.user?.email}!`,
@@ -113,7 +113,7 @@ function LoginPage() {
     } else if (role === "receptionist") {
       navigate("/receptionist/appointment/home");
     } else if (role === "patient") {
-      navigate("/user/user-diagnosis/profile");
+      navigate("/user/user-diagnosis/past-history");
     }
   }, []);
 
