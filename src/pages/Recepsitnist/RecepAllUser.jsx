@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import InsideLoader from "../InsideLoader";
+import Button from "@mui/joy/Button";
 
 function RecepAllUsers() {
   const navigate = useNavigate();
@@ -30,6 +31,10 @@ function RecepAllUsers() {
 
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
+  };
+
+  const handleInventory = (caseNumber) => {
+    navigate(`/receptionist/bill-history`, { state: { caseNumber } });
   };
 
   useEffect(() => {
@@ -148,6 +153,15 @@ function RecepAllUsers() {
                                 " " +
                                 val?.doctor?.last_name}
                             </div>
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <Button
+                              variant="outlined"
+                              color="neutral"
+                              onClick={() => handleInventory(val.case_number)}
+                            >
+                              Bill History
+                            </Button>
                           </td>
                         </tr>
                       )

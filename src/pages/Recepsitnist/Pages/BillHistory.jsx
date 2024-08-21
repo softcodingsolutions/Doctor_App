@@ -2,35 +2,37 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "@mui/joy/Button";
+import { useLocation } from "react-router-dom";
 
-
-export default function BillHistory() {
+export default function BillHistory(props) {
+  const location = useLocation();
+  const { caseNumber } = location.state || {};
   const context = useOutletContext();
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [userDetails, setUserDetails] = useState({});
   const [packageDetail, setPackageDetail] = useState({});
   const [bills, setBills] = useState([]);
 
-  const handleSearchTerm = (value) => {
-    setSearchTerm(value);
-  };
+  // const handleSearchTerm = (value) => {
+  //   setSearchTerm(value);
+  // };
 
   const handleInventory = () =>{
     navigate('../generatebill')
   }
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      setDebouncedSearchTerm(searchTerm);
-    }
-  };
+  // const handleKeyDown = (event) => {
+  //   if (event.key === "Enter") {
+  //     setDebouncedSearchTerm(searchTerm);
+  //   }
+  // };
 
   useEffect(() => {
-    if (debouncedSearchTerm) {
+    if (caseNumber) {
       axios
         .get(
-          `/api/v1/bills?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&email=${debouncedSearchTerm}`
+          `/api/v1/bills?case_number=${caseNumber}`
         )
         .then((res) => {
           console.log(res, "BILL HISTORY");
@@ -43,7 +45,7 @@ export default function BillHistory() {
           alert("USER NOT FOUND");
         });
     }
-  }, [debouncedSearchTerm]);
+  }, [caseNumber, debouncedSearchTerm]);
 
   return (
     <div className="flex w-full">
@@ -69,12 +71,8 @@ export default function BillHistory() {
               <div className="text-2xl font-semibold text-center mb-4">
                 Bill History
               </div>
-              <div className="flex gap-5">
-                <Button variant="outlined" color="neutral" onClick={handleInventory}>
-                  Generate Bill
-                </Button>
-              </div>
-              <div className="flex gap-5 p-2 w-full mb-4">
+              
+              {/* <div className="flex gap-5 p-2 w-full mb-4">
                 <input
                   type="text"
                   value={searchTerm}
@@ -83,7 +81,7 @@ export default function BillHistory() {
                   placeholder="Search User through Case Number/Phone Number"
                   className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-              </div>
+              </div> */}
               <div className="w-full">
                 <div className="flex gap-48">
                   <div className="text-lg font-bold mb-4">

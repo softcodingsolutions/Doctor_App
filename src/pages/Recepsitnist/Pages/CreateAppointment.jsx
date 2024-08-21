@@ -17,7 +17,8 @@ export default function CreateAppointment() {
   const [machineList, setMachineList] = useState([]);
   const [machineConsultingTime, setMachineConsultingTime] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [newCase, setNewCase] = useState(false);
+  const [oldCase, setOldCase] = useState(false);
   const handleShow = () => {
     axios
       .get(`/api/v1/appointments`)
@@ -41,6 +42,14 @@ export default function CreateAppointment() {
     }
   };
 
+  const handleNew = () => {
+    setNewCase(true);
+    setOldCase(false);
+  };
+  const handleOld = () => {
+    setNewCase(false);
+    setOldCase(true);
+  };
   useEffect(() => {
     if (debouncedSearchTerm) {
       axios
@@ -61,12 +70,7 @@ export default function CreateAppointment() {
             .get(`/api/v1/appointments/user_appointments_count/${userId}`)
             .then((res) => {
               console.log(res, "COUNTT");
-              const count = res.data.appointments_count;
-              if (count > 0) {
-                setCase("old");
-              } else {
-                setCase("new");
-              }
+  
             })
             .catch((err) => {
               console.log(err);
@@ -115,35 +119,52 @@ export default function CreateAppointment() {
           <div className="text-xl font-semibold">
             Create Consulting Appointment
           </div>
-
-          <div className="flex gap-5 p-2 w-full">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => handleSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Search User through Case Number/Phone Number/Email"
-              className="py-1 px-2 rounded-md border border-black w-full"
-            />
+          <div className="flex flex-row w-full">
+            <button
+              onClick={handleNew}
+              className="min-w-[50%] border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
+            >
+              New Case
+            </button>
+            <button
+              onClick={handleOld}
+              className="min-w-[50%] border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
+            >
+              Follow Up(Old Case)
+            </button>
           </div>
 
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <form className="text-lg">
+              <div className="flex gap-5 p-2 w-full">
+                <label>Search:</label>
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => handleSearchTerm(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Search User through Case Number/Phone Number/Email"
+                  className="py-1 px-2 rounded-md border border-black w-full"
+                />
+              </div>
               <div className="flex gap-5 m-5">
-                <label className="text-lg text-end w-1/3 mr-2">Doctor</label>
-                <h2 className="py-1 px-2 rounded-md border border-black w-[40vh]">
+                <label className="text-lg text-end w-1/3 mr-2">Doctor : </label>
+                <h2 className="">
                   {doctorName
                     ? doctorName.first_name + " " + doctorName.last_name
                     : "Doctor Name"}
                 </h2>
               </div>
               <div className="flex gap-5 m-5">
-                {Case === "old" ? (
+                {oldCase ? (
                   <Oldcase
                     doctor={doctorList}
                     user={userId}
                     machine={machineList}
                     machineTime={machineConsultingTime}
+                    name={name}
+                    number={mobileNumber}
+                    email={email}
                   />
                 ) : (
                   <Newcase

@@ -92,7 +92,7 @@ export default function MachineDetails() {
       .then((res) => {
         const formdata = new FormData();
         formdata.append("machine_detail[name]", inputMachineName);
-        // formdata.append("machine_detail[quantity]", inputQuantity);
+        formdata.append("machine_detail[quantity]", 1);
         // formdata.append("machine_detail[brief]", inputBrief);
         formdata.append("machine_detail[user_id]", doctorId);
         formdata.append("client_id", res.data?.client_id);
@@ -143,7 +143,7 @@ export default function MachineDetails() {
   ) => {
     setEditIndex(index);
     setEditedMachineName(machineName);
-    // setEditedQuantity(quantity);
+    setEditedQuantity(quantity);
     // setEditedBrief(brief);
     setEditedSlot(slot);
     setEditedDoctorId(doctorId);
