@@ -7,7 +7,7 @@ import InsideLoader from "../../InsideLoader";
 import img from "../../../assets/images/doctor-img.jpg";
 
 function CustomerUserDiagnosis() {
-  const [selectedId, setSelectedId] = useState("1");
+  const [selectedId, setSelectedId] = useState("2");
   const [getCustomer, setGetCustomer] = useState([]);
   const [getAdmin, setGetAdmin] = useState([]);
   const id = localStorage.getItem("userId");

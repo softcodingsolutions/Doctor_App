@@ -13,7 +13,7 @@ import CustomerQuestionsPart2 from "./new_customer/CustomerQuestionsPart2";
 import QueCheckout from "../../User/Questions/QueCheckout";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Loader from "../../Loader";
 
 const steps = [
@@ -27,6 +27,7 @@ const steps = [
 ];
 
 function NewCustomer() {
+  const context = useOutletContext();
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
@@ -124,6 +125,7 @@ function NewCustomer() {
                     timer: 1500,
                   });
                   localStorage.removeItem("client_email");
+                  context?.[2]();
                   navigate("../../admin/patients/all-users");
                 }
               })

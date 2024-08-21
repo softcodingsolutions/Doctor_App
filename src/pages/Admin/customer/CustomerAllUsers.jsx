@@ -76,7 +76,7 @@ function CustomerAllUsers() {
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[92vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-4">
+        <div className="flex p-4 h-full flex-col space-y-1">
           <div className="flex gap-5 p-2 w-full">
             <input
               type="text"
@@ -92,6 +92,10 @@ function CustomerAllUsers() {
               Add New
             </button>
           </div>
+          <div className="flex items-center justify-end gap-2">
+            <div className="w-4 h-4 bg-red-100 border border-gray-800">{" "}</div>
+            <div>- New Patient</div>
+          </div>
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
@@ -106,7 +110,6 @@ function CustomerAllUsers() {
                   <ThComponent name="Mobile" />
                   <ThComponent name="City" />
                   <ThComponent name="Registration Through" />
-                  <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -124,7 +127,7 @@ function CustomerAllUsers() {
                   getParticularCustomer.map((val) => {
                     return (
                       val.role === "patient" && (
-                        <tr key={val.id}>
+                        <tr key={val.id} className={`${val.treatment_packages?.length === 0 ? "bg-red-100" : ""}`}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <div className="flex items-center text-lg">
                               {val.case_number}
