@@ -392,7 +392,7 @@ function ReportProgress() {
                             {val.is_solved === true && (
                               <TdComponent
                                 things={
-                                  <div className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md hover:bg-[#03c41a] hover:text-white">
+                                  <div className="font-semibold text-blue-600 border border-gray-300 p-1 rounded-md">
                                     <FaRegThumbsUp size={20} />
                                   </div>
                                 }
@@ -401,7 +401,7 @@ function ReportProgress() {
                             {val.is_solved === false && (
                               <TdComponent
                                 things={
-                                  <div className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#cd2f03] hover:text-white">
+                                  <div className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md">
                                     <FaRegThumbsDown size={20} />
                                   </div>
                                 }

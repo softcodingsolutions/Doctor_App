@@ -37,7 +37,7 @@ import CustomerGeneralDetails from "./pages/Admin/customer/new_customer/Customer
 import NewCustomer from "./pages/Admin/customer/NewCustomer";
 import ReportPackage from "./pages/Admin/customer/generate_report/ReportPackage";
 import ReportPastHistory from "./pages/Admin/customer/generate_report/ReportPastHistory";
-import ReportProfile from "./pages/Admin/customer/generate_report/ReportProfile";
+// import ReportProfile from "./pages/Admin/customer/generate_report/ReportProfile";
 import ReportQuestions from "./pages/Admin/customer/generate_report/ReportQuestions";
 import ReportProgress from "./pages/Admin/customer/generate_report/ReportProgress";
 import ReportTreatment from "./pages/Admin/customer/generate_report/ReportTreatment";
@@ -120,8 +120,7 @@ function App() {
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
-            <Route path="profile" element={<ReportProfile />} />
-            <Route path="questions" element={<ReportQuestions />} />
+            {/* <Route path="profile" element={<ReportProfile />} /> */}
             <Route path="past-history" element={<ReportPastHistory />} />
             <Route path="progress-report" element={<ReportProgress />} />
             <Route path="generate-report" element={<ReportGenerate />} />
@@ -278,7 +277,7 @@ function App() {
           <Route path="generatebill" element={<GenerateBill />} />
 
           {/* medical inventory */}
-          
+
           <Route path="medical-inventory" element={<MedicalInventory />} />
 
           {/* bill history */}

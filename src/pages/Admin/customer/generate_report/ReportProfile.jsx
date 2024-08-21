@@ -116,14 +116,6 @@ function ReportProfile() {
                 <div className="w-1/2 text-right break-words">Email:</div>
                 <div className="w-1/2 pl-3">{getCustomer[1]?.email}</div>
               </div>
-              {/* <div className="flex justify-between w-[25rem]">
-                <div className="w-1/2 text-right break-words">
-                  Whatsapp Number:
-                </div>
-                <div className="w-1/2 pl-3">
-                  {getCustomer[1]?.personal_detail?.whatsapp_number}
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

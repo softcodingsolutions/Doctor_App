@@ -54,7 +54,6 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
         language: storedData?.language || "",
         gender: storedData?.gender || "select",
         weight: storedData?.weight || "",
-        whatsapp: storedData?.whatsapp || "",
       });
     } else {
       console.log("Stored data is not available");
@@ -158,16 +157,6 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                       hook={register("mobile", {
                         required: true,
                       })}
-                    />
-                  </div>
-                  <div className="flex gap-5 m-2">
-                    <UserDetailsInput
-                      errors={errors.whatsapp}
-                      name="whatsapp"
-                      type="number"
-                      label="Whatsapp Number"
-                      placeholder="whatsapp number"
-                      hook={register("whatsapp")}
                     />
                   </div>
                 </div>

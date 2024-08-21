@@ -79,7 +79,6 @@ function UserQuestions() {
             reffered_by: storeData?.generalDetails?.refferedBy,
             weight: storeData?.generalDetails?.weight,
             height: storeData?.generalDetails?.height,
-            whatsapp_number: storeData?.generalDetails?.whatsapp,
             current_diet: JSON.stringify(storeData?.diet),
             family_reasons: JSON.stringify(storeData?.familyHistory),
             complaints: JSON.stringify(storeData?.complains),
