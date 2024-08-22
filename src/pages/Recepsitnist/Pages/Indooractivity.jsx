@@ -47,55 +47,21 @@ const getCheckedCount = (appointments, machineId, time, machines) => {
 
   return appointment ? appointment.id : null;
 };
-
-const handleCancel = (appointmentId) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-  if (appointmentId) {
-    axios
-      .delete(`/api/v1/appointments/${appointmentId}`)
-      .then((res) => {
-        console.log("Appointment cancelled:", res);
-        Swal.fire({
-          title: "Deleted!",
-          text: `Appointment has been deleted.`,
-          icon: "success",
-        });
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.error("Error cancelling appointment:", err);
-        alert("Failed to cancel appointment.");
-      });
-  }
-}
-});
-};
-
 const UserTable = ({
   userName,
   machines,
   timeSlots,
   handleButtonClick,
   appointments,
-  handleCancel,
 }) => {
   return (
-    <div className="m-1">
+    <div className="m-1 w-full overflow-x-auto">
       <div className="flex flex-col h-full space-y-4">
         <div className="text-lg font-medium text-center mt-5">{userName}</div>
-        <table className="divide-y min-w-80 divide-gray-200 overflow-auto">
+        <table className="min-w-80 divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+              <th className="px-5 sm:px-5 py-3 text-left text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wider">
                 Time
               </th>
               {machines
@@ -103,7 +69,7 @@ const UserTable = ({
                 .map((machine) => (
                   <th
                     key={machine.id}
-                    className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider"
+                    className="px-5 sm:px-2 py-3 text-left text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wider"
                   >
                     {machine.name}
                   </th>
@@ -131,30 +97,23 @@ const UserTable = ({
                   return (
                     <td
                       key={machine.id}
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-900"
+                      className="px-5 sm:px-2 py-3 text-left text-xs sm:text-sm font-medium text-gray-900"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-center sm:justify-start">
                         <div
                           onClick={() =>
                             handleButtonClick(
                               machine.id,
                               machine.doctor_id,
-                              time
+                              time,
+                              appointments,
+                              machines
                             )
                           }
                           className={`w-4 h-4 border ${
                             isBooked ? "bg-green-500" : "bg-white"
                           } border-gray-400 rounded cursor-pointer flex items-center justify-center`}
                         ></div>
-                        {isBooked && (
-                          <button
-                            onClick={() => handleCancel(appointmentId)}
-                            className="ml-2 text-red-500"
-                            title="Cancel Appointment"
-                          >
-                            <GiCancel size={20} />
-                          </button>
-                        )}
                       </div>
                     </td>
                   );
@@ -167,7 +126,7 @@ const UserTable = ({
                     bookedCount >= 7 ? "pointer-events-none opacity-50" : ""
                   }`}
                 >
-                  <td className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                  <td className="px-2 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-900">
                     {time}
                   </td>
                   {rowItems}
@@ -193,6 +152,7 @@ export default function Indooractivity() {
     doctorName: "",
     time: "",
     caseNumber: "",
+    appointmentId: "",
   });
   const [consultingTime, setConsultingTime] = useState(
     new Date().toISOString().split("T")[0]
@@ -214,43 +174,63 @@ export default function Indooractivity() {
       });
   };
 
-  const handleButtonClick = (machineId, doctorId, timeSlot) => {
+  const handleButtonClick = (
+    machineId,
+    doctorId,
+    timeSlot,
+    appointments,
+    machines
+  ) => {
     const timeString = timeSlot;
     const [time, modifier] = timeString.split(" ");
     let [hours, minutes] = time.split(":");
-
+  
     if (modifier === "PM" && hours !== "12") {
       hours = parseInt(hours, 10) + 12;
     }
     if (modifier === "AM" && hours === "12") {
       hours = "00";
     }
-
+  
     const timeIn24HourFormat = `${hours}:${minutes}`;
-
-    const existingAppointment = appointments.find(
-      (data) => (data.machine_detail.id === machineId) && (data.time === timeIn24HourFormat)
+    const appointmentId = getCheckedCount(
+      appointments,
+      machineId,
+      timeSlot,
+      machines
     );
-    console.log(existingAppointment, "ASD");
-    if (existingAppointment) {
-      setDialogData({
-        name: existingAppointment.user?.first_name || "",
-        number: existingAppointment.user?.phone_number || "",
-        machineName:
-          machines.find((machine) => machine.id === machineId)?.name || "",
-        doctorId: existingAppointment.doctor?.id || "",
-        doctorName:
-          existingAppointment.doctor?.first_name || "Doctor not assigned",
-        time: existingAppointment.time || timeSlot,
-        caseNumber: existingAppointment?.user?.case_number || "",
-        machineId: machineId,
-      });
-      setAssignedData(true);
+    const isBooked = !!appointmentId;
+    console.log(appointmentId);
+  
+    if (isBooked) {
+      const existingAppointment = appointments.find(
+        (appointment) =>
+          appointment.machine_detail_id === machineId &&
+          appointment.time === timeIn24HourFormat
+      );
+  
+      if (existingAppointment) {
+        setDialogData({
+          name: existingAppointment.user?.first_name || "",
+          number: existingAppointment.user?.phone_number || "",
+          machineName:
+            machines.find((machine) => machine.id === machineId)?.name || "",
+          doctorId: existingAppointment.doctor?.id || "",
+          doctorName:
+            existingAppointment.doctor?.first_name || "Doctor not assigned",
+          time: existingAppointment.time || timeSlot,
+          caseNumber: existingAppointment?.user?.case_number || "",
+          machineId: machineId,
+          appointmentId: existingAppointment?.id,
+        });
+        setAssignedData(true);
+        setIsDialogOpen(true); 
+      }
     } else {
       const machine = machines.find((m) => m.id === machineId);
       const doctorName = machine?.user?.first_name || "Doctor not assigned";
       const actualDoctorId = machine?.user?.id || "ID not assigned";
-
+  
       if (machine) {
         setDialogData({
           name: "",
@@ -262,13 +242,12 @@ export default function Indooractivity() {
           caseNumber: "",
           machineId: machineId,
         });
+        setAssignedData(false); 
+        setIsDialogOpen(true); 
       }
-      setAssignedData(false);
     }
-
-    setIsDialogOpen(true);
-};
-
+  };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -321,7 +300,7 @@ export default function Indooractivity() {
         setIsDialogOpen(false);
         alert("Successfully created your Machine Consulting Appointment!");
         resetDialog();
-        handleDisplay();
+        handleDisplay(consultingTime);
       })
       .catch((err) => {
         console.error(err.response?.data?.message || "An error occurred!");
@@ -346,8 +325,40 @@ export default function Indooractivity() {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
   };
+  const handleCancel = (appointmentId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (appointmentId) {
+          axios
+            .delete(`/api/v1/appointments/${appointmentId}`)
+            .then((res) => {
+              console.log("Appointment cancelled:", res);
+              Swal.fire({
+                title: "Deleted!",
+                text: `Appointment has been deleted.`,
+                icon: "success",
+              });
+              handleDisplay(consultingTime);
+              isDialogOpen(false);
+            })
+            .catch((err) => {
+              console.error("Error cancelling appointment:", err);
+              alert("Failed to cancel appointment.");
+            });
+        }
+      }
+    });
+  };
   useEffect(() => {
-    handleDisplay();
+    handleDisplay(consultingTime);
     axios
       .get(`/api/v1/machine_details`)
       .then((res) => {
@@ -358,7 +369,7 @@ export default function Indooractivity() {
         console.error(err);
         alert(err.response?.data?.message || "An error occurred!");
       });
-  }, []);
+  }, [consultingTime]);
 
   return (
     <div className="w-full p-2">
@@ -379,7 +390,7 @@ export default function Indooractivity() {
               />
             </div>
             <div>
-              <div className="text- font-semibold">
+              <div className="text-md font-semibold ">
                 Date : {formatDate(consultingTime)}
               </div>
             </div>
@@ -412,34 +423,36 @@ export default function Indooractivity() {
                     <label className="block text-md font-medium">
                       Mobile Number : {dialogData.number}
                     </label>
-                   
                   </div>
                   <div className="mt-4">
                     <label className="block text-md font-medium">
                       Case Number : {dialogData.caseNumber}
                     </label>
-                    
                   </div>
                   <div className="mt-4">
                     <label className="block text-md font-medium ">
                       Machine Name : {dialogData.machineName}
                     </label>
-                   
                   </div>
                   <div className="mt-4">
                     <label className="block text-md font-medium ">
                       Doctor : {dialogData.doctorName}
                     </label>
-                    
                   </div>
                   <div className="mt-4">
                     <label className="block text-md font-medium ">
                       Time : {dialogData.time}
                     </label>
-                  
                   </div>
                   <div className="mt-4 flex justify-end space-x-2">
-                  
+                    <button
+                      onClick={() => handleCancel(dialogData.appointmentId)}
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-700 shadow-sm hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      title="Cancel Appointment"
+                    >
+                      Cancel the Appointment
+                    </button>
+
                     <button
                       type="button"
                       onClick={closeDialog}

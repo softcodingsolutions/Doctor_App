@@ -3,7 +3,6 @@ import axios from "axios";
 import { useDebounce } from "use-debounce";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "@mui/joy/Button";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 export default function GenerateBill() {
   const context = useOutletContext();
@@ -15,9 +14,22 @@ export default function GenerateBill() {
   const [medicines, setMedicines] = useState([]);
   const [packageDetail, setPackageDetail] = useState({});
   const [price, setPrice] = useState("");
+  const [pay, setPay] = useState("");
+  const [remaining, setRemaining] = useState("");
   const [totalQuantities, setTotalQuantities] = useState([]);
 
- 
+  const resetForm = () => {
+    setSearchTerm("");
+    setId(0);
+    setUser({});
+    setMedicines([]);
+    setPackageDetail({});
+    setPrice("");
+    setPay("");
+    setRemaining("");
+    setTotalQuantities([]);
+  };
+
   const handleBill = () => {
     const billItems = medicines.map((med, index) => ({
       medicine_name: med.medicine_name,
@@ -29,6 +41,8 @@ export default function GenerateBill() {
         total_price: price,
         user_id: id,
         bill_items: JSON.stringify(billItems),
+        remaining_payment: remaining,
+        paid_payment: pay,
       },
     };
 
@@ -39,6 +53,7 @@ export default function GenerateBill() {
       .then((res) => {
         console.log("Bill created successfully", res);
         alert("Bill created successfully");
+        resetForm(); // Reset the form after successful submission
       })
       .catch((err) => {
         console.log("Error creating bill", err);
@@ -46,28 +61,28 @@ export default function GenerateBill() {
       });
   };
 
-  const formatDuration = (duration) => {
-    const durationMap = {
-      "before-meal": "Before-meal",
-      "after-meal": "After-meal",
-    };
-    return durationMap[duration] || duration;
-  };
-
-  const handleTotalMedicine = (index, value) => {
-    const updatedQuantities = [...totalQuantities];
-    updatedQuantities[index] = value;
-    setTotalQuantities(updatedQuantities);
-  };
-
   const handlePrice = (e) => {
-    setPrice(e.target.value);
+    const totalPrice = e.target.value;
+    setPrice(totalPrice);
+    setRemaining(totalPrice - pay);
+  };
+
+  const handlePay = (e) => {
+    const paidAmount = e.target.value;
+    setPay(paidAmount);
+    setRemaining(price - paidAmount);
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       setSearchTerm(e.target.value);
     }
+  };
+
+  const formatDuration = (duration) => {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+    return `${hours}h ${minutes}m`;
   };
 
   useEffect(() => {
@@ -137,7 +152,7 @@ export default function GenerateBill() {
               <div className="text-2xl font-semibold text-center">
                 Generate Bill
               </div>
-              
+
               <div className="flex gap-5 w-full py-3">
                 <input
                   type="text"
@@ -229,16 +244,39 @@ export default function GenerateBill() {
                   </table>
                 </div>
                 <div className="m-5 justify-end flex gap-4">
-                  <div>
+                  <div className="">
                     <label className="font-semibold">Total Price: </label>
                     <input
                       type="text"
                       className="border border-blue-gray-400 rounded-md p-2"
+                      value={price}
                       onChange={handlePrice}
                     />
                   </div>
-                  <Button variant="solid" color="primary" onClick={handleBill}>
-                    Generate
+                  <div className="flex flex-col gap-2">
+                    <div>
+                      <label className="font-semibold">Paid : </label>
+                      <input
+                        type="text"
+                        className="border border-blue-gray-400 rounded-md p-2"
+                        value={pay}
+                        onChange={handlePay}
+                      />
+                    </div>
+                    <div>
+                      <label className="font-semibold">Remaining : </label>
+                      <input
+                        type="text"
+                        className="border border-blue-gray-400 rounded-md p-2"
+                        value={remaining}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-end mt-6">
+                  <Button onClick={handleBill} variant="solid">
+                    Generate Bill
                   </Button>
                 </div>
               </div>

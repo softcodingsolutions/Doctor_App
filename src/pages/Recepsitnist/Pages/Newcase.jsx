@@ -80,11 +80,6 @@ export default function Newcase(props) {
   return (
     <div>
       <form className="text-lg">
-        <div className="flex justify-center gap-5 ">
-          <lebal className="text-lg font-semibold text-center mr-2 ">
-            New Case{" "}
-          </lebal>
-        </div>
         {props.name && (
           <div>
             <div className="flex gap-5 m-2">

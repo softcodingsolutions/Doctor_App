@@ -19,21 +19,22 @@ export default function BillHistory(props) {
   //   setSearchTerm(value);
   // };
 
-  const handleInventory = () =>{
-    navigate('../generatebill')
-  }
+  const handleInventory = () => {
+    navigate("../generatebill");
+  };
   // const handleKeyDown = (event) => {
   //   if (event.key === "Enter") {
   //     setDebouncedSearchTerm(searchTerm);
   //   }
   // };
 
+  const handleEdit = () =>{
+
+  }
   useEffect(() => {
     if (caseNumber) {
       axios
-        .get(
-          `/api/v1/bills?case_number=${caseNumber}`
-        )
+        .get(`/api/v1/bills?case_number=${caseNumber}`)
         .then((res) => {
           console.log(res, "BILL HISTORY");
           setUserDetails(res.data?.user);
@@ -71,7 +72,7 @@ export default function BillHistory(props) {
               <div className="text-2xl font-semibold text-center mb-4">
                 Bill History
               </div>
-              
+
               {/* <div className="flex gap-5 p-2 w-full mb-4">
                 <input
                   type="text"
@@ -100,7 +101,8 @@ export default function BillHistory(props) {
                     <div>
                       Doctor Name:{" "}
                       <span className="font-medium">
-                        {userDetails?.doctor?.first_name} {userDetails?.doctor?.last_name}
+                        {userDetails?.doctor?.first_name}{" "}
+                        {userDetails?.doctor?.last_name}
                       </span>
                     </div>
                   </div>
@@ -124,12 +126,26 @@ export default function BillHistory(props) {
                 <div className="bg-white shadow-md rounded-lg overflow-hidden">
                   {bills.map((bill) => (
                     <div key={bill.id} className="mb-4">
-                      <div className="p-4 border-b">
+                      <div className="p-4 flex  border-b">
+                        <div>
                         <div className="font-semibold">Bill ID: {bill.id}</div>
                         <div>Total Price: {bill.total_price}</div>
+                        <div>Paid Price : {bill.paid_payment}</div>
+                        <div>Remaining Price : {bill.remaining_payment}</div>
                         <div>
                           Created At:{" "}
                           {new Date(bill.created_at).toLocaleString()}
+                        </div>
+                        </div>
+                        
+                        <div>
+                          <Button
+                            variant="solid"
+                            color="primary"
+                            onClick={handleEdit}
+                          >
+                            Edit
+                          </Button>
                         </div>
                       </div>
                       <table className="min-w-full divide-y divide-gray-200 overflow-auto">

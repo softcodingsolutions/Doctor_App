@@ -132,6 +132,11 @@ export default function Home() {
                 </button>
               )}
             </div>
+            <div className="flex justify-end text-right w-[25%]">
+              <div className="text-lg font-semibold">
+                Date : {formatDate(consultingTime)}
+              </div>
+            </div>
           </div>
           <div className="w-full flex flex-wrap xl:flex-nowrap justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <div className="flex w-full h-full items-center justify-center gap-1">
