@@ -18,6 +18,7 @@ export default function Home() {
   };
 
   const handleConsulting = (e) => {
+    console.log(e.target.value);
     setConsultingTime(e.target.value);
   };
 

@@ -120,7 +120,6 @@ function App() {
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
-            {/* <Route path="profile" element={<ReportProfile />} /> */}
             <Route path="past-history" element={<ReportPastHistory />} />
             <Route path="progress-report" element={<ReportProgress />} />
             <Route path="generate-report" element={<ReportGenerate />} />
@@ -153,7 +152,6 @@ function App() {
           <Route path="patients" element={<AdminCustomers />}>
             <Route path="all-users" element={<CustomerAllUsers />} />
             <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
-              {/* <Route path="profile" element={<ReportProfile />} /> */}
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />
@@ -220,7 +218,6 @@ function App() {
 
           {/* survey treatment */}
           <Route path="suvrey-treatment" element={<Surveytreatment />}>
-            {/* <Route path="survey-health-problem" element={<SurveyHealthProblem />} /> */}
             <Route
               path="survey-weight-gain-questions"
               element={<SurveyWeightGainQuestions />}
@@ -273,11 +270,11 @@ function App() {
               element={<Indooractivity />}
             />
           </Route>
+
           {/* generate bill */}
           <Route path="generatebill" element={<GenerateBill />} />
 
           {/* medical inventory */}
-
           <Route path="medical-inventory" element={<MedicalInventory />} />
 
           {/* bill history */}
@@ -296,8 +293,6 @@ function App() {
 
         {/* Franchise */}
         <Route path="franchise" element={<FranchiseMain />}>
-          {/* <Route path="dashboard" element={<FranchiseDashboard />} /> */}
-
           {/* user created by franchise */}
           <Route path="new-user" element={<FranchiseNewcustomer />}>
             <Route
@@ -306,11 +301,10 @@ function App() {
             />
           </Route>
 
-          {/* Franchise Customers */}
+          {/* franchise Customers */}
           <Route path="patients" element={<FranchiseCustomers />}>
             <Route path="all-users" element={<FranchiseAllCustomers />} />
             <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
-              {/* <Route path="profile" element={<ReportProfile />} /> */}
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />

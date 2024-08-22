@@ -134,15 +134,18 @@ function ReportTreatment() {
           role === "patient" ? "h-[85vh]" : "h-[89vh]"
         } bg-white`}
       >
-        <div className="flex px-4 py-3 h-full flex-col space-y-4">
+        <div className="flex px-4 py-3 h-full flex-col">
           <div className="w-full sm:flex p-1 items-end">
             <div className="sm:flex-grow flex flex-col justify-between overflow-x-hidden">
-              <div className="flex flex-wrap justify-evenly items-center gap-2 transition-transform">
-                <div className="flex items-center">
-                  <span className="mr-2 font-semibold">
-                    Select Weight Reason:{" "}
-                  </span>
-                  <Select required placeholder="Select">
+              <div className="flex flex-wrap items-center gap-4 transition-transform pb-2">
+                <div className="flex flex-col">
+                  <Select
+                    sx={{
+                      width: "250px",
+                    }}
+                    required
+                    placeholder="Select Weight Reason"
+                  >
                     {getWeightReason?.map((res) => {
                       return (
                         <Option
@@ -160,7 +163,18 @@ function ReportTreatment() {
                     })}
                   </Select>
                 </div>
-                <div className="flex flex-wrap space-x-3">
+                {!sendWeightReason && (
+                  <span className="text-red-500 font-medium text-sm -ml-3 mt-5">
+                    *Required
+                  </span>
+                )}
+                <div
+                  className={clsx(
+                    `flex flex-wrap space-x-3`,
+                    sendWeightReason === null &&
+                      "pointer-events-none opacity-50"
+                  )}
+                >
                   {reportTreatmentButtons.map((res) => {
                     return (
                       <Link
@@ -187,15 +201,21 @@ function ReportTreatment() {
                   </button>
                 </div>
               </div>
-              <Outlet
-                context={{
-                  sendWeightReason,
-                  mappingPackages,
-                  handleGetWeightReason,
-                  setStoreData,
-                  storeData,
-                }}
-              />
+              <div
+                className={clsx(
+                  sendWeightReason === null && "pointer-events-none opacity-50"
+                )}
+              >
+                <Outlet
+                  context={{
+                    sendWeightReason,
+                    mappingPackages,
+                    handleGetWeightReason,
+                    setStoreData,
+                    storeData,
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>

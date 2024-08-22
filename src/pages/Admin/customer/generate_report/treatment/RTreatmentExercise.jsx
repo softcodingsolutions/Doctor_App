@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentButtons";
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
-import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
 import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentExercise() {
@@ -14,7 +13,6 @@ function RTreatmentExercise() {
   const [getPredictionExercise, setGetPredictionExercise] = useState([]);
   const [getExercise, setGetExercise] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const handleGetExercise = () => {
@@ -38,10 +36,6 @@ function RTreatmentExercise() {
         setLoading(false);
         alert(err.response?.data?.message + "!");
       });
-  };
-
-  const handleToggleCheckboxes = () => {
-    setShowCheckboxes(!showCheckboxes);
   };
 
   const handleCheckboxChange = (e) => {
@@ -71,7 +65,7 @@ function RTreatmentExercise() {
     }
 
     console.log("Selected Exercise: ", selectedExercise);
-    setShowCheckboxes(false);
+
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
@@ -90,6 +84,16 @@ function RTreatmentExercise() {
       text: "Your selected exercises have been saved.",
     });
   };
+
+  const predictedExercises = getExercise.filter((diet) =>
+    getPredictionExercise.some((med) => med.id === diet.id)
+  );
+
+  const otherExercises = getExercise.filter(
+    (diet) => !getPredictionExercise.some((med) => med.id === diet.id)
+  );
+
+  const sortedExercises = [...predictedExercises, ...otherExercises];
 
   useEffect(() => {
     console.log("Updated storeData: ", storeData);
@@ -113,45 +117,22 @@ function RTreatmentExercise() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[74vh] bg-white ">
+      <div className="rounded-lg bg-card h-[80vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes && (
-              <SelectTreatmentButton
-                name="Select Exercise / Yoga"
-                function={handleToggleCheckboxes}
-              />
-            )}
-
-            {showCheckboxes && (
-              <div className="font-[550] text-lg">
-                No. of exercise checked: {selectedCheckboxes.length}
-              </div>
-            )}
-
-            {!showCheckboxes && (
-              <div className="font-[550] text-lg flex items-center">
-                Checked Exercise -{" "}
-                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-              </div>
-            )}
+            <div className="font-[550] text-lg">
+              No. of exercise checked: {selectedCheckboxes.length}
+            </div>
           </div>
 
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[95%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[75vh]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  {showCheckboxes ? (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="Select"
-                    />
-                  ) : (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
-                    />
-                  )}
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="Select"
+                  />
                   <ThComponent name="Exercise Name" />
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
@@ -162,7 +143,7 @@ function RTreatmentExercise() {
                 </tr>
               </thead>
               <tbody>
-                {getExercise.length === 0 ? (
+                {sortedExercises.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -172,7 +153,7 @@ function RTreatmentExercise() {
                     </th>
                   </tr>
                 ) : (
-                  getExercise.map((val, index) => {
+                  sortedExercises.map((val) => {
                     return (
                       <tr
                         className={`${
@@ -182,23 +163,16 @@ function RTreatmentExercise() {
                         } w-full`}
                         key={val.id}
                       >
-                        {showCheckboxes && (
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <input
-                              value={val.id}
-                              onChange={handleCheckboxChange}
-                              type="checkbox"
-                              defaultChecked={getPredictionExercise.some(
-                                (med) => med.id === val.id
-                              )}
-                            />
-                          </td>
-                        )}
-                        {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">{index + 1}</div>
-                          </td>
-                        )}
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <input
+                            value={val.id}
+                            onChange={handleCheckboxChange}
+                            type="checkbox"
+                            defaultChecked={getPredictionExercise.some(
+                              (med) => med.id === val.id
+                            )}
+                          />
+                        </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.name} />
                         </td>
@@ -242,11 +216,16 @@ function RTreatmentExercise() {
               </tbody>
             </table>
           </div>
-          {showCheckboxes && (
-            <div className="flex justify-center">
-              <SaveTreatmentButtons function={handleSave} />{" "}
+          <div className="flex justify-between">
+            <div className="font-[550] text-lg flex items-center invisible">
+              Checked Exercise -{" "}
             </div>
-          )}
+            <SaveTreatmentButtons function={handleSave} />{" "}
+            <div className="font-[550] text-lg flex items-center">
+              Mapped Exercise -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

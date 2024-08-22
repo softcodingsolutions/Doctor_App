@@ -12,6 +12,7 @@ function AdminMain() {
   const [showSidebar, onSetShowSidebar] = useState(false);
   const [doctorNewUser, setDoctorNewUser] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [trigger, setTrigger] = useState(0);
 
   const onSidebarHide = () => {
     onSetShowSidebar(true);
@@ -50,7 +51,7 @@ function AdminMain() {
 
   useEffect(() => {
     handleDoctorNewUser();
-  }, [doctorNewUser]);
+  }, [trigger]);
 
   useEffect(() => {
     handleGetAdmin();
@@ -83,7 +84,15 @@ function AdminMain() {
         showSidebar={showSidebar}
         newUser={doctorNewUser}
       />
-      <Outlet context={[onSidebarHide, admin, handleDoctorNewUser]} />
+      <Outlet
+        context={[
+          onSidebarHide,
+          admin,
+          handleDoctorNewUser,
+          doctorNewUser,
+          setTrigger,
+        ]}
+      />
     </div>
   );
 }

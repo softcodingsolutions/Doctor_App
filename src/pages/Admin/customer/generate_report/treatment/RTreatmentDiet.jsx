@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentButtons";
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
-import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
 import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentDiet() {
@@ -14,7 +13,6 @@ function RTreatmentDiet() {
   const [getPredictionDiet, setGetPredictionDiet] = useState([]);
   const [getDiet, setGetDiet] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const handleGetDiet = () => {
@@ -38,10 +36,6 @@ function RTreatmentDiet() {
         setLoading(false);
         alert(err.response?.data?.message + "!");
       });
-  };
-
-  const handleToggleCheckboxes = () => {
-    setShowCheckboxes(!showCheckboxes);
   };
 
   const handleCheckboxChange = (e) => {
@@ -71,7 +65,7 @@ function RTreatmentDiet() {
     }
 
     console.log("Selected Diet: ", selectedDiet);
-    setShowCheckboxes(false);
+
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
@@ -90,6 +84,16 @@ function RTreatmentDiet() {
       text: "Your selected diet have been saved.",
     });
   };
+
+  const predictedDiets = getDiet.filter((diet) =>
+    getPredictionDiet.some((med) => med.id === diet.id)
+  );
+
+  const otherDiets = getDiet.filter(
+    (diet) => !getPredictionDiet.some((med) => med.id === diet.id)
+  );
+
+  const sortedDiets = [...predictedDiets, ...otherDiets];
 
   useEffect(() => {
     const preSelectedDiet = getPredictionDiet.map((val) => val.id.toString());
@@ -111,45 +115,22 @@ function RTreatmentDiet() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[74vh] bg-white ">
+      <div className="rounded-lg bg-card h-[80vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes && (
-              <SelectTreatmentButton
-                name="Select Diet"
-                function={handleToggleCheckboxes}
-              />
-            )}
-
-            {showCheckboxes && (
-              <div className="font-[550] text-lg">
-                No. of Diet checked: {selectedCheckboxes.length}
-              </div>
-            )}
-
-            {!showCheckboxes && (
-              <div className="font-[550] text-lg flex items-center">
-                Checked Diet -{" "}
-                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-              </div>
-            )}
+            <div className="font-[550] text-lg">
+              No. of Diet checked: {selectedCheckboxes.length}
+            </div>
           </div>
 
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[95%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[75vh]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  {showCheckboxes ? (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="Select"
-                    />
-                  ) : (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
-                    />
-                  )}
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="Select"
+                  />
                   <ThComponent name="Diet Code" />
                   <ThComponent name="Diet Name" />
                   <ThComponent name="In English" />
@@ -161,7 +142,7 @@ function RTreatmentDiet() {
                 </tr>
               </thead>
               <tbody>
-                {getDiet.length === 0 ? (
+                {sortedDiets.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -171,7 +152,7 @@ function RTreatmentDiet() {
                     </th>
                   </tr>
                 ) : (
-                  getDiet.map((val, index) => {
+                  sortedDiets.map((val) => {
                     return (
                       <tr
                         className={`${
@@ -181,23 +162,16 @@ function RTreatmentDiet() {
                         } w-full`}
                         key={val.id}
                       >
-                        {showCheckboxes && (
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <input
-                              value={val.id}
-                              onChange={handleCheckboxChange}
-                              type="checkbox"
-                              defaultChecked={getPredictionDiet.some(
-                                (med) => med.id === val.id
-                              )}
-                            />
-                          </td>
-                        )}
-                        {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">{index + 1}</div>
-                          </td>
-                        )}
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <input
+                            value={val.id}
+                            onChange={handleCheckboxChange}
+                            type="checkbox"
+                            defaultChecked={getPredictionDiet.some(
+                              (med) => med.id === val.id
+                            )}
+                          />
+                        </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.code} />
                         </td>
@@ -244,11 +218,17 @@ function RTreatmentDiet() {
               </tbody>
             </table>
           </div>
-          {showCheckboxes && (
-            <div className="flex justify-center">
-              <SaveTreatmentButtons function={handleSave} />{" "}
+          <div className="flex justify-between">
+            <div className="font-[550] text-lg flex items-center invisible">
+              Checked Diet -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
             </div>
-          )}
+            <SaveTreatmentButtons function={handleSave} />{" "}
+            <div className="font-[550] text-lg flex items-center">
+              Mapped Diet -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

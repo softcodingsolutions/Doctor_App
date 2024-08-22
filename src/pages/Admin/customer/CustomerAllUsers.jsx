@@ -69,6 +69,13 @@ function CustomerAllUsers() {
     }
   }, [searchTerm, getCustomers]);
 
+  // Sort getParticularCustomer so that those with no treatment_packages come first
+  const sortedCustomers = getParticularCustomer.sort((a, b) => {
+    const aHasNoPackage = a.treatment_packages?.length === 0;
+    const bHasNoPackage = b.treatment_packages?.length === 0;
+    return bHasNoPackage - aHasNoPackage; // This will move customers with no packages to the front
+  });
+
   if (loading) {
     return <InsideLoader />;
   }
@@ -93,7 +100,7 @@ function CustomerAllUsers() {
             </button>
           </div>
           <div className="flex items-center justify-end gap-2">
-            <div className="w-4 h-4 bg-red-100 border border-gray-800">{" "}</div>
+            <div className="w-4 h-4 bg-red-300 border border-gray-800"> </div>
             <div>- New Patient</div>
           </div>
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
@@ -114,7 +121,7 @@ function CustomerAllUsers() {
                 </tr>
               </thead>
               <tbody>
-                {getParticularCustomer.length === 0 ? (
+                {sortedCustomers.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[16rem] text-xl"
@@ -124,10 +131,17 @@ function CustomerAllUsers() {
                     </th>
                   </tr>
                 ) : (
-                  getParticularCustomer.map((val) => {
+                  sortedCustomers.map((val) => {
                     return (
                       val.role === "patient" && (
-                        <tr key={val.id} className={`${val.treatment_packages?.length === 0 ? "bg-red-100" : ""}`}>
+                        <tr
+                          key={val.id}
+                          className={`${
+                            val.treatment_packages?.length === 0
+                              ? "border-l-4 border-red-300"
+                              : ""
+                          }`}
+                        >
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <div className="flex items-center text-lg">
                               {val.case_number}
