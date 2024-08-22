@@ -10,7 +10,7 @@ export default function Oldcase(props) {
         
         <div>
           {choice === "consulting" && (
-            <Consulting doctor={props.doctor} user={props.user} />
+            <Consulting doctor={props.doctor} user={props.user} name={props.name} number={props.number} email={props.email}/>
           )}
         </div>
       </form>

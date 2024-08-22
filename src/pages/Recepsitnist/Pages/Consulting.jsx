@@ -77,11 +77,6 @@ export default function Consulting(props) {
   return (
     <div>
       <form>
-        <div className="flex justify-center gap-5 ">
-          <label className="text-lg font-semibold text-center mr-2 ">
-            Old Case{" "}
-          </label>
-        </div>
         {props.name && (
           <div>
             <div className="flex gap-5 m-2">
@@ -99,7 +94,7 @@ export default function Consulting(props) {
               <input
                 type="text"
                 className="py-1 px-2  border-black w-[40vh]"
-                value={props.nubmer}
+                value={props.number}
               />
             </div>
             <div className="flex gap-5 m-2">
@@ -145,7 +140,7 @@ export default function Consulting(props) {
         <div className="flex w-full justify-center mt-10">
           <button
             type="submit"
-            className="w-[20rem]  text-white rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+            className="w-[20rem] text-white py-1 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
             name="Save & Continue"
             style={{ backgroundColor: "black" }}
             onClick={handleSubmit}
