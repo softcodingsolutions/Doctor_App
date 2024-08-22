@@ -4,7 +4,8 @@ import { Link, Outlet } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { reportButtons } from "../../../constants/admin/AdminConstants";
 import InsideLoader from "../../InsideLoader";
-import img from "../../../assets/images/doctor-img.jpg";
+import male from "../../../assets/images/male.avif";
+import female from "../../../assets/images/female.avif";
 
 function CustomerUserDiagnosis() {
   const [selectedId, setSelectedId] = useState("2");
@@ -73,21 +74,25 @@ function CustomerUserDiagnosis() {
 
   return (
     <>
-      <div className="mx-5 w-full bg-white rounded-md px-2 py-3 flex items-center font-teachers">
-        <img src={img} alt="img" className="size-24 ml-3" />
+      <div className="mx-2 w-full bg-white rounded-md px-2 py-2 flex items-center gap-1.5 font-teachers overflow-x-auto">
+        {getCustomer.personal_detail?.gender === "male" ? (
+          <img src={male} alt="img" className="size-24 ml-2" />
+        ) : (
+          <img src={female} alt="img" className="size-24 ml-2" />
+        )}
 
-        <div className="flex flex-col gap-1.5 items-center">
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">
+        <div className="flex flex-col gap-1.5 justify-center h-32 w-[16rem] text-balance">
+          <div className="flex">
+            <div className="text-right break-words font-medium">
               Case Number:
             </div>
-            <div className="w-1/2 pl-3">{getCustomer?.case_number}</div>
+            <div className=" pl-1.5">{getCustomer?.case_number}</div>
           </div>
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">
+          <div className="flex">
+            <div className="text-right break-words font-medium">
               Patient Name:
             </div>
-            <div className="w-1/2 pl-3">
+            <div className=" pl-1.5">
               {getCustomer?.first_name?.[0]?.toUpperCase() +
                 getCustomer?.first_name?.slice(1) +
                 " " +
@@ -96,92 +101,102 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
 
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">
+          <div className="flex">
+            <div className="text-right break-words font-medium">
               Phone Number:
             </div>
-            <div className="w-1/2 pl-3">{getCustomer?.phone_number}</div>
+            <div className=" pl-1.5">{getCustomer?.phone_number}</div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">Age:</div>
-            <div className="w-1/2 pl-3">
-              {getCustomer?.personal_detail?.age}
-            </div>
+        <div className="flex flex-col gap-2 justify-center h-32 w-[16rem]">
+          <div className="flex">
+            <div className=" text-right break-words font-medium">Age:</div>
+            <div className="pl-1.5">{getCustomer?.personal_detail?.age}</div>
           </div>
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">
-              Gender:
-            </div>
-            <div className="w-1/2 pl-3">
+          <div className="flex">
+            <div className="text-right break-words font-medium">Gender:</div>
+            <div className="pl-1.5">
               {getCustomer?.personal_detail?.gender?.[0]?.toUpperCase() +
                 getCustomer?.personal_detail?.gender?.slice(1)}
             </div>
           </div>
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">
-              Email:
-            </div>
-            <div className="w-1/2 pl-3">{getCustomer?.email}</div>
+          <div className="flex">
+            <div className="text-right break-words font-medium">Email:</div>
+            <div className="pl-1.5">{getCustomer?.email}</div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">
-              Height:
-            </div>
-            <div className="w-1/2 pl-3">
+        <div className="flex flex-col gap-2 justify-center h-32 w-[16rem]">
+          <div className="flex">
+            <div className="text-right break-words font-medium">Height:</div>
+            <div className="pl-1.5">
               {getCustomer?.personal_detail?.height} cm
             </div>
           </div>
 
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">
-              Weight:
-            </div>
-            <div className="w-1/2 pl-3">
+          <div className="flex">
+            <div className="text-right break-words font-medium">Weight:</div>
+            <div className="pl-1.5">
               {getCustomer?.personal_detail?.weight} kgs
             </div>
           </div>
 
-          <div className="flex justify-between items-center w-[16rem]">
-            <div className="w-2/3 text-right break-words font-medium">
+          <div className="flex">
+            <div className="text-right break-words font-medium">
               Created At:
             </div>
-            <div className="w-1/2 pl-3">
-              {getCustomer?.personal_detail?.created_at?.slice(0, 10)}
+            <div className="pl-1.5">
+              {getCustomer?.personal_detail?.created_at
+                ?.slice(0, 10)
+                ?.split("-")
+                ?.reverse()
+                ?.join("-")}
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <div className="flex justify-between items-center w-[17.5rem]">
-            <div className="w-2/3 text-right break-words font-medium">
-              Registration Through:
+        <div className="flex flex-col gap-2 justify-center h-32 w-[16rem]">
+          <div className="flex">
+            <div className="text-right break-words font-medium">
+              Starting Date:
             </div>
-            <div className="w-1/2 pl-3">
-              {getCustomer[1]?.creator === "doctor" ? "Doctor" : "Franchise"}
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center w-[17.5rem]">
-            <div className="w-2/3 text-right break-words font-medium">
-              Package:
-            </div>
-            <div className="w-1/2 pl-3">
-              {getCustomer?.user_packages?.[0]?.package_name ??
-                "Will be given by the doctor"}
+            <div className="pl-1.5">
+              {getCustomer?.user_packages?.[0]?.starting_date
+                ?.slice(0, 10)
+                ?.split("-")
+                ?.reverse()
+                ?.join("-")}
             </div>
           </div>
 
-          <div className="flex justify-between items-center w-[17rem]">
-            <div className="w-2/3 text-right break-words font-medium">
+          <div className="flex">
+            <div className="text-right break-words font-medium">
+              Ending Date:
+            </div>
+            <div className="pl-1.5">
+              {getCustomer?.user_packages?.[0]?.ending_date
+                ?.slice(0, 10)
+                ?.split("-")
+                ?.reverse()
+                ?.join("-")}
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="text-right break-words font-medium">Package:</div>
+            <div className="pl-1.5">
+              {getCustomer?.user_packages?.[0]?.package_name ?? "Not Assigned"}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 justify-center h-28 w-[19rem]">
+          <div className="flex ">
+            <div className="text-right break-words font-medium">
               Treatment Package:
             </div>
-            <div className="w-1/2 pl-3 ">
+            <div className="pl-1.5">
               {getCustomer?.treatment_packages?.[0]?.treatment_package
                 ?.weight_reason
                 ? getCustomer?.treatment_packages?.[0]?.treatment_package
@@ -189,7 +204,16 @@ function CustomerUserDiagnosis() {
                   "-" +
                   getCustomer?.treatment_packages?.[0]?.treatment_package
                     ?.package_name
-                : "Will be given by the doctor"}
+                : "Not Assigned"}
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="text-right break-words font-medium">
+              Registration Through:
+            </div>
+            <div className="pl-1.5">
+              {getCustomer[1]?.creator === "doctor" ? "Doctor" : "Franchise"}
             </div>
           </div>
         </div>

@@ -32,7 +32,16 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin, newUser }) {
       id: "2",
       title: "Patients",
       to: "patients/all-users",
-      icons: <IoPersonSharp size={18} />,
+      icons: (
+        <div className="relative">
+          <IoPersonSharp size={18} />
+          {newUser.length > 0 && (
+            <span className="absolute bottom-2.5 left-20 size-4 text-center bg-red-500 text-white rounded-full text-xs">
+              {newUser.length}
+            </span>
+          )}
+        </div>
+      ),
     },
     {
       id: "13",
@@ -155,11 +164,6 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin, newUser }) {
               {i.icons}
               <div className="block sm:hidden xl:block ml-2 relative">
                 {i.title}
-                {i.title === "Patients" && newUser.length > 0 && (
-                  <div className="absolute -top-1 left-14 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    {newUser.length}
-                  </div>
-                )}
               </div>
 
               <div className="block sm:hidden xl:block flex-grow" />

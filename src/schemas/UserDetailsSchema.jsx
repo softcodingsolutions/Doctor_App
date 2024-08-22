@@ -11,10 +11,6 @@ export const UserSchema = yup.object().shape({
     .string()
     .required("Phone Number is required")
     .matches(/^\d{10}$/, "Phone number must be exactly 10 digits"),
-  whatsapp: yup
-    .string()
-    .required("Whatsapp Number is required")
-    .matches(/^\d{10}$/, "WhatsApp number must be exactly 10 digits"),
   city: yup.string().required("City is required"),
   age: yup
     .string()

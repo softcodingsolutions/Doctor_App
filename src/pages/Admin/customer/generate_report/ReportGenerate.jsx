@@ -77,19 +77,22 @@ export const BillDocument = ({ data }) => (
       <View style={styles.heading}>
         <View>
           <Text style={styles.Name}>
+            Case Number :{" "}
+            <Text style={{ fontSize: 14 }}>{data?.case_number}</Text>
+          </Text>
+          <Text style={styles.Name}>
             Name :{" "}
             <Text style={{ fontSize: 14 }}>
               {data?.first_name || "No Name"} {data?.last_name || ""}
             </Text>
           </Text>
-          <Text style={styles.Name}>
-            Email : <Text style={{ fontSize: 14 }}>{data?.email}</Text>
-          </Text>
         </View>
         <View>
           <Text style={styles.Name}>
-            Case Number :{" "}
-            <Text style={{ fontSize: 14 }}>{data?.case_number}</Text>
+            Email : <Text style={{ fontSize: 14 }}>{data?.email}</Text>
+          </Text>
+          <Text style={styles.Name}>
+            Doctor : <Text style={{ fontSize: 14 }}>{data?.doctor?.first_name + " " + data?.doctor?.last_name}</Text>
           </Text>
           <Text style={styles.Name}>
             Height :{" "}

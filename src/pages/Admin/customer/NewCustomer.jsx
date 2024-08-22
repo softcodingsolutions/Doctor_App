@@ -42,7 +42,6 @@ function NewCustomer() {
     checkout: [],
     doctorId: "",
   });
-  const role = localStorage.getItem("role");
 
   const handleNextStep = () => {
     if (isGeneralDetailsValid || currentStep !== 0) {
@@ -66,140 +65,67 @@ function NewCustomer() {
       setLoading(true);
       const res = await axios.get(`/api/v1/users/app_creds`);
 
-      if (role === "super_admin") {
-        await axios
-          .post("/api/v1/users", {
-            user: {
-              first_name: storeData?.generalDetails?.firstname,
-              last_name: storeData?.generalDetails?.lastname,
-              email: storeData?.generalDetails?.email,
-              phone_number: storeData?.generalDetails?.mobile,
-              created_by_id: storeData?.doctorId,
-              creator: "doctor",
-            },
-            personal_detail: {
-              city: storeData?.generalDetails?.city,
-              age: storeData?.generalDetails?.age,
-              address: storeData?.generalDetails?.address,
-              gender: storeData?.generalDetails?.gender,
-              overweight_since: storeData?.generalDetails?.overweight,
-              language: storeData?.generalDetails?.language,
-              reffered_by: storeData?.generalDetails?.refferedBy,
-              weight: storeData?.generalDetails?.weight,
-              height: storeData?.generalDetails?.height,
-              current_diet: JSON.stringify(storeData?.diet),
-              family_reasons: JSON.stringify(storeData?.familyHistory),
-              complaints: JSON.stringify(storeData?.complains),
-              user_selected_questions_one: JSON.stringify(storeData?.questions),
-              user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
-            },
-            client_id: res.data?.client_id,
-          })
-          .then((res) => {
-            const formData = new FormData();
-            formData.append("user_package[user_id]", res.data?.user?.user?.id);
-            formData.append("user_package[no_of_days]", checkout?.duration);
-            formData.append(
-              "user_package[package_name]",
-              checkout?.package_name
-            );
-            formData.append(
-              "user_package[package_price]",
-              checkout?.grand_total
-            );
-            formData.append("user_package[starting_date]", checkout?.from_date);
-            formData.append("user_package[ending_date]", checkout?.to_date);
-            axios
-              .post("/api/v1/user_packages", formData)
-              .then((res) => {
-                console.log(res);
-                setLoading(false);
-                if (res.data) {
-                  Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Created!",
-                    text: `New user has been created.`,
-                    showConfirmButton: false,
-                    timer: 1500,
-                  });
-                  localStorage.removeItem("client_email");
-                  context?.[2]();
-                  navigate("../../admin/patients/all-users");
-                }
-              })
-              .catch((err) => {
-                setLoading(false);
-                alert(err.response?.data?.message + "!");
-              });
-          });
-      } else if (role === "doctor") {
-        await axios
-          .post("/api/v1/users", {
-            user: {
-              first_name: storeData?.generalDetails?.firstname,
-              last_name: storeData?.generalDetails?.lastname,
-              email: storeData?.generalDetails?.email,
-              phone_number: storeData?.generalDetails?.mobile,
-              created_by_id: localStorage.getItem("main_id"),
-              creator: "doctor",
-            },
-            personal_detail: {
-              city: storeData?.generalDetails?.city,
-              age: storeData?.generalDetails?.age,
-              address: storeData?.generalDetails?.address,
-              gender: storeData?.generalDetails?.gender,
-              overweight_since: storeData?.generalDetails?.overweight,
-              language: storeData?.generalDetails?.language,
-              reffered_by: storeData?.generalDetails?.refferedBy,
-              weight: storeData?.generalDetails?.weight,
-              height: storeData?.generalDetails?.height,
-              current_diet: JSON.stringify(storeData?.diet),
-              family_reasons: JSON.stringify(storeData?.familyHistory),
-              complaints: JSON.stringify(storeData?.complains),
-              user_selected_questions_one: JSON.stringify(storeData?.questions),
-              user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
-            },
-            client_id: res.data?.client_id,
-          })
-          .then((res) => {
-            const formData = new FormData();
-            formData.append("user_package[user_id]", res.data?.user?.user?.id);
-            formData.append("user_package[no_of_days]", checkout?.duration);
-            formData.append(
-              "user_package[package_name]",
-              checkout?.package_name
-            );
-            formData.append(
-              "user_package[package_price]",
-              checkout?.grand_total
-            );
-            formData.append("user_package[starting_date]", checkout?.from_date);
-            formData.append("user_package[ending_date]", checkout?.to_date);
-            axios
-              .post("/api/v1/user_packages", formData)
-              .then((res) => {
-                console.log(res);
-                setLoading(false);
-                if (res.data) {
-                  Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Created!",
-                    text: `New user has been created.`,
-                    showConfirmButton: false,
-                    timer: 1500,
-                  });
-                  localStorage.removeItem("client_email");
-                  navigate("../../admin/patients/all-users");
-                }
-              })
-              .catch((err) => {
-                setLoading(false);
-                alert(err.response?.data?.message + "!");
-              });
-          });
-      }
+      await axios
+        .post("/api/v1/users", {
+          user: {
+            first_name: storeData?.generalDetails?.firstname,
+            last_name: storeData?.generalDetails?.lastname,
+            email: storeData?.generalDetails?.email,
+            phone_number: storeData?.generalDetails?.mobile,
+            created_by_id: localStorage.getItem("main_id"),
+            creator: "doctor",
+          },
+          personal_detail: {
+            city: storeData?.generalDetails?.city,
+            age: storeData?.generalDetails?.age,
+            address: storeData?.generalDetails?.address,
+            gender: storeData?.generalDetails?.gender,
+            overweight_since: storeData?.generalDetails?.overweight,
+            language: storeData?.generalDetails?.language,
+            reffered_by: storeData?.generalDetails?.refferedBy,
+            weight: storeData?.generalDetails?.weight,
+            height: storeData?.generalDetails?.height,
+            current_diet: JSON.stringify(storeData?.diet),
+            family_reasons: JSON.stringify(storeData?.familyHistory),
+            complaints: JSON.stringify(storeData?.complains),
+            user_selected_questions_one: JSON.stringify(storeData?.questions),
+            user_selected_questions_two: JSON.stringify(storeData?.diagnosis),
+          },
+          client_id: res.data?.client_id,
+        })
+        .then((res) => {
+          const formData = new FormData();
+          formData.append("user_package[user_id]", res.data?.user?.user?.id);
+          formData.append("user_package[no_of_days]", checkout?.duration);
+          formData.append("user_package[package_name]", checkout?.package_name);
+          formData.append("user_package[package_price]", checkout?.grand_total);
+          formData.append("user_package[starting_date]", checkout?.from_date);
+          formData.append("user_package[ending_date]", checkout?.to_date);
+          axios
+            .post("/api/v1/user_packages", formData)
+            .then((res) => {
+              console.log(res);
+              context?.[4]((prev) => prev);
+              context?.[2]();
+              setLoading(false);
+              if (res.data) {
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Created!",
+                  text: `New user has been created.`,
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                localStorage.removeItem("client_email");
+                navigate("../../admin/patients/all-users");
+              }
+            })
+            .catch((err) => {
+              setLoading(false);
+              alert(err.response?.data?.message + "!");
+            });
+        });
     } catch (error) {
       setLoading(false);
       console.error(error);

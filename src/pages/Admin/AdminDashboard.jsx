@@ -1,30 +1,32 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
-import ThComponent from "../../components/ThComponent";
-import TdComponent from "../../components/TdComponent";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
 import InsideLoader from "../InsideLoader";
+import male from "../../assets/images/male.avif";
+import female from "../../assets/images/female.avif";
 
 function AdminDashboard() {
-  const [getConsultingTime, setGetConsultingTime] = useState([]);
   const context = useOutletContext();
+  const navigate = useNavigate();
   const [getTotalPatients, setGetTotalPatients] = useState([]);
   const [getTotalFranchise, setGetTotalFranchise] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [getAppointments, setGetAppointments] = useState([]);
   const main_id = localStorage.getItem("main_id");
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
 
-  const handleGetConsultingTime = () => {
+  const handleGetAppointment = () => {
     axios
-      .get(`/api/v1/consulting_times`)
+      .get(`api/v1/appointments?date=${formattedDate}&doctor_id=${main_id}`)
       .then((res) => {
-        console.log("Consulting Time: ", res.data?.consulting_times);
-        setGetConsultingTime(res.data?.consulting_times);
+        console.log("Todays Appointment: ", res.data?.appointments);
+        setGetAppointments(res.data?.appointments);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
         setLoading(false);
+        console.log(err);
       });
   };
 
@@ -71,10 +73,15 @@ function AdminDashboard() {
     });
   }
 
+  const handleDiagnosis = (id) => {
+    localStorage.setItem("userId", id);
+    navigate(`../patients/user-diagnosis/questions`);
+  };
+
   useEffect(() => {
-    handleGetConsultingTime();
     handleGetPatients();
     handleGetFranchise();
+    handleGetAppointment();
   }, []);
 
   if (loading) {
@@ -133,183 +140,114 @@ function AdminDashboard() {
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        385
+                        {context?.[3]?.length}
                       </span>
                       <h3 className="text-base font-normal text-gray-500">
-                        User signups this week
+                        New Patients
                       </h3>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className=" mt-4 w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8  2xl:col-span-2">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        $45,385
-                      </span>
-                      <h3 className="text-base font-normal text-gray-500">
-                        Sales this week
-                      </h3>
-                    </div>
-                    <div className="flex items-center justify-end flex-1 text-green-500 text-base font-bold">
-                      12.5%
-                      <svg
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div id="main-chart"></div>
-                </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">
-                        Latest Transactions
-                      </h3>
-                      <span className="text-base font-normal text-gray-500">
-                        This is a list of latest transactions
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col mt-5">
-                    <div className="overflow-x-auto rounded-lg">
-                      <div className="align-middle inline-block min-w-full">
-                        <div className="shadow overflow-hidden sm:rounded-lg">
-                          <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                              <tr>
-                                <th
-                                  scope="col"
-                                  className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Transaction
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Date & Time
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Amount
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody className="bg-white">
-                              <tr>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                  Payment from{" "}
-                                  <span className="font-semibold">
-                                    Bonnie Green
-                                  </span>
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                  Apr 23 ,2021
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                  $2300
-                                </td>
-                              </tr>
-                              <tr className="bg-gray-50">
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                  Payment refund to{" "}
-                                  <span className="font-semibold">#00910</span>
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                  Apr 23 ,2021
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                  -$670
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                  Payment failed from{" "}
-                                  <span className="font-semibold">#087651</span>
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                  Apr 18 ,2021
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                  $234
-                                </td>
-                              </tr>
-                              <tr className="bg-gray-50">
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                  Payment from{" "}
-                                  <span className="font-semibold">
-                                    Lana Byrd
-                                  </span>
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                  Apr 15 ,2021
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                  $5000
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                  Payment from{" "}
-                                  <span className="font-semibold">
-                                    Jese Leos
-                                  </span>
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                  Apr 15 ,2021
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                  $2300
-                                </td>
-                              </tr>
-                              <tr className="bg-gray-50">
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                  Payment from{" "}
-                                  <span className="font-semibold">
-                                    THEMESBERG LLC
-                                  </span>
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                  Apr 11 ,2021
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                  $560
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                  Payment from{" "}
-                                  <span className="font-semibold">
-                                    Lana Lysle
-                                  </span>
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                  Apr 6 ,2021
-                                </td>
-                                <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                  $1437
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+
+              <div className=" mt-4 w-full overflow-y-auto h-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-3">
+                <div className="font-medium text-xl">Todays Appointments: </div>
+                <div className="bg-white h-[70vh] overflow-y-auto flex flex-col gap-1 rounded-lg xl:col-span-4 2xl:col-span-4">
+                  {getAppointments.map((res) => (
+                    <div
+                      key={res.id}
+                      className="flex items-center gap-3.5 border border-gray-200 h-20 shadow-inner rounded-md p-2"
+                    >
+                      <img
+                        src={res.user?.gender === "male" ? male : female}
+                        alt="img"
+                        className="size-16 mr-2"
+                      />
+
+                      <div className=" w-[16rem]">
+                        <div className="flex">
+                          <div className=" text-right break-words font-medium">
+                            Case Number:
+                          </div>
+                          <div className=" pl-2">{res.user?.case_number}</div>
+                        </div>
+                        <div className="flex">
+                          <div className=" text-right break-words font-medium">
+                            Patient Name:
+                          </div>
+                          <div className="pl-2">
+                            {res.user?.first_name?.[0]?.toUpperCase() +
+                              res.user?.first_name?.slice(1) +
+                              " " +
+                              res.user?.last_name?.[0]?.toUpperCase() +
+                              res.user?.last_name?.slice(1)}
+                          </div>
                         </div>
                       </div>
+
+                      <div className=" w-[12rem]">
+                        <div className="flex items-center">
+                          <div className=" text-right break-words font-medium">
+                            Age:
+                          </div>
+                          <div className=" pl-2">
+                            {res.user?.personal_detail?.age}sdf
+                          </div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className=" text-right break-words font-medium">
+                            Weight:
+                          </div>
+                          <div className="pl-2">
+                            {res.user?.personal_detail?.weight} kg
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className=" w-[15rem]">
+                        <div className="flex items-center">
+                          <div className=" text-right break-words font-medium">
+                            Phone Number:
+                          </div>
+                          <div className=" pl-2">
+                            {res.user?.personal_detail?.age}
+                          </div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className=" text-right break-words font-medium">
+                            Patient Type:
+                          </div>
+                          <div className="pl-2">
+                            {res.user?.personal_detail?.weight} kg
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className=" w-[14rem]">
+                        <div className="flex items-center">
+                          <div className=" text-right break-words font-medium">
+                            Time:
+                          </div>
+                          <div className="pl-2">{formatTime(res.time)}</div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className=" text-right break-words font-medium">
+                            Machine Name:
+                          </div>
+                          <div className=" pl-2">
+                            {res.machine_detail?.name}
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => handleDiagnosis(res.user?.id)}
+                        className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
+                      >
+                        Diagnosis
+                      </button>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>

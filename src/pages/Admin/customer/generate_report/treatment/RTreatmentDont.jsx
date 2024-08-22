@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentButtons";
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
-import SelectTreatmentButton from "../../../../../components/Admin/SelectTreatmentButton";
 import InsideLoader from "../../../../InsideLoader";
 
 function RTreatmentDont() {
@@ -14,7 +13,6 @@ function RTreatmentDont() {
   const [getPredictionDonts, setGetPredictionDonts] = useState([]);
   const [getDonts, setGetDonts] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const handleGetDonts = () => {
@@ -47,10 +45,6 @@ function RTreatmentDont() {
       });
   };
 
-  const handleToggleCheckboxes = () => {
-    setShowCheckboxes(!showCheckboxes);
-  };
-
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
@@ -78,7 +72,7 @@ function RTreatmentDont() {
     }
 
     console.log("Selected Nutrition: ", selectedDonts);
-    setShowCheckboxes(false);
+
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
@@ -97,6 +91,16 @@ function RTreatmentDont() {
       text: "Your selected donts have been saved.",
     });
   };
+
+  const predictedDonts = getDonts.filter((diet) =>
+    getPredictionDonts.some((med) => med.id === diet.id)
+  );
+
+  const otherDonts = getDonts.filter(
+    (diet) => !getPredictionDonts.some((med) => med.id === diet.id)
+  );
+
+  const sortedDonts = [...predictedDonts, ...otherDonts];
 
   useEffect(() => {
     console.log("Updated storeData: ", storeData);
@@ -118,45 +122,22 @@ function RTreatmentDont() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[74vh] bg-white ">
+      <div className="rounded-lg bg-card h-[80vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes && (
-              <SelectTreatmentButton
-                name="Select Don'ts"
-                function={handleToggleCheckboxes}
-              />
-            )}
-
-            {showCheckboxes && (
-              <div className="font-[550] text-lg">
-                No. of don'ts checked: {selectedCheckboxes.length}
-              </div>
-            )}
-
-            {!showCheckboxes && (
-              <div className="font-[550] text-lg flex items-center">
-                Checked Don'ts -{" "}
-                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-              </div>
-            )}
+            <div className="font-[550] text-lg">
+              No. of don'ts checked: {selectedCheckboxes.length}
+            </div>
           </div>
 
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[95%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[75vh]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  {showCheckboxes ? (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="Select"
-                    />
-                  ) : (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
-                    />
-                  )}
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="Select"
+                  />
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
                   <ThComponent
@@ -166,7 +147,7 @@ function RTreatmentDont() {
                 </tr>
               </thead>
               <tbody>
-                {getDonts.length === 0 ? (
+                {sortedDonts.length === 0 ? (
                   <tr>
                     <th
                       className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -176,7 +157,7 @@ function RTreatmentDont() {
                     </th>
                   </tr>
                 ) : (
-                  getDonts.map((val, index) => {
+                  sortedDonts.map((val) => {
                     return (
                       <tr
                         className={`${
@@ -186,23 +167,16 @@ function RTreatmentDont() {
                         } w-full`}
                         key={val.id}
                       >
-                        {showCheckboxes && (
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <input
-                              value={val.id}
-                              onChange={handleCheckboxChange}
-                              type="checkbox"
-                              defaultChecked={getPredictionDonts.some(
-                                (med) => med.id === val.id
-                              )}
-                            />
-                          </td>
-                        )}
-                        {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">{index + 1}</div>
-                          </td>
-                        )}
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <input
+                            value={val.id}
+                            onChange={handleCheckboxChange}
+                            type="checkbox"
+                            defaultChecked={getPredictionDonts.some(
+                              (med) => med.id === val.id
+                            )}
+                          />
+                        </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.details_in_english} />
                         </td>
@@ -219,11 +193,17 @@ function RTreatmentDont() {
               </tbody>
             </table>
           </div>
-          {showCheckboxes && (
-            <div className="flex justify-center">
-              <SaveTreatmentButtons function={handleSave} />{" "}
+          <div className="flex justify-between">
+            <div className="font-[550] text-lg flex items-center invisible">
+              Checked Don'ts -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
             </div>
-          )}
+            <SaveTreatmentButtons function={handleSave} />{" "}
+            <div className="font-[550] text-lg flex items-center">
+              Mapped Don'ts -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

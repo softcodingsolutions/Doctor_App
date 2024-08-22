@@ -52,7 +52,7 @@ function ReportProfile() {
                 <div className="w-2/3 text-right break-words">Package:</div>
                 <div className="w-1/2 pl-3">
                   {getCustomer[1]?.user_packages?.[0]?.package_name ??
-                    "Will be given by the doctor"}
+                    "Not Assigned"}
                 </div>
               </div>
               <div className="flex justify-between w-[25rem]">
@@ -109,7 +109,7 @@ function ReportProfile() {
                       "-" +
                       getCustomer[1]?.treatment_packages?.[0]?.treatment_package
                         ?.package_name
-                    : "Will be given by the doctor"}
+                    : "Not Assigned"}
                 </div>
               </div>
               <div className="flex justify-between w-[25rem]">
