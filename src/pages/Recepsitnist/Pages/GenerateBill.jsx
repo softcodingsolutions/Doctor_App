@@ -3,6 +3,8 @@ import axios from "axios";
 import { useDebounce } from "use-debounce";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "@mui/joy/Button";
+import { FormLabel, Option, Select } from "@mui/joy";
+import { Payment } from "@mui/icons-material";
 
 export default function GenerateBill() {
   const context = useOutletContext();
@@ -17,7 +19,7 @@ export default function GenerateBill() {
   const [pay, setPay] = useState("");
   const [remaining, setRemaining] = useState("");
   const [totalQuantities, setTotalQuantities] = useState([]);
-
+  const [method, setMethod] = useState("Online");
   const resetForm = () => {
     setSearchTerm("");
     setId(0);
@@ -43,6 +45,7 @@ export default function GenerateBill() {
         bill_items: JSON.stringify(billItems),
         remaining_payment: remaining,
         paid_payment: pay,
+        payment_method: method
       },
     };
 
@@ -77,6 +80,10 @@ export default function GenerateBill() {
     if (e.key === "Enter") {
       setSearchTerm(e.target.value);
     }
+  };
+
+  const handleMethod = (e) => {
+    setMethod(e.target.value);
   };
 
   const handleTotalMedicine = (index, value) => {
@@ -251,7 +258,7 @@ export default function GenerateBill() {
                 </div>
 
                 <div className="flex gap-5 py-3">
-                  <div className="w-full">
+                  <div className=" flex">
                     <label className="block text-sm font-medium text-gray-700">
                       Total Price
                     </label>
@@ -262,7 +269,7 @@ export default function GenerateBill() {
                       className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="flex">
                     <label className="block text-sm font-medium text-gray-700">
                       Paid Amount
                     </label>
@@ -275,10 +282,10 @@ export default function GenerateBill() {
                   </div>
                 </div>
 
-                <div className="flex gap-5 py-3">
-                  <div className="w-full">
+                <div className="flex flex-row gap-5 py-3">
+                  <div className="flex">
                     <label className="block text-sm font-medium text-gray-700">
-                      Remaining
+                      Remaining Amount
                     </label>
                     <input
                       type="number"
@@ -286,6 +293,21 @@ export default function GenerateBill() {
                       readOnly
                       className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-gray-100"
                     />
+                  </div>
+                  <div className="md:flex  justify-between">
+                    <label className="text-sm text-end mr-2">
+                      Payment Method:
+                    </label>
+                    <select
+                      placeholder="Select Method"
+                      onChange={handleMethod}
+                      required
+                      value={method}
+                      className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    >
+                      <option value="Online">Online</option>
+                      <option value="Cash">Cash</option>
+                    </select>
                   </div>
                 </div>
 

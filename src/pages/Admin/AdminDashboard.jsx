@@ -191,7 +191,7 @@ function AdminDashboard() {
                             Age:
                           </div>
                           <div className=" pl-2">
-                            {res.user?.personal_detail?.age}sdf
+                            {res.user?.age}
                           </div>
                         </div>
                         <div className="flex items-center">
@@ -199,7 +199,7 @@ function AdminDashboard() {
                             Weight:
                           </div>
                           <div className="pl-2">
-                            {res.user?.personal_detail?.weight} kg
+                            {res.user?.weight} kg
                           </div>
                         </div>
                       </div>
@@ -210,7 +210,7 @@ function AdminDashboard() {
                             Phone Number:
                           </div>
                           <div className=" pl-2">
-                            {res.user?.personal_detail?.age}
+                            {res.user?.phone_number}
                           </div>
                         </div>
                         <div className="flex items-center">
@@ -218,7 +218,7 @@ function AdminDashboard() {
                             Patient Type:
                           </div>
                           <div className="pl-2">
-                            {res.user?.personal_detail?.weight} kg
+                            {res.user?.personal_detail?.weight} 
                           </div>
                         </div>
                       </div>
@@ -228,16 +228,18 @@ function AdminDashboard() {
                           <div className=" text-right break-words font-medium">
                             Time:
                           </div>
-                          <div className="pl-2">{formatTime(res.time)}</div>
+                          <div className="pl-2"> {res.machine_detail?.name ? res.time : formatTime(res.time) }</div>
                         </div>
-                        <div className="flex items-center">
-                          <div className=" text-right break-words font-medium">
-                            Machine Name:
+                        {res.machine_detail?.name && (
+                          <div className="flex items-center">
+                            <div className=" text-right break-words font-medium">
+                              Machine Name:
+                            </div>
+                            <div className=" pl-2">
+                              {res.machine_detail?.name}
+                            </div>
                           </div>
-                          <div className=" pl-2">
-                            {res.machine_detail?.name}
-                          </div>
-                        </div>
+                        )}
                       </div>
 
                       <button
