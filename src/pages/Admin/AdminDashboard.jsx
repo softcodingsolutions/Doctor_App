@@ -18,10 +18,10 @@ function AdminDashboard() {
 
   const handleGetAppointment = () => {
     axios
-      .get(`api/v1/appointments?date=${formattedDate}&doctor_id=${main_id}`)
+      .get(`api/v2/users/get_personal_details`)
       .then((res) => {
-        console.log("Todays Appointment: ", res.data?.appointments);
-        setGetAppointments(res.data?.appointments);
+        console.log("Todays Appointment: ", res.data?.users);
+        setGetAppointments(res.data?.users);
         setLoading(false);
       })
       .catch((err) => {
@@ -159,7 +159,7 @@ function AdminDashboard() {
                       className="flex items-center gap-3.5 border border-gray-200 h-20 shadow-inner rounded-md p-2"
                     >
                       <img
-                        src={res.user?.gender === "male" ? male : female}
+                        src={res.personal_detail?.gender === "male" ? male : female}
                         alt="img"
                         className="size-16 mr-2"
                       />
@@ -169,18 +169,18 @@ function AdminDashboard() {
                           <div className=" text-right break-words font-medium">
                             Case Number:
                           </div>
-                          <div className=" pl-2">{res.user?.case_number}</div>
+                          <div className=" pl-2">{res.case_number}</div>
                         </div>
                         <div className="flex">
                           <div className=" text-right break-words font-medium">
                             Patient Name:
                           </div>
                           <div className="pl-2">
-                            {res.user?.first_name?.[0]?.toUpperCase() +
-                              res.user?.first_name?.slice(1) +
+                            {res.first_name?.[0]?.toUpperCase() +
+                              res.first_name?.slice(1) +
                               " " +
-                              res.user?.last_name?.[0]?.toUpperCase() +
-                              res.user?.last_name?.slice(1)}
+                              res.last_name?.[0]?.toUpperCase() +
+                              res.last_name?.slice(1)}
                           </div>
                         </div>
                       </div>
@@ -191,7 +191,7 @@ function AdminDashboard() {
                             Age:
                           </div>
                           <div className=" pl-2">
-                            {res.user?.age}
+                            {res.personal_detail?.age}
                           </div>
                         </div>
                         <div className="flex items-center">
@@ -199,7 +199,7 @@ function AdminDashboard() {
                             Weight:
                           </div>
                           <div className="pl-2">
-                            {res.user?.weight} kg
+                            {res.user?.personal_detail?.weight} kg
                           </div>
                         </div>
                       </div>
@@ -210,7 +210,7 @@ function AdminDashboard() {
                             Phone Number:
                           </div>
                           <div className=" pl-2">
-                            {res.user?.phone_number}
+                            {res.user?.personal_detail?.age}
                           </div>
                         </div>
                         <div className="flex items-center">
@@ -218,7 +218,7 @@ function AdminDashboard() {
                             Patient Type:
                           </div>
                           <div className="pl-2">
-                            {res.user?.personal_detail?.weight} 
+                            {res.user?.personal_detail?.weight} kg
                           </div>
                         </div>
                       </div>
@@ -243,7 +243,7 @@ function AdminDashboard() {
                       </div>
 
                       <button
-                        onClick={() => handleDiagnosis(res.user?.id)}
+                        onClick={() => handleDiagnosis(res.id)}
                         className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
                       >
                         Diagnosis
