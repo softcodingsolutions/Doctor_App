@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { masterButtons } from "../../constants/admin/AdminConstants";
 
-const TRANSLATE_AMOUNT = 250;
+const TRANSLATE_AMOUNT = 200;
 
 function AdminMaster() {
   const location = useLocation();

@@ -13,7 +13,7 @@ import CustomerQuestionsPart2 from "./new_customer/CustomerQuestionsPart2";
 import QueCheckout from "../../User/Questions/QueCheckout";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Loader from "../../Loader";
 
 const steps = [
@@ -27,7 +27,6 @@ const steps = [
 ];
 
 function NewCustomer() {
-  const context = useOutletContext();
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
@@ -105,8 +104,6 @@ function NewCustomer() {
             .post("/api/v1/user_packages", formData)
             .then((res) => {
               console.log(res);
-              context?.[4]((prev) => prev);
-              context?.[2]();
               setLoading(false);
               if (res.data) {
                 Swal.fire({

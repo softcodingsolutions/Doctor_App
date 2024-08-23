@@ -7,12 +7,8 @@ import Loader from "../Loader";
 function AdminMain() {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState();
-  const role = localStorage.getItem("role");
-  const main_id = localStorage.getItem("main_id");
   const [showSidebar, onSetShowSidebar] = useState(false);
-  const [doctorNewUser, setDoctorNewUser] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [trigger, setTrigger] = useState(0);
 
   const onSidebarHide = () => {
     onSetShowSidebar(true);
@@ -36,22 +32,6 @@ function AdminMain() {
         setLoading(false);
       });
   };
-
-  const handleDoctorNewUser = () => {
-    if (role === "doctor") {
-      axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
-        const newUsers = res.data?.users?.filter(
-          (user) => user.treatment_packages.length === 0
-        );
-        setDoctorNewUser(newUsers);
-        console.log(newUsers);
-      });
-    }
-  };
-
-  useEffect(() => {
-    handleDoctorNewUser();
-  }, [trigger]);
 
   useEffect(() => {
     handleGetAdmin();
@@ -82,17 +62,8 @@ function AdminMain() {
           onSetShowSidebar(false);
         }}
         showSidebar={showSidebar}
-        newUser={doctorNewUser}
       />
-      <Outlet
-        context={[
-          onSidebarHide,
-          admin,
-          handleDoctorNewUser,
-          doctorNewUser,
-          setTrigger,
-        ]}
-      />
+      <Outlet context={[onSidebarHide, admin]} />
     </div>
   );
 }
