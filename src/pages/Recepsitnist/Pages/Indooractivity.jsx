@@ -184,14 +184,14 @@ export default function Indooractivity() {
     const timeString = timeSlot;
     const [time, modifier] = timeString.split(" ");
     let [hours, minutes] = time.split(":");
-  
+
     if (modifier === "PM" && hours !== "12") {
       hours = parseInt(hours, 10) + 12;
     }
     if (modifier === "AM" && hours === "12") {
       hours = "00";
     }
-  
+
     const timeIn24HourFormat = `${hours}:${minutes}`;
     const appointmentId = getCheckedCount(
       appointments,
@@ -201,14 +201,14 @@ export default function Indooractivity() {
     );
     const isBooked = !!appointmentId;
     console.log(appointmentId);
-  
+
     if (isBooked) {
       const existingAppointment = appointments.find(
         (appointment) =>
           appointment.machine_detail_id === machineId &&
           appointment.time === timeIn24HourFormat
       );
-  
+
       if (existingAppointment) {
         setDialogData({
           name: existingAppointment.user?.first_name || "",
@@ -224,13 +224,13 @@ export default function Indooractivity() {
           appointmentId: existingAppointment?.id,
         });
         setAssignedData(true);
-        setIsDialogOpen(true); 
+        setIsDialogOpen(true);
       }
     } else {
       const machine = machines.find((m) => m.id === machineId);
       const doctorName = machine?.user?.first_name || "Doctor not assigned";
       const actualDoctorId = machine?.user?.id || "ID not assigned";
-  
+
       if (machine) {
         setDialogData({
           name: "",
@@ -242,12 +242,11 @@ export default function Indooractivity() {
           caseNumber: "",
           machineId: machineId,
         });
-        setAssignedData(false); 
-        setIsDialogOpen(true); 
+        setAssignedData(false);
+        setIsDialogOpen(true);
       }
     }
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -325,6 +324,7 @@ export default function Indooractivity() {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
   };
+
   const handleCancel = (appointmentId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -345,18 +345,28 @@ export default function Indooractivity() {
                 title: "Deleted!",
                 text: `Appointment has been deleted.`,
                 icon: "success",
+              }).then(() => {
+                handleDisplay(consultingTime);
               });
-              handleDisplay(consultingTime);
-              isDialogOpen(false);
             })
             .catch((err) => {
               console.error("Error cancelling appointment:", err);
-              alert("Failed to cancel appointment.");
+              Swal.fire({
+                title: "Error",
+                text:
+                  err.response?.data?.message ||
+                  "Failed to cancel appointment.",
+                icon: "error",
+              });
+            })
+            .finally(() => {
+              setIsDialogOpen(false);
             });
         }
       }
     });
   };
+
   useEffect(() => {
     handleDisplay(consultingTime);
     axios

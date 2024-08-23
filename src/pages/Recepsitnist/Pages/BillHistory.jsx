@@ -9,34 +9,21 @@ export default function BillHistory(props) {
   const { caseNumber } = location.state || {};
   const context = useOutletContext();
   const navigate = useNavigate();
-  // const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
   const [userDetails, setUserDetails] = useState({});
   const [packageDetail, setPackageDetail] = useState({});
   const [bills, setBills] = useState([]);
+  const [editBillId, setEditBillId] = useState(null); 
+  const [editableValues, setEditableValues] = useState({
+    paid_payment: "",
+    remaining_payment: "",
+  });
 
-  // const handleSearchTerm = (value) => {
-  //   setSearchTerm(value);
-  // };
-
-  const handleInventory = () => {
-    navigate("../generatebill");
-  };
-  // const handleKeyDown = (event) => {
-  //   if (event.key === "Enter") {
-  //     setDebouncedSearchTerm(searchTerm);
-  //   }
-  // };
-
-  const handleEdit = () =>{
-
-  }
   useEffect(() => {
     if (caseNumber) {
       axios
         .get(`/api/v1/bills?case_number=${caseNumber}`)
         .then((res) => {
-          console.log(res, "BILL HISTORY");
           setUserDetails(res.data?.user);
           setPackageDetail(res.data?.user?.user_packages?.[0]);
           setBills(res.data?.bills);
@@ -46,14 +33,59 @@ export default function BillHistory(props) {
           alert("USER NOT FOUND");
         });
     }
-  }, [caseNumber, debouncedSearchTerm]);
+  }, [caseNumber]);
+
+  const handleEdit = (bill) => {
+    setEditBillId(bill.id);
+    setEditableValues({
+      paid_payment: bill.paid_payment,
+      remaining_payment: bill.remaining_payment,
+    });
+  };
+
+  const handlePaidAmountChange = (e, total_price) => {
+    const paid_payment = e.target.value;
+    const remaining_payment = total_price - paid_payment;
+
+    setEditableValues({
+      paid_payment,
+      remaining_payment,
+    });
+  };
+
+  const handleSave = (billId) => {
+    const updatedBills = bills.map((bill) =>
+      bill.id === billId
+        ? {
+            ...bill,
+            paid_payment: editableValues.paid_payment,
+            remaining_payment: editableValues.remaining_payment,
+          }
+        : bill
+    );
+    setBills(updatedBills);
+    setEditBillId(null);
+
+    axios
+      .put(`/api/v1/bills/${billId}`, {
+        paid_payment: editableValues.paid_payment,
+        remaining_payment: editableValues.remaining_payment,
+      })
+      .then((res) => {
+        console.log("Bill updated successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Failed to update the bill");
+      });
+  };
 
   return (
     <div className="flex w-full">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+      <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-fit p-2">
           <button
             onClick={context[0]}
@@ -72,17 +104,6 @@ export default function BillHistory(props) {
               <div className="text-2xl font-semibold text-center mb-4">
                 Bill History
               </div>
-
-              {/* <div className="flex gap-5 p-2 w-full mb-4">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => handleSearchTerm(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Search User through Case Number/Phone Number"
-                  className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div> */}
               <div className="w-full">
                 <div className="flex gap-48">
                   <div className="text-lg font-bold mb-4">
@@ -122,30 +143,74 @@ export default function BillHistory(props) {
                     </div>
                   </div>
                 </div>
-
                 <div className="bg-white shadow-md rounded-lg overflow-hidden">
                   {bills.map((bill) => (
                     <div key={bill.id} className="mb-4">
-                      <div className="p-4 flex  border-b">
+                      <div className="p-4 flex justify-between border-b">
                         <div>
-                        <div className="font-semibold">Bill ID: {bill.id}</div>
-                        <div>Total Price: {bill.total_price}</div>
-                        <div>Paid Price : {bill.paid_payment}</div>
-                        <div>Remaining Price : {bill.remaining_payment}</div>
-                        <div>
-                          Created At:{" "}
-                          {new Date(bill.created_at).toLocaleString()}
+                          <div className="font-semibold">
+                            Bill ID: {bill.id}
+                          </div>
+                          <div>
+                            Total Price: {bill.total_price}
+                          </div>
+                          <div>
+                            Paid Price:{" "}
+                            {editBillId === bill.id ? (
+                              <input
+                                type="number"
+                                value={editableValues.paid_payment}
+                                onChange={(e) =>
+                                  handlePaidAmountChange(e, bill.total_price)
+                                }
+                                className="py-1 px-2 border rounded"
+                              />
+                            ) : (
+                              bill.paid_payment
+                            )}
+                          </div>
+                          <div>
+                            Remaining Price:{" "}
+                            {editBillId === bill.id ? (
+                              <input
+                                type="number"
+                                value={editableValues.remaining_payment}
+                                onChange={(e) =>
+                                  setEditableValues({
+                                    ...editableValues,
+                                    remaining_payment: e.target.value,
+                                  })
+                                }
+                                className="py-1 px-2 border rounded"
+                                readOnly
+                              />
+                            ) : (
+                              bill.remaining_payment
+                            )}
+                          </div>
+                          <div>
+                            Created At:{" "}
+                            {new Date(bill.created_at).toLocaleString()}
+                          </div>
                         </div>
-                        </div>
-                        
                         <div>
-                          <Button
-                            variant="solid"
-                            color="primary"
-                            onClick={handleEdit}
-                          >
-                            Edit
-                          </Button>
+                          {editBillId === bill.id ? (
+                            <Button
+                              variant="solid"
+                              color="success"
+                              onClick={() => handleSave(bill.id)}
+                            >
+                              Save
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="solid"
+                              color="primary"
+                              onClick={() => handleEdit(bill)}
+                            >
+                              Edit
+                            </Button>
+                          )}
                         </div>
                       </div>
                       <table className="min-w-full divide-y divide-gray-200 overflow-auto">
@@ -161,7 +226,10 @@ export default function BillHistory(props) {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                           {bill.bill_items.map((item, itemIndex) => (
-                            <tr key={itemIndex} className="hover:bg-gray-50">
+                            <tr
+                              key={itemIndex}
+                              className="hover:bg-gray-50"
+                            >
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
                                 {item.medicine_name}
                               </td>
