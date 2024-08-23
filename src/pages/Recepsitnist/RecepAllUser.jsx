@@ -16,7 +16,7 @@ function RecepAllUsers() {
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
       const patients = res.data?.users?.filter(
-        (user) => user.role === "patient" && user.creator === "doctor"
+        (user) => user.role === "patient"
       );
       console.log("Patients by Super Admin: ", patients);
       setGetCustomers(patients);
@@ -97,7 +97,7 @@ function RecepAllUsers() {
             />
             <button
               onClick={handleAddUsers}
-              className="border border-gray-300 text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
+              className="border border-gray-300 w-[20%] text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
             >
               New Patient
             </button>
@@ -114,7 +114,7 @@ function RecepAllUsers() {
                   <ThComponent name="Age" />
                   <ThComponent name="Weight" />
                   <ThComponent name="Mobile" />
-                  <ThComponent name="Email" />
+                  {/* <ThComponent name="Email" /> */}
                   <ThComponent name="Date" />
                   <ThComponent name="Time" />
                   <ThComponent name="Doctor Name" />
@@ -162,9 +162,9 @@ function RecepAllUsers() {
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          {/* <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.email} />
-                          </td>
+                          </td> */}
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
                               things={formatDate(val.created_at)}
