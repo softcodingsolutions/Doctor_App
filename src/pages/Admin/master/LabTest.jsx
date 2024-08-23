@@ -12,6 +12,8 @@ function LabTest() {
   const [getTests, setGetTests] = useState([]);
   const [editTests, setEditTests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const main_id = localStorage.getItem("main_id");
+  const role = localStorage.getItem("role");
 
   const handleGetTests = () => {
     axios
@@ -28,10 +30,13 @@ function LabTest() {
       });
   };
 
-  const handleAddTests = (test_name, test_for, comments) => {
+  const handleAddTests = (test_name, test_for, comments, doc_id) => {
     const formData = new FormData();
     formData.append("labtest_management[name]", test_name);
     formData.append("labtest_management[gender]", test_for);
+    role === "doctor"
+      ? formData.append("labtest_management[user_id]", main_id)
+      : formData.append("labtest_management[user_id]", doc_id);
     formData.append("labtest_management[comments]", comments);
     axios
       .post("api/v1/labtest_managements", formData)
@@ -59,10 +64,13 @@ function LabTest() {
     setEditTests(getTests.filter((item) => item?.id === val));
   };
 
-  const handleEditTestApi = (test_name, test_for, comments, id) => {
+  const handleEditTestApi = (test_name, test_for, comments, id, doc_id) => {
     const formData = new FormData();
     formData.append("labtest_management[name]", test_name);
     formData.append("labtest_management[gender]", test_for);
+    role === "doctor"
+      ? formData.append("labtest_management[user_id]", main_id)
+      : formData.append("labtest_management[user_id]", doc_id);
     formData.append("labtest_management[comments]", comments);
     axios
       .put(`api/v1/labtest_managements/${id}`, formData)

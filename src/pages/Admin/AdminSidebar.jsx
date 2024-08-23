@@ -12,7 +12,7 @@ import { AiFillDatabase } from "react-icons/ai";
 import img from "../../assets/images/icons_slime.png";
 import { CiViewList } from "react-icons/ci";
 
-function AdminSidebar({ onSidebarHide, showSidebar, admin, newUser }) {
+function AdminSidebar({ onSidebarHide, showSidebar, admin}) {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
@@ -30,18 +30,9 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin, newUser }) {
     },
     {
       id: "2",
-      title: "Patients",
+      title: "Patient List",
       to: "patients/all-users",
-      icons: (
-        <div className="relative">
-          <IoPersonSharp size={18} />
-          {newUser.length > 0 && (
-            <span className="absolute bottom-2.5 left-20 size-4 text-center bg-red-500 text-white rounded-full text-xs">
-              {newUser.length}
-            </span>
-          )}
-        </div>
-      ),
+      icons: <IoPersonSharp size={18} />,
     },
     {
       id: "13",

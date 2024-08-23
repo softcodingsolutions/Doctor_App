@@ -71,8 +71,8 @@ function CustomerAllUsers() {
 
   // Sort getParticularCustomer so that those with no treatment_packages come first
   const sortedCustomers = getParticularCustomer.sort((a, b) => {
-    const aHasNoPackage = a.treatment_packages?.length === 0;
-    const bHasNoPackage = b.treatment_packages?.length === 0;
+    const aHasNoPackage = a.creator === "franchise";
+    const bHasNoPackage = b.creator === "franchise";
     return bHasNoPackage - aHasNoPackage; // This will move customers with no packages to the front
   });
 
@@ -82,7 +82,7 @@ function CustomerAllUsers() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[92vh] bg-white">
+      <div className="rounded-lg bg-card h-[93vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-1">
           <div className="flex gap-5 p-2 w-full">
             <input
@@ -101,7 +101,7 @@ function CustomerAllUsers() {
           </div>
           <div className="flex items-center justify-end gap-2">
             <div className="w-4 h-4 bg-red-300 border border-gray-800"> </div>
-            <div>- New Patient</div>
+            <div>- Franchise Patient</div>
           </div>
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
             <table className="w-full min-w-[460px] z-0">
@@ -111,12 +111,11 @@ function CustomerAllUsers() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="Case No."
                   />
-                  <ThComponent name="Name" />
-                  <ThComponent name="Email" />
+                  <ThComponent name="Patient Name" />
                   <ThComponent name="Age" />
-                  <ThComponent name="Mobile" />
-                  <ThComponent name="City" />
-                  <ThComponent name="Registration Through" />
+                  <ThComponent name="Weight" />
+                  <ThComponent name="Mobile Number" />
+                  <ThComponent name="Type" />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -137,7 +136,7 @@ function CustomerAllUsers() {
                         <tr
                           key={val.id}
                           className={`${
-                            val.treatment_packages?.length === 0
+                            val.creator === "franchise"
                               ? "border-l-4 border-red-300"
                               : ""
                           }`}
@@ -159,10 +158,10 @@ function CustomerAllUsers() {
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.email} />
+                            <TdComponent things={val.personal_detail?.age} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.personal_detail?.age} />
+                            <TdComponent things={val.personal_detail?.weight} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
@@ -174,17 +173,6 @@ function CustomerAllUsers() {
                                 val.personal_detail?.city?.slice(1)
                               }
                             />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            {val.creator === "super_admin" && (
-                              <TdComponent things={"Admin"} />
-                            )}
-                            {val.creator === "doctor" && (
-                              <TdComponent things={"Doctor"} />
-                            )}
-                            {val.creator === "franchise" && (
-                              <TdComponent things={"Franchise"} />
-                            )}
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent

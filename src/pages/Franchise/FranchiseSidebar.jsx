@@ -19,7 +19,7 @@ function FranchiseSidebar({ franchise, onSidebarHide, showSidebar }) {
     // },
     {
       id: "2",
-      title: "Patients",
+      title: "Patient List",
       to: "patients/all-users",
       icons: <IoPersonSharp size={18} />,
     },
