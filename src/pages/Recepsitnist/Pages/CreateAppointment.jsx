@@ -79,6 +79,7 @@ export default function CreateAppointment() {
         .catch((err) => {
           console.log(err);
           alert("USER NOT FOUND");
+          setLoading(false);
         });
     }
   }, [debouncedSearchTerm]);

@@ -37,6 +37,27 @@ function RecepAllUsers() {
     navigate(`/receptionist/bill-history`, { state: { caseNumber } });
   };
 
+  const formatDate = (date) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(date).toLocaleDateString(undefined, options);
+  };
+
+  function formatTime(isoString) {
+    if (!isoString) return "Invalid Time";
+
+    const date = new Date(isoString);
+
+    if (isNaN(date.getTime())) {
+      console.error("Invalid time format:", isoString);
+      return "Invalid Time";
+    }
+
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
@@ -78,7 +99,7 @@ function RecepAllUsers() {
               onClick={handleAddUsers}
               className="border border-gray-300 text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
             >
-              Add New
+              New Patient
             </button>
           </div>
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
@@ -90,10 +111,12 @@ function RecepAllUsers() {
                     name="Case No."
                   />
                   <ThComponent name="Name" />
-                  <ThComponent name="Email" />
                   <ThComponent name="Age" />
+                  <ThComponent name="Weight" />
                   <ThComponent name="Mobile" />
-                  <ThComponent name="City" />
+                  <ThComponent name="Email" />
+                  <ThComponent name="Date" />
+                  <ThComponent name="Time" />
                   <ThComponent name="Doctor Name" />
                   <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
@@ -131,20 +154,25 @@ function RecepAllUsers() {
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.email} />
+                            <TdComponent things={val.personal_detail?.age} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.personal_detail?.age} />
+                            <TdComponent things={val.personal_detail?.weight} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={val.email} />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
-                              things={
-                                val.personal_detail?.city?.[0]?.toUpperCase() +
-                                val.personal_detail?.city?.slice(1)
-                              }
+                              things={formatDate(val.created_at)}
+                            />
+                          </td>{" "}
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent
+                              things={formatTime(val.created_at)}
                             />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">

@@ -40,15 +40,47 @@ export default function Home() {
       });
   };
 
-  function formatTime(timeString) {
-    const [hours, minutes] = timeString.split(":");
-    const date = new Date();
-    date.setHours(hours);
-    date.setMinutes(minutes);
+  function formatTime(isoString) {
+    if (!isoString) return "Invalid Time";
+
+    const date = new Date(isoString);
+
+    if (isNaN(date.getTime())) {
+      console.error("Invalid time format:", isoString);
+      return "Invalid Time";
+    }
+
     return date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
+    });
+  }
+
+  function formatTime2(timeString, is24Hour = false) {
+    if (!timeString) return "Invalid Time";
+
+    let date;
+
+    // Check if the time is in ISO format or just a time string
+    if (timeString.includes("T")) {
+      date = new Date(timeString); // ISO format
+    } else {
+      // Assuming timeString is in "HH:MM:SS" format
+      const [hours, minutes, seconds] = timeString.split(":");
+      date = new Date();
+      date.setHours(hours, minutes, seconds);
+    }
+
+    if (isNaN(date.getTime())) {
+      console.error("Invalid time format:", timeString);
+      return "Invalid Time";
+    }
+
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: !is24Hour, 
     });
   }
 
@@ -264,7 +296,7 @@ export default function Home() {
                                 </td>
                                 <td className="py-3 px-4 border-b border-b-gray-50">
                                   <span className="text-black text-base font-medium ml-1">
-                                    {formatTime(data.time)}
+                                    {data.time}
                                   </span>
                                 </td>
                               </tr>

@@ -53,7 +53,7 @@ export default function GenerateBill() {
       .then((res) => {
         console.log("Bill created successfully", res);
         alert("Bill created successfully");
-        resetForm(); // Reset the form after successful submission
+        resetForm();
       })
       .catch((err) => {
         console.log("Error creating bill", err);
@@ -79,10 +79,16 @@ export default function GenerateBill() {
     }
   };
 
-  const formatDuration = (duration) => {
-    const hours = Math.floor(duration / 60);
-    const minutes = duration % 60;
-    return `${hours}h ${minutes}m`;
+  const handleTotalMedicine = (index, value) => {
+    setTotalQuantities((prevQuantities) => {
+      const newQuantities = [...prevQuantities];
+      newQuantities[index] = Number(value);
+      return newQuantities;
+    });
+  };
+
+  const formatDosage = (dosage) => {
+    return dosage || "No dosage info";
   };
 
   useEffect(() => {
@@ -206,7 +212,7 @@ export default function GenerateBill() {
                           Assigned Medicine
                         </th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                          Total Medicine
+                          Total Quantity
                         </th>
                         <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                           With Milk
@@ -220,7 +226,7 @@ export default function GenerateBill() {
                             {med.medicine_name}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-base ">
-                            {formatDuration(med.dosage)}
+                            {formatDosage(med.dosage)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-base ">
                             {med.quantity}
@@ -243,39 +249,51 @@ export default function GenerateBill() {
                     </tbody>
                   </table>
                 </div>
-                <div className="m-5 justify-end flex gap-4">
-                  <div className="">
-                    <label className="font-semibold">Total Price: </label>
+
+                <div className="flex gap-5 py-3">
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Total Price
+                    </label>
                     <input
-                      type="text"
-                      className="border border-blue-gray-400 rounded-md p-2"
+                      type="number"
                       value={price}
                       onChange={handlePrice}
+                      className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <div>
-                      <label className="font-semibold">Paid : </label>
-                      <input
-                        type="text"
-                        className="border border-blue-gray-400 rounded-md p-2"
-                        value={pay}
-                        onChange={handlePay}
-                      />
-                    </div>
-                    <div>
-                      <label className="font-semibold">Remaining : </label>
-                      <input
-                        type="text"
-                        className="border border-blue-gray-400 rounded-md p-2"
-                        value={remaining}
-                        readOnly
-                      />
-                    </div>
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Paid Amount
+                    </label>
+                    <input
+                      type="number"
+                      value={pay}
+                      onChange={handlePay}
+                      className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    />
                   </div>
                 </div>
-                <div className="flex justify-end mt-6">
-                  <Button onClick={handleBill} variant="solid">
+
+                <div className="flex gap-5 py-3">
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Remaining
+                    </label>
+                    <input
+                      type="number"
+                      value={remaining}
+                      readOnly
+                      className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-5 py-3">
+                  <Button
+                    onClick={handleBill}
+                    className=" py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  >
                     Generate Bill
                   </Button>
                 </div>
