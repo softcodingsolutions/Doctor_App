@@ -192,6 +192,10 @@ export default function BillHistory(props) {
                             Created At:{" "}
                             {new Date(bill.created_at).toLocaleString()}
                           </div>
+                          <div>
+                            Payment Method:{" "}
+                            {bill.payment_method}
+                          </div>
                         </div>
                         <div>
                           {editBillId === bill.id ? (
