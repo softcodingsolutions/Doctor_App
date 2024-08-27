@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import InsideLoader from "../../InsideLoader";
 
 export default function Consulting(props) {
-  console.log(props.user);
   const [consultingTime, setConsultingTime] = useState(0);
   const [data, setData] = useState([]);
+  const [loader, setLoader] = useState(false);
   const [slot, setSlot] = useState(0);
   const navigate = useNavigate();
   const handleSlot = (e) => {
@@ -14,25 +15,31 @@ export default function Consulting(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoader(true);
     const formdata = new FormData();
     formdata.append("appointment[user_id]", props.user);
     formdata.append("appointment[date]", consultingTime);
     formdata.append("appointment[doctor_id]", props.doctor);
     formdata.append("appointment[time]", slot);
     {
-      consultingTime && slot
-        ? axios
-            .post(`/api/v1/appointments`, formdata)
-            .then((res) => {
-              console.log(res);
-              alert("Successfully create your Consulting Appointment!");
-              navigate("/receptionist/appointment/home");
-            })
-            .catch((err) => {
-              console.log(err);
-              alert(err.response?.data?.message + "!");
-            })
-        : alert("Select Date and Time");
+      if (consultingTime && slot) {
+        axios
+          .post(`/api/v1/appointments`, formdata)
+          .then((res) => {
+            console.log(res);
+            setLoader(false);
+            alert("Successfully create your Consulting Appointment!");
+            navigate("/receptionist/appointment/home");
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoader(false);
+            alert(err.response?.data?.message + "!");
+          });
+      } else {
+        setLoader(false);
+        alert("Select Date and Time");
+      }
     }
   };
 
@@ -77,6 +84,10 @@ export default function Consulting(props) {
   useEffect(() => {
     handleData();
   }, [props.doctor]);
+
+  if (loader) {
+    return <InsideLoader />;
+  }
 
   return (
     <div>

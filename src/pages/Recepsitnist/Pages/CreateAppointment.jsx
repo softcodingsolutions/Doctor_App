@@ -136,11 +136,11 @@ export default function CreateAppointment() {
                 oldCase ? "bg-[#1F2937]" : "bg-white"
               } ${oldCase ? "text-white" : "text-[#1F2937]"} p-2 rounded-md `}
             >
-              Follow Up(Old Case)
+              Follow Up (Old Case)
             </button>
           </div>
-          <div className="flex gap-5 p-2 ">
-            <label>Search:</label>
+          <div className="flex gap-3 p-2 items-center">
+            <label className="font-medium text-lg">Search:</label>
             <input
               type="text"
               value={searchTerm}
@@ -154,13 +154,13 @@ export default function CreateAppointment() {
             <form className="text-lg">
               <div className="flex flex-col gap-5 m-5">
                 {newCase ? (
-                  <lebal className="text-xl bg-white  rounded-md p-1 font-semibold text-center mr-2 ">
+                  <label className="text-xl bg-white  rounded-md p-1 font-semibold text-center mr-2 ">
                     New Case{" "}
-                  </lebal>
+                  </label>
                 ) : (
-                  <lebal className="text-xl bg-white  rounded-md p-1 font-semibold text-center mr-2 ">
+                  <label className="text-xl bg-white  rounded-md p-1 font-semibold text-center mr-2 ">
                     Old Case{" "}
-                  </lebal>
+                  </label>
                 )}
                 {doctorName && (
                   <div className="flex gap-5">
