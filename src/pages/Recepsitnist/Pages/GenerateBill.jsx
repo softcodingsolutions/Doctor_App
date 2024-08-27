@@ -3,8 +3,6 @@ import axios from "axios";
 import { useDebounce } from "use-debounce";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "@mui/joy/Button";
-import { FormLabel, Option, Select } from "@mui/joy";
-import { Payment } from "@mui/icons-material";
 
 export default function GenerateBill() {
   const context = useOutletContext();
@@ -20,6 +18,8 @@ export default function GenerateBill() {
   const [remaining, setRemaining] = useState("");
   const [totalQuantities, setTotalQuantities] = useState([]);
   const [method, setMethod] = useState("Online");
+  const [errors, setErrors] = useState({});
+
   const resetForm = () => {
     setSearchTerm("");
     setId(0);
@@ -30,38 +30,74 @@ export default function GenerateBill() {
     setPay("");
     setRemaining("");
     setTotalQuantities([]);
+    setErrors({});
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!id) {
+      newErrors.searchTerm = "Patient not selected.";
+    }
+
+    if (!price) {
+      newErrors.price = "Total Price is required.";
+    }
+
+    if (!pay) {
+      newErrors.pay = "Paid Amount is required.";
+    } else if (Number(pay) > Number(price)) {
+      newErrors.pay = "Paid Amount cannot be more than Total Price.";
+    }
+
+    if (!method) {
+      newErrors.method = "Payment Method is required.";
+    }
+
+    if (medicines.length > 0) {
+      medicines.forEach((med, index) => {
+        if (!totalQuantities[index] || totalQuantities[index] <= 0) {
+          newErrors[`totalQuantities_${index}`] = `Total quantity for ${med.medicine_name} is required.`;
+        }
+      });
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleBill = () => {
-    const billItems = medicines.map((med, index) => ({
-      medicine_name: med.medicine_name,
-      quantity: totalQuantities[index] || 0,
-    }));
+    if (validateForm()) {
+      const billItems = medicines.map((med, index) => ({
+        medicine_name: med.medicine_name,
+        quantity: totalQuantities[index] || 0,
+      }));
 
-    const formData = {
-      bill: {
-        total_price: price,
-        user_id: id,
-        bill_items: JSON.stringify(billItems),
-        remaining_payment: remaining,
-        paid_payment: pay,
-        payment_method: method
-      },
-    };
+      const formData = {
+        bill: {
+          total_price: price,
+          user_id: id,
+          bill_items: JSON.stringify(billItems),
+          remaining_payment: remaining,
+          paid_payment: pay,
+          payment_method: method,
+        },
+      };
 
-    console.log("Form Data to be sent:", formData);
+      console.log("Form Data to be sent:", formData);
 
-    axios
-      .post(`/api/v1/bills`, formData)
-      .then((res) => {
-        console.log("Bill created successfully", res);
-        alert("Bill created successfully");
-        resetForm();
-      })
-      .catch((err) => {
-        console.log("Error creating bill", err);
-        alert("Error creating bill");
-      });
+      axios
+        .post(`/api/v1/bills`, formData)
+        .then((res) => {
+          console.log("Bill created successfully", res);
+          alert("Bill created successfully");
+          resetForm();
+        })
+        .catch((err) => {
+          console.log("Error creating bill", err);
+          alert("Error creating bill");
+        });
+    } 
   };
 
   const handlePrice = (e) => {
@@ -146,7 +182,7 @@ export default function GenerateBill() {
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+      <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-fit p-2">
           <button
             onClick={context[0]}
@@ -171,8 +207,13 @@ export default function GenerateBill() {
                   type="text"
                   onKeyDown={handleKeyDown}
                   placeholder="Search case number or phone number"
-                  className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`py-2 px-4 rounded-md border ${
+                    errors.searchTerm ? "border-red-500" : "border-gray-300"
+                  } w-full focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 />
+                {errors.searchTerm && (
+                  <p className="text-red-500 text-sm">{errors.searchTerm}</p>
+                )}
               </div>
               <div className="w-full">
                 <div className="flex gap-48">
@@ -227,98 +268,117 @@ export default function GenerateBill() {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {medicines.map((med, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-base font-medium ">
-                            {med.medicine_name}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-base ">
-                            {formatDosage(med.dosage)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-base ">
-                            {med.quantity}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-base ">
-                            <input
-                              type="number"
-                              className="border border-blue-gray-400 rounded-md p-2"
-                              min={0}
-                              onChange={(e) =>
-                                handleTotalMedicine(index, e.target.value)
-                              }
-                            />
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-base ">
-                            {med.with_milk ? "Yes" : "No"}
+                      {medicines.length > 0 ? (
+                        medicines.map((med, index) => (
+                          <tr key={med.id}>
+                            <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">
+                              {med.medicine_name}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-base ">
+                              {formatDosage(med?.dosage)}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-base ">
+                              {med.is_assigned ? "Yes" : "No"}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-base ">
+                              <input
+                                type="number"
+                                className={`border rounded-md p-2 ${
+                                  errors[`totalQuantities_${index}`]
+                                    ? "border-red-500"
+                                    : "border-blue-gray-400"
+                                }`}
+                                min={0}
+                                onChange={(e) =>
+                                  handleTotalMedicine(index, e.target.value)
+                                }
+                              />
+                              {errors[`totalQuantities_${index}`] && (
+                                <p className="text-red-500 text-sm">
+                                  {errors[`totalQuantities_${index}`]}
+                                </p>
+                              )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-base ">
+                              {med.with_milk ? "Yes" : "No"}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan={5}
+                            className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
+                          >
+                            No medicines assigned.
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
-
-                <div className="flex gap-5 py-3">
-                  <div className=" flex">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Total Price
-                    </label>
-                    <input
-                      type="number"
-                      value={price}
-                      onChange={handlePrice}
-                      className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    />
-                  </div>
-                  <div className="flex">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid Amount
-                    </label>
-                    <input
-                      type="number"
-                      value={pay}
-                      onChange={handlePay}
-                      className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    />
-                  </div>
+              </div>
+              <div className="flex gap-5 py-3">
+                <div className=" flex">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Total Price
+                  </label>
+                  <input
+                    type="number"
+                    value={price}
+                    onChange={handlePrice}
+                    className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
+                      errors.price ? "border-red-500" : "border-gray-300"
+                    } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                  />
+                  {errors.price && (
+                    <p className="text-red-500 text-sm">{errors.price}</p>
+                  )}
                 </div>
-
-                <div className="flex flex-row gap-5 py-3">
-                  <div className="flex">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Remaining Amount
-                    </label>
-                    <input
-                      type="number"
-                      value={remaining}
-                      readOnly
-                      className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-gray-100"
-                    />
-                  </div>
-                  <div className="md:flex  justify-between">
-                    <label className="text-sm text-end mr-2">
-                      Payment Method:
-                    </label>
-                    <select
-                      placeholder="Select Method"
-                      onChange={handleMethod}
-                      required
-                      value={method}
-                      className="mt-1 block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    >
-                      <option value="Online">Online</option>
-                      <option value="Cash">Cash</option>
-                    </select>
-                  </div>
+                <div className="flex">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Paid Amount
+                  </label>
+                  <input
+                    type="number"
+                    value={pay}
+                    onChange={handlePay}
+                    className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
+                      errors.pay ? "border-red-500" : "border-gray-300"
+                    } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                  />
+                  {errors.pay && (
+                    <p className="text-red-500 text-sm">{errors.pay}</p>
+                  )}
                 </div>
-
-                <div className="flex gap-5 py-3">
-                  <Button
-                    onClick={handleBill}
-                    className=" py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                  >
-                    Generate Bill
-                  </Button>
-                </div>
+              </div>
+              <div className="md:flex justify-between">
+                <label className="text-sm text-end mr-2">Payment Method:</label>
+                <select
+                  placeholder="Select Method"
+                  onChange={handleMethod}
+                  required
+                  value={method}
+                  className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
+                    errors.method ? "border-red-500" : "border-gray-300"
+                  } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                >
+                  <option value="Online">Online</option>
+                  <option value="Cash">Cash</option>
+                </select>
+                {errors.method && (
+                  <p className="text-red-500 text-sm">{errors.method}</p>
+                )}
+              </div>
+              <div className="w-full flex justify-center items-center mt-4">
+                <Button
+                  onClick={handleBill}
+                  variant="solid"
+                  size="md"
+                  className="bg-blue-500 text-white hover:bg-blue-600"
+                >
+                  Generate Bill
+                </Button>
               </div>
             </div>
           </div>
