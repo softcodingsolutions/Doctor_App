@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Dialog } from "@headlessui/react";
-import { GiCancel } from "react-icons/gi";
+import InsideLoader from "../../InsideLoader";
 
 const generateTimeSlots = () => {
   const slots = [];
@@ -21,6 +21,7 @@ const generateTimeSlots = () => {
 
   return slots;
 };
+
 const getCheckedCount = (appointments, machineId, time, machines) => {
   const appointment = appointments.find((appointment) => {
     if (appointment.machine_detail_id !== machineId) return false;
@@ -47,6 +48,7 @@ const getCheckedCount = (appointments, machineId, time, machines) => {
 
   return appointment ? appointment.id : null;
 };
+
 const UserTable = ({
   userName,
   machines,
@@ -154,6 +156,7 @@ export default function Indooractivity() {
     caseNumber: "",
     appointmentId: "",
   });
+  const [loader, setLoader] = useState(true);
   const [consultingTime, setConsultingTime] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -166,10 +169,12 @@ export default function Indooractivity() {
       .get(`/api/v1/appointments${queryParam}`)
       .then((res) => {
         console.log(res.data?.appointments, "Appointments Data");
+        setLoader(false);
         setAppointments(res.data?.appointments || []);
       })
       .catch((err) => {
         console.error(err);
+        setLoader(false);
         alert(err.response?.data?.message + "!");
       });
   };
@@ -270,6 +275,7 @@ export default function Indooractivity() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoader(true);
     const timeString = dialogData.time;
     const [time, modifier] = timeString.split(" ");
     let [hours, minutes] = time.split(":");
@@ -298,15 +304,15 @@ export default function Indooractivity() {
         console.log(res);
         setIsDialogOpen(false);
         alert("Successfully created your Machine Consulting Appointment!");
+        setLoader(false);
         resetDialog();
         handleDisplay(consultingTime);
       })
       .catch((err) => {
         console.error(err.response?.data?.message || "An error occurred!");
-        if (err.response?.data?.message === "No Machines are available") {
-        }
         alert(err.response?.data?.message || "An error occurred!");
         setIsDialogOpen(false);
+        setLoader(false);
       });
   };
 
@@ -320,6 +326,7 @@ export default function Indooractivity() {
     setIsDialogOpen(false);
     resetDialog();
   };
+
   const formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
@@ -380,6 +387,10 @@ export default function Indooractivity() {
         alert(err.response?.data?.message || "An error occurred!");
       });
   }, [consultingTime]);
+
+  if (loader) {
+    return <InsideLoader />
+  }
 
   return (
     <div className="w-full p-2">

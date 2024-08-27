@@ -7,7 +7,6 @@ import InsideLoader from "../../InsideLoader";
 export default function CreateAppointment() {
   const [doctorList, setDoctorList] = useState("");
   const [doctorName, setDoctorName] = useState("");
-  const [Case, setCase] = useState("new");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [name, setName] = useState("");
@@ -19,6 +18,7 @@ export default function CreateAppointment() {
   const [loading, setLoading] = useState(false);
   const [newCase, setNewCase] = useState(true);
   const [oldCase, setOldCase] = useState(false);
+
   const handleShow = () => {
     axios
       .get(`/api/v1/appointments`)
@@ -46,10 +46,12 @@ export default function CreateAppointment() {
     setNewCase(true);
     setOldCase(false);
   };
+
   const handleOld = () => {
     setNewCase(false);
     setOldCase(true);
   };
+
   useEffect(() => {
     if (debouncedSearchTerm) {
       axios

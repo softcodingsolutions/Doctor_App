@@ -264,7 +264,7 @@ function App() {
             <Route path="home" element={<Home />} />
             <Route path="create-appointment" element={<CreateAppointment />} />
             <Route
-              path="Create-machine-appointment"
+              path="create-machine-appointment"
               element={<Indooractivity />}
             />
           </Route>
