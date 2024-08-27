@@ -60,7 +60,7 @@ function AddNewComplain(props) {
             <Stack spacing={3}>
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -81,7 +81,7 @@ function AddNewComplain(props) {
                 </FormControl>
               )}
               <FormControl>
-                <FormLabel>{props.complain_details} :-</FormLabel>
+                <FormLabel>{props.complain_details} </FormLabel>
                 <Textarea
                   placeholder="Details..."
                   name={`complain_details`}

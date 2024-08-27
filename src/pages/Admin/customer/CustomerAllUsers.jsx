@@ -161,7 +161,7 @@ function CustomerAllUsers() {
                             <TdComponent things={val.personal_detail?.age} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.personal_detail?.weight} />
+                            <TdComponent things={val.personal_detail?.weight + "kg"} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
@@ -169,8 +169,7 @@ function CustomerAllUsers() {
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
                               things={
-                                val.personal_detail?.city?.[0]?.toUpperCase() +
-                                val.personal_detail?.city?.slice(1)
+                                val.follow_up? "Follow Up" : "New Case"
                               }
                             />
                           </td>

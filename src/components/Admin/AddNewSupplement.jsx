@@ -59,7 +59,7 @@ function AddNewSupplement(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.nutrition_name} :-</FormLabel>
+                <FormLabel>{props.nutrition_name} </FormLabel>
                 <Input
                   placeholder="Name..."
                   name={`nutrition_name`}
@@ -71,7 +71,7 @@ function AddNewSupplement(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"

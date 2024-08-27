@@ -52,7 +52,7 @@ function AddNewPackage(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.package_name} :-</FormLabel>
+                <FormLabel>{props.package_name} </FormLabel>
                 <Input
                   placeholder="Name..."
                   name={`package_name`}
@@ -63,7 +63,7 @@ function AddNewPackage(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.package_days} :-</FormLabel>
+                <FormLabel>{props.package_days} </FormLabel>
                 <Input
                   placeholder="No. of days"
                   name={`package_days`}
@@ -74,7 +74,7 @@ function AddNewPackage(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.price} :-</FormLabel>
+                <FormLabel>{props.price} </FormLabel>
                 <Input
                   placeholder="₹₹₹"
                   name={`price`}

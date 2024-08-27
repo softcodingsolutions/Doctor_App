@@ -84,7 +84,7 @@ function EditExercise(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.exercise_name} :-</FormLabel>
+                <FormLabel>{props.exercise_name} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.name}
                   placeholder="Name..."
@@ -97,7 +97,7 @@ function EditExercise(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl className="w-1/2">
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -119,7 +119,7 @@ function EditExercise(props) {
               )}
 
               <FormControl>
-                <FormLabel>{props.exercise_describe_english} :-</FormLabel>
+                <FormLabel>{props.exercise_describe_english} </FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
                   <ReactQuill
                     defaultValue={props.see[0]?.details}

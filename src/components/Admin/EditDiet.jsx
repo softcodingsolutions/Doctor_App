@@ -84,7 +84,7 @@ function EditDiet(props) {
           >
             <Stack spacing={2} width={500}>
               <FormControl>
-                <FormLabel>{props.diet_code} :-</FormLabel>
+                <FormLabel>{props.diet_code} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.code}
                   placeholder="Code..."
@@ -96,7 +96,7 @@ function EditDiet(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.diet_name} :-</FormLabel>
+                <FormLabel>{props.diet_name} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.name}
                   placeholder="Name..."
@@ -108,7 +108,7 @@ function EditDiet(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -130,7 +130,7 @@ function EditDiet(props) {
               )}
 
               <FormControl>
-                <FormLabel>{props.diet_describe_english} :-</FormLabel>
+                <FormLabel>{props.diet_describe_english} </FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
                   <ReactQuill
                     defaultValue={props.see[0]?.chart_english}

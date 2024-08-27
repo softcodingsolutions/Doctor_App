@@ -59,7 +59,7 @@ function AddNewMedicine(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.med_name} :-</FormLabel>
+                <FormLabel>{props.med_name} </FormLabel>
                 <Input
                   placeholder="Name..."
                   name={`med_name`}
@@ -70,7 +70,7 @@ function AddNewMedicine(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.med_content} :-</FormLabel>
+                <FormLabel>{props.med_content} </FormLabel>
                 <Input
                   placeholder="Content..."
                   name={`med_content`}
@@ -80,7 +80,7 @@ function AddNewMedicine(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.med_quantity} :-</FormLabel>
+                <FormLabel>{props.med_quantity} </FormLabel>
                 <Input
                   placeholder="Quantity..."
                   name={`med_quantity`}
@@ -91,7 +91,7 @@ function AddNewMedicine(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"

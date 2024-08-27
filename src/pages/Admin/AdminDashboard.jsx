@@ -9,19 +9,19 @@ function AdminDashboard() {
   const context = useOutletContext();
   const navigate = useNavigate();
   const [getTotalPatients, setGetTotalPatients] = useState([]);
+  const [getNewPatients, setGetNewPatients] = useState([]);
   const [getTotalFranchise, setGetTotalFranchise] = useState([]);
   const [loading, setLoading] = useState(true);
   const [getAppointments, setGetAppointments] = useState([]);
   const main_id = localStorage.getItem("main_id");
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
-
   const handleGetAppointment = () => {
     axios
-      .get(`api/v2/users/get_personal_details`)
+      .get(`api/v1/appointments?date=${formattedDate}&doctor_id=${main_id}`)
       .then((res) => {
-        console.log("Todays Appointment: ", res.data?.users);
-        setGetAppointments(res.data?.users);
+        console.log("Todays Appointment: ", res.data?.appointments);
+        setGetAppointments(res.data?.appointments);
         setLoading(false);
       })
       .catch((err) => {
@@ -35,9 +35,17 @@ function AdminDashboard() {
       .get(`/api/v1/users`)
       .then((res) => {
         const patients = res.data?.users?.filter(
-          (user) => user.role === "patient"
+          (user) => user.role === "patient" && user.created_by_id == main_id
         );
-        console.log(patients.length);
+
+        const newPatients = res.data?.users?.filter(
+          (user) =>
+            user.role === "patient" &&
+            user.treatment_packages?.length === 0 &&
+            user.created_by_id == main_id
+        );
+
+        setGetNewPatients(newPatients?.length);
         setGetTotalPatients(patients?.length);
       })
       .catch((err) => {
@@ -65,7 +73,7 @@ function AdminDashboard() {
   };
 
   function formatTime(dateTimeString) {
-    const date = new Date(dateTimeString);
+    const date = new Date(`1970-01-01T${dateTimeString}:00`);
     return date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
@@ -140,7 +148,7 @@ function AdminDashboard() {
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
-                        {context?.[3]?.length}
+                        {getNewPatients}
                       </span>
                       <h3 className="text-base font-normal text-gray-500">
                         New Patients
@@ -152,14 +160,14 @@ function AdminDashboard() {
 
               <div className=" mt-4 w-full overflow-y-auto h-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-3">
                 <div className="font-medium text-xl">Todays Appointments: </div>
-                <div className="bg-white h-[70vh] overflow-y-auto flex flex-col gap-1 rounded-lg xl:col-span-4 2xl:col-span-4">
+                <div className="bg-white h-[70vh] overflow-y-auto flex flex-col rounded-lg xl:col-span-4 2xl:col-span-4">
                   {getAppointments.map((res) => (
                     <div
                       key={res.id}
-                      className="flex items-center gap-3.5 border border-gray-200 h-20 shadow-inner rounded-md p-2"
+                      className="flex items-center gap-3.5 border border-gray-200 min-h-24 shadow-inner rounded-md p-3"
                     >
                       <img
-                        src={res.personal_detail?.gender === "male" ? male : female}
+                        src={res.user?.gender === "male" ? male : female}
                         alt="img"
                         className="size-16 mr-2"
                       />
@@ -169,18 +177,18 @@ function AdminDashboard() {
                           <div className=" text-right break-words font-medium">
                             Case Number:
                           </div>
-                          <div className=" pl-2">{res.case_number}</div>
+                          <div className=" pl-2">{res.user?.case_number}</div>
                         </div>
                         <div className="flex">
                           <div className=" text-right break-words font-medium">
                             Patient Name:
                           </div>
                           <div className="pl-2">
-                            {res.first_name?.[0]?.toUpperCase() +
-                              res.first_name?.slice(1) +
+                            {res.user?.first_name?.[0]?.toUpperCase() +
+                              res.user?.first_name?.slice(1) +
                               " " +
-                              res.last_name?.[0]?.toUpperCase() +
-                              res.last_name?.slice(1)}
+                              res.user?.last_name?.[0]?.toUpperCase() +
+                              res.user?.last_name?.slice(1)}
                           </div>
                         </div>
                       </div>
@@ -191,7 +199,7 @@ function AdminDashboard() {
                             Age:
                           </div>
                           <div className=" pl-2">
-                            {res.personal_detail?.age}
+                            {res.user?.personal_detail?.age}
                           </div>
                         </div>
                         <div className="flex items-center">
@@ -209,16 +217,14 @@ function AdminDashboard() {
                           <div className=" text-right break-words font-medium">
                             Phone Number:
                           </div>
-                          <div className=" pl-2">
-                            {res.user?.personal_detail?.age}
-                          </div>
+                          <div className=" pl-2">{res.user?.phone_number}</div>
                         </div>
                         <div className="flex items-center">
                           <div className=" text-right break-words font-medium">
                             Patient Type:
                           </div>
                           <div className="pl-2">
-                            {res.user?.personal_detail?.weight} kg
+                            {res.user?.follow_up ? "Follow Up" : "New Case"}
                           </div>
                         </div>
                       </div>
@@ -228,22 +234,20 @@ function AdminDashboard() {
                           <div className=" text-right break-words font-medium">
                             Time:
                           </div>
-                          <div className="pl-2"> {res.machine_detail?.name ? res.time : formatTime(res.time) }</div>
+                          <div className="pl-2">{formatTime(res.time)}</div>
                         </div>
-                        {res.machine_detail?.name && (
-                          <div className="flex items-center">
-                            <div className=" text-right break-words font-medium">
-                              Machine Name:
-                            </div>
-                            <div className=" pl-2">
-                              {res.machine_detail?.name}
-                            </div>
+                        <div className="flex items-center">
+                          <div className=" text-right break-words font-medium">
+                            Machine Name:
                           </div>
-                        )}
+                          <div className=" pl-2">
+                            {res.machine_detail?.name}
+                          </div>
+                        </div>
                       </div>
 
                       <button
-                        onClick={() => handleDiagnosis(res.id)}
+                        onClick={() => handleDiagnosis(res.user?.id)}
                         className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
                       >
                         Diagnosis

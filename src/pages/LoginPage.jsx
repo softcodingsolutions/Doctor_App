@@ -19,6 +19,7 @@ import Loader from "./Loader";
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [wrongCreds, setWrongCreds] = useState(false);
   const {
     register,
     handleSubmit,
@@ -94,6 +95,9 @@ function LoginPage() {
           .catch((err) => {
             console.log(err);
             setLoading(false);
+            if (err.response?.data?.success === false) {
+              setWrongCreds(true);
+            }
             alert(err.response?.data?.message + "!");
           });
       })
@@ -130,6 +134,11 @@ function LoginPage() {
               <div className="flex justify-center border rounded-md p-4 shadow-inner bg-green-100">
                 <img className="w-50 h-24" src={icons_slime} alt="" />
               </div>
+              {wrongCreds && (
+                <span className="text-s text-red-500 -mt-4">
+                  Incorrect Email or Password!
+                </span>
+              )}
               <Input
                 label="Email"
                 size="lg"
@@ -153,6 +162,7 @@ function LoginPage() {
                   {errors.password?.message}
                 </span>
               )}
+
               <div className="-mt-1.5 text-right">
                 <Typography variant="small" color="light">
                   <Link

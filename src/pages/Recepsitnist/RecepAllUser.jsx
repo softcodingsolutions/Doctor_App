@@ -37,27 +37,11 @@ function RecepAllUsers() {
     navigate(`/receptionist/bill-history`, { state: { caseNumber } });
   };
 
-  const formatDate = (date) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(date).toLocaleDateString(undefined, options);
-  };
+//   const formatDate = (date) => {
+//     const options = { year: "numeric", month: "long", day: "numeric" };
+//     return new Date(date).toLocaleDateString(undefined, options);
+//   };
 
-  function formatTime(isoString) {
-    if (!isoString) return "Invalid Time";
-
-    const date = new Date(isoString);
-
-    if (isNaN(date.getTime())) {
-      console.error("Invalid time format:", isoString);
-      return "Invalid Time";
-    }
-
-    return date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  }
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
@@ -110,15 +94,12 @@ function RecepAllUsers() {
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="Case No."
                   />
-                  <ThComponent name="Name" />
+                  <ThComponent name="Patient Name" />
                   <ThComponent name="Age" />
                   <ThComponent name="Weight" />
-                  <ThComponent name="Mobile" />
-                  {/* <ThComponent name="Email" /> */}
-                  <ThComponent name="Date" />
-                  <ThComponent name="Time" />
+                  <ThComponent name="Mobile Number" />
+                  <ThComponent name="Type" />
                   <ThComponent name="Doctor Name" />
-                  <ThComponent />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -157,24 +138,18 @@ function RecepAllUsers() {
                             <TdComponent things={val.personal_detail?.age} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.personal_detail?.weight} />
+                            <TdComponent
+                              things={val.personal_detail?.weight + "kg"}
+                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
                           </td>
-                          {/* <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.email} />
-                          </td> */}
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
-                              things={formatDate(val.created_at)}
+                              things={val.follow_up ? "Follow Up" : "New Case"}
                             />
                           </td>{" "}
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent
-                              things={formatTime(val.created_at)}
-                            />
-                          </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <div className="text-black font-medium ml-1 text-wrap text-base">
                               {val?.doctor?.first_name +

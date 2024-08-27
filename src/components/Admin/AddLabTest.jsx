@@ -55,7 +55,7 @@ function AddLabTest(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.test_name} :-</FormLabel>
+                <FormLabel>{props.test_name} </FormLabel>
                 <Input
                   placeholder="Name..."
                   name={`test_name`}
@@ -66,7 +66,7 @@ function AddLabTest(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.gender} :-</FormLabel>
+                <FormLabel>{props.gender} </FormLabel>
                 <Select
                   placeholder="Choose gender..."
                   required
@@ -80,7 +80,7 @@ function AddLabTest(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.test_comments} :-</FormLabel>
+                <FormLabel>{props.test_comments} </FormLabel>
                 <Textarea
                   placeholder="Name..."
                   name={`test_comments`}

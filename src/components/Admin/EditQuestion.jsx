@@ -93,7 +93,7 @@ function EditQuestion(props) {
             <Stack spacing={3}>
               <Box className="flex gap-3">
                 <FormControl className="w-1/2">
-                  <FormLabel>{props.part} :-</FormLabel>
+                  <FormLabel>{props.part} </FormLabel>
                   <Select
                     defaultValue={props.see[0]?.part}
                     className="w-full"
@@ -108,7 +108,7 @@ function EditQuestion(props) {
                 </FormControl>
 
                 <FormControl className="w-1/2">
-                  <FormLabel>{props.label1} :-</FormLabel>
+                  <FormLabel>{props.label1} </FormLabel>
                   <Select
                     defaultValue={props.see[0]?.gender}
                     placeholder="Choose gender..."
@@ -124,7 +124,7 @@ function EditQuestion(props) {
 
                 {props?.role === "super_admin" && (
                   <FormControl className="w-3/4">
-                    <FormLabel>Select Doctor :-</FormLabel>
+                    <FormLabel>Select Doctor </FormLabel>
                     <Select
                       required
                       placeholder="Select"
@@ -147,7 +147,7 @@ function EditQuestion(props) {
               </Box>
 
               <FormControl>
-                <FormLabel>{props.label2} :-</FormLabel>
+                <FormLabel>{props.label2} </FormLabel>
                 <Box className="flex flex-col items-center w-full">
                   <ReactTransliterate
                     defaultValue={props.see[0]?.question_in_english}

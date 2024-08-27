@@ -65,6 +65,7 @@ export default function RoleAssign() {
   };
 
   const handleAddDoctor = () => {
+    setLoading(true);
     if (validateForm()) {
       const newDoctor = {
         first_name: inputFirstName,
@@ -95,9 +96,11 @@ export default function RoleAssign() {
             .post(`/api/v1/users`, formdata)
             .then((res) => {
               console.log(res);
+              setLoading(false);
               handleShow();
             })
             .catch((err) => {
+              setLoading(false);
               console.log(err);
               alert(err.response?.data?.message + "!");
             });
@@ -110,6 +113,7 @@ export default function RoleAssign() {
   };
 
   const handleRemoveDoctor = (index) => {
+    setLoading(true)
     const updatedDoctors = doctors.filter((_, i) => i !== index);
     setDoctors(updatedDoctors);
     Swal.fire({
@@ -126,10 +130,12 @@ export default function RoleAssign() {
           .delete(`/api/v1/users/${index}`)
           .then((res) => {
             console.log(res, "Successfully delete the data");
+            setLoading(false);
             handleShow();
           })
           .catch((err) => {
             console.log(err);
+            setLoading(false);
             alert(err.response?.data?.message + "!");
           });
       }

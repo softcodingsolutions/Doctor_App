@@ -54,7 +54,7 @@ function EditPackage(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.package_name} :-</FormLabel>
+                <FormLabel>{props.package_name} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.package_name}
                   placeholder="Name..."
@@ -66,7 +66,7 @@ function EditPackage(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.package_days} :-</FormLabel>
+                <FormLabel>{props.package_days} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.no_of_days}
                   placeholder="No. of days"
@@ -78,7 +78,7 @@ function EditPackage(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.price} :-</FormLabel>
+                <FormLabel>{props.price} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.package_price}
                   placeholder="₹₹₹"

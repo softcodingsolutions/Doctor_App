@@ -66,7 +66,7 @@ function EditMedicine(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.med_name} :-</FormLabel>
+                <FormLabel>{props.med_name} </FormLabel>
                 <Input
                   defaultValue={props?.see[0]?.medicine_name}
                   placeholder="Name..."
@@ -78,7 +78,7 @@ function EditMedicine(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.med_content} :-</FormLabel>
+                <FormLabel>{props.med_content} </FormLabel>
                 <Input
                   defaultValue={props?.see[0]?.medicine_content}
                   placeholder="Content..."
@@ -89,7 +89,7 @@ function EditMedicine(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.med_quantity} :-</FormLabel>
+                <FormLabel>{props.med_quantity} </FormLabel>
                 <Input
                   defaultValue={props?.see[0]?.medicine_quantity}
                   placeholder="Quantity..."
@@ -101,7 +101,7 @@ function EditMedicine(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl className="w-1/2">
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"

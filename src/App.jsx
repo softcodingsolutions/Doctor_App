@@ -1,4 +1,3 @@
-// import UserDashboard from "./pages/User/UserDashboard";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AdminMain from "./pages/Admin/AdminMain";
@@ -54,7 +53,6 @@ import SurveyForm2 from "./pages/Survey/SurveyForm2";
 import SurveyForm3 from "./pages/Survey/SurveyForm3";
 import DataEntry from "./pages/Admin/appointment/DataEntry";
 import FranchiseMain from "./pages/Franchise/FranchiseMain";
-// import FranchiseDashboard from "./pages/Franchise/FranchiseDashboard";
 import FranchiseCustomers from "./pages/Franchise/FranchiseCustomers";
 import FranchiseAllCustomers from "./pages/Franchise/customer/FranchiseAllCustomers";
 import FranchiseNewcustomer from "./pages/Franchise/customer/FranchiseNewcustomer";

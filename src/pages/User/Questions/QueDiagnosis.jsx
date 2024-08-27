@@ -106,7 +106,7 @@ function QueDiagnosis() {
           </button>
         </div>
         <div className="w-full gap-2 overflow-auto flex rounded-lg bg-card h-[92vh] bg-white flex-wrap content-start p-2 px-4">
-          <div className="text-xl font-semibold">Diagnosis:-</div>
+          <div className="text-xl font-semibold">Diagnosis</div>
           <div className="flex flex-col rounded-lg bg-card h-[85vh] w-full">
             <div className="flex w-full h-full flex-col gap-1.5">
               <div className="animate-fade-left w-full animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
