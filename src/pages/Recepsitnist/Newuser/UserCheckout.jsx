@@ -221,7 +221,13 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
               </div>
               <div className="flex w-full justify-center gap-2">
                 <PrevPageButton back={onBack} />
-                <SaveUserDetailsButton name="Save & Continue" />
+                <button
+                  type="submit"
+                  className="w-[20rem] p-1 text-white rounded-md text-lg border border-gray-500 font-medium  hover:scale-105"
+                  style={{ backgroundColor: "black" }}
+                >
+                  Create New User
+                </button>
               </div>
             </form>
           </div>
