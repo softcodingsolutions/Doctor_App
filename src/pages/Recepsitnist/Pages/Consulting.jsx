@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function Consulting(props) {
   console.log(props.user);
-  const [consultingTime, setConsultingTime] = useState(new Date());
+  const [consultingTime, setConsultingTime] = useState(0);
   const [data, setData] = useState([]);
-  const [slot, setSlot] = useState("");
+  const [slot, setSlot] = useState(0);
   const navigate = useNavigate();
   const handleSlot = (e) => {
     setSlot(e.target.value);
@@ -19,17 +19,21 @@ export default function Consulting(props) {
     formdata.append("appointment[date]", consultingTime);
     formdata.append("appointment[doctor_id]", props.doctor);
     formdata.append("appointment[time]", slot);
-    axios
-      .post(`/api/v1/appointments`, formdata)
-      .then((res) => {
-        console.log(res);
-        alert("Successfully create your Consulting Appointment!");
-        navigate("/receptionist/appointment/home");
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
+    {
+      consultingTime && slot
+        ? axios
+            .post(`/api/v1/appointments`, formdata)
+            .then((res) => {
+              console.log(res);
+              alert("Successfully create your Consulting Appointment!");
+              navigate("/receptionist/appointment/home");
+            })
+            .catch((err) => {
+              console.log(err);
+              alert(err.response?.data?.message + "!");
+            })
+        : alert("Select Date and Time");
+    }
   };
 
   const handleData = () => {

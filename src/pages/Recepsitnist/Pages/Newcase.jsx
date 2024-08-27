@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function Newcase(props) {
   console.log(props.doctor);
-  const [consultingTime, setConsultingTime] = useState(new Date());
+  const [consultingTime, setConsultingTime] = useState(0);
   const [data, setData] = useState([]);
-  const [slot, setSlot] = useState("");
+  const [slot, setSlot] = useState(0);
+  const [error, setErrors] = useState("");
   const navigate = useNavigate();
 
   const handleConsulting = (e) => {
@@ -24,19 +25,23 @@ export default function Newcase(props) {
     formdata.append("appointment[doctor_id]", props.doctor);
     formdata.append("appointment[time]", slot);
     formdata.append("appointment[user_id]", props.user);
-    axios
-      .post(`/api/v1/appointments`, formdata)
-      .then((res) => {
-        console.log(res);
-        alert("Successfully created Your Consulting Appointment!");
-        setConsultingTime();
-        setSlot("");
-        navigate("/receptionist/appointment/home");
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
+    {
+      consultingTime && slot
+        ? axios
+            .post(`/api/v1/appointments`, formdata)
+            .then((res) => {
+              console.log(res);
+              alert("Successfully created Your Consulting Appointment!");
+              setConsultingTime();
+              setSlot("");
+              navigate("/receptionist/appointment/home");
+            })
+            .catch((err) => {
+              console.log(err);
+              alert(err.response?.data?.message + "!");
+            })
+        : alert("Select  Date and Time");
+    }
   };
 
   const handleData = () => {
