@@ -79,7 +79,7 @@ function AddNewExercise(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.exercise_name} :-</FormLabel>
+                <FormLabel>{props.exercise_name} </FormLabel>
                 <Input
                   placeholder="Name..."
                   name={`exercise_name`}
@@ -91,7 +91,7 @@ function AddNewExercise(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -113,7 +113,7 @@ function AddNewExercise(props) {
               )}
 
               <FormControl>
-                <FormLabel>{props.exercise_describe_english} :-</FormLabel>
+                <FormLabel>{props.exercise_describe_english} </FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
                   <ReactQuill
                     className="w-96 min-h-fit max-h-28 overflow-auto"

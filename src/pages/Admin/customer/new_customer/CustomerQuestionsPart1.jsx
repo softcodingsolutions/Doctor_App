@@ -96,7 +96,7 @@ function CustomerQuestionsPart1({
 
   return (
     <div className="w-full my-1.5 gap-2.5 px-2 py-2.5 flex rounded-lg bg-card bg-white flex-col content-start">
-      <div className="text-xl font-semibold">User Questions:-</div>
+      <div className="text-xl font-semibold">User Questions</div>
       <div className="flex flex-col rounded-lg bg-card h-[79vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
           <div className="animate-fade-left w-full min-h-[515px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">

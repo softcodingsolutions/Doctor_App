@@ -68,7 +68,7 @@ function EditWeightReason(props) {
             <Stack spacing={3}>
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -89,7 +89,7 @@ function EditWeightReason(props) {
                 </FormControl>
               )}
               <FormControl>
-                <FormLabel>{props.reason_name} :-</FormLabel>
+                <FormLabel>{props.reason_name} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.name}
                   placeholder="Name..."
@@ -101,7 +101,7 @@ function EditWeightReason(props) {
               </FormControl>
 
               <FormControl className="w-1/2">
-                <FormLabel>{props.reason_for} :-</FormLabel>
+                <FormLabel>{props.reason_for} </FormLabel>
                 <Select
                   sx={{ width: "200%" }}
                   required
@@ -117,7 +117,7 @@ function EditWeightReason(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.reason_comments} :-</FormLabel>
+                <FormLabel>{props.reason_comments} </FormLabel>
                 <Textarea
                   defaultValue={props.see[0]?.comments}
                   placeholder="Coments..."

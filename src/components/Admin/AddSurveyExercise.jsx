@@ -26,10 +26,10 @@ const AddSurveyExercise = forwardRef((props) => {
   const submittedData = (d) => {
     console.log(text);
     console.log(d);
-    if (typeof props.handleApi === 'function') {
+    if (typeof props.handleApi === "function") {
       props.handleApi(text.gujarati, text.english, d.name);
     } else {
-      console.error('handleApi is not a function');
+      console.error("handleApi is not a function");
     }
     reset();
     setText({
@@ -42,7 +42,8 @@ const AddSurveyExercise = forwardRef((props) => {
     formdata.append("survey_exercise[in_gujarati]", text.gujarati);
     formdata.append("survey_exercise[name]", d.name);
 
-    axios.post(`/api/v2/survey_exercises`, formdata)
+    axios
+      .post(`/api/v2/survey_exercises`, formdata)
       .then((res) => {
         console.log(res);
         props.refresh();
@@ -80,7 +81,7 @@ const AddSurveyExercise = forwardRef((props) => {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.details} :-</FormLabel>
+                <FormLabel>{props.details} </FormLabel>
                 <Box className="flex flex-col items-center w-full">
                   <input
                     name="name"

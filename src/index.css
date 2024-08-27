@@ -8,18 +8,18 @@ body {
 }
 
 /* width */
-::-webkit-scrollbar {
+:webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+:webkit-scrollbar-track {
   background: #888;
   border-radius: 5px;
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+:webkit-scrollbar-thumb {
   --tw-bg-opacity: 1;
   background: rgb(31 41 55 / var(--tw-bg-opacity));
 
@@ -27,7 +27,7 @@ body {
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+:webkit-scrollbar-thumb:hover {
   background: #0b0a0a;
 }
 

@@ -95,7 +95,7 @@ function FranchiesQuestions({
 
   return (
     <div className="w-full gap-2 m-3 overflow-auto flex rounded-lg bg-card h-[84%] bg-white flex-wrap content-start p-2 px-4">
-      <div className="text-xl font-semibold">User Questions:-</div>
+      <div className="text-xl font-semibold">User Questions</div>
       <div className="flex flex-col rounded-lg bg-card h-[70vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
           <div className="animate-fade-left w-full min-h-[450px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">

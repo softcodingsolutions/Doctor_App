@@ -80,7 +80,7 @@ function AddNewMedicine(props) {
           >
             <Stack spacing={2} width={500}>
               <FormControl>
-                <FormLabel>{props.diet_code} :-</FormLabel>
+                <FormLabel>{props.diet_code} </FormLabel>
                 <Input
                   placeholder="Code..."
                   name={`diet_code`}
@@ -91,7 +91,7 @@ function AddNewMedicine(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.diet_name} :-</FormLabel>
+                <FormLabel>{props.diet_name} </FormLabel>
                 <Input
                   placeholder="Name..."
                   name={`diet_name`}
@@ -102,7 +102,7 @@ function AddNewMedicine(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -124,7 +124,7 @@ function AddNewMedicine(props) {
               )}
 
               <FormControl>
-                <FormLabel>{props.diet_describe_english} :-</FormLabel>
+                <FormLabel>{props.diet_describe_english} </FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
                   <ReactQuill
                     className="w-full min-h-fit max-h-28 overflow-auto"

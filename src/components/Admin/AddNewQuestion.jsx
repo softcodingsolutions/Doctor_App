@@ -76,7 +76,7 @@ function AddNewQuestion(props) {
             <Stack spacing={3}>
               <Box className="flex space-x-2">
                 <FormControl className="w-1/2">
-                  <FormLabel>{props.part} :-</FormLabel>
+                  <FormLabel>{props.part} </FormLabel>
                   <Select
                     className="w-full"
                     required
@@ -90,7 +90,7 @@ function AddNewQuestion(props) {
                 </FormControl>
 
                 <FormControl className="w-1/2">
-                  <FormLabel>{props.label1} :-</FormLabel>
+                  <FormLabel>{props.label1} </FormLabel>
                   <Select
                     placeholder="Choose gender..."
                     required
@@ -105,7 +105,7 @@ function AddNewQuestion(props) {
 
                 {props?.role === "super_admin" && (
                   <FormControl className="w-1/2">
-                    <FormLabel>Select Doctor :-</FormLabel>
+                    <FormLabel>Select Doctor </FormLabel>
                     <Select
                       required
                       placeholder="Select"
@@ -128,7 +128,7 @@ function AddNewQuestion(props) {
               </Box>
 
               <FormControl>
-                <FormLabel>{props.label2} :-</FormLabel>
+                <FormLabel>{props.label2} </FormLabel>
                 <Box className="flex flex-col items-center w-full">
                   <ReactTransliterate
                     name={`question_english`}

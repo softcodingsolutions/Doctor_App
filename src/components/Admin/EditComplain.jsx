@@ -61,7 +61,7 @@ function EditComplain(props) {
             <Stack spacing={3}>
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -82,7 +82,7 @@ function EditComplain(props) {
                 </FormControl>
               )}
               <FormControl>
-                <FormLabel>{props.complain_details} :-</FormLabel>
+                <FormLabel>{props.complain_details} </FormLabel>
                 <Textarea
                   defaultValue={props.see[0]?.details}
                   placeholder="Details..."

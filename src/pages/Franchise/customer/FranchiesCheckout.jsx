@@ -89,7 +89,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-4 h-full flex-col space-y-4">
-          <div className="text-xl font-semibold">Checkout:- </div>
+          <div className="text-xl font-semibold">Checkout </div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}

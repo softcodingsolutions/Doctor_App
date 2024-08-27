@@ -88,7 +88,7 @@ function EditDosDonts(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.do_dont} :-</FormLabel>
+                <FormLabel>{props.do_dont} </FormLabel>
                 <Select
                   defaultValue={props.see[0]?.category}
                   className="w-full"
@@ -104,7 +104,7 @@ function EditDosDonts(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -127,7 +127,7 @@ function EditDosDonts(props) {
 
               {/* 
               <FormControl>
-                <FormLabel>{props.comments} :-</FormLabel>
+                <FormLabel>{props.comments} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.comments}
                   placeholder="Comments..."
@@ -138,7 +138,7 @@ function EditDosDonts(props) {
               </FormControl> */}
 
               <FormControl>
-                <FormLabel>{props.details} :-</FormLabel>
+                <FormLabel>{props.details} </FormLabel>
                 <Box className="flex flex-col items-center w-full">
                   <ReactTransliterate
                     defaultValue={props.see[0]?.details_in_english}

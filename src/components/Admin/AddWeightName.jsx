@@ -72,9 +72,9 @@ function AddWeightName(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.details} :-</FormLabel>
+                <FormLabel>{props.details} </FormLabel>
                 <Box className="flex flex-col items-center w-full">
-                <input
+                  <input
                     name="name"
                     {...register("name")}
                     placeholder="Name..."

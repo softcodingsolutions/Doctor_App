@@ -54,7 +54,7 @@ function AddNewProgresReport(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.progress_weight} :-</FormLabel>
+                <FormLabel>{props.progress_weight} </FormLabel>
                 <Input
                   placeholder="In kgs..."
                   name={`progress_weight`}
@@ -65,7 +65,7 @@ function AddNewProgresReport(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.progress_date} :-</FormLabel>
+                <FormLabel>{props.progress_date} </FormLabel>
                 <input
                   className="border border-gray-300 p-1.5 bg-[#fafafa] rounded-md shadow-sm"
                   type="date"

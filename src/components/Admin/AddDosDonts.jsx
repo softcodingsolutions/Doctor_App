@@ -79,7 +79,7 @@ function AddDosDonts(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.do_dont} :-</FormLabel>
+                <FormLabel>{props.do_dont} </FormLabel>
                 <Select
                   className="w-full"
                   required
@@ -94,7 +94,7 @@ function AddDosDonts(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -116,7 +116,7 @@ function AddDosDonts(props) {
               )}
 
               {/* <FormControl>
-                <FormLabel>{props.comments} :-</FormLabel>
+                <FormLabel>{props.comments} </FormLabel>
                 <Input
                   placeholder="Comments..."
                   name={`comments`}
@@ -126,7 +126,7 @@ function AddDosDonts(props) {
               </FormControl> */}
 
               <FormControl>
-                <FormLabel>{props.details} :-</FormLabel>
+                <FormLabel>{props.details} </FormLabel>
                 <Box className="flex flex-col items-center w-full">
                   <ReactTransliterate
                     name={`question_english`}

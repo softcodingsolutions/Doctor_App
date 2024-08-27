@@ -67,7 +67,7 @@ function AddNewWeight(props) {
             <Stack spacing={3}>
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -88,7 +88,7 @@ function AddNewWeight(props) {
                 </FormControl>
               )}
               <FormControl>
-                <FormLabel>{props.reason_name} :-</FormLabel>
+                <FormLabel>{props.reason_name} </FormLabel>
                 <Input
                   placeholder="Name..."
                   name={`reason_name`}
@@ -99,7 +99,7 @@ function AddNewWeight(props) {
               </FormControl>
 
               <FormControl className="w-1/2">
-                <FormLabel>{props.reason_for} :-</FormLabel>
+                <FormLabel>{props.reason_for} </FormLabel>
                 <Select
                   sx={{ width: "200%" }}
                   required
@@ -114,7 +114,7 @@ function AddNewWeight(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.reason_comments} :-</FormLabel>
+                <FormLabel>{props.reason_comments} </FormLabel>
                 <Textarea
                   placeholder="Coments..."
                   name={`reason_comments`}

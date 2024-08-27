@@ -60,7 +60,7 @@ function EditNutrition(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.nutrition_name} :-</FormLabel>
+                <FormLabel>{props.nutrition_name} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.name}
                   placeholder="Name..."
@@ -73,7 +73,7 @@ function EditNutrition(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor :-</FormLabel>
+                  <FormLabel>Select Doctor </FormLabel>
                   <Select
                     required
                     placeholder="Select"

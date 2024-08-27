@@ -56,7 +56,7 @@ function EditLabTest(props) {
           >
             <Stack spacing={3}>
               <FormControl>
-                <FormLabel>{props.test_name} :-</FormLabel>
+                <FormLabel>{props.test_name} </FormLabel>
                 <Input
                   defaultValue={props.see[0]?.name}
                   placeholder="Name..."
@@ -68,7 +68,7 @@ function EditLabTest(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.gender} :-</FormLabel>
+                <FormLabel>{props.gender} </FormLabel>
                 <Select
                   defaultValue={props.see[0]?.gender}
                   placeholder="Choose gender..."
@@ -83,7 +83,7 @@ function EditLabTest(props) {
               </FormControl>
 
               <FormControl>
-                <FormLabel>{props.test_comments} :-</FormLabel>
+                <FormLabel>{props.test_comments} </FormLabel>
                 <Textarea
                   defaultValue={props.see[0]?.comments}
                   placeholder="Name..."
