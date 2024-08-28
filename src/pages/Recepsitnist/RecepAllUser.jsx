@@ -12,7 +12,7 @@ function RecepAllUsers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
       const patients = res.data?.users?.filter(
@@ -37,10 +37,20 @@ function RecepAllUsers() {
     navigate(`/receptionist/bill-history`, { state: { caseNumber } });
   };
 
-//   const formatDate = (date) => {
-//     const options = { year: "numeric", month: "long", day: "numeric" };
-//     return new Date(date).toLocaleDateString(undefined, options);
-//   };
+
+  const handleCheckboxChange = (e) => {
+    const formdata = new FormData();
+    formdata.append("user_id", e.target.value);
+    axios
+      .put(`/api/v1/users/indoor_activity_accessibility`, formdata)
+      .then((res) => {
+        console.log(res, "DATA RESPONSe");
+        handleGetAllUsers();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     handleGetAllUsers();
@@ -90,10 +100,8 @@ function RecepAllUsers() {
             <table className="w-full min-w-[460px] z-0 ">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="Case No."
-                  />
+                  <ThComponent moreClasses={"rounded-tl-md rounded-bl-md"} />
+                  <ThComponent name="Case No." />
                   <ThComponent name="Patient Name" />
                   <ThComponent name="Age" />
                   <ThComponent name="Weight" />
@@ -118,6 +126,19 @@ function RecepAllUsers() {
                     return (
                       val.role === "patient" && (
                         <tr key={val.id}>
+                          <td className="py-2 px-4 border-b border-b-gray-50">
+                            <td className="py-2 px-4 border-b border-b-gray-50">
+                              <div className="flex items-center text-lg">
+                                {/* Conditionally set the checkbox checked status based on indoor_activity_access */}
+                                <input
+                                  value={val.id}
+                                  checked={val.indoor_activity_access}
+                                  onChange={(e) => handleCheckboxChange(e)}
+                                  type="checkbox"
+                                />
+                              </div>
+                            </td>
+                          </td>
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <div className="flex items-center text-lg">
                               {val.case_number}
@@ -152,9 +173,9 @@ function RecepAllUsers() {
                           </td>{" "}
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <div className="text-black font-medium ml-1 text-wrap text-base">
-                              {val?.doctor?.first_name +
-                                " " +
-                                val?.doctor?.last_name}
+                              {val?.creator === "franchise"
+                                ? `${val?.doctor?.doctor?.first_name} ${val?.doctor?.doctor?.last_name}`
+                                : `${val?.doctor?.first_name} ${val?.doctor?.last_name}`}
                             </div>
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">

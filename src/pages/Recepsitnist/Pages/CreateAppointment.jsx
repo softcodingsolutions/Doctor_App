@@ -7,6 +7,7 @@ import InsideLoader from "../../InsideLoader";
 export default function CreateAppointment() {
   const [doctorList, setDoctorList] = useState("");
   const [doctorName, setDoctorName] = useState("");
+  const [franchiseDoctor, setFranchiseDoctor] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [name, setName] = useState("");
@@ -18,7 +19,7 @@ export default function CreateAppointment() {
   const [loading, setLoading] = useState(false);
   const [newCase, setNewCase] = useState(true);
   const [oldCase, setOldCase] = useState(false);
-
+  const [open, setOpen] = useState(false);
   const handleShow = () => {
     axios
       .get(`/api/v1/appointments`)
@@ -42,16 +43,6 @@ export default function CreateAppointment() {
     }
   };
 
-  const handleNew = () => {
-    setNewCase(true);
-    setOldCase(false);
-  };
-
-  const handleOld = () => {
-    setNewCase(false);
-    setOldCase(true);
-  };
-
   useEffect(() => {
     if (debouncedSearchTerm) {
       axios
@@ -59,14 +50,24 @@ export default function CreateAppointment() {
           `/api/v2/users/search?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&email=${debouncedSearchTerm}`
         )
         .then((res) => {
+          setOpen(true);
           setLoading(false);
           console.log("search", res);
           setName(res.data.user.first_name);
           setMobileNumber(res.data.user.phone_number);
           setEmail(res.data.user.email);
           setUserId(res.data.user.id);
-          setDoctorList(res.data.doctor.id);
-          setDoctorName(res.data.doctor);
+          if (res.data?.user?.creator === "franchise") {
+            setDoctorName(res.data?.doctor?.doctor);
+            setDoctorList(res.data?.doctor?.doctor?.id);
+          } else {
+            setDoctorName(res.data?.doctor);
+            setDoctorList(res.data?.doctor.id);
+          }
+          if (res.data.user.follow_up === true) {
+            setOldCase(true);
+            setNewCase(false);
+          }
           const userId = res.data.user.id;
           axios
             .get(`/api/v1/appointments/user_appointments_count/${userId}`)
@@ -123,7 +124,6 @@ export default function CreateAppointment() {
           </div>
           <div className="flex flex-row w-full justify-center gap-5">
             <button
-              onClick={handleNew}
               className={` w-[30%] border cursor-pointer font-semibold  ${
                 newCase ? "bg-[#1F2937]" : "bg-white"
               } ${newCase ? "text-white" : "text-[#1F2937]"} p-2 rounded-md `}
@@ -131,7 +131,6 @@ export default function CreateAppointment() {
               New Case
             </button>
             <button
-              onClick={handleOld}
               className={`w-[30%] border cursor-pointer font-semibold ${
                 oldCase ? "bg-[#1F2937]" : "bg-white"
               } ${oldCase ? "text-white" : "text-[#1F2937]"} p-2 rounded-md `}
@@ -151,52 +150,59 @@ export default function CreateAppointment() {
             />
           </div>
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
-            <form className="text-lg">
-              <div className="flex flex-col gap-5 m-5">
-                {newCase ? (
-                  <label className="text-xl bg-white  rounded-md p-1 font-semibold text-center mr-2 ">
-                    New Case{" "}
-                  </label>
-                ) : (
-                  <label className="text-xl bg-white  rounded-md p-1 font-semibold text-center mr-2 ">
-                    Old Case{" "}
-                  </label>
-                )}
-                {doctorName && (
-                  <div className="flex gap-5">
-                    <label className="text-lg text-end w-1/3 mr-2">
-                      Doctor :{" "}
+            {open ? (
+              <form className="text-lg">
+                <div className="flex flex-col gap-5 m-5">
+                  {newCase ? (
+                    <label className="text-xl bg-white  rounded-md p-1 font-semibold text-center mr-2 ">
+                      New Case{" "}
                     </label>
-                    <h2 className="">
-                      {doctorName
-                        ? doctorName.first_name + " " + doctorName.last_name
-                        : "Doctor Name"}
-                    </h2>
-                  </div>
-                )}
-              </div>
-              <div className="flex gap-5 m-5">
-                {oldCase ? (
-                  <Oldcase
-                    doctor={doctorList}
-                    user={userId}
-                    machine={machineList}
-                    machineTime={machineConsultingTime}
-                    name={name}
-                    number={mobileNumber}
-                    email={email}
-                  />
-                ) : (
-                  <Newcase
-                    doctor={doctorList}
-                    name={name}
-                    number={mobileNumber}
-                    email={email}
-                    user={userId}
-                  />
-                )}
-              </div>
-            </form>
+                  ) : (
+                    <label className="text-xl bg-white  rounded-md p-1 font-semibold text-center mr-2 ">
+                      Old Case{" "}
+                    </label>
+                  )}
+                  {doctorName && (
+                    <div className="flex gap-5">
+                      <label className="text-lg text-end w-1/3 mr-2">
+                        Doctor :{" "}
+                      </label>
+                      <h2 className="">
+                        {doctorName
+                          ? doctorName.first_name + " " + doctorName.last_name
+                          : "Doctor Name"}
+                      </h2>
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-5 m-5">
+                  {oldCase ? (
+                    <Oldcase
+                      doctor={doctorList}
+                      user={userId}
+                      machine={machineList}
+                      machineTime={machineConsultingTime}
+                      name={name}
+                      number={mobileNumber}
+                      email={email}
+                    />
+                  ) : (
+                    <Newcase
+                      doctor={doctorList}
+                      name={name}
+                      number={mobileNumber}
+                      email={email}
+                      user={userId}
+                    />
+                  )}
+                </div>
+              </form>
+            ) : (
+              <h2>
+                Enter the User Case Number / Mobile Number / Email in the Search
+                Bar
+              </h2>
+            )}
           </div>
         </div>
       </div>
