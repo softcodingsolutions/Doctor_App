@@ -162,6 +162,9 @@ export default function Indooractivity() {
   );
   const timeSlots = generateTimeSlots();
   const [appointments, setAppointments] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handleDisplay = (date) => {
     const queryParam = date ? `?date=${date}` : "";
@@ -374,6 +377,54 @@ export default function Indooractivity() {
     });
   };
 
+  const handleSearchTerm = (value) => {
+    setSearchTerm(value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      setDebouncedSearchTerm(searchTerm);
+      setLoading(true);
+    }
+  };
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      axios
+        .get(
+          `/api/v1/users?only_indoor_access_users=true&first_name=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&last_name=${debouncedSearchTerm}`
+        )
+        .then((res) => {
+          setLoading(false);
+          console.log("search", res);
+
+          const users = res.data.users;
+
+          if (users.length > 0) {
+            const user = users[0];
+            setDialogData((prevData) => ({
+              ...prevData,
+              name: user.first_name || "",
+              number: user.phone_number || "",
+              caseNumber: user.case_number || "",
+            }));
+          } else {
+            alert("USER NOT IN INDOOR ACTIVITY LIST");
+            setDialogData((prevData) => ({
+              ...prevData,
+              name: "",
+              number: "",
+              caseNumber: "",
+            }));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
+  }, [debouncedSearchTerm]);
+
   useEffect(() => {
     handleDisplay(consultingTime);
     axios
@@ -389,7 +440,7 @@ export default function Indooractivity() {
   }, [consultingTime]);
 
   if (loader) {
-    return <InsideLoader />
+    return <InsideLoader />;
   }
 
   return (
@@ -487,33 +538,21 @@ export default function Indooractivity() {
             </Dialog>
           ) : (
             <Dialog open={isDialogOpen} onClose={closeDialog}>
-              <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+              <div className="fixed inset-0 bg-black/30 " aria-hidden="true" />
               <div className="fixed inset-0 flex items-center justify-center p-4">
                 <div className="bg-white rounded p-6 max-w-sm w-full">
                   <h3 className="text-lg font-semibold">Patient Details</h3>
                   <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={dialogData.name}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    />
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Mobile Number
-                    </label>
-                    <input
-                      type="text"
-                      name="number"
-                      value={dialogData.number}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    />
+                    <div className="flex gap-3 p-2 items-center">
+                      <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => handleSearchTerm(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Search User through First Name/Last Name/Phone Number"
+                        className="py-1 px-2 rounded-md border border-black w-full"
+                      />
+                    </div>
                   </div>
                   <div className="mt-4">
                     <label className="block text-sm font-medium text-gray-700">
@@ -521,10 +560,8 @@ export default function Indooractivity() {
                     </label>
                     <input
                       type="text"
-                      name="caseNumber"
                       value={dialogData.caseNumber}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      readOnly
                     />
                   </div>
                   <div className="mt-4">
