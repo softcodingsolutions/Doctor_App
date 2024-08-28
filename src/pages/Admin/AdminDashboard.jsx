@@ -8,8 +8,8 @@ import female from "../../assets/images/female.avif";
 function AdminDashboard() {
   const context = useOutletContext();
   const navigate = useNavigate();
-  const [getTotalPatients, setGetTotalPatients] = useState([]);
-  const [getNewPatients, setGetNewPatients] = useState([]);
+  const [getTotalPatients, setGetTotalPatients] = useState(0);
+  const [getNewPatients, setGetNewPatients] = useState(0);
   const [getTotalFranchise, setGetTotalFranchise] = useState([]);
   const [loading, setLoading] = useState(true);
   const [getAppointments, setGetAppointments] = useState([]);
@@ -37,14 +37,12 @@ function AdminDashboard() {
         const patients = res.data?.users?.filter(
           (user) => user.role === "patient" && user.created_by_id == main_id
         );
-
         const newPatients = res.data?.users?.filter(
           (user) =>
             user.role === "patient" &&
             user.treatment_packages?.length === 0 &&
             user.created_by_id == main_id
         );
-
         setGetNewPatients(newPatients?.length);
         setGetTotalPatients(patients?.length);
       })
@@ -161,99 +159,107 @@ function AdminDashboard() {
               <div className=" mt-4 w-full overflow-y-auto h-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-3">
                 <div className="font-medium text-xl">Todays Appointments: </div>
                 <div className="bg-white h-[70vh] overflow-y-auto flex flex-col rounded-lg xl:col-span-4 2xl:col-span-4">
-                  {getAppointments.map((res) => (
-                    <div
-                      key={res.id}
-                      className="flex items-center gap-3.5 border border-gray-200 min-h-24 shadow-inner rounded-md p-3"
-                    >
-                      <img
-                        src={res.user?.gender === "male" ? male : female}
-                        alt="img"
-                        className="size-16 mr-2"
-                      />
-
-                      <div className=" w-[16rem]">
-                        <div className="flex">
-                          <div className=" text-right break-words font-medium">
-                            Case Number:
-                          </div>
-                          <div className=" pl-2">{res.user?.case_number}</div>
-                        </div>
-                        <div className="flex">
-                          <div className=" text-right break-words font-medium">
-                            Patient Name:
-                          </div>
-                          <div className="pl-2">
-                            {res.user?.first_name?.[0]?.toUpperCase() +
-                              res.user?.first_name?.slice(1) +
-                              " " +
-                              res.user?.last_name?.[0]?.toUpperCase() +
-                              res.user?.last_name?.slice(1)}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className=" w-[12rem]">
-                        <div className="flex items-center">
-                          <div className=" text-right break-words font-medium">
-                            Age:
-                          </div>
-                          <div className=" pl-2">
-                            {res.user?.personal_detail?.age}
-                          </div>
-                        </div>
-                        <div className="flex items-center">
-                          <div className=" text-right break-words font-medium">
-                            Weight:
-                          </div>
-                          <div className="pl-2">
-                            {res.user?.personal_detail?.weight} kg
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className=" w-[15rem]">
-                        <div className="flex items-center">
-                          <div className=" text-right break-words font-medium">
-                            Phone Number:
-                          </div>
-                          <div className=" pl-2">{res.user?.phone_number}</div>
-                        </div>
-                        <div className="flex items-center">
-                          <div className=" text-right break-words font-medium">
-                            Patient Type:
-                          </div>
-                          <div className="pl-2">
-                            {res.user?.follow_up ? "Follow Up" : "New Case"}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className=" w-[14rem]">
-                        <div className="flex items-center">
-                          <div className=" text-right break-words font-medium">
-                            Time:
-                          </div>
-                          <div className="pl-2">{formatTime(res.time)}</div>
-                        </div>
-                        <div className="flex items-center">
-                          <div className=" text-right break-words font-medium">
-                            Machine Name:
-                          </div>
-                          <div className=" pl-2">
-                            {res.machine_detail?.name}
-                          </div>
-                        </div>
-                      </div>
-
-                      <button
-                        onClick={() => handleDiagnosis(res.user?.id)}
-                        className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
-                      >
-                        Diagnosis
-                      </button>
+                  {getAppointments.length === 0 ? (
+                    <div className="flex w-full h-full items-center justify-center text-2xl">
+                      No Appointments Today!
                     </div>
-                  ))}
+                  ) : (
+                    getAppointments.map((res) => (
+                      <div
+                        key={res.id}
+                        className="flex items-center gap-3.5 border border-gray-200 min-h-24 shadow-inner rounded-md p-3"
+                      >
+                        <img
+                          src={res.user?.gender === "male" ? male : female}
+                          alt="img"
+                          className="size-16 mr-2"
+                        />
+
+                        <div className=" w-[16rem]">
+                          <div className="flex">
+                            <div className=" text-right break-words font-medium">
+                              Case Number:
+                            </div>
+                            <div className=" pl-2">{res.user?.case_number}</div>
+                          </div>
+                          <div className="flex">
+                            <div className=" text-right break-words font-medium">
+                              Patient Name:
+                            </div>
+                            <div className="pl-2">
+                              {res.user?.first_name?.[0]?.toUpperCase() +
+                                res.user?.first_name?.slice(1) +
+                                " " +
+                                res.user?.last_name?.[0]?.toUpperCase() +
+                                res.user?.last_name?.slice(1)}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className=" w-[12rem]">
+                          <div className="flex items-center">
+                            <div className=" text-right break-words font-medium">
+                              Age:
+                            </div>
+                            <div className=" pl-2">
+                              {res.user?.personal_detail?.age}
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            <div className=" text-right break-words font-medium">
+                              Weight:
+                            </div>
+                            <div className="pl-2">
+                              {res.user?.personal_detail?.weight} kg
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className=" w-[15rem]">
+                          <div className="flex items-center">
+                            <div className=" text-right break-words font-medium">
+                              Phone Number:
+                            </div>
+                            <div className=" pl-2">
+                              {res.user?.phone_number}
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            <div className=" text-right break-words font-medium">
+                              Patient Type:
+                            </div>
+                            <div className="pl-2">
+                              {res.user?.follow_up ? "Follow Up" : "New Case"}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className=" w-[14rem]">
+                          <div className="flex items-center">
+                            <div className=" text-right break-words font-medium">
+                              Time:
+                            </div>
+                            <div className="pl-2">{formatTime(res.time)}</div>
+                          </div>
+                          <div className="flex items-center">
+                            <div className=" text-right break-words font-medium">
+                              Machine Name:
+                            </div>
+                            <div className=" pl-2">
+                              {res.machine_detail?.name}
+                            </div>
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => handleDiagnosis(res.user?.id)}
+                          className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
+                        >
+                          Diagnosis
+                        </button>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

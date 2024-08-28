@@ -47,7 +47,7 @@ function LabTest() {
             position: "top-end",
             icon: "success",
             title: "Added!",
-            text: "Your family reason has been added.",
+            text: "Your lab test has been added.",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -81,7 +81,7 @@ function LabTest() {
             position: "top-end",
             icon: "success",
             title: "Updated!",
-            text: "Your family reason has been updated.",
+            text: "Your lab test has been updated.",
             showConfirmButton: false,
             timer: 1500,
           });

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { reportButtons } from "../../../constants/admin/AdminConstants";
 import InsideLoader from "../../InsideLoader";
@@ -12,6 +12,8 @@ function CustomerUserDiagnosis() {
   const [getCustomer, setGetCustomer] = useState([]);
   const [getAdmin, setGetAdmin] = useState([]);
   const id = localStorage.getItem("userId");
+  const location = useLocation();
+  const pathname = location.pathname?.split("/user-diagnosis/")[1];
   const [loading, setLoading] = useState(true);
 
   const handlegetUser = () => {
@@ -230,7 +232,7 @@ function CustomerUserDiagnosis() {
                   key={res.id}
                   className={clsx(
                     "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
-                    selectedId === res.id
+                    pathname === res.to
                       ? "bg-[#1F2937] text-white"
                       : "bg-white"
                   )}

@@ -141,8 +141,8 @@ function AdminListFollowUp() {
                         <div className="text-2xl font-semibold tracking-wide">
                           Consulting Time Slot
                         </div>
-                        <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
-                          <table className="w-full min-w-[460px] z-0 ">
+                        <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[63vh]">
+                          <table className="w-full min-w-[460px] z-0">
                             <thead className="uppercase">
                               <tr className="bg-[#1F2937] text-white rounded-md">
                                 <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
