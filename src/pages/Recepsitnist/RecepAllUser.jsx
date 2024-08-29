@@ -12,7 +12,7 @@ function RecepAllUsers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
       const patients = res.data?.users?.filter(
@@ -37,7 +37,6 @@ function RecepAllUsers() {
     navigate(`/receptionist/bill-history`, { state: { caseNumber } });
   };
 
-
   const handleCheckboxChange = (e) => {
     const formdata = new FormData();
     formdata.append("user_id", e.target.value);
@@ -51,6 +50,23 @@ function RecepAllUsers() {
         console.log(err);
       });
   };
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  function formatTime(dateTimeString) {
+    const date = new Date(dateTimeString);
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
 
   useEffect(() => {
     handleGetAllUsers();
@@ -103,6 +119,7 @@ function RecepAllUsers() {
                   <ThComponent moreClasses={"rounded-tl-md rounded-bl-md"} />
                   <ThComponent name="Case No." />
                   <ThComponent name="Patient Name" />
+                  <ThComponent name="Date" />
                   <ThComponent name="Age" />
                   <ThComponent name="Weight" />
                   <ThComponent name="Mobile Number" />
@@ -129,7 +146,6 @@ function RecepAllUsers() {
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <td className="py-2 px-4 border-b border-b-gray-50">
                               <div className="flex items-center text-lg">
-                                {/* Conditionally set the checkbox checked status based on indoor_activity_access */}
                                 <input
                                   value={val.id}
                                   checked={val.indoor_activity_access}
@@ -146,14 +162,11 @@ function RecepAllUsers() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50 break-all ">
                             <TdComponent
-                              things={
-                                val?.first_name?.[0]?.toUpperCase() +
-                                val?.first_name?.slice(1) +
-                                " " +
-                                val?.last_name?.[0]?.toUpperCase() +
-                                val?.last_name?.slice(1)
-                              }
+                              things={val?.first_name + " " + val?.last_name}
                             />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50 break-all ">
+                            <TdComponent things={formatDate(val?.created_at)} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.personal_detail?.age} />

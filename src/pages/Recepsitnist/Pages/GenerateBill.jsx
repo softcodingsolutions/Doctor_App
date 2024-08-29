@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDebounce } from "use-debounce";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "@mui/joy/Button";
+import InsideLoader from "../../InsideLoader";
 
 export default function GenerateBill() {
   const context = useOutletContext();
@@ -19,6 +20,7 @@ export default function GenerateBill() {
   const [totalQuantities, setTotalQuantities] = useState([]);
   const [method, setMethod] = useState("Online");
   const [errors, setErrors] = useState({});
+  const [loader, setLoader] = useState(true);
 
   const resetForm = () => {
     setSearchTerm("");
@@ -57,7 +59,9 @@ export default function GenerateBill() {
     if (medicines.length > 0) {
       medicines.forEach((med, index) => {
         if (!totalQuantities[index] || totalQuantities[index] <= 0) {
-          newErrors[`totalQuantities_${index}`] = `Total quantity for ${med.medicine_name} is required.`;
+          newErrors[
+            `totalQuantities_${index}`
+          ] = `Total quantity for ${med.medicine_name} is required.`;
         }
       });
     }
@@ -97,7 +101,7 @@ export default function GenerateBill() {
           console.log("Error creating bill", err);
           alert("Error creating bill");
         });
-    } 
+    }
   };
 
   const handlePrice = (e) => {
@@ -134,7 +138,8 @@ export default function GenerateBill() {
     return dosage || "No dosage info";
   };
 
-  useEffect(() => {
+  const handleSearch = () => {
+    setLoader(true);
     if (debouncedSearchTerm) {
       axios
         .get(
@@ -149,33 +154,33 @@ export default function GenerateBill() {
         })
         .then((res) => {
           console.log("Appointments Count:", res?.data?.appointments_count);
+          setLoader(true);
         })
         .catch((err) => {
           console.log(err);
           alert("USER NOT FOUND");
         });
+      if (id) {
+        axios
+          .get(`/api/v2/users/search?id=${id}`)
+          .then((res) => {
+            const user = res?.data?.user;
+            console.log(res, "MEDICINE ");
+            setLoader(false);
+            setUser(user);
+            setPackageDetail(user?.user_packages?.[0]);
+            setMedicines(
+              user?.treatment_packages?.[0]?.treatment_package?.medicines || []
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err.response?.data?.message + "!");
+            setLoader(false);
+          });
+      }
     }
-  }, [debouncedSearchTerm]);
-
-  useEffect(() => {
-    if (id) {
-      axios
-        .get(`/api/v2/users/search?id=${id}`)
-        .then((res) => {
-          const user = res?.data?.user;
-          console.log(res, "MEDICINE ");
-          setUser(user);
-          setPackageDetail(user?.user_packages?.[0]);
-          setMedicines(
-            user?.treatment_packages?.[0]?.treatment_package?.medicines || []
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err.response?.data?.message + "!");
-        });
-    }
-  }, [id]);
+  };
 
   return (
     <div className="flex w-full">
@@ -201,12 +206,11 @@ export default function GenerateBill() {
               <div className="text-2xl font-semibold text-center">
                 Generate Bill
               </div>
-
               <div className="flex gap-5 w-full py-3">
                 <input
                   type="text"
-                  onKeyDown={handleKeyDown}
                   placeholder="Search case number or phone number"
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className={`py-2 px-4 rounded-md border ${
                     errors.searchTerm ? "border-red-500" : "border-gray-300"
                   } w-full focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -214,6 +218,13 @@ export default function GenerateBill() {
                 {errors.searchTerm && (
                   <p className="text-red-500 text-sm">{errors.searchTerm}</p>
                 )}
+                <button
+                  type="submit"
+                  onClick={handleSearch}
+                  className="border border-gray-300 w-[20%] text-lg font-semibold p-1 rounded-md bg-blue-800 text-white hover:scale-105"
+                >
+                  Enter
+                </button>
               </div>
               <div className="w-full">
                 <div className="flex gap-48">
@@ -318,58 +329,64 @@ export default function GenerateBill() {
                   </table>
                 </div>
               </div>
-              <div className="flex gap-5 py-3">
-                <div className=" flex">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Total Price
+              {medicines.length > 0 && (
+                <div className="flex gap-5 py-3">
+                  <div className=" flex">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Total Price
+                    </label>
+                    <input
+                      type="number"
+                      value={price}
+                      onChange={handlePrice}
+                      className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
+                        errors.price ? "border-red-500" : "border-gray-300"
+                      } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                    />
+                    {errors.price && (
+                      <p className="text-red-500 text-sm">{errors.price}</p>
+                    )}
+                  </div>
+                  <div className="flex">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Paid Amount
+                    </label>
+                    <input
+                      type="number"
+                      value={pay}
+                      onChange={handlePay}
+                      className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
+                        errors.pay ? "border-red-500" : "border-gray-300"
+                      } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                    />
+                    {errors.pay && (
+                      <p className="text-red-500 text-sm">{errors.pay}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+              {medicines.length > 0 && (
+                <div className="flex justify-start ">
+                  <label className="text-sm text-start mr-1">
+                    Payment Method:
                   </label>
-                  <input
-                    type="number"
-                    value={price}
-                    onChange={handlePrice}
+                  <select
+                    placeholder="Select Method"
+                    onChange={handleMethod}
+                    required
+                    value={method}
                     className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                      errors.price ? "border-red-500" : "border-gray-300"
+                      errors.method ? "border-red-500" : "border-gray-300"
                     } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                  />
-                  {errors.price && (
-                    <p className="text-red-500 text-sm">{errors.price}</p>
+                  >
+                    <option value="Online">Online</option>
+                    <option value="Cash">Cash</option>
+                  </select>
+                  {errors.method && (
+                    <p className="text-red-500 text-sm">{errors.method}</p>
                   )}
                 </div>
-                <div className="flex">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Paid Amount
-                  </label>
-                  <input
-                    type="number"
-                    value={pay}
-                    onChange={handlePay}
-                    className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                      errors.pay ? "border-red-500" : "border-gray-300"
-                    } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                  />
-                  {errors.pay && (
-                    <p className="text-red-500 text-sm">{errors.pay}</p>
-                  )}
-                </div>
-              </div>
-              <div className="md:flex justify-between">
-                <label className="text-sm text-end mr-2">Payment Method:</label>
-                <select
-                  placeholder="Select Method"
-                  onChange={handleMethod}
-                  required
-                  value={method}
-                  className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                    errors.method ? "border-red-500" : "border-gray-300"
-                  } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                >
-                  <option value="Online">Online</option>
-                  <option value="Cash">Cash</option>
-                </select>
-                {errors.method && (
-                  <p className="text-red-500 text-sm">{errors.method}</p>
-                )}
-              </div>
+              )}
               <div className="w-full flex justify-center items-center mt-4">
                 <Button
                   onClick={handleBill}
