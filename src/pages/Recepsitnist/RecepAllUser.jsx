@@ -51,6 +51,23 @@ function RecepAllUsers() {
       });
   };
 
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  function formatTime(dateTimeString) {
+    const date = new Date(dateTimeString);
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
@@ -102,6 +119,7 @@ function RecepAllUsers() {
                   <ThComponent moreClasses={"rounded-tl-md rounded-bl-md"} />
                   <ThComponent name="Case No." />
                   <ThComponent name="Patient Name" />
+                  <ThComponent name="Date" />
                   <ThComponent name="Age" />
                   <ThComponent name="Weight" />
                   <ThComponent name="Mobile Number" />
@@ -145,14 +163,11 @@ function RecepAllUsers() {
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50 break-all ">
                             <TdComponent
-                              things={
-                                val?.first_name?.[0]?.toUpperCase() +
-                                val?.first_name?.slice(1) +
-                                " " +
-                                val?.last_name?.[0]?.toUpperCase() +
-                                val?.last_name?.slice(1)
-                              }
+                              things={val?.first_name + " " + val?.last_name}
                             />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50 break-all ">
+                            <TdComponent things={formatDate(val?.created_at)} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.personal_detail?.age} />
