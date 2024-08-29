@@ -71,7 +71,7 @@ function TreatmentLabTests() {
 
     const formData = new FormData();
 
-    formData.append("user_labtest[lab_test]", JSON.stringify(selectedTests));
+    formData.append("user_labtest[labtest]", JSON.stringify(selectedTests));
     formData.append("user_labtest[user_id]", user_id);
 
     try {

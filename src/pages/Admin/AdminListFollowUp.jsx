@@ -244,7 +244,7 @@ function AdminListFollowUp() {
                                       </td>
                                       <td className="py-3 px-4 border-b border-b-gray-50">
                                         <span className="text-black text-base font-medium ml-1">
-                                          {formatTime(data.time)}
+                                          {data.time}
                                         </span>
                                       </td>
                                     </tr>

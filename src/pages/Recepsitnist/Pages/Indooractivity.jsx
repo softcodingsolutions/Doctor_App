@@ -148,6 +148,7 @@ export default function Indooractivity() {
   const [assignedData, setAssignedData] = useState(false);
   const [dialogData, setDialogData] = useState({
     name: "",
+    last_name: "",
     number: "",
     machineName: "",
     doctorId: "",
@@ -165,6 +166,8 @@ export default function Indooractivity() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [getParticularCustomer, setGetParticularCustomer] = useState([]);
+  const [error, setError] = useState("");
 
   const handleDisplay = (date) => {
     const queryParam = date ? `?date=${date}` : "";
@@ -220,6 +223,7 @@ export default function Indooractivity() {
       if (existingAppointment) {
         setDialogData({
           name: existingAppointment.user?.first_name || "",
+          last_name: existingAppointment.user?.last_name || "",
           number: existingAppointment.user?.phone_number || "",
           machineName:
             machines.find((machine) => machine.id === machineId)?.name || "",
@@ -256,18 +260,19 @@ export default function Indooractivity() {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setDialogData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setDialogData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
   const resetDialog = () => {
     setDialogData({
       name: "",
       number: "",
+      last_name: " ",
       machineName: "",
       doctorId: "",
       doctorName: "",
@@ -310,6 +315,8 @@ export default function Indooractivity() {
         setLoader(false);
         resetDialog();
         handleDisplay(consultingTime);
+        setSearchTerm("");
+        setError('');
       })
       .catch((err) => {
         console.error(err.response?.data?.message || "An error occurred!");
@@ -328,6 +335,9 @@ export default function Indooractivity() {
   const closeDialog = () => {
     setIsDialogOpen(false);
     resetDialog();
+    setDialogData([]);
+    setSearchTerm("");
+    setError('');
   };
 
   const formatDate = (date) => {
@@ -379,51 +389,25 @@ export default function Indooractivity() {
 
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      setDebouncedSearchTerm(searchTerm);
-      setLoading(true);
-    }
-  };
-
-  useEffect(() => {
-    if (debouncedSearchTerm) {
+    if (value) {
       axios
         .get(
-          `/api/v1/users?only_indoor_access_users=true&first_name=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&last_name=${debouncedSearchTerm}`
+          `/api/v1/users?only_indoor_access_users=true&search_query=${value}`
         )
         .then((res) => {
           setLoading(false);
-          console.log("search", res);
-
-          const users = res.data.users;
-
-          if (users.length > 0) {
-            const user = users[0];
-            setDialogData((prevData) => ({
-              ...prevData,
-              name: user.first_name || "",
-              number: user.phone_number || "",
-              caseNumber: user.case_number || "",
-            }));
-          } else {
-            alert("USER NOT IN INDOOR ACTIVITY LIST");
-            setDialogData((prevData) => ({
-              ...prevData,
-              name: "",
-              number: "",
-              caseNumber: "",
-            }));
-          }
+          setGetParticularCustomer(res.data.users);
+          setError('');
         })
         .catch((err) => {
           console.log(err);
           setLoading(false);
         });
+    } else {
+      setGetParticularCustomer([]);
+      setError("Please provide valid Patient name or phone number");
     }
-  }, [debouncedSearchTerm]);
+  };
 
   useEffect(() => {
     handleDisplay(consultingTime);
@@ -481,14 +465,14 @@ export default function Indooractivity() {
             ))}
           </div>
           {assignedData ? (
-            <Dialog open={isDialogOpen} onClose={closeDialog}>
-              <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+            <Dialog open={isDialogOpen} onClose={closeDialog} >
+              <div className="fixed inset-0 w-full bg-black/30" aria-hidden="true" />
               <div className="fixed inset-0 flex items-center justify-center p-4">
                 <div className="bg-white rounded p-6 max-w-sm w-full">
                   <h3 className="text-lg font-semibold">Patient Details</h3>
                   <div className="mt-4">
                     <label className="block text-md font-medium ">
-                      Name : {dialogData.name}
+                      Name : {` ${dialogData.name} ${dialogData.last_name} `}
                     </label>
                   </div>
                   <div className="mt-4">
@@ -548,43 +532,117 @@ export default function Indooractivity() {
                         type="text"
                         value={searchTerm}
                         onChange={(e) => handleSearchTerm(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Search User through First Name/Last Name/Phone Number  "
+                        placeholder="Search User through First Name/Last Name/Phone Number"
                         className="py-1 px-2 rounded-md border border-black w-full"
                       />
                     </div>
+                    {getParticularCustomer.length > 0 ? (
+                      <ul className="mt-2 border border-gray-200 rounded-md max-h-48 overflow-y-auto">
+                        {getParticularCustomer.map((user) => (
+                          <li
+                            key={user.id}
+                            className="p-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() => {
+                              setDialogData({
+                                ...dialogData,
+                                name: user.first_name,
+                                last_name: user.last_name,
+                                number: user.phone_number,
+                                caseNumber: user.case_number,
+                              });
+                              setGetParticularCustomer([]);
+                              setSearchTerm(user.first_name);
+                            }}
+                          >
+                            Name: {user.first_name} {user.last_name} <br />
+                            Phone Number: {user.phone_number}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="block text-sm font-small text-red-700">
+                        {error}
+                      </p>
+                    )}
                   </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Case Number
-                    </label>
-                    <input
-                      type="text"
-                      value={dialogData.caseNumber}
-                      readOnly
-                    />
+                  <div className="flex">
+                    {dialogData.name && dialogData.last_name && (
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          value={`${dialogData.name} ${dialogData.last_name}`}
+                          readOnly
+                          className="py-1 px-2 w-full"
+                        />
+                      </div>
+                    )}
+                    {dialogData.number && (
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          value={dialogData.number}
+                          readOnly
+                          className="py-1 px-2 w-full"
+                        />
+                      </div>
+                    )}
                   </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Machine Name
-                    </label>
-                    <input
-                      type="text"
-                      value={dialogData.machineName}
-                      readOnly
-                    />
+                  <div className="flex">
+                    {dialogData.caseNumber && (
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Case Number
+                        </label>
+                        <input
+                          type="text"
+                          value={dialogData.caseNumber}
+                          readOnly
+                          className="py-1 px-2 w-full"
+                        />
+                      </div>
+                    )}
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Machine Name
+                      </label>
+                      <input
+                        type="text"
+                        value={dialogData.machineName}
+                        readOnly
+                        className="py-1 px-2 w-full"
+                      />
+                    </div>
                   </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Doctor
-                    </label>
-                    <input type="text" value={dialogData.doctorName} readOnly />
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Time
-                    </label>
-                    <input type="text" value={dialogData.time} readOnly />
+                  <div className="flex">
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Doctor
+                      </label>
+                      <input
+                        type="text"
+                        value={dialogData.doctorName}
+                        readOnly
+                        className="py-1 px-2 w-full"
+                      />
+                    </div>
+
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Time
+                      </label>
+                      <input
+                        type="text"
+                        value={dialogData.time}
+                        readOnly
+                        className="py-1 px-2 rounded-md  w-full"
+                      />
+                    </div>
                   </div>
                   <div className="mt-4 flex justify-end space-x-2">
                     <button
