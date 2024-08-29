@@ -549,7 +549,7 @@ export default function Indooractivity() {
                         value={searchTerm}
                         onChange={(e) => handleSearchTerm(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        placeholder="Search User through First Name/Last Name/Phone Number"
+                        placeholder="Search User through First Name/Last Name/Phone Number  "
                         className="py-1 px-2 rounded-md border border-black w-full"
                       />
                     </div>
