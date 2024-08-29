@@ -12,7 +12,7 @@ function RecepAllUsers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
       const patients = res.data?.users?.filter(
@@ -36,7 +36,6 @@ function RecepAllUsers() {
   const handleInventory = (caseNumber) => {
     navigate(`/receptionist/bill-history`, { state: { caseNumber } });
   };
-
 
   const handleCheckboxChange = (e) => {
     const formdata = new FormData();
@@ -129,12 +128,12 @@ function RecepAllUsers() {
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <td className="py-2 px-4 border-b border-b-gray-50">
                               <div className="flex items-center text-lg">
-                                {/* Conditionally set the checkbox checked status based on indoor_activity_access */}
                                 <input
                                   value={val.id}
                                   checked={val.indoor_activity_access}
                                   onChange={(e) => handleCheckboxChange(e)}
                                   type="checkbox"
+                                  className="size-4"
                                 />
                               </div>
                             </td>

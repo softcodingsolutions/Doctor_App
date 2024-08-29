@@ -182,7 +182,7 @@ function RTreatmentMedicine() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[80vh] bg-white ">
+      <div className="rounded-lg bg-card h-[79vh] bg-white ">
         <div className="flex px-4 py-2 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             <div className="font-[550] text-lg">
@@ -242,8 +242,9 @@ function RTreatmentMedicine() {
                             value={val.id}
                             onChange={handleCheckboxChange}
                             type="checkbox"
-                            defaultChecked={getPredictionMedicine.some(
-                              (med) => med.id === val.id
+                            className="size-4"
+                            checked={selectedCheckboxes.includes(
+                              val.id.toString()
                             )}
                           />
                         </td>

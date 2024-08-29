@@ -137,6 +137,7 @@ function CustomerQuestionsPart1({
                             )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

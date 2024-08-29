@@ -11,7 +11,7 @@ function TreatmentLabTests() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [loading, setLoading] = useState(true);
   const user_id = localStorage.getItem("userId");
-  const [getUser, setGetUser] = useState();
+  const [getUser, setGetUser] = useState([]);
 
   const handleGetUser = () => {
     axios
@@ -44,7 +44,6 @@ function TreatmentLabTests() {
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
-
     if (isChecked) {
       setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
     } else {
@@ -58,7 +57,6 @@ function TreatmentLabTests() {
     const selectedTests = selectedCheckboxes
       .map((id) => getTests.find((com) => com.id === Number(id)))
       .filter((com) => com);
-
     if (selectedTests.length === 0) {
       return Swal.fire({
         icon: "warning",
@@ -66,12 +64,10 @@ function TreatmentLabTests() {
         text: "Please select at least one test to save.",
       });
     }
-
     console.log("Selected Lab Test: ", selectedTests);
 
     const formData = new FormData();
-
-    formData.append("user_labtest[lab_test]", JSON.stringify(selectedTests));
+    formData.append("user_labtest[labtest]", JSON.stringify(selectedTests));
     formData.append("user_labtest[user_id]", user_id);
 
     try {
@@ -87,6 +83,7 @@ function TreatmentLabTests() {
         });
       }
       handleGetTests();
+      handleGetUser();
     } catch (err) {
       console.error(err);
     } finally {
@@ -103,6 +100,11 @@ function TreatmentLabTests() {
     return <InsideLoader />;
   }
 
+  const givenLabTestIds =
+    getUser?.user_labtests?.[getUser?.user_labtests?.length - 1]?.labtest || [];
+
+  console.log(givenLabTestIds);
+
   return (
     <div className="w-full p-2">
       <div className={`rounded-lg bg-card h-[89vh] bg-white`}>
@@ -112,7 +114,6 @@ function TreatmentLabTests() {
               No. of tests checked: {selectedCheckboxes?.length}
             </div>
           </div>
-
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
@@ -141,13 +142,22 @@ function TreatmentLabTests() {
                   </tr>
                 ) : (
                   getTests.map((val) => {
+                    const isGiven = givenLabTestIds.find(
+                      (test) => test.id === val.id
+                    );
+                    console.log(isGiven);
+
                     return (
-                      <tr key={val.id}>
+                      <tr
+                        className={`${isGiven ? "bg-gray-400" : ""} w-full`}
+                        key={val.id}
+                      >
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <input
                             value={val.id}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
@@ -171,7 +181,6 @@ function TreatmentLabTests() {
               </tbody>
             </table>
           </div>
-
           <div className="flex items-center justify-between">
             <div className="font-[550] text-lg flex items-center invisible">
               Already Given Lab Tests -{" "}
@@ -188,5 +197,4 @@ function TreatmentLabTests() {
     </div>
   );
 }
-
 export default TreatmentLabTests;

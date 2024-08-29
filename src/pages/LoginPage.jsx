@@ -15,11 +15,14 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
+import { FaEyeSlash } from "react-icons/fa";
+import { IoEyeSharp } from "react-icons/io5";
 
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [wrongCreds, setWrongCreds] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -31,13 +34,17 @@ function LoginPage() {
 
   const submittedData = (d) => {
     console.log(d);
+    const trimmedEmail = d.email.trim();
+    const trimmedPassword = d.password.trim();
+
     setLoading(true);
+
     axios
       .get("/api/v1/users/app_creds")
       .then((res) => {
         const formData = new FormData();
-        formData.append("email", d.email);
-        formData.append("password", d.password);
+        formData.append("email", trimmedEmail);
+        formData.append("password", trimmedPassword);
         formData.append("client_id", res.data?.client_id);
         axios
           .post("/api/v1/users/login", formData)
@@ -98,7 +105,6 @@ function LoginPage() {
             if (err.response?.data?.success === false) {
               setWrongCreds(true);
             }
-            alert(err.response?.data?.message + "!");
           });
       })
       .catch((err) => {
@@ -135,7 +141,7 @@ function LoginPage() {
                 <img className="w-50 h-24" src={icons_slime} alt="" />
               </div>
               {wrongCreds && (
-                <span className="text-s text-red-500 -mt-4">
+                <span className="text-s text-red-500 -mt-4 text-center">
                   Incorrect Email or Password!
                 </span>
               )}
@@ -152,11 +158,23 @@ function LoginPage() {
               )}
               <Input
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 size="lg"
                 name="password"
                 {...register("password")}
               />
+              <div
+                className={`absolute inset-y-0 right-8 ${
+                  wrongCreds ? "top-[5.5rem]" : "top-16"
+                }  flex items-center cursor-pointer`}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <IoEyeSharp className="h-5 w-5 text-gray-500" />
+                ) : (
+                  <FaEyeSlash className="h-5 w-5 text-gray-500" />
+                )}
+              </div>
               {errors.password && (
                 <span className="text-s text-red-500 -mt-4">
                   {errors.password?.message}

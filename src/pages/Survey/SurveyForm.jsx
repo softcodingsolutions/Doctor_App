@@ -2,9 +2,8 @@ import { useState } from "react";
 import SurveyInput from "../../components/Survey/SurveyInput";
 import { schema } from "./Schemas/SurveySchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate, useOutlet, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 
 export default function SurveyForm() {
   const context = useOutletContext();
@@ -199,7 +198,7 @@ export default function SurveyForm() {
                   onChange={handleCheckboxChange}
                   type="checkbox"
                   id={`checkbox-${index}`}
-                  className="mr-2"
+                  className="mr-2 size-4"
                 />
                 <label htmlFor={`checkbox-${index}`}>{item}</label>
               </div>

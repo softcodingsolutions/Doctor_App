@@ -172,6 +172,7 @@ function RTreatmentDont() {
                             value={val.id}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                             defaultChecked={getPredictionDonts.some(
                               (med) => med.id === val.id
                             )}

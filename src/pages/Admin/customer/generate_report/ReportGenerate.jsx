@@ -92,7 +92,10 @@ export const BillDocument = ({ data }) => (
             Email : <Text style={{ fontSize: 14 }}>{data?.email}</Text>
           </Text>
           <Text style={styles.Name}>
-            Doctor : <Text style={{ fontSize: 14 }}>{data?.doctor?.first_name + " " + data?.doctor?.last_name}</Text>
+            Doctor :{" "}
+            <Text style={{ fontSize: 14 }}>
+              {data?.doctor?.first_name + " " + data?.doctor?.last_name}
+            </Text>
           </Text>
           <Text style={styles.Name}>
             Height :{" "}
@@ -401,6 +404,42 @@ export const BillDocument = ({ data }) => (
             </View>
           </View>
         )}
+
+        {/* LabTest */}
+        {data.user_labtests?.length !== 0 && (
+          <View style={styles.s}>
+            <Text style={styles.subtitle}>Labtest</Text>
+            <View style={styles.table}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "black",
+                  color: "white",
+                  fontWeight: "bold", // Ensures header text stands out
+                }}
+              >
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Name</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>Comment</Text>
+                </View>
+              </View>
+              {data.user_labtests?.[
+                data.user_labtests?.length - 1
+              ]?.labtest?.map((test, index) => (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{test.name}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{test.comments}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
       </View>
     </Page>
   </Document>
@@ -439,7 +478,7 @@ const ReportGenerate = () => {
               document={<BillDocument data={pdfData} />}
               fileName="ReportGenerate.pdf"
             >
-              {({ blob, url, loading, error }) =>
+              {({ loading }) =>
                 loading ? (
                   <InsideLoader />
                 ) : (

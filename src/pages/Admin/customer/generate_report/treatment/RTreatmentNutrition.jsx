@@ -170,6 +170,7 @@ function RTreatmentNutrition() {
                             value={val.id}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                             defaultChecked={getPredictionNutrition.some(
                               (med) => med.id === val.id
                             )}

@@ -168,6 +168,7 @@ function RTreatmentExercise() {
                             value={val.id}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                             defaultChecked={getPredictionExercise.some(
                               (med) => med.id === val.id
                             )}

@@ -136,6 +136,7 @@ function FranchiesQuestions({
                             )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                           />
                         </td>
 

@@ -282,6 +282,7 @@ function TreatmentQuestionPart2() {
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
+                              className="size-4"
                               defaultChecked={context[2]?.some(
                                 (packages) =>
                                   context[0] === packages.weight_reason &&

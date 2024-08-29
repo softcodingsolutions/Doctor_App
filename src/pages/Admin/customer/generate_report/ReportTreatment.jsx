@@ -164,7 +164,7 @@ function ReportTreatment() {
                   </Select>
                 </div>
                 {!sendWeightReason && (
-                  <span className="text-red-500 font-medium text-sm -ml-3 mt-5">
+                  <span className="text-red-500 font-medium text-sm -ml-4 mt-5">
                     *Required
                   </span>
                 )}
