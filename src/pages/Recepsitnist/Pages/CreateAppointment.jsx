@@ -29,7 +29,6 @@ export default function CreateAppointment() {
       axios
         .get(`/api/v2/users/search?search_query=${debouncedSearchTerm}`)
         .then((res) => {
-
           setLoading(false);
           const user = res.data.user;
           setName(user.first_name);
@@ -43,7 +42,6 @@ export default function CreateAppointment() {
             setDoctorName(res.data.doctor);
             setDoctorList(res.data.doctor.id);
           }
-          
         })
         .catch((err) => {
           setLoading(false);
@@ -54,13 +52,14 @@ export default function CreateAppointment() {
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
     setError("");
+
     if (value) {
+      setLoading(true);
       axios
         .get(`/api/v2/users/search?search_query=${value}`)
         .then((res) => {
           setLoading(false);
           setGetParticularCustomer(res.data.user);
-          console.log(res.data.user);
           setError("");
         })
         .catch((err) => {
@@ -68,26 +67,37 @@ export default function CreateAppointment() {
           setError("Error fetching users.");
         });
     } else {
+      // Reset state when the search bar is cleared
       setGetParticularCustomer([]);
-      setError("Please provide valid Patient name or phone number");
+      setNewCase(false);
+      setOldCase(false);
+      setName("");
+      setMobileNumber("");
+      setEmail("");
+      setUserId("");
+      setDoctorName("");
+      setDoctorList("");
+      setMachineList([]);
+      setMachineConsultingTime([]);
+      setOpen(false);
     }
   };
 
   const handleUserSelect = (user) => {
-    setName(user.first_name);
-    setMobileNumber(user.phone_number);
-    setEmail(user.email);
-    setUserId(user.id);
-    setDoctorName(user.doctor);
-    setDoctorList(user.doctor.id);
-    setGetParticularCustomer([]);
-    if (user.follow_up === "true") {
+    if (user.follow_up === true) {
       setOldCase(true);
       setNewCase(false);
     } else {
       setOldCase(false);
       setNewCase(true);
     }
+    setName(user?.first_name);
+    setMobileNumber(user?.phone_number);
+    setEmail(user?.email);
+    setUserId(user?.personal_detail?.user_id);
+    setDoctorName(user?.doctor);
+    setDoctorList(user?.doctor?.id);
+    setGetParticularCustomer([]);
     setOpen(true);
   };
 
@@ -102,15 +112,14 @@ export default function CreateAppointment() {
     <div className="w-full p-5">
       <div className="rounded-lg bg-card h-[90vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4">
-          <div className="text-xl font-semibold">
+          <div className="text-xl font-semibold text-center mb-4">
             Create Consulting Appointment
           </div>
-          <div className="flex flex-row w-full justify-center gap-5">
+          <div className="flex flex-row w-full justify-center gap-5 mb-4">
             <button
               className={`w-[30%] border cursor-pointer font-semibold ${
                 newCase ? "bg-[#1F2937]" : "bg-white"
               } ${newCase ? "text-white" : "text-[#1F2937]"} p-2 rounded-md`}
-             
             >
               New Case
             </button>
@@ -118,7 +127,6 @@ export default function CreateAppointment() {
               className={`w-[30%] border cursor-pointer font-semibold ${
                 oldCase ? "bg-[#1F2937]" : "bg-white"
               } ${oldCase ? "text-white" : "text-[#1F2937]"} p-2 rounded-md`}
-             
             >
               Follow Up (Old Case)
             </button>
@@ -129,55 +137,61 @@ export default function CreateAppointment() {
               type="text"
               value={searchTerm}
               onChange={(e) => handleSearchTerm(e.target.value)}
-              placeholder="Search User through Case Number/Phone Number/Email"
+              placeholder="Search User by First Name, Last Name, or Phone Number"
               className="py-1 px-2 rounded-md border border-black w-full"
             />
           </div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[80%]">
             {loading && <InsideLoader />}
             {error && <div className="text-red-500">{error}</div>}
             {getParticularCustomer?.length > 0 && (
-              <div className="space-y-2">
+              <div className="space-y-1 w-[1800vw]">
                 {getParticularCustomer.map((user) => (
                   <div
                     key={user.id}
-                    className="border p-2 text-lg rounded-md  cursor-pointer hover:bg-gray-100"
+                    className="border p-4 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex justify-between items-center"
                     onClick={() => handleUserSelect(user)}
                   >
-                    Name : {user.first_name} - {user.last_name} <br/>
-                    Phone Number :{user.phone_number} 
+                    <div>
+                      <div className="font-semibold">
+                        {user.first_name} {user.last_name}
+                      </div>
+                      <div className="text-gray-500">
+                        Phone: {user.phone_number}
+                      </div>
+                    </div>
+                    <div className="text-gray-600 text-sm">
+                      {user.follow_up ? "Follow Up" : "New Case"}
+                    </div>
                   </div>
                 ))}
               </div>
             )}
-            {open && !loading && (
-              <form className="text-lg">
-                <div className="flex flex-col gap-5 m-5">
-                  {newCase ? (
-                    <label className="text-xl bg-white rounded-md p-1 font-semibold text-center mr-2">
+            {!loading && (
+              <form className="text-lg w-full space-y-6">
+                <div className="flex flex-col gap-3">
+                  {newCase && (
+                    <label className="text-xl bg-white rounded-md p-2 font-semibold text-center">
                       New Case
                     </label>
-                  ) : (
-                    <label className="text-xl bg-white rounded-md p-1 font-semibold text-center mr-2">
+                  )}
+                  {oldCase && (
+                    <label className="text-xl bg-white rounded-md p-2 font-semibold text-center">
                       Old Case
                     </label>
                   )}
                   {doctorName && (
-                    <div className="flex gap-5">
-                      <label className="text-lg text-end w-1/3 mr-2">
-                        Doctor:
-                      </label>
-                      <h2 className="">
-                        {doctorName
-                          ? `${doctorName.first_name} ${doctorName.last_name}`
-                          : "Doctor Name"}
+                    <div className="flex  items-center gap-5 justify-center">
+                      <label className="text-lg ">Doctor:</label>
+                      <h2 className="text-lg">
+                        {doctorName.first_name} {doctorName.last_name}
                       </h2>
                     </div>
                   )}
                 </div>
-                {}
-                <div className="flex gap-5 m-5">
-                  {oldCase &&  (
+                <div className="flex gap-5 justify-center">
+                  
+                  {oldCase && userId && (
                     <Oldcase
                       doctor={doctorList}
                       user={userId}
@@ -187,8 +201,8 @@ export default function CreateAppointment() {
                       number={mobileNumber}
                       email={email}
                     />
-                  ) }
-                  {newCase && (
+                  )}
+                  {newCase && userId && (
                     <Newcase
                       doctor={doctorList}
                       name={name}
