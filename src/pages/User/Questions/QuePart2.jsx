@@ -123,6 +123,7 @@ function QuePart2({ setStoreData, onBack, handleCallUserApi, storedData }) {
                             )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                           />
                         </td>
 

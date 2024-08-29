@@ -158,7 +158,7 @@ function TreatmentMedicines() {
             )}
           </div>
 
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[70vh]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -214,6 +214,7 @@ function TreatmentMedicines() {
                               value={val.id}
                               onChange={handleCheckboxChange}
                               type="checkbox"
+                              className="size-4"
                               defaultChecked={context[2]?.some(
                                 (packages) =>
                                   context[0] === packages.weight_reason &&

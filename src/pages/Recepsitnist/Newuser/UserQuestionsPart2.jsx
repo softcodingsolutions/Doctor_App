@@ -138,6 +138,7 @@ function UserQuestionsPart2({
                             )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                           />
                         </td>
 

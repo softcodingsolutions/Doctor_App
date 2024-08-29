@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { useNavigate, useOutlet, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function SurveyForm2() {
   const navigate = useNavigate();
@@ -9,9 +9,7 @@ export default function SurveyForm2() {
   const [healthProblems, setHealthProblems] = useState([]);
   const [selectedCheckboxes2, setSelectedCheckboxes2] = useState([]);
   const {
-    register,
     handleSubmit,
-    formState: { errors },
   } = useForm();
 
   const handleCheckboxChange2 = (e) => {
@@ -28,7 +26,6 @@ export default function SurveyForm2() {
   };
 
   const submittedData2 = (d) => {
-    const formData = new FormData();
     
     context[1]((prev)=>({
       ...prev,
@@ -84,7 +81,7 @@ export default function SurveyForm2() {
                     onChange={handleCheckboxChange2}
                     type="checkbox"
                     id={`checkbox-${index}`}
-                    className="mr-2"
+                    className="mr-2 size-4"
                     name='items'
                   />
                   <label htmlFor={`checkbox-${index}`} className='p-2'>{item.problem}</label>

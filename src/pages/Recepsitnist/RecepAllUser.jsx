@@ -151,6 +151,7 @@ function RecepAllUsers() {
                                   checked={val.indoor_activity_access}
                                   onChange={(e) => handleCheckboxChange(e)}
                                   type="checkbox"
+                                  className="size-4"
                                 />
                               </div>
                             </td>

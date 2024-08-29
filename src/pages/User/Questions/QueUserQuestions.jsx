@@ -130,6 +130,7 @@ function QueUserQuestions() {
                             value={val.id}
                             onChange={handleCheckboxChange}
                             type="checkbox"
+                            className="size-4"
                           />
                         </td>
 

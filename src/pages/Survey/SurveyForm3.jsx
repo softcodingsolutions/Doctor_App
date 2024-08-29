@@ -160,7 +160,7 @@ export default function SurveyForm3() {
                         onChange={handleCheckboxChange3}
                         type="checkbox"
                         id={`checkbox-${index}`}
-                        className="mr-2"
+                        className="mr-2 size-4"
                       />
                       <label htmlFor={`checkbox-${index}`}>
                         {item.in_english}
@@ -174,7 +174,7 @@ export default function SurveyForm3() {
                         onChange={handleCheckboxChange3}
                         type="checkbox"
                         id={`checkbox-${index}`}
-                        className="mr-2"
+                        className="mr-2 size-4"
                       />
                       <label htmlFor={`checkbox-${index}`}>
                         {item.in_gujarati}
