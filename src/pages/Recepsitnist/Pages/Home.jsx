@@ -80,7 +80,7 @@ export default function Home() {
     return date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
-      hour12: !is24Hour, 
+      hour12: !is24Hour,
     });
   }
 
@@ -125,45 +125,50 @@ export default function Home() {
       <div className="rounded-lg bg-card h-[90vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
           <div className="flex gap-5 items-center p-2 w-full">
-            <select
-              onChange={handleDoctorList}
-              defaultValue="select1"
-              value={doctorList}
-              className="p-2 rounded-md border border-black  w-[40vh]"
-            >
-              <option value="select1" selected>
-                Select Doctor
-              </option>
-              {filteredDoctors
-                .filter((doctor) => doctor.role === "doctor")
-                .map((name) => (
-                  <option key={name.id} value={name.id}>
-                    {name.first_name} {name.last_name}
+            <div className="flex flex-col">
+              <div>
+                <label className="flex  text-xl  font-bold p-3 tracking-wide">Today's Appointments</label>
+              </div>
+              <div className="flex">
+                <select
+                  onChange={handleDoctorList}
+                  defaultValue="select1"
+                  value={doctorList}
+                  className="p-2 rounded-md border border-black mr-5 w-[40vh]"
+                >
+                  <option value="select1" selected>
+                    Select Doctor
                   </option>
-                ))}
-            </select>
-            <input
-              type="date"
-              placeholder="select date"
-              className="py-1 px-2 rounded-md border border-black w-[40vh]"
-              onChange={handleConsulting}
-            />
-            <div>
-              {consultingOpen ? (
-                <button
-                  onClick={handleOpen}
-                  className="min-w-fit border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
-                >
-                  Machine Consulting Appointment
-                </button>
-              ) : (
-                <button
-                  onClick={handleClose}
-                  className="min-w-fit border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
-                >
-                  Consulting Appointment
-                </button>
-              )}
+                  {filteredDoctors
+                    .filter((doctor) => doctor.role === "doctor")
+                    .map((name) => (
+                      <option key={name.id} value={name.id}>
+                        {name.first_name} {name.last_name}
+                      </option>
+                    ))}
+                </select>
+                <input
+                  type="date"
+                  placeholder="select date"
+                  className="py-1 px-2 rounded-md border mr-5 border-black w-[40vh]"
+                  onChange={handleConsulting}
+                />
+                {consultingOpen ? (
+                  <button
+                    onClick={handleOpen}
+                    className="min-w-fit border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
+                  >
+                    Machine Consulting Appointment
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleClose}
+                    className="min-w-fit border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
+                  >
+                    Consulting Appointment
+                  </button>
+                )}
+              </div>
             </div>
             <div className="flex justify-end text-right w-[25%]">
               <div className="text-lg font-semibold">

@@ -23,32 +23,6 @@ export default function CreateAppointment() {
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (debouncedSearchTerm) {
-      setLoading(true);
-      axios
-        .get(`/api/v2/users/search?search_query=${debouncedSearchTerm}`)
-        .then((res) => {
-          setLoading(false);
-          const user = res.data.user;
-          setName(user.first_name);
-          setMobileNumber(user.phone_number);
-          setEmail(user.email);
-          setUserId(user.id);
-          if (user.creator === "franchise") {
-            setDoctorName(res.data.doctor.doctor);
-            setDoctorList(res.data.doctor.doctor.id);
-          } else {
-            setDoctorName(res.data.doctor);
-            setDoctorList(res.data.doctor.id);
-          }
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
-    }
-  }, [debouncedSearchTerm]);
-
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
     setError("");
@@ -67,7 +41,6 @@ export default function CreateAppointment() {
           setError("Error fetching users.");
         });
     } else {
-      // Reset state when the search bar is cleared
       setGetParticularCustomer([]);
       setNewCase(false);
       setOldCase(false);
