@@ -415,7 +415,7 @@ export const BillDocument = ({ data }) => (
                   flexDirection: "row",
                   backgroundColor: "black",
                   color: "white",
-                  fontWeight: "bold", // Ensures header text stands out
+                  fontWeight: "bold",
                 }}
               >
                 <View style={styles.tableCol}>

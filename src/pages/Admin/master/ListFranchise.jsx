@@ -5,7 +5,6 @@ import { MdDelete } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Option, Select } from "@mui/joy";
 import ViewFranchiseDetails from "../../../components/Admin/ViewFranchiseDetails";
 import InsideLoader from "../../InsideLoader";
 import { useOutletContext } from "react-router-dom";
@@ -15,8 +14,6 @@ function ListFranchise() {
   const [getFranchise, setGetFranchise] = useState([]);
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
-  const [getDoctors, setGetDoctors] = useState([]);
-  const [getDoctorId, setGetDoctorId] = useState("all");
   const [loading, setLoading] = useState(true);
   const [getFranchiseUsers, setGetFranchiseUsers] = useState([]);
 
@@ -116,37 +113,14 @@ function ListFranchise() {
     axios
       .get("/api/v1/users/franchise_index")
       .then((res) => {
-        if (role === "super_admin") {
-          if (getDoctorId) {
-            if (getDoctorId === "all") {
-              console.log(res.data?.users);
-              setGetFranchise(res.data?.users);
-              setLoading(false);
-            } else {
-              console.log(
-                "Particular Doctor: ",
-                res.data?.users.filter(
-                  (user) => user.created_by_id == getDoctorId
-                )
-              );
-              setGetFranchise(
-                res.data?.users.filter(
-                  (user) => user.created_by_id == getDoctorId
-                )
-              );
-              setLoading(false);
-            }
-          }
-        } else if (role === "doctor") {
-          console.log(
-            "Doctor: ",
-            res.data?.users.filter((user) => user.created_by_id == main_id)
-          );
-          setGetFranchise(
-            res.data?.users.filter((user) => user.created_by_id == main_id)
-          );
-          setLoading(false);
-        }
+        console.log(
+          "Doctor: ",
+          res.data?.users.filter((user) => user.created_by_id == main_id)
+        );
+        setGetFranchise(
+          res.data?.users.filter((user) => user.created_by_id == main_id)
+        );
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -233,28 +207,9 @@ function ListFranchise() {
     });
   };
 
-  const handleGetDoctors = () => {
-    axios
-      .get(`/api/v1/users`)
-      .then((res) => {
-        console.log(
-          "Doctors: ",
-          res.data?.users?.filter((user) => user.role === "doctor")
-        );
-        setGetDoctors(
-          res.data?.users?.filter((user) => user.role === "doctor")
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
-  };
-
   useEffect(() => {
     handleGetFranchise();
-    handleGetDoctors();
-  }, [getDoctorId]);
+  }, []);
 
   if (loading) {
     return <InsideLoader />;
@@ -284,6 +239,12 @@ function ListFranchise() {
               <div className="flex items-center">
                 <div className="font-semibold text-xl">Franchise List</div>
                 <div className="flex-grow" />
+                <div className="flex items-center justify-end gap-2 mr-6">
+                  <div className="w-4 h-4 bg-red-300 border border-gray-800">
+                    {" "}
+                  </div>
+                  <div>- Possibility Group</div>
+                </div>
                 <div className="flex gap-3">
                   <AddListFranchise
                     handleApi={handleAddFranchise}
@@ -296,7 +257,6 @@ function ListFranchise() {
                     mobile="Mobile"
                     city="City"
                     state="State"
-                    doctors={getDoctors}
                     pincode="Pincode"
                     language="Language"
                     password="Password"
@@ -305,26 +265,6 @@ function ListFranchise() {
                     type_of_admin="Admin Type"
                     possibility_group="Possibility Group"
                   />
-                  {role === "super_admin" && (
-                    <Select
-                      required
-                      defaultValue={"all"}
-                      placeholder="Select"
-                      value={getDoctorId}
-                      onChange={(e, newValue) => setGetDoctorId(newValue)}
-                    >
-                      <Option key={"all"} value="all">
-                        All
-                      </Option>
-                      {getDoctors?.map((res) => {
-                        return (
-                          <Option key={res.id} value={res.id}>
-                            {res.first_name + " " + res.last_name}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  )}
                 </div>
               </div>
 
@@ -341,10 +281,8 @@ function ListFranchise() {
                       <ThComponent name="Password" />
                       <ThComponent name="Mobile No." />
                       <ThComponent name="City" />
-                      <ThComponent name="Possibility Group" />
                       <ThComponent name="Amount" />
                       <ThComponent name="Commission (in %)" />
-                      <ThComponent />
                       <ThComponent />
                       <ThComponent />
                       <ThComponent
@@ -365,7 +303,14 @@ function ListFranchise() {
                     ) : (
                       getFranchise.map((val, index) => {
                         return (
-                          <tr key={val.id}>
+                          <tr
+                            className={`${
+                              val.possibility_group
+                                ? "border-l-4 border-red-300"
+                                : ""
+                            }`}
+                            key={val.id}
+                          >
                             <td className="py-2 px-4 border-b border-b-gray-50">
                               <div className="flex items-center">
                                 {index + 1}
@@ -399,11 +344,7 @@ function ListFranchise() {
                                 }
                               />
                             </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent
-                                things={val.possibility_group ? "Yes" : "No"}
-                              />
-                            </td>
+
                             <td className="py-3 px-4 border-b border-b-gray-50">
                               <TdComponent
                                 things={val.amount <= 0 ? "0" : val.amount}

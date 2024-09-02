@@ -69,11 +69,10 @@ function CustomerAllUsers() {
     }
   }, [searchTerm, getCustomers]);
 
-  // Sort getParticularCustomer so that those with no treatment_packages come first
   const sortedCustomers = getParticularCustomer.sort((a, b) => {
     const aHasNoPackage = a.creator === "franchise";
     const bHasNoPackage = b.creator === "franchise";
-    return bHasNoPackage - aHasNoPackage; // This will move customers with no packages to the front
+    return bHasNoPackage - aHasNoPackage;
   });
 
   if (loading) {

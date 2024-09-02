@@ -5,7 +5,6 @@ import SaveUserDetailsButton from "../../../../components/User/SaveUserDetailsBu
 import UserDetailsInput from "../../../../components/User/UserDetailsInput";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Option, Select } from "@mui/joy";
 import Swal from "sweetalert2";
 
 function CustomerGeneralDetails({
@@ -15,12 +14,9 @@ function CustomerGeneralDetails({
   storedData,
 }) {
   const [getAdmin, setGetAdmin] = useState([]);
-  const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState(storedData?.doctorId || "");
-  const [doctorError, setDoctorError] = useState(false);
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
-  const [weightLossDoctor, setWeightLossDoctor] = useState();
   const {
     register,
     handleSubmit,
@@ -44,30 +40,7 @@ function CustomerGeneralDetails({
       });
   };
 
-  const handleGetDoctors = () => {
-    axios
-      .get(`/api/v1/users`)
-      .then((res) => {
-        console.log(
-          "Doctors: ",
-          res.data?.users?.filter((user) => user.role === "doctor")
-        );
-        setGetDoctors(
-          res.data?.users?.filter((user) => user.role === "doctor")
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
-  };
-
   const submittedData = async (d) => {
-    if (role === "super_admin" && !getDoctorId) {
-      setDoctorError(true);
-      return;
-    }
-
     setStoreData((prev) => ({
       ...prev,
       generalDetails: d,
@@ -96,7 +69,6 @@ function CustomerGeneralDetails({
 
   useEffect(() => {
     handleGetAdmin();
-    handleGetDoctors();
 
     if (storedData) {
       reset({
@@ -128,64 +100,8 @@ function CustomerGeneralDetails({
         <div className="flex flex-col px-4 py-3 h-full space-y-4">
           <div className="flex justify-between items-center">
             <div className="text-xl font-semibold">General Details</div>
-            {role === "super_admin" && (
-              <div className="flex items-center gap-2">
-                <div className="text-xl font-semibold">Select Doctor:</div>
-                <Select
-                  placeholder="Select"
-                  value={getDoctorId}
-                  onChange={(e, newValue) => {
-                    setGetDoctorId(newValue);
-                    setDoctorError(false);
-                  }}
-                >
-                  {getDoctors?.map((res) => {
-                    return (
-                      <Option
-                        key={res.id}
-                        value={res.id}
-                        onClick={() => setWeightLossDoctor(res.first_name)}
-                      >
-                        {res.first_name + " " + res.last_name}
-                      </Option>
-                    );
-                  })}
-                </Select>
-                {doctorError && (
-                  <span className="text-base text-red-500">
-                    Please select a doctor.
-                  </span>
-                )}
-              </div>
-            )}
-            {/* display hidden */}
-            {role === "super_admin" && (
-              <div className="flex items-center gap-2 invisible">
-                <div className="text-lg font-semibold">Select Doctor:</div>
-                <Select
-                  placeholder="Select"
-                  value={getDoctorId}
-                  onChange={(e, newValue) => {
-                    setGetDoctorId(newValue);
-                    setDoctorError(false);
-                  }}
-                >
-                  {getDoctors?.map((res) => {
-                    return (
-                      <Option key={res.id} value={res.id}>
-                        {res.first_name + " " + res.last_name}
-                      </Option>
-                    );
-                  })}
-                </Select>
-                {doctorError && (
-                  <span className="text-base text-red-500">
-                    Please select a doctor.
-                  </span>
-                )}
-              </div>
-            )}
           </div>
+
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[92%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">
               <div className="flex gap-10 text-lg">
@@ -283,19 +199,25 @@ function CustomerGeneralDetails({
                     <label className="text-lg text-end w-1/3 mr-2">
                       Gender:
                     </label>
-                    <div className="flex flex-col gap-2">
-                      <select
-                        name="gender"
-                        defaultValue="select"
-                        {...register("gender")}
-                        className="py-1 px-2 rounded-md border border-black w-[38.5vh]"
-                      >
-                        <option value="select" disabled>
-                          Select One
-                        </option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                      </select>
+                    <div className="flex gap-2 w-[21.5rem]">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          value="male"
+                          {...register("gender")}
+                          className="mr-2"
+                        />
+                        Male
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          value="female"
+                          {...register("gender")}
+                          className="mr-2"
+                        />
+                        Female
+                      </label>
                       {errors.gender && (
                         <span className="text-base text-red-500 -mt-1.5">
                           {errors.gender?.message}
@@ -332,8 +254,7 @@ function CustomerGeneralDetails({
                       hook={register("refferedBy")}
                     />
                   </div>
-                  {(weightLossDoctor?.toLowerCase() === "bhavesh" ||
-                    getAdmin?.first_name?.toLowerCase() === "bhavesh") && (
+                  {getAdmin?.first_name?.toLowerCase() === "bhavesh" && (
                     <div className="flex gap-5 m-5">
                       <label className="text-lg text-end w-1/3 mr-2">
                         Overweight Since:
