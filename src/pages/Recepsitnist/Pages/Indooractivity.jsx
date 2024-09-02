@@ -316,7 +316,7 @@ export default function Indooractivity() {
         resetDialog();
         handleDisplay(consultingTime);
         setSearchTerm("");
-        setError('');
+        setError("");
       })
       .catch((err) => {
         console.error(err.response?.data?.message || "An error occurred!");
@@ -337,7 +337,7 @@ export default function Indooractivity() {
     resetDialog();
     setDialogData([]);
     setSearchTerm("");
-    setError('');
+    setError("");
   };
 
   const formatDate = (date) => {
@@ -397,7 +397,7 @@ export default function Indooractivity() {
         .then((res) => {
           setLoading(false);
           setGetParticularCustomer(res.data.users);
-          setError('');
+          setError("");
         })
         .catch((err) => {
           console.log(err);
@@ -465,8 +465,11 @@ export default function Indooractivity() {
             ))}
           </div>
           {assignedData ? (
-            <Dialog open={isDialogOpen} onClose={closeDialog} >
-              <div className="fixed inset-0 w-full bg-black/30" aria-hidden="true" />
+            <Dialog open={isDialogOpen} onClose={closeDialog}>
+              <div
+                className="fixed inset-0 w-full bg-black/30"
+                aria-hidden="true"
+              />
               <div className="fixed inset-0 flex items-center justify-center p-4">
                 <div className="bg-white rounded p-6 max-w-sm w-full">
                   <h3 className="text-lg font-semibold">Patient Details</h3>
