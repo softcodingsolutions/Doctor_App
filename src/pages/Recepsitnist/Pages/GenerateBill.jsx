@@ -39,10 +39,6 @@ export default function GenerateBill() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!id) {
-      newErrors.searchTerm = "Patient not selected.";
-    }
-
     if (!price) {
       newErrors.price = "Total Price is required.";
     }
@@ -83,7 +79,7 @@ export default function GenerateBill() {
           total_price: price,
           user_id: id,
           bill_items: JSON.stringify(billItems),
-          remaining_payment: remaining,
+          remaining_payment: remaining.toString(),
           paid_payment: pay,
           payment_method: method,
         },
@@ -97,6 +93,7 @@ export default function GenerateBill() {
           console.log("Bill created successfully", res);
           alert("Bill created successfully");
           resetForm();
+          setSearchTerm("");
         })
         .catch((err) => {
           console.log("Error creating bill", err);
@@ -144,7 +141,7 @@ export default function GenerateBill() {
           const userId = res?.data?.user?.id;
           setGetParticularCustomer(res.data.user);
           setError("");
-          setId(userId);
+          setSearchTerm("");
         })
         .catch((err) => {
           console.log(err);
@@ -154,6 +151,7 @@ export default function GenerateBill() {
       setPackageDetail({});
       setUser({});
       setMedicines([]);
+      setSearchTerm("");
     }
   };
 
@@ -165,7 +163,9 @@ export default function GenerateBill() {
     setMedicines(
       user?.treatment_packages?.[0]?.treatment_package?.medicines || []
     );
+    setId(user.id);
     setGetParticularCustomer([]);
+    setSearchTerm("");
   };
   return (
     <div className="flex w-full">
@@ -200,16 +200,6 @@ export default function GenerateBill() {
                     errors.searchTerm ? "border-red-500" : "border-gray-300"
                   } w-full focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 />
-                {errors.searchTerm && (
-                  <p className="text-red-500 text-sm">{errors.searchTerm}</p>
-                )}
-                {/* <button
-                  type="submit"
-                  onClick={handleSearch}
-                  className="border border-gray-300 w-[20%] text-lg font-semibold p-1 rounded-md bg-blue-800 text-white hover:scale-105"
-                >
-                  Enter
-                </button> */}
               </div>
               <div>
                 {error && <div className="text-red-500">{error}</div>}
