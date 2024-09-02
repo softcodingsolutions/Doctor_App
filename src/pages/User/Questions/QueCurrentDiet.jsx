@@ -109,25 +109,16 @@ function QueCurrentDiet({
                     })}
                   />
                   <UserDetailsInput
-                    name="MidAfternoon"
+                    name="Evening"
                     type="text"
-                    label="Mid Afternoon"
-                    hook={register("MidAfternoon", {
+                    label="Evening"
+                    hook={register("Evening", {
                       required: true,
                       minLength: 2,
                     })}
                   />
                 </div>
                 <div className="md:flex w-full justify-between">
-                  <UserDetailsInput
-                    name="Evening"
-                    type="text"
-                    label="Evening "
-                    hook={register("Evening", {
-                      required: true,
-                      minLength: 2,
-                    })}
-                  />
                   <UserDetailsInput
                     errors={errors.Dinner}
                     name="Dinner"
@@ -138,8 +129,6 @@ function QueCurrentDiet({
                       minLength: 2,
                     })}
                   />
-                </div>
-                <div className="md:flex w-full justify-between">
                   <UserDetailsInput
                     name="PostDinner"
                     type="text"
@@ -149,12 +138,6 @@ function QueCurrentDiet({
                       minLength: 2,
                     })}
                   />
-                  <div className="invisible ml-44">
-                    <label className="text-lg text-end w-1/3 mr-2"></label>
-                    <div className="flex flex-col">
-                      <input className="py-1 px-2 rounded-md border border-black w-[40vh]" />
-                    </div>
-                  </div>
                 </div>
               </div>
               <div className="flex w-full justify-center gap-3">

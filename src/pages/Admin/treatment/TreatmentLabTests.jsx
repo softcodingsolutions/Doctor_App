@@ -5,8 +5,10 @@ import axios from "axios";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import Swal from "sweetalert2";
 import InsideLoader from "../../InsideLoader";
+import { useOutletContext } from "react-router-dom";
 
 function TreatmentLabTests() {
+  const context = useOutletContext();
   const [getTests, setGetTests] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -81,9 +83,10 @@ function TreatmentLabTests() {
           showConfirmButton: false,
           timer: 1500,
         });
+        context?.[2]();
+        handleGetTests();
+        handleGetUser();
       }
-      handleGetTests();
-      handleGetUser();
     } catch (err) {
       console.error(err);
     } finally {
@@ -145,8 +148,6 @@ function TreatmentLabTests() {
                     const isGiven = givenLabTestIds.find(
                       (test) => test.id === val.id
                     );
-                    console.log(isGiven);
-
                     return (
                       <tr
                         className={`${isGiven ? "bg-gray-400" : ""} w-full`}

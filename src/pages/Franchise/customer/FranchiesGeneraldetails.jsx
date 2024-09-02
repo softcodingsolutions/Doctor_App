@@ -171,19 +171,25 @@ function FranchiesGeneraldetails({
                     <label className="text-lg text-end w-1/3 mr-2">
                       Gender:
                     </label>
-                    <div className="flex flex-col gap-2">
-                      <select
-                        name="gender"
-                        defaultValue="select"
-                        {...register("gender")}
-                        className="py-1 px-2 rounded-md border border-black w-[38.5vh]"
-                      >
-                        <option value="select" disabled>
-                          Select One
-                        </option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                      </select>
+                    <div className="flex gap-2 w-[21.5rem]">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          value="male"
+                          {...register("gender")}
+                          className="mr-2"
+                        />
+                        Male
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          value="female"
+                          {...register("gender")}
+                          className="mr-2"
+                        />
+                        Female
+                      </label>
                       {errors.gender && (
                         <span className="text-base text-red-500 -mt-1.5">
                           {errors.gender?.message}
