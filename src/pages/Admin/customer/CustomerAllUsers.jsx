@@ -48,6 +48,18 @@ function CustomerAllUsers() {
     setSearchTerm(value);
   };
 
+  const convertDate = (date) => {
+    const dateObj = new Date(date);
+
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = dateObj.getFullYear();
+
+    const formattedDate = `${day}-${month}-${year}`;
+
+    return formattedDate;
+  };
+
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
@@ -115,6 +127,7 @@ function CustomerAllUsers() {
                   <ThComponent name="Weight" />
                   <ThComponent name="Mobile Number" />
                   <ThComponent name="Type" />
+                  <ThComponent name="Patient Created At" />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -138,7 +151,7 @@ function CustomerAllUsers() {
                             val.creator === "franchise"
                               ? "border-l-4 border-red-300  hover:bg-gray-200 "
                               : " hover:bg-gray-200"
-                          }` }
+                          }`}
                         >
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <div className="flex items-center text-lg">
@@ -160,17 +173,20 @@ function CustomerAllUsers() {
                             <TdComponent things={val.personal_detail?.age} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <TdComponent things={val.personal_detail?.weight + "kg"} />
+                            <TdComponent
+                              things={val.personal_detail?.weight + "kg"}
+                            />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
-                              things={
-                                val.follow_up? "Follow Up" : "New Case"
-                              }
+                              things={val.follow_up ? "Follow Up" : "New Case"}
                             />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={convertDate(val.created_at)} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent

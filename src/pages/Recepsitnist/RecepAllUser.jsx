@@ -51,6 +51,18 @@ function RecepAllUsers() {
       });
   };
 
+  const convertDate = (date) => {
+    const dateObj = new Date(date);
+
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = dateObj.getFullYear();
+
+    const formattedDate = `${day}-${month}-${year}`;
+
+    return formattedDate;
+  };
+
   const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, "0");
@@ -58,15 +70,6 @@ function RecepAllUsers() {
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
   };
-
-  function formatTime(dateTimeString) {
-    const date = new Date(dateTimeString);
-    return date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  }
 
   useEffect(() => {
     handleGetAllUsers();
@@ -124,6 +127,7 @@ function RecepAllUsers() {
                   <ThComponent name="Weight" />
                   <ThComponent name="Mobile Number" />
                   <ThComponent name="Type" />
+                  <ThComponent name="Patient Created At" />
                   <ThComponent name="Doctor Name" />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -185,6 +189,9 @@ function RecepAllUsers() {
                               things={val.follow_up ? "Follow Up" : "New Case"}
                             />
                           </td>{" "}
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={convertDate(val.created_at)} />
+                          </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <div className="text-black font-medium ml-1 text-wrap text-base">
                               {val?.creator === "franchise"

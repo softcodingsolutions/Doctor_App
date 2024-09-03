@@ -48,6 +48,18 @@ function FranchiseAllCustomers() {
     setSearchTerm(value);
   };
 
+  const convertDate = (date) => {
+    const dateObj = new Date(date);
+
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = dateObj.getFullYear();
+
+    const formattedDate = `${day}-${month}-${year}`;
+
+    return formattedDate;
+  };
+
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
@@ -105,7 +117,7 @@ function FranchiseAllCustomers() {
                   <ThComponent name="Age" />
                   <ThComponent name="Mobile" />
                   <ThComponent name="City" />
-                  <ThComponent />
+                  <ThComponent name="Patient Created At" />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -156,6 +168,9 @@ function FranchiseAllCustomers() {
                                 val.personal_detail?.city?.slice(1)
                               }
                             />
+                          </td>
+                          <td className="py-3 px-4 border-b border-b-gray-50">
+                            <TdComponent things={convertDate(val.created_at)} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
