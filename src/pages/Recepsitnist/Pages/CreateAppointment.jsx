@@ -11,6 +11,7 @@ export default function CreateAppointment() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [name, setName] = useState("");
+  const [lastName,setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
@@ -45,6 +46,7 @@ export default function CreateAppointment() {
       setNewCase(false);
       setOldCase(false);
       setName("");
+      setLastName("");
       setMobileNumber("");
       setEmail("");
       setUserId("");
@@ -65,6 +67,7 @@ export default function CreateAppointment() {
       setNewCase(true);
     }
     setName(user?.first_name);
+    setLastName(user?.last_name);
     setMobileNumber(user?.phone_number);
     setEmail(user?.email);
     setUserId(user?.personal_detail?.user_id);
@@ -173,6 +176,7 @@ export default function CreateAppointment() {
                       name={name}
                       number={mobileNumber}
                       email={email}
+                      lastName={lastName}
                     />
                   )}
                   {newCase && userId && (
@@ -182,6 +186,7 @@ export default function CreateAppointment() {
                       number={mobileNumber}
                       email={email}
                       user={userId}
+                      lastName={lastName}
                     />
                   )}
                 </div>

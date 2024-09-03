@@ -57,32 +57,7 @@ export default function Home() {
     });
   }
 
-  function formatTime2(timeString, is24Hour = false) {
-    if (!timeString) return "Invalid Time";
-
-    let date;
-
-    // Check if the time is in ISO format or just a time string
-    if (timeString.includes("T")) {
-      date = new Date(timeString); // ISO format
-    } else {
-      // Assuming timeString is in "HH:MM:SS" format
-      const [hours, minutes, seconds] = timeString.split(":");
-      date = new Date();
-      date.setHours(hours, minutes, seconds);
-    }
-
-    if (isNaN(date.getTime())) {
-      console.error("Invalid time format:", timeString);
-      return "Invalid Time";
-    }
-
-    return date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: !is24Hour,
-    });
-  }
+  
 
   const formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };

@@ -11,6 +11,7 @@ export default function Oldcase(props) {
             name={props.name}
             number={props.number}
             email={props.email}
+            lastName={props.lastName}
           />
         </div>
       </form>

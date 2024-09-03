@@ -142,7 +142,7 @@ function RecepAllUsers() {
                   getParticularCustomer.map((val) => {
                     return (
                       val.role === "patient" && (
-                        <tr key={val.id}>
+                        <tr key={val.id} className=" hover:bg-gray-200">
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <td className="py-2 px-4 border-b border-b-gray-50">
                               <div className="flex items-center text-lg">

@@ -105,7 +105,7 @@ function CustomerAllUsers() {
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
-                <tr className="bg-[#1F2937] text-white rounded-md">
+                <tr className="bg-[#1F2937] text-white rounded-md ">
                   <ThComponent
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="Case No."
@@ -136,9 +136,9 @@ function CustomerAllUsers() {
                           key={val.id}
                           className={`${
                             val.creator === "franchise"
-                              ? "border-l-4 border-red-300"
-                              : ""
-                          }`}
+                              ? "border-l-4 border-red-300  hover:bg-gray-200 "
+                              : " hover:bg-gray-200"
+                          }` }
                         >
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <div className="flex items-center text-lg">
