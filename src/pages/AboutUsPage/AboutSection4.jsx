@@ -9,7 +9,7 @@ function AboutSection4({ scrollYProgress }) {
       className="sticky top-0 h-[100vh] w-full bg-teal-100 flex flex-col items-center text-pretty"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-teachers font-medium mt-8">
+        <div className="text-4xl font-sans font-medium mt-8">
           Why Choose{" "}
           <span className="text-green-700 font-semibold">Slim and Smile</span>{" "}
           Ayu Care?

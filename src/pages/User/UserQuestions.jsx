@@ -125,13 +125,13 @@ function UserQuestions() {
   }
 
   return (
-    <div className="flex w-full px-3 py-2 items-center font-teachers">
+    <div className="flex w-full px-3 py-2 items-center font-sans">
       <div className=" h-full flex-grow overflow-auto flex flex-wrap content-start">
         <Stepper sx={{ width: "100%", height: "7%" }}>
           {steps.map((step, index) => (
             <Step
               key={step}
-              className="font-teachers"
+              className="font-sans"
               orientation="vertical"
               indicator={
                 <StepIndicator

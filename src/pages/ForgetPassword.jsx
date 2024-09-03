@@ -45,7 +45,7 @@ function ForgetPassword() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen font-teachers">
+    <div className="flex flex-col items-center justify-center h-screen font-sans">
       <Card className="w-96">
         <form onSubmit={handleSubmit(submittedData)} method="post">
           <CardBody className="flex flex-col gap-4">
@@ -55,7 +55,7 @@ function ForgetPassword() {
             <Typography
               variant="lg"
               color="blue-gray"
-              className="ml-1 text-center text-xl font-teachers"
+              className="ml-1 text-center text-xl font-sans"
             >
               Forget Password?
             </Typography>
@@ -74,7 +74,7 @@ function ForgetPassword() {
               type="submit"
               variant="gradient"
               fullWidth
-              className="font-teachers"
+              className="font-sans"
             >
               Send
             </Button>

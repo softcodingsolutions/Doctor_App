@@ -115,7 +115,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
             onClick={() => setSelected(i.id)}
           >
             {i.icons}
-            <div className="block sm:hidden xl:block ml-2 font-teachers">
+            <div className="block sm:hidden xl:block ml-2 font-sans">
               {i.title}
             </div>
             <div className="block sm:hidden xl:block flex-grow " />

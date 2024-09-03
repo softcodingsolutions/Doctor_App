@@ -36,7 +36,7 @@ function Section5({ scrollYProgress }) {
       className="sticky top-0 h-screen bg-teal-50 flex flex-col items-center py-7"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-teachers font-medium mt-8">
+        <div className="text-4xl font-sans font-medium mt-8">
           Special Treatments for Obesity
         </div>
         <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />

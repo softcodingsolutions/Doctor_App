@@ -24,7 +24,7 @@ function WeightLoss6({ scrollYProgress }) {
         <Typography
           variant="h7"
           color="blue-gray"
-          className="leading-relaxed font-teachers"
+          className="leading-relaxed font-sans"
         >
           {details}
         </Typography>
@@ -71,10 +71,10 @@ function WeightLoss6({ scrollYProgress }) {
       className="sticky top-0 h-screen bg-deep-orange-50 flex flex-col items-center py-2"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-teachers font-medium mt-8">
+        <div className="text-4xl font-sans font-medium mt-8">
           Our results speak for themselves:
         </div>
-        <div className="text-lg font-teachers mt-1.5">
+        <div className="text-lg font-sans mt-1.5">
           We have successfully treated over 10,000 obese patients in the past 20
           years
         </div>

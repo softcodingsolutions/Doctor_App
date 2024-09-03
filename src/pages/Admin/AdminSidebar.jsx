@@ -12,7 +12,7 @@ import { AiFillDatabase } from "react-icons/ai";
 import img from "../../assets/images/icons_slime.png";
 import { CiViewList } from "react-icons/ci";
 
-function AdminSidebar({ onSidebarHide, showSidebar, admin}) {
+function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
@@ -117,7 +117,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin}) {
   return (
     <div
       className={clsx(
-        "fixed inset-y-0 left-0 bg-card font-teachers w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-[#1F2937] text-gray-100",
+        "fixed inset-y-0 left-0 bg-card font-sans w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-[#1F2937] text-gray-100",
         showSidebar ? "flex" : "hidden"
       )}
     >
@@ -199,8 +199,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin}) {
                     localStorage.removeItem("doctor_id");
                   }}
                 >
-                  <div className="font-teachers">{res.icons}</div>
-                  <div className="font-teachers"> {res.title}</div>
+                  <div className="font-sans">{res.icons}</div>
+                  <div className="font-sans"> {res.title}</div>
                 </Link>
               </Option>
             ))}
@@ -224,8 +224,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin}) {
                   className={"w-full flex items-center space-x-2"}
                   onClick={() => setSelected(res.title)}
                 >
-                  <div className="font-teachers">{res.icons}</div>
-                  <div className="font-teachers">{res.title}</div>
+                  <div className="font-sans">{res.icons}</div>
+                  <div className="font-sans">{res.title}</div>
                 </Link>
               </Option>
             ))}

@@ -33,7 +33,7 @@ function ContactUs() {
       </header>
       <main
         ref={container}
-        className="relative max-h-[310vh] overflow-x-clip bg-white font-teachers"
+        className="relative max-h-[310vh] overflow-x-clip bg-white font-sans"
       >
         <ContactUs1 scrollYProgress={scrollYProgress} />
         <ContactUs2 scrollYProgress={scrollYProgress} />

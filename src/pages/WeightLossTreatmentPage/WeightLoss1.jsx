@@ -12,7 +12,7 @@ function WeightLoss1({ scrollYProgress }) {
         {/* Breadcrumb Navigation */}
         <div className=" w-fit">
           <div
-            className="text-xl flex items-center gap-1.5 font-teachers
+            className="text-xl flex items-center gap-1.5 font-sans
            font-semibold text-green-500"
           >
             <a href="/" className=" hover:underline">
@@ -34,7 +34,7 @@ function WeightLoss1({ scrollYProgress }) {
           <span className="text-green-600 font-semibold">Slim and Smile</span>{" "}
           Ayu Care.
         </div>
-        <div className="text-black font-teachers text-balance tracking-wider text-lg text-center p-8 rounded-lg">
+        <div className="text-black font-sans text-balance tracking-wider text-lg text-center p-8 rounded-lg">
           When you lose weight, it could be due to water loss or muscle loss in
           your body, especially if you eat too little or engage in excessive
           exercise. Such weight loss can be harmful to your health. It is

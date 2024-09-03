@@ -132,7 +132,7 @@ function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen font-teachers">
+    <div className="flex flex-col items-center justify-center h-screen font-sans">
       <div className="border px-10 py-5 rounded-sm shadow-sm">
         <Card className="w-96 h-fit py-2">
           <form onSubmit={handleSubmit(submittedData)} method="post">
@@ -185,7 +185,7 @@ function LoginPage() {
                 <Typography variant="small" color="light">
                   <Link
                     to="/forget-password"
-                    className="font-teachers text-base hover:underline"
+                    className="font-sans text-base hover:underline"
                   >
                     Forget Password
                   </Link>
@@ -193,7 +193,7 @@ function LoginPage() {
               </div>
               <Button
                 type="submit"
-                className="font-teachers text-sm"
+                className="font-sans text-sm"
                 variant="gradient"
                 fullWidth
               >
@@ -204,7 +204,7 @@ function LoginPage() {
           <CardFooter className="pt-0">
             <Typography
               variant="small"
-              className="flex justify-center text-base font-teachers"
+              className="flex justify-center text-base font-sans"
             >
               Don&apos;t have an account?
               <Typography
@@ -212,7 +212,7 @@ function LoginPage() {
                 color="blue-gray"
                 className="ml-1 font-bold hover:scale-105"
               >
-                <Link to="/signup" className="text-base font-teachers">
+                <Link to="/signup" className="text-base font-sans">
                   Sign Up
                 </Link>
               </Typography>

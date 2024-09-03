@@ -33,10 +33,7 @@ function AboutUs() {
       <header>
         <StickyNavbar />
       </header>
-      <main
-        ref={container}
-        className="relative h-[500vh] bg-white font-teachers"
-      >
+      <main ref={container} className="relative h-[500vh] bg-white font-sans">
         <AboutSection1 scrollYProgress={scrollYProgress} />
         <AboutSection2 scrollYProgress={scrollYProgress} />
         <AboutSection3 scrollYProgress={scrollYProgress} />

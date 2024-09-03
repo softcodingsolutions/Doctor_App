@@ -110,7 +110,7 @@ function UserChooseDoctor() {
                 <Typography
                   variant="h4"
                   color="blue-gray"
-                  className="mb-2 font-teachers"
+                  className="mb-2 font-sans"
                 >
                   {val.first_name[0]?.toUpperCase() +
                     val.first_name?.slice(1) +
@@ -120,7 +120,7 @@ function UserChooseDoctor() {
                 </Typography>
                 <Typography
                   color="blue-gray"
-                  className="font-medium font-teachers"
+                  className="font-medium font-sans"
                   textGradient
                 >
                   {staticDoctors[index].specialist}
@@ -129,7 +129,7 @@ function UserChooseDoctor() {
               <CardFooter className="flex items-center w-full justify-center pt-0">
                 <Button
                   onClick={() => handleGetDoctorId(val.id, val.first_name)}
-                  className="w-full font-teachers"
+                  className="w-full font-sans"
                   variant="soft"
                   size="sm"
                 >

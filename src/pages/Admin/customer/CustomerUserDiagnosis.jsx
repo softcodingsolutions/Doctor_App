@@ -76,7 +76,7 @@ function CustomerUserDiagnosis() {
 
   return (
     <>
-      <div className="mx-2 w-full bg-white rounded-md px-2 py-2 flex items-center gap-1.5 font-teachers overflow-x-auto">
+      <div className="mx-2 w-full bg-white rounded-md px-2 py-2 flex items-center gap-1.5 font-sans overflow-x-auto">
         {getCustomer.personal_detail?.gender === "male" ? (
           <img src={male} alt="img" className="size-24 ml-2" />
         ) : (
@@ -232,9 +232,7 @@ function CustomerUserDiagnosis() {
                   key={res.id}
                   className={clsx(
                     "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
-                    pathname === res.to
-                      ? "bg-[#1F2937] text-white"
-                      : "bg-white"
+                    pathname === res.to ? "bg-[#1F2937] text-white" : "bg-white"
                   )}
                 >
                   {res.icons}

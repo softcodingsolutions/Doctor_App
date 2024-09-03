@@ -149,7 +149,7 @@ function FranchiseNewcustomer() {
             <Step
               key={step}
               orientation="vertical"
-              className="font-teachers"
+              className="font-sans"
               indicator={
                 <StepIndicator
                   variant={currentStep <= index ? "outlined" : "solid"}

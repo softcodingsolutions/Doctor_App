@@ -35,7 +35,7 @@ function HairAndBeauty() {
       </header>
       <main
         ref={container}
-        className="relative max-h-[500vh] overflow-x-clip bg-white font-teachers"
+        className="relative max-h-[500vh] overflow-x-clip bg-white font-sans"
       >
         <HairAndBeauty1 scrollYProgress={scrollYProgress} />
         <HairAndBeauty2 scrollYProgress={scrollYProgress} />

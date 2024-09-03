@@ -27,7 +27,7 @@ function Section1({ scrollYProgress }) {
         >
           {text1} <span className="text-green-500">{text2}</span>
         </div>
-        <div key={`${key}-2`} className="font-teachers space-y-2">
+        <div key={`${key}-2`} className="font-sans space-y-2">
           <div className="text-4xl font-semibold animate-fade-down animate-once animate-ease-out animate-normal animate-delay-500">
             {text3}
           </div>

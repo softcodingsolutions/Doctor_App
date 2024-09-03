@@ -60,7 +60,7 @@ function SignUpPage() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-slate-200 h-screen font-teachers">
+    <div className="flex justify-center items-center bg-slate-200 h-screen font-sans">
       <div className=" rounded-sm shadow-sm">
         <Card className="w-96">
           <form onSubmit={handleSubmit(submittedData)} method="post">
@@ -142,7 +142,7 @@ function SignUpPage() {
                 type="submit"
                 variant="gradient"
                 fullWidth
-                className="font-teachers"
+                className="font-sans"
               >
                 Sign Up
               </Button>
@@ -151,7 +151,7 @@ function SignUpPage() {
           <CardFooter className="-mt-6">
             <Typography
               variant="small"
-              className="flex justify-center text-base font-teachers"
+              className="flex justify-center text-base font-sans"
             >
               Already have an account?
               <Typography
@@ -159,7 +159,7 @@ function SignUpPage() {
                 color="blue-gray"
                 className="ml-1 font-bold hover:scale-105"
               >
-                <Link to="/login" className="text-base font-teachers">
+                <Link to="/login" className="text-base font-sans">
                   Sign In
                 </Link>
               </Typography>

@@ -35,10 +35,7 @@ function WeightLossPage() {
       <header>
         <StickyNavbar />
       </header>
-      <main
-        ref={container}
-        className="relative h-[700vh] bg-white font-teachers"
-      >
+      <main ref={container} className="relative h-[700vh] bg-white font-sans">
         <WeightLoss1 scrollYProgress={scrollYProgress} />
         <WeightLoss2 scrollYProgress={scrollYProgress} />
         <WeightLoss3 scrollYProgress={scrollYProgress} />

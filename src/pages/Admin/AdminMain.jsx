@@ -55,7 +55,7 @@ function AdminMain() {
   }
 
   return (
-    <div className="flex font-teachers">
+    <div className="flex font-sans">
       <AdminSidebar
         admin={admin}
         onSidebarHide={() => {

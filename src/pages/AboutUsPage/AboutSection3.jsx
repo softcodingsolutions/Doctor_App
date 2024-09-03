@@ -9,7 +9,7 @@ function AboutSection3({ scrollYProgress }) {
       className="sticky top-0 h-[100vh] w-full bg-orange-100 flex flex-col items-center"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-teachers font-medium mt-8">
+        <div className="text-4xl font-sans font-medium mt-8">
           Some of the most common weight gaining reasons are:
         </div>
         <div className="border-[2.5px] rounded-md border-orange-300 w-20 mt-3" />

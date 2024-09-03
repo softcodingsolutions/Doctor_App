@@ -54,7 +54,7 @@ function UserDiagnosis() {
   }
 
   return (
-    <div className="flex w-full font-teachers">
+    <div className="flex w-full font-sans">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
@@ -72,7 +72,7 @@ function UserDiagnosis() {
           </button>
         </div>
         <>
-          <div className="mx-2 w-full bg-white rounded-md px-2 py-2 flex items-center gap-1.5 font-teachers overflow-x-auto">
+          <div className="mx-2 w-full bg-white rounded-md px-2 py-2 flex items-center gap-1.5 font-sans overflow-x-auto">
             {getCustomer.personal_detail?.gender === "male" ? (
               <img src={male} alt="img" className="size-24 ml-2" />
             ) : (
@@ -245,7 +245,7 @@ function UserDiagnosis() {
                       )}
                     >
                       {res.icons}
-                      <span className="ml-1.5 font-teachers">{res.name}</span>
+                      <span className="ml-1.5 font-sans">{res.name}</span>
                     </Link>
                   );
                 })}

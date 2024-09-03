@@ -103,7 +103,7 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="flex w-full font-teachers">
+    <div className="flex w-full font-sans">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>

@@ -77,7 +77,7 @@ function Section6({ scrollYProgress }) {
             <ScrollToTopLink to="/">
               <img src={icons_slime} className="w-72" />
             </ScrollToTopLink>
-            <div className="font-teachers text-lg text-balance tracking-wide font-light w-1/2">
+            <div className="font-sans text-lg text-balance tracking-wide font-light w-1/2">
               <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
               Ayu Care offers unique weight loss solutions which are in turn
               backed 100% by age old, tried and tested Ayurvedic principles.
@@ -90,7 +90,7 @@ function Section6({ scrollYProgress }) {
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="mb-3 font-semibold opacity-80 font-teachers text-lg"
+                    className="mb-3 font-semibold opacity-80 font-sans text-lg"
                   >
                     {title}
                   </Typography>
@@ -99,7 +99,7 @@ function Section6({ scrollYProgress }) {
                       <Typography
                         as="a"
                         color="gray"
-                        className="py-1.5 font-teachers transition-colors hover:text-black cursor-default"
+                        className="py-1.5 font-sans transition-colors hover:text-black cursor-default"
                       >
                         {item.text}
                       </Typography>
@@ -111,7 +111,7 @@ function Section6({ scrollYProgress }) {
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="mb-3 font-semibold opacity-80 font-teachers text-lg"
+                    className="mb-3 font-semibold opacity-80 font-sans text-lg"
                   >
                     {title}
                   </Typography>
@@ -124,7 +124,7 @@ function Section6({ scrollYProgress }) {
                       <Typography
                         as="a"
                         color="gray"
-                        className="py-1.5 font-teachers transition-colors hover:text-black"
+                        className="py-1.5 font-sans transition-colors hover:text-black"
                       >
                         {item.text}
                       </Typography>
@@ -137,7 +137,7 @@ function Section6({ scrollYProgress }) {
           <div className="mt-12 flex w-full text-center items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
             <Typography
               variant="small"
-              className="mb-4 text-center w-full font-normal font-teachers text-base text-blue-gray-900 md:mb-0 "
+              className="mb-4 text-center w-full font-normal font-sans text-base text-blue-gray-900 md:mb-0 "
             >
               &copy; {currentYear}{" "}
               <ScrollToTopLink to="/" className="font-semibold">
