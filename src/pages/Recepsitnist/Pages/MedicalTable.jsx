@@ -77,7 +77,7 @@ export default function MedicalTable({ data, refreshData }) {
       </thead>
       <tbody>
         {data.map((item, index) => (
-          <tr key={index}>
+          <tr key={index} className=" hover:bg-gray-200">
             {editingId === item.id ? (
               <>
                 <td className="py-2 px-4 border-b border-b-gray-50">

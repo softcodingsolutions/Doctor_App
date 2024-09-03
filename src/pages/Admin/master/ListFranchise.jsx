@@ -306,8 +306,8 @@ function ListFranchise() {
                           <tr
                             className={`${
                               val.possibility_group
-                                ? "border-l-4 border-red-300"
-                                : ""
+                                ? "border-l-4 border-red-300  hover:bg-gray-200"
+                                : "hover:bg-gray-200"
                             }`}
                             key={val.id}
                           >

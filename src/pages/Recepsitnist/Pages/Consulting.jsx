@@ -99,7 +99,7 @@ export default function Consulting(props) {
               <input
                 type="text"
                 className="py-1 px-2  border-black w-[40vh]"
-                value={props.name}
+                value={`${props.name} ${props.lastName}`}
               />
             </div>
             <div className="flex gap-5 m-2">

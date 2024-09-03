@@ -70,8 +70,16 @@ function AdminDashboard() {
       });
   };
 
-  function formatTime(dateTimeString) {
-    const date = new Date(`1970-01-01T${dateTimeString}:00`);
+  function formatTime(isoString) {
+    if (!isoString) return "Invalid Time";
+
+    const date = new Date(isoString);
+
+    if (isNaN(date.getTime())) {
+      console.error("Invalid time format:", isoString);
+      return "Invalid Time";
+    }
+
     return date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
@@ -167,7 +175,7 @@ function AdminDashboard() {
                     getAppointments.map((res) => (
                       <div
                         key={res.id}
-                        className="flex items-center gap-3.5 border border-gray-200 min-h-24 shadow-inner rounded-md p-3"
+                        className="flex  hover:bg-gray-200 items-center gap-3.5 border border-gray-200 min-h-24 shadow-inner rounded-md p-3"
                       >
                         <img
                           src={res.user?.gender === "male" ? male : female}
@@ -175,7 +183,7 @@ function AdminDashboard() {
                           className="size-16 mr-2"
                         />
 
-                        <div className=" w-[16rem]">
+                        <div className=" w-[16rem]  ">
                           <div className="flex">
                             <div className=" text-right break-words font-medium">
                               Case Number:
@@ -239,7 +247,11 @@ function AdminDashboard() {
                             <div className=" text-right break-words font-medium">
                               Time:
                             </div>
-                            <div className="pl-2">{formatTime(res.time)}</div>
+                            <div className="pl-2">
+                              {res.machine_detail?.name
+                                ? res.time
+                                : formatTime(res.time)}
+                            </div>
                           </div>
                           <div className="flex items-center">
                             <div className=" text-right break-words font-medium">

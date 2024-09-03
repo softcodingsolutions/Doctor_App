@@ -274,7 +274,7 @@ export default function RoleAssign() {
                       doctor.role !== "patient" && doctor.role !== "super_admin"
                   )
                   .map((doctor) => (
-                    <tr key={doctor.id}>
+                    <tr key={doctor.id} className=" hover:bg-gray-200">
                       <td className="py-3 px-4 border-b border-b-gray-50">
                         <span className="text-black text-base font-medium ml-1">
                           {doctor.first_name[0]?.toUpperCase() +

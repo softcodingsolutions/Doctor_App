@@ -298,7 +298,7 @@ export default function MachineDetails() {
                   </tr>
                 ) : (
                   machines.map((machine, index) => (
-                    <tr key={index} className="map">
+                    <tr key={index} className="map  hover:bg-gray-200">
                       {editIndex === index ? (
                         <>
                           <td className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
