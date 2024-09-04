@@ -495,7 +495,7 @@ export default function Indooractivity() {
                   </div>
                   <div className="mt-4">
                     <label className="block text-md font-medium ">
-                      Doctor : {dialogData.doctorName}
+                      Doctor : Dr. {dialogData.doctorName}
                     </label>
                   </div>
                   <div className="mt-4">
@@ -629,7 +629,7 @@ export default function Indooractivity() {
                       </label>
                       <input
                         type="text"
-                        value={dialogData.doctorName}
+                        value={`Dr. ${dialogData.doctorName}`}
                         readOnly
                         className="py-1 px-2 w-full"
                       />
