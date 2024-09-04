@@ -472,7 +472,7 @@ export default function Indooractivity() {
               />
               <div className="fixed inset-0 flex items-center justify-center p-4">
                 <div className="bg-white rounded p-6 max-w-sm w-full">
-                  <h3 className="text-lg font-semibold">Patient Details</h3>
+                  <h3 className="text-lg font-bold">Patient Details</h3>
                   <div className="mt-4">
                     <label className="block text-md font-medium ">
                       Name : {` ${dialogData.name} ${dialogData.last_name} `}
@@ -509,7 +509,7 @@ export default function Indooractivity() {
                       className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-700 shadow-sm hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       title="Cancel Appointment"
                     >
-                      Cancel the Appointment
+                      Cancel Appointment
                     </button>
 
                     <button

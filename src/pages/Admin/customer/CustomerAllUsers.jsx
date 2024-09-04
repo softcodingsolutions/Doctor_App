@@ -93,9 +93,9 @@ function CustomerAllUsers() {
             />
             <button
               onClick={handleAddUsers}
-              className="border border-gray-300 text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
+              className="border border-gray-300 w-[20%] text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
             >
-              Add New
+               New Patient
             </button>
           </div>
           <div className="flex items-center justify-end gap-2">

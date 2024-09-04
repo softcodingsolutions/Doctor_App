@@ -11,7 +11,7 @@ export default function CreateAppointment() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [name, setName] = useState("");
-  const [lastName,setLastName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
@@ -91,7 +91,7 @@ export default function CreateAppointment() {
           <div className="text-xl font-semibold text-center mb-4">
             Create Consulting Appointment
           </div>
-          <div className="flex flex-row w-full justify-center gap-5 mb-4">
+          {/* <div className="flex flex-row w-full justify-center gap-5 mb-4">
             <button
               className={`w-[30%] border cursor-pointer font-semibold ${
                 newCase ? "bg-[#1F2937]" : "bg-white"
@@ -106,7 +106,7 @@ export default function CreateAppointment() {
             >
               Follow Up (Old Case)
             </button>
-          </div>
+          </div> */}
           <div className="flex gap-3 p-2 items-center">
             <label className="font-medium text-lg">Search:</label>
             <input
@@ -165,31 +165,36 @@ export default function CreateAppointment() {
                     </div>
                   )}
                 </div>
-                <div className="flex gap-5 justify-center">
-                  
-                  {oldCase && userId && (
-                    <Oldcase
-                      doctor={doctorList}
-                      user={userId}
-                      machine={machineList}
-                      machineTime={machineConsultingTime}
-                      name={name}
-                      number={mobileNumber}
-                      email={email}
-                      lastName={lastName}
-                    />
-                  )}
-                  {newCase && userId && (
-                    <Newcase
-                      doctor={doctorList}
-                      name={name}
-                      number={mobileNumber}
-                      email={email}
-                      user={userId}
-                      lastName={lastName}
-                    />
-                  )}
-                </div>
+                {doctorList ? (
+                  <div className="flex gap-5 justify-center">
+                    {oldCase && userId && (
+                      <Oldcase
+                        doctor={doctorList}
+                        user={userId}
+                        machine={machineList}
+                        machineTime={machineConsultingTime}
+                        name={name}
+                        number={mobileNumber}
+                        email={email}
+                        lastName={lastName}
+                      />
+                    )}
+                    {newCase && userId && (
+                      <Newcase
+                        doctor={doctorList}
+                        name={name}
+                        number={mobileNumber}
+                        email={email}
+                        user={userId}
+                        lastName={lastName}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex justify-center">
+                    <label className="text-xl bg-white rounded-md p-2 font-semibold text-center">Create Consulting Time Appointment</label>
+                  </div>
+                )}
               </form>
             )}
           </div>
