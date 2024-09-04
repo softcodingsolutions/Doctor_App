@@ -13,13 +13,27 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [machineOpen, setMachineOpen] = useState(false);
   const [consultingOpen, setConsultingOpen] = useState(true);
+  const [isToday, setIsToday] = useState(true);
+
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
   };
 
   const handleConsulting = (e) => {
-    console.log(e.target.value);
-    setConsultingTime(e.target.value);
+    const selectedDate = e.target.value;
+    setConsultingTime(selectedDate);
+
+    const today = new Date().toISOString().split("T")[0];
+
+    if (selectedDate !== today) {
+      setIsToday(false);
+      setConsultingTimes([]);
+      setMachineConsultingTimes([]);
+      setLoading(false); // To stop any loading indicator
+    } else {
+      setIsToday(true);
+      handleAppointment(); // Fetch today's appointments
+    }
   };
 
   const handleAppointment = () => {
@@ -56,8 +70,6 @@ export default function Home() {
       hour12: true,
     });
   }
-
-  
 
   const formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -102,8 +114,13 @@ export default function Home() {
           <div className="flex gap-5 items-center p-2 w-full">
             <div className="flex flex-col">
               <div>
-                <label className="flex  text-xl  font-bold p-3 tracking-wide">Today's Appointments</label>
+                {isToday && (
+                  <label className="flex text-xl font-bold p-3 tracking-wide">
+                    Today's Appointments
+                  </label>
+                )}
               </div>
+
               <div className="flex">
                 <select
                   onChange={handleDoctorList}

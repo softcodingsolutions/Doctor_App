@@ -15,24 +15,12 @@ function CustomerAllUsers() {
   const [loading, setLoading] = useState(true);
 
   const handleGetAllUsers = () => {
-    if (role === "super_admin") {
-      axios.get(`/api/v1/users`).then((res) => {
-        const patients = res.data?.users?.filter(
-          (user) => user.role === "patient"
-        );
-        console.log("Patients by Super Admin: ", patients);
-        setGetCustomers(patients);
-        setGetParticularCustomer(patients);
-        setLoading(false);
-      });
-    } else if (role === "doctor") {
-      axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
-        console.log("Patients by Doctor: ", res.data?.users);
-        setGetCustomers(res.data?.users);
-        setGetParticularCustomer(res.data?.users);
-        setLoading(false);
-      });
-    }
+    axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
+      console.log("Patients by Doctor: ", res.data?.users);
+      setGetCustomers(res.data?.users);
+      setGetParticularCustomer(res.data?.users);
+      setLoading(false);
+    });
   };
 
   const handleDiagnosis = (val) => {
@@ -105,9 +93,9 @@ function CustomerAllUsers() {
             />
             <button
               onClick={handleAddUsers}
-              className="border border-gray-300 text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
+              className="border border-gray-300 w-[20%] text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
             >
-              Add New
+               New Patient
             </button>
           </div>
           <div className="flex items-center justify-end gap-2">

@@ -177,7 +177,7 @@ function CustomerGeneralDetails({
                       name="mobile"
                       type="number"
                       label="Phone Number"
-                      placeholder="phone number"
+                      placeholder="XXXXXXXXXX"
                       hook={register("mobile", {
                         required: true,
                       })}

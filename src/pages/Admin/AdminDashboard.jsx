@@ -4,6 +4,7 @@ import axios from "axios";
 import InsideLoader from "../InsideLoader";
 import male from "../../assets/images/male.avif";
 import female from "../../assets/images/female.avif";
+import { BsFillTelephoneFill } from "react-icons/bs";
 
 function AdminDashboard() {
   const context = useOutletContext();
@@ -175,7 +176,7 @@ function AdminDashboard() {
                     getAppointments.map((res) => (
                       <div
                         key={res.id}
-                        className="flex  hover:bg-gray-200 items-center gap-3.5 border border-gray-200 min-h-24 shadow-inner rounded-md p-3"
+                        className="flex text-md hover:bg-gray-200 items-center gap-3.5 border border-gray-200 min-h-24 shadow-inner rounded-md p-3"
                       >
                         <img
                           src={res.user?.gender === "male" ? male : female}
@@ -184,7 +185,7 @@ function AdminDashboard() {
                         />
 
                         <div className=" w-[16rem]  ">
-                          <div className="flex">
+                          <div className="flex w-80 ">
                             <div className=" text-right break-words font-medium">
                               Case Number:
                             </div>
@@ -205,7 +206,7 @@ function AdminDashboard() {
                         </div>
 
                         <div className=" w-[12rem]">
-                          <div className="flex items-center">
+                          <div className="flex items-center ">
                             <div className=" text-right break-words font-medium">
                               Age:
                             </div>
@@ -224,9 +225,9 @@ function AdminDashboard() {
                         </div>
 
                         <div className=" w-[15rem]">
-                          <div className="flex items-center">
+                          <div className="flex items-center ">
                             <div className=" text-right break-words font-medium">
-                              Phone Number:
+                              <BsFillTelephoneFill />
                             </div>
                             <div className=" pl-2">
                               {res.user?.phone_number}
@@ -234,7 +235,7 @@ function AdminDashboard() {
                           </div>
                           <div className="flex items-center">
                             <div className=" text-right break-words font-medium">
-                              Patient Type:
+                              Type:
                             </div>
                             <div className="pl-2">
                               {res.user?.follow_up ? "Follow Up" : "New Case"}
@@ -253,14 +254,16 @@ function AdminDashboard() {
                                 : formatTime(res.time)}
                             </div>
                           </div>
-                          <div className="flex items-center">
-                            <div className=" text-right break-words font-medium">
-                              Machine Name:
+                          {res.machine_detail?.name && (
+                            <div className="flex items-center">
+                              <div className=" text-right break-words font-medium">
+                                Machine Name:
+                              </div>
+                              <div className=" pl-2">
+                                {res.machine_detail?.name}
+                              </div>
                             </div>
-                            <div className=" pl-2">
-                              {res.machine_detail?.name}
-                            </div>
-                          </div>
+                          )}
                         </div>
 
                         <button

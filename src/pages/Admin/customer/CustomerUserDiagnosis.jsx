@@ -6,6 +6,9 @@ import { reportButtons } from "../../../constants/admin/AdminConstants";
 import InsideLoader from "../../InsideLoader";
 import male from "../../../assets/images/male.avif";
 import female from "../../../assets/images/female.avif";
+import { BsFillTelephoneFill } from "react-icons/bs";
+import { MdEmail } from "react-icons/md";
+import { GiWeight } from "react-icons/gi";
 
 function CustomerUserDiagnosis() {
   const [selectedId, setSelectedId] = useState("2");
@@ -84,17 +87,17 @@ function CustomerUserDiagnosis() {
         )}
 
         <div className="flex flex-col gap-1.5 justify-center h-32 w-[16rem] text-balance">
-          <div className="flex">
-            <div className="text-right break-words font-medium">
+          <div className="flex w-80">
+            <div className="text-right break-words font-small text-md">
               Case Number:
             </div>
-            <div className=" pl-1.5">{getCustomer?.case_number}</div>
+            <div className=" pl-1.5 text-md">{getCustomer?.case_number}</div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium">
-              Patient Name:
+            <div className="text-right break-words font-medium text-md">
+              Name:
             </div>
-            <div className=" pl-1.5">
+            <div className=" pl-1.5 text-md">
               {getCustomer?.first_name?.[0]?.toUpperCase() +
                 getCustomer?.first_name?.slice(1) +
                 " " +
@@ -102,53 +105,64 @@ function CustomerUserDiagnosis() {
                 getCustomer?.last_name?.slice(1)}
             </div>
           </div>
-
           <div className="flex">
-            <div className="text-right break-words font-medium">
-              Phone Number:
+            <div className="text-right break-words font-medium mt-1">
+              <MdEmail />
             </div>
-            <div className=" pl-1.5">{getCustomer?.phone_number}</div>
+            <div className="pl-1.5 text-md">{getCustomer?.email}</div>
+          </div>
+          <div className="flex">
+            <div className="text-right  break-words font-medium mt-1">
+              <BsFillTelephoneFill />
+            </div>
+            <div className="ml-1 pl-1.5 text-md">
+              {getCustomer?.phone_number}
+            </div>
           </div>
         </div>
 
         <div className="flex flex-col gap-2 justify-center h-32 w-[16rem]">
-          <div className="flex">
-            <div className=" text-right break-words font-medium">Age:</div>
-            <div className="pl-1.5">{getCustomer?.personal_detail?.age}</div>
-          </div>
-          <div className="flex">
+          {/* <div className="flex">
             <div className="text-right break-words font-medium">Gender:</div>
             <div className="pl-1.5">
               {getCustomer?.personal_detail?.gender?.[0]?.toUpperCase() +
                 getCustomer?.personal_detail?.gender?.slice(1)}
             </div>
-          </div>
-          <div className="flex">
-            <div className="text-right break-words font-medium">Email:</div>
-            <div className="pl-1.5">{getCustomer?.email}</div>
-          </div>
-        </div>
+          </div> */}
 
-        <div className="flex flex-col gap-2 justify-center h-32 w-[16rem]">
           <div className="flex">
-            <div className="text-right break-words font-medium">Height:</div>
-            <div className="pl-1.5">
+            <div className=" text-right break-words font-medium text-md">
+              Age:
+            </div>
+            <div className="pl-1.5 text-md">
+              {getCustomer?.personal_detail?.age}
+            </div>
+          </div>
+          <div className="flex">
+            <div className="text-right break-words font-medium text-md">
+              Height:
+            </div>
+            <div className="pl-1.5 text-md">
               {getCustomer?.personal_detail?.height} cm
             </div>
           </div>
 
           <div className="flex">
-            <div className="text-right break-words font-medium">Weight:</div>
-            <div className="pl-1.5">
+            <div className="text-right break-words font-medium ">
+              <GiWeight size={22} />
+            </div>
+            <div className="pl-1.5 text-md">
               {getCustomer?.personal_detail?.weight} kgs
             </div>
           </div>
+        </div>
 
-          <div className="flex">
-            <div className="text-right break-words font-medium">
+        <div className="flex flex-col gap-2 justify-center h-32 w-[16rem]">
+          <div className="flex w-80">
+            <div className="text-right break-words font-medium text-md ">
               Created At:
             </div>
-            <div className="pl-1.5">
+            <div className="pl-1.5 text-md">
               {getCustomer?.personal_detail?.created_at
                 ?.slice(0, 10)
                 ?.split("-")
@@ -156,14 +170,11 @@ function CustomerUserDiagnosis() {
                 ?.join("-")}
             </div>
           </div>
-        </div>
-
-        <div className="flex flex-col gap-2 justify-center h-32 w-[16rem]">
           <div className="flex">
-            <div className="text-right break-words font-medium">
+            <div className="text-right break-words font-medium text-md">
               Starting Date:
             </div>
-            <div className="pl-1.5">
+            <div className="pl-1.5 text-md">
               {getCustomer?.user_packages?.[0]?.starting_date
                 ?.slice(0, 10)
                 ?.split("-")
@@ -173,10 +184,10 @@ function CustomerUserDiagnosis() {
           </div>
 
           <div className="flex">
-            <div className="text-right break-words font-medium">
+            <div className="text-right break-words font-medium text-md">
               Ending Date:
             </div>
-            <div className="pl-1.5">
+            <div className="pl-1.5 text-md">
               {getCustomer?.user_packages?.[0]?.ending_date
                 ?.slice(0, 10)
                 ?.split("-")
@@ -184,21 +195,20 @@ function CustomerUserDiagnosis() {
                 ?.join("-")}
             </div>
           </div>
-
-          <div className="flex">
-            <div className="text-right break-words font-medium">Package:</div>
-            <div className="pl-1.5">
-              {getCustomer?.user_packages?.[0]?.package_name ?? "Not Assigned"}
-            </div>
-          </div>
         </div>
 
         <div className="flex flex-col gap-2 justify-center h-28 w-[19rem]">
+          <div className="flex">
+            <div className="text-right break-words font-medium text-md">Package:</div>
+            <div className="pl-1.5 text-md">
+              {getCustomer?.user_packages?.[0]?.package_name ?? "Not Assigned"}
+            </div>
+          </div>
           <div className="flex ">
-            <div className="text-right break-words font-medium">
+            <div className="text-right break-words font-medium text-md">
               Treatment Package:
             </div>
-            <div className="pl-1.5">
+            <div className="pl-1.5 text-md">
               {getCustomer?.treatment_packages?.[0]?.treatment_package
                 ?.weight_reason
                 ? getCustomer?.treatment_packages?.[0]?.treatment_package
@@ -211,10 +221,10 @@ function CustomerUserDiagnosis() {
           </div>
 
           <div className="flex">
-            <div className="text-right break-words font-medium">
+            <div className="text-right break-words font-medium text-md">
               Registration Through:
             </div>
-            <div className="pl-1.5">
+            <div className="pl-1.5 text-md">
               {getCustomer[1]?.creator === "doctor" ? "Doctor" : "Franchise"}
             </div>
           </div>
