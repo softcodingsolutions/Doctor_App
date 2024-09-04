@@ -145,8 +145,8 @@ export default function BillHistory(props) {
                 </div>
                 <div className="bg-white shadow-md rounded-lg overflow-hidden">
                   {bills.map((bill) => (
-                    <div key={bill.id} className="mb-4">
-                      <div className="p-4 flex justify-between border-b">
+                    <div key={bill.id} className="mb-4 border border-gray-400 rounded-lg">
+                      <div className="p-4 flex justify-between ">
                         <div>
                           <div className="font-semibold">
                             Bill ID: {bill.id}
