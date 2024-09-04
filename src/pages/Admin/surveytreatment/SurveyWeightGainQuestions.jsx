@@ -116,7 +116,7 @@ function SurveyWeightGainQuestions() {
           position: "top-end",
           icon: "success",
           title: "Mapped!",
-          text: `Your questions have been mapped.`,
+          text: `Your questions has been mapped.`,
           showConfirmButton: false,
           timer: 1500,
         });

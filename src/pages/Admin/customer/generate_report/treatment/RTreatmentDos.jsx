@@ -88,7 +88,7 @@ function RTreatmentDos() {
     Swal.fire({
       icon: "Success",
       title: "Saved!",
-      text: "Your selected dos have been saved.",
+      text: "Your selected dos has been saved.",
     });
   };
 

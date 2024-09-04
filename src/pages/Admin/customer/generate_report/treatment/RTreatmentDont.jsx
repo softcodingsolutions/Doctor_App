@@ -88,7 +88,7 @@ function RTreatmentDont() {
     Swal.fire({
       icon: "Success",
       title: "Saved!",
-      text: "Your selected donts have been saved.",
+      text: "Your selected donts has been saved.",
     });
   };
 

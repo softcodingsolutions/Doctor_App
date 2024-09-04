@@ -152,7 +152,7 @@ function RTreatmentMedicine() {
     Swal.fire({
       icon: "Success",
       title: "Saved!",
-      text: "Your selected medicines have been saved.",
+      text: "Your selected medicines has been saved.",
     });
   };
 

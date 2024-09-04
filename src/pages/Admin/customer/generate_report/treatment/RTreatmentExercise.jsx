@@ -81,7 +81,7 @@ function RTreatmentExercise() {
     Swal.fire({
       icon: "Success",
       title: "Saved!",
-      text: "Your selected exercises have been saved.",
+      text: "Your selected exercises has been saved.",
     });
   };
 

@@ -84,7 +84,7 @@ function RTreatmentNutrition() {
     Swal.fire({
       icon: "Success",
       title: "Saved!",
-      text: "Your selected nutrition have been saved.",
+      text: "Your selected nutrition has been saved.",
     });
   };
 

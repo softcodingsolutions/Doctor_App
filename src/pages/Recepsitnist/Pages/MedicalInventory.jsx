@@ -7,13 +7,12 @@ import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Stack from "@mui/joy/Stack";
 import MedicalTable from "./MedicalTable";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 import InsideLoader from "../../InsideLoader";
 
 export default function MedicalInventory() {
   const context = useOutletContext();
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [inputQuantity, setInputQuantity] = useState("");
@@ -37,8 +36,6 @@ export default function MedicalInventory() {
         alert(err.response?.data?.message + "!");
       });
   };
-
-
 
   const handleQuantityChange = (e) => {
     setInputQuantity(e.target.value);

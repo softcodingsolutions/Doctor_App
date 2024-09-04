@@ -17,7 +17,13 @@ function ViewFranchiseDetails(props) {
     <>
       <Button
         variant="outlined"
-        sx={{ color: "#013f9d" }}
+        sx={{
+          color: "#013f9d",
+          "&:hover": {
+            backgroundColor: "#013f9d",
+            color: "#ffffff",
+          },
+        }}
         color="neutral"
         onClick={() => {
           setOpen(true);

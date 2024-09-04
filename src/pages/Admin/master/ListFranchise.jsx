@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import ViewFranchiseDetails from "../../../components/Admin/ViewFranchiseDetails";
 import InsideLoader from "../../InsideLoader";
 import { useOutletContext } from "react-router-dom";
+import { Option, Select } from "@mui/joy";
 
 function ListFranchise() {
   const context = useOutletContext();
@@ -15,11 +16,13 @@ function ListFranchise() {
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
   const [loading, setLoading] = useState(true);
+  const [getDoctors, setGetDoctors] = useState([]);
+  const [getDoctorId, setGetDoctorId] = useState("all");
   const [getFranchiseUsers, setGetFranchiseUsers] = useState([]);
 
   const handleAddFranchise = async (d) => {
-    console.log(d);
     setLoading(true);
+    console.log(d);
     if (role === "doctor") {
       await axios
         .get("/api/v1/users/app_creds")
@@ -62,7 +65,7 @@ function ListFranchise() {
         .catch((err) => {
           console.log(err);
           setLoading(false);
-          alert(err.response?.data?.message + "!");
+          alert(err.message);
         });
     } else {
       await axios
@@ -104,7 +107,7 @@ function ListFranchise() {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.response?.data?.message + "!");
+          alert(err.message);
         });
     }
   };
@@ -113,19 +116,42 @@ function ListFranchise() {
     axios
       .get("/api/v1/users/franchise_index")
       .then((res) => {
-        console.log(
-          "Doctor: ",
-          res.data?.users.filter((user) => user.created_by_id == main_id)
-        );
-        setGetFranchise(
-          res.data?.users.filter((user) => user.created_by_id == main_id)
-        );
-        setLoading(false);
+        if (role === "super_admin") {
+          if (getDoctorId) {
+            if (getDoctorId === "all") {
+              console.log(res.data?.users);
+              setLoading(false);
+              setGetFranchise(res.data?.users);
+            } else {
+              console.log(
+                "Particular Doctor: ",
+                res.data?.users.filter(
+                  (user) => user.created_by_id == getDoctorId
+                )
+              );
+              setLoading(false);
+              setGetFranchise(
+                res.data?.users.filter(
+                  (user) => user.created_by_id == getDoctorId
+                )
+              );
+            }
+          }
+        } else if (role === "doctor") {
+          console.log(
+            "Doctor: ",
+            res.data?.users.filter((user) => user.created_by_id == main_id)
+          );
+          setLoading(false);
+          setGetFranchise(
+            res.data?.users.filter((user) => user.created_by_id == main_id)
+          );
+        }
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
         setLoading(false);
+        console.log(err);
+        alert(err.message);
       });
   };
 
@@ -207,9 +233,28 @@ function ListFranchise() {
     });
   };
 
+  const handleGetDoctors = () => {
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        console.log(
+          "Doctors: ",
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+        setGetDoctors(
+          res.data?.users?.filter((user) => user.role === "doctor")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message);
+      });
+  };
+
   useEffect(() => {
     handleGetFranchise();
-  }, []);
+    handleGetDoctors();
+  }, [getDoctorId]);
 
   if (loading) {
     return <InsideLoader />;
@@ -245,7 +290,29 @@ function ListFranchise() {
                   </div>
                   <div>- Possibility Group</div>
                 </div>
-                <div className="flex gap-3">
+                <div className="w-fit">
+                  {role === "super_admin" && (
+                    <Select
+                      required
+                      defaultValue={"all"}
+                      placeholder="Select"
+                      value={getDoctorId}
+                      onChange={(e, newValue) => setGetDoctorId(newValue)}
+                    >
+                      <Option key={"all"} value="all">
+                        All
+                      </Option>
+                      {getDoctors?.map((res) => {
+                        return (
+                          <Option key={res.id} value={res.id}>
+                            {res.first_name + " " + res.last_name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </div>
+                <div className="flex gap-3 px-3">
                   <AddListFranchise
                     handleApi={handleAddFranchise}
                     name="Add Franchise"
@@ -257,6 +324,7 @@ function ListFranchise() {
                     mobile="Mobile"
                     city="City"
                     state="State"
+                    doctors={getDoctors}
                     pincode="Pincode"
                     language="Language"
                     password="Password"
@@ -282,11 +350,15 @@ function ListFranchise() {
                       <ThComponent name="Mobile No." />
                       <ThComponent name="City" />
                       <ThComponent name="Amount" />
-                      <ThComponent name="Commission (in %)" />
-                      <ThComponent />
-                      <ThComponent />
-                      <ThComponent
-                        moreClasses={"rounded-tr-md rounded-br-md"}
+                      <ThComponent name="Commission" />
+                      <th
+                        className={`text-[12px] uppercase tracking-wide text-sm font-medium py-3 px-2 text-left`}
+                      />
+                      <th
+                        className={`text-[12px] uppercase tracking-wide text-sm font-medium py-3 px-2 text-left`}
+                      />
+                      <th
+                        className={`text-[12px] uppercase rounded-tr-md rounded-br-md tracking-wide text-sm font-medium py-3 px-2 text-left`}
                       />
                     </tr>
                   </thead>
@@ -351,21 +423,21 @@ function ListFranchise() {
                               />
                             </td>
                             <td className="py-3 px-4 border-b border-b-gray-50">
-                              <TdComponent things={val.commission} />
+                              <TdComponent things={val.commission + "%"} />
                             </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
+                            <td className="py-3 px-2 border-b border-b-gray-50">
                               <TdComponent
                                 things={
                                   <button
                                     onClick={() => handleAddAmount(val.id)}
-                                    className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-[#33a92b] hover:text-white"
+                                    className="font-semibold text-green-600 border text-sm border-gray-300 py-2 px-3 rounded-md hover:bg-[#33a92b] hover:text-white"
                                   >
                                     Add Amount
                                   </button>
                                 }
                               />
                             </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
+                            <td className="py-3 px-2 border-b border-b-gray-50">
                               <ViewFranchiseDetails
                                 function={() => {
                                   handleGetFranchiseUsers(val.id);
@@ -374,14 +446,14 @@ function ListFranchise() {
                                 users={getFranchiseUsers}
                               />
                             </td>
-                            <td className="py-3 px-4 border-b border-b-gray-50">
+                            <td className="py-3 pl-2 pr-4 border-b border-b-gray-50">
                               <TdComponent
                                 things={
                                   <button
                                     onClick={() =>
                                       handleFranchiseDelete(val.id)
                                     }
-                                    className="font-semibold text-red-600 border border-gray-300 p-1 rounded-md hover:bg-[#c43e19] hover:text-white"
+                                    className="font-semibold text-red-600 border border-gray-300 p-2 rounded-md hover:bg-[#c43e19] hover:text-white"
                                   >
                                     <MdDelete size={20} />
                                   </button>

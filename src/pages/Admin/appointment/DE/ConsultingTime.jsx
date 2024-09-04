@@ -101,16 +101,33 @@ export default function ConsultingTime() {
   }
 
   const handleRemoveDoctor = (id) => {
-    axios
-      .delete(`/api/v1/consulting_times/${id}`)
-      .then((res) => {
-        console.log(res, "DELETE");
-        handleData();
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/consulting_times/${id}`)
+          .then((res) => {
+            console.log(res, "DELETE");
+            handleData();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your consulting time has been deleted.",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err.response?.data?.message + "!");
+          });
+      }
+    });
   };
 
   const handleShowInput = () => {
@@ -177,7 +194,7 @@ export default function ConsultingTime() {
                   placeholder="Time"
                 />
                 <button
-                  className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:bg-white hover:text-black p-3 rounded-md"
+                  className="max-h-10 flex items-center justify-center border cursor-pointer bg-[#1F2937] text-white hover:scale-105 p-3 rounded-md"
                   onClick={handleAddDoctor}
                 >
                   ADD

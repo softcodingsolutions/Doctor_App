@@ -81,7 +81,7 @@ function RTreatmentDiet() {
     Swal.fire({
       icon: "Success",
       title: "Saved!",
-      text: "Your selected diet have been saved.",
+      text: "Your selected diet has been saved.",
     });
   };
 

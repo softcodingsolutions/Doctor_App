@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineEdit } from "react-icons/md";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function MedicalTable({ data, refreshData }) {
   const [editingId, setEditingId] = useState(null);
@@ -10,16 +11,33 @@ export default function MedicalTable({ data, refreshData }) {
   const [editedBrief, setEditedBrief] = useState("");
 
   const handleRemove = (id) => {
-    axios
-      .delete(`api/v1/medicines/${id}`)
-      .then((res) => {
-        console.log(res);
-        refreshData();
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/api/v1/medicines/${id}`)
+          .then((res) => {
+            console.log(res);
+            refreshData();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your medicine has been deleted.",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err.response?.data?.message + "!");
+          });
+      }
+    });
   };
 
   const handleEdit = (item) => {

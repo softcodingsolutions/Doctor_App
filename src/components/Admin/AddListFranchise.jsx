@@ -51,7 +51,7 @@ function AddListFranchise(props) {
             <Stack spacing={3}>
               <Box className="flex space-x-4">
                 <FormControl>
-                  <FormLabel>{props.first_name} </FormLabel>
+                  <FormLabel>{props.first_name} :-</FormLabel>
                   <Input
                     placeholder="First Name..."
                     name="first_name"
@@ -67,7 +67,7 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
                 <FormControl>
-                  <FormLabel>{props.last_name} </FormLabel>
+                  <FormLabel>{props.last_name} :-</FormLabel>
                   <Input
                     placeholder="Last Name..."
                     name="last_name"
@@ -84,7 +84,7 @@ function AddListFranchise(props) {
               </Box>
               <Box className="flex space-x-4">
                 <FormControl>
-                  <FormLabel>{props.email} </FormLabel>
+                  <FormLabel>{props.email} :-</FormLabel>
                   <Input
                     type="email"
                     placeholder="Email..."
@@ -98,7 +98,7 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
                 <FormControl>
-                  <FormLabel>{props.password} </FormLabel>
+                  <FormLabel>{props.password} :-</FormLabel>
                   <Input
                     type="password"
                     placeholder="Password..."
@@ -120,8 +120,30 @@ function AddListFranchise(props) {
                 </FormControl>
               </Box>
               <Box className="flex space-x-4">
+                {props.role === "super_admin" && (
+                  <FormControl className="w-1/2">
+                    <FormLabel>Select Doctor :-</FormLabel>
+                    <Select
+                      required
+                      placeholder="Select"
+                      name="doctor_id"
+                      {...register("doctor_id")}
+                    >
+                      {props?.doctors?.map((res) => (
+                        <Option key={res.id} value={res.id}>
+                          {res.first_name + " " + res.last_name}
+                        </Option>
+                      ))}
+                    </Select>
+                    {errors.doctor_id && (
+                      <Typography level="body2" color="danger">
+                        {errors.doctor_id.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
                 <FormControl>
-                  <FormLabel>{props.mobile} </FormLabel>
+                  <FormLabel>{props.mobile} :-</FormLabel>
                   <Input
                     type="number"
                     placeholder="Mobile..."
@@ -141,23 +163,41 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>{props.city} </FormLabel>
-                  <Input
-                    placeholder="City..."
-                    name="city"
-                    {...register("city", { required: "City is required" })}
-                  />
-                  {errors.city && (
-                    <Typography level="body2" color="danger">
-                      {errors.city.message}
-                    </Typography>
-                  )}
-                </FormControl>
+                {props?.role === "doctor" && (
+                  <FormControl>
+                    <FormLabel>{props.city} :-</FormLabel>
+                    <Input
+                      placeholder="City..."
+                      name="city"
+                      {...register("city", { required: "City is required" })}
+                    />
+                    {errors.city && (
+                      <Typography level="body2" color="danger">
+                        {errors.city.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
               </Box>
               <Box className="flex space-x-4">
+                {props?.role === "super_admin" && (
+                  <FormControl>
+                    <FormLabel>{props.city} :-</FormLabel>
+                    <Input
+                      placeholder="City..."
+                      name="city"
+                      {...register("city", { required: "City is required" })}
+                    />
+                    {errors.city && (
+                      <Typography level="body2" color="danger">
+                        {errors.city.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
+
                 <FormControl>
-                  <FormLabel>{props.state} </FormLabel>
+                  <FormLabel>{props.state} :-</FormLabel>
                   <Input
                     placeholder="State..."
                     name="state"
@@ -170,26 +210,28 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
 
-                <FormControl>
-                  <FormLabel>{props.pincode} </FormLabel>
-                  <Input
-                    type="number"
-                    placeholder="Pincode..."
-                    name="pincode"
-                    {...register("pincode", {
-                      required: "Pincode is required",
-                    })}
-                  />
-                  {errors.pincode && (
-                    <Typography level="body2" color="danger">
-                      {errors.pincode.message}
-                    </Typography>
-                  )}
-                </FormControl>
+                {props?.role === "doctor" && (
+                  <FormControl>
+                    <FormLabel>{props.pincode} :-</FormLabel>
+                    <Input
+                      type="number"
+                      placeholder="Pincode..."
+                      name="pincode"
+                      {...register("pincode", {
+                        required: "Pincode is required",
+                      })}
+                    />
+                    {errors.pincode && (
+                      <Typography level="body2" color="danger">
+                        {errors.pincode.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
               </Box>
               <Box className="flex space-x-4">
                 <FormControl>
-                  <FormLabel>{props.amount} </FormLabel>
+                  <FormLabel>{props.amount} :-</FormLabel>
                   <Input
                     type="number"
                     placeholder="Amount..."
@@ -209,7 +251,7 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
                 <FormControl>
-                  <FormLabel>{props.commission} </FormLabel>
+                  <FormLabel>{props.commission} :-</FormLabel>
                   <Input
                     type="number"
                     placeholder="In %..."
@@ -235,7 +277,7 @@ function AddListFranchise(props) {
               </Box>
               <Box className="flex w-full space-x-4">
                 <FormControl className="w-1/2">
-                  <FormLabel>{props.type_of_admin} </FormLabel>
+                  <FormLabel>{props.type_of_admin} :-</FormLabel>
                   <Select
                     required
                     placeholder="Admin Type..."
@@ -253,7 +295,7 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
                 <FormControl className="w-1/2">
-                  <FormLabel>{props.possibility_group} </FormLabel>
+                  <FormLabel>{props.possibility_group} :-</FormLabel>
                   <Select
                     required
                     placeholder="Possibility Group..."
