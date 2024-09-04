@@ -15,24 +15,12 @@ function CustomerAllUsers() {
   const [loading, setLoading] = useState(true);
 
   const handleGetAllUsers = () => {
-    if (role === "super_admin") {
-      axios.get(`/api/v1/users`).then((res) => {
-        const patients = res.data?.users?.filter(
-          (user) => user.role === "patient"
-        );
-        console.log("Patients by Super Admin: ", patients);
-        setGetCustomers(patients);
-        setGetParticularCustomer(patients);
-        setLoading(false);
-      });
-    } else if (role === "doctor") {
-      axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
-        console.log("Patients by Doctor: ", res.data?.users);
-        setGetCustomers(res.data?.users);
-        setGetParticularCustomer(res.data?.users);
-        setLoading(false);
-      });
-    }
+    axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
+      console.log("Patients by Doctor: ", res.data?.users);
+      setGetCustomers(res.data?.users);
+      setGetParticularCustomer(res.data?.users);
+      setLoading(false);
+    });
   };
 
   const handleDiagnosis = (val) => {
