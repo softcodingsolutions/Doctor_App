@@ -7,7 +7,6 @@ import InsideLoader from "../../InsideLoader";
 export default function CreateAppointment() {
   const [doctorList, setDoctorList] = useState("");
   const [doctorName, setDoctorName] = useState("");
-  const [franchiseDoctor, setFranchiseDoctor] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [name, setName] = useState("");
@@ -20,9 +19,9 @@ export default function CreateAppointment() {
   const [loading, setLoading] = useState(false);
   const [newCase, setNewCase] = useState(false);
   const [oldCase, setOldCase] = useState(false);
-  const [open, setOpen] = useState(false);
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("Create Consulting Appointment");
 
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
@@ -35,6 +34,7 @@ export default function CreateAppointment() {
         .then((res) => {
           setLoading(false);
           setGetParticularCustomer(res.data.user);
+          setMessage("");
           setError("");
         })
         .catch((err) => {
@@ -54,7 +54,7 @@ export default function CreateAppointment() {
       setDoctorList("");
       setMachineList([]);
       setMachineConsultingTime([]);
-      setOpen(false);
+    
     }
   };
 
@@ -71,10 +71,15 @@ export default function CreateAppointment() {
     setMobileNumber(user?.phone_number);
     setEmail(user?.email);
     setUserId(user?.personal_detail?.user_id);
-    setDoctorName(user?.doctor);
-    setDoctorList(user?.doctor?.id);
+    if (user?.creator === "franchise") {
+      setDoctorName(user?.doctor?.doctor);
+      setDoctorList(user?.doctor?.doctor?.id);
+    } else {
+      setDoctorName(user?.doctor);
+      setDoctorList(user?.doctor?.id);
+    }
     setGetParticularCustomer([]);
-    setOpen(true);
+   
   };
 
   useEffect(() => {
@@ -159,13 +164,14 @@ export default function CreateAppointment() {
                   {doctorName && (
                     <div className="flex  items-center gap-5 justify-center">
                       <label className="text-lg ">Doctor:</label>
+
                       <h2 className="text-lg">
                         {doctorName.first_name} {doctorName.last_name}
                       </h2>
                     </div>
                   )}
                 </div>
-                {doctorList ? (
+                {doctorList && (
                   <div className="flex gap-5 justify-center">
                     {oldCase && userId && (
                       <Oldcase
@@ -190,9 +196,12 @@ export default function CreateAppointment() {
                       />
                     )}
                   </div>
-                ) : (
+                )}
+                {message && (
                   <div className="flex justify-center">
-                    <label className="text-xl bg-white rounded-md p-2 font-semibold text-center">Create Consulting Time Appointment</label>
+                    <label className="text-xl bg-white rounded-md p-2 font-semibold text-center">
+                     {message}
+                    </label>
                   </div>
                 )}
               </form>

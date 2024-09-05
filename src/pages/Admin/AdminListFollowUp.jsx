@@ -3,45 +3,51 @@ import axios from "axios";
 
 function AdminListFollowUp() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
-  const [openconsulting, setOpenConsulting] = useState(true);
+  const [openconsulting, setOpenConsulting] = useState(false);
   const [consultingData, setConsultingData] = useState([]);
   const [machineConsultingData, setMachineConsultingData] = useState([]);
   const [userDetails, setUserDetails] = useState({});
   const [packageDetail, setPackageDetail] = useState({});
+  const [getParticularCustomer, setGetParticularCustomer] = useState([]);
+  const [message, setMessage] = useState("Search User's List Follow Up");
 
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      setDebouncedSearchTerm(searchTerm);
-    }
-  };
-
-  useEffect(() => {
-    if (debouncedSearchTerm) {
+    if (value) {
       axios
         .get(
-          `/api/v1/appointments/fetch_users_appointments?case_number=${debouncedSearchTerm}&phone_number=${debouncedSearchTerm}&email=${debouncedSearchTerm}`
+          `/api/v1/appointments/fetch_users_appointments?search_query=${value}`
         )
         .then((res) => {
           console.log(res, "List Follow Up");
-          setData(res.data);
-          setConsultingData(res.data?.consulting_appointments);
-          setMachineConsultingData(res.data?.machine_appointments);
-          setUserDetails(res.data?.user);
-          setPackageDetail(res.data?.user?.user_packages?.[0]);
+          setGetParticularCustomer(res.data.appointments);
+          setOpen(false);
+          setOpenConsulting(false);
+          setMessage("");
+          console.log(res.data.appointments.user);
         })
         .catch((err) => {
           console.log(err);
           alert("USER NOT FOUND");
         });
+    } else {
+      setGetParticularCustomer([]);
+      setSearchTerm("");
     }
-  }, [debouncedSearchTerm]);
+  };
+
+  const handleUserSelect = (user) => {
+    console.log(user, "SELECTED USER");
+    setData(user);
+    setOpenConsulting(true);
+    setGetParticularCustomer([]);
+    setConsultingData(user?.consulting_appointments);
+    setMachineConsultingData(user?.machine_appointments);
+    setUserDetails(user?.user);
+    setPackageDetail(user?.user?.user_packages[0]);
+  };
 
   const handleMachineData = () => {
     setOpen(true);
@@ -67,6 +73,14 @@ function AdminListFollowUp() {
     });
   }
 
+  const handleButtonClick = () => {
+    if (userDetails.first_name) {
+      handleMachineData();
+    } else {
+      setMessage("Please search the User");
+    }
+  };
+
   return (
     <div className="flex w-full">
       <div className="w-full hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
@@ -81,15 +95,15 @@ function AdminListFollowUp() {
                   type="text"
                   value={searchTerm}
                   onChange={(e) => handleSearchTerm(e.target.value)}
-                  onKeyDown={handleKeyDown}
                   placeholder="Search User through Case Number/Phone Number"
                   className="py-2 px-4 rounded-md border border-gray-800 w-full focus:outline-none focus:ring-1 focus:ring-black"
                 />
+
                 {open === false ? (
                   <button
                     type="button"
                     className="w-[10rem] text-white bg-[#1F2937] rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                    onClick={handleMachineData}
+                    onClick={handleButtonClick}
                   >
                     Machine Data
                   </button>
@@ -103,41 +117,68 @@ function AdminListFollowUp() {
                   </button>
                 )}
               </div>
-              {data.message === "users_appointments" ? (
+
+              {getParticularCustomer?.length > 0 ? (
+                <div className="space-y-1 ">
+                  {getParticularCustomer.map((appointment) => (
+                    <div
+                      key={appointment.user.id}
+                      className="border p-4 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                      onClick={() => handleUserSelect(appointment)}
+                    >
+                      <div>
+                        <div className="font-semibold">
+                          {appointment.user.first_name}{" "}
+                          {appointment.user.last_name}
+                        </div>
+                        <div className="text-gray-500">
+                          Phone: {appointment.user.phone_number}
+                        </div>
+                      </div>
+                      <div className="text-gray-600 text-sm">
+                        {appointment.follow_up ? "Follow Up" : "New Case"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
                 <div className="flex flex-col ">
-                  <div className="flex gap-48">
-                    <div className="text-lg font-bold mb-4">
-                      <div>
-                        Patient Name:{" "}
-                        <span className="font-medium">
-                          {userDetails?.first_name} {userDetails?.last_name}
-                        </span>
+                  {userDetails?.first_name && (
+                    <div className="flex gap-48">
+                      <div className="text-lg font-bold mb-4">
+                        <div>
+                          Patient Name:{" "}
+                          <span className="font-medium">
+                            {userDetails?.first_name} {userDetails?.last_name}
+                          </span>
+                        </div>
+                        <div>
+                          Case Number:{" "}
+                          <span className="font-medium">
+                            {userDetails?.case_number}
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        Case Number:{" "}
-                        <span className="font-medium">
-                          {userDetails?.case_number}
-                        </span>
+                      <div className="text-lg font-bold mb-4">
+                        <div>
+                          Package Name:{" "}
+                          <span className="font-medium">
+                            {packageDetail?.package_name ??
+                              "No Package Assigned"}
+                          </span>
+                        </div>
+                        <div>
+                          Package Duration:{" "}
+                          <span className="font-medium">
+                            {packageDetail?.no_of_days} Days
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="text-lg font-bold mb-4">
-                      <div>
-                        Package Name:{" "}
-                        <span className="font-medium">
-                          {packageDetail?.package_name ?? "No Package Assigned"}
-                        </span>
-                      </div>
-                      <div>
-                        Package Duration:{" "}
-                        <span className="font-medium">
-                          {packageDetail?.no_of_days} Days
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  )}
                   {openconsulting && (
-                    <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
-                      <div className="flex w-full flex-col items-center p-4 h-full">
+                    <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto p-2">
+                      <div className="flex w-full flex-col items-center ">
                         <div className="text-2xl font-semibold tracking-wide">
                           Consulting Time Slot
                         </div>
@@ -228,13 +269,13 @@ function AdminListFollowUp() {
                                     <tr key={index} className="">
                                       <td className="py-3 px-4 border-b border-b-gray-50">
                                         <span className="text-black text-base font-medium ml-1">
-                                          {data.doctor.first_name}{" "}
-                                          {data.doctor.last_name}
+                                          {data?.doctor?.first_name}{" "}
+                                          {data?.doctor?.last_name}
                                         </span>
                                       </td>
                                       <td className="py-3 px-4 border-b border-b-gray-50">
                                         <span className="text-black text-base font-medium ml-1">
-                                          {data.machine_detail.name}
+                                          {data?.machine_detail?.name}
                                         </span>
                                       </td>
                                       <td className="py-3 px-4 border-b border-b-gray-50">
@@ -244,7 +285,7 @@ function AdminListFollowUp() {
                                       </td>
                                       <td className="py-3 px-4 border-b border-b-gray-50">
                                         <span className="text-black text-base font-medium ml-1">
-                                          {data.time}
+                                          {data?.time}
                                         </span>
                                       </td>
                                     </tr>
@@ -268,9 +309,12 @@ function AdminListFollowUp() {
                     </div>
                   )}
                 </div>
-              ) : (
-                <div className="flex justify-center pt-[15rem] text-xl font-medium text-center">
-                  NO DATA HAS BEEN SEARCH!
+              )}
+              {message && (
+                <div className="flex justify-center">
+                  <label className="text-xl bg-white rounded-md p-2 font-semibold text-center">
+                    {message}
+                  </label>
                 </div>
               )}
             </div>
