@@ -13,8 +13,7 @@ export default function DataEntry() {
   const [selectedId, setSelectedId] = useState("2");
   const [timeslot, setTimeslot] = useState(true);
   const [machines, setMachines] = useState(false);
-//   const [machinestime, setMachinestime] = useState(false);
-
+  //   const [machinestime, setMachinestime] = useState(false);
 
   const handleTimeslot = () => {
     setTimeslot(true);
@@ -77,7 +76,6 @@ export default function DataEntry() {
         ))}
       </div>
       <div>
- 
         {timeslot && <ConsultingTime />}
         {machines && <MachineDetails />}
         {/* {machinestime && <MachineTimeslot />} */}
