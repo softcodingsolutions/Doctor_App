@@ -142,6 +142,7 @@ function ReportTreatment() {
                   <Select
                     sx={{
                       width: "250px",
+                      border: "1px solid black"
                     }}
                     required
                     placeholder="Select Weight Reason"

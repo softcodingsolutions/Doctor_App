@@ -12,6 +12,36 @@ function AdminListFollowUp() {
   const [packageDetail, setPackageDetail] = useState({});
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [message, setMessage] = useState("Search User's List Follow Up");
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 6;
+
+  const paginateCustomers = () => {
+    if (openconsulting) {
+      const indexOfLastRow = currentPage * rowsPerPage;
+      const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+      return consultingData.slice(indexOfFirstRow, indexOfLastRow);
+    } else {
+      const indexOfLastRow = currentPage * rowsPerPage;
+      const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+      return machineConsultingData.slice(indexOfFirstRow, indexOfLastRow);
+    }
+  };
+
+  const totalPages = openconsulting
+    ? Math.ceil(consultingData.length / rowsPerPage)
+    : Math.ceil(machineConsultingData.length / rowsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
@@ -177,12 +207,12 @@ function AdminListFollowUp() {
                     </div>
                   )}
                   {openconsulting && (
-                    <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto p-2">
+                    <div className="">
                       <div className="flex w-full flex-col items-center ">
                         <div className="text-2xl font-semibold tracking-wide">
                           Consulting Time Slot
                         </div>
-                        <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[63vh]">
+                        <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[50vh]">
                           <table className="w-full min-w-[460px] z-0">
                             <thead className="uppercase">
                               <tr className="bg-[#1F2937] text-white rounded-md">
@@ -198,8 +228,8 @@ function AdminListFollowUp() {
                               </tr>
                             </thead>
                             <tbody>
-                              {consultingData.length > 0 ? (
-                                consultingData.map((data, index) => {
+                              {paginateCustomers().length > 0 ? (
+                                paginateCustomers().map((data, index) => {
                                   return (
                                     <tr key={index} className="">
                                       <td className="py-3 px-4 border-b border-b-gray-50">
@@ -235,16 +265,80 @@ function AdminListFollowUp() {
                             </tbody>
                           </table>
                         </div>
+                        {/* Pagination Controls */}
+                        {totalPages !== 0 && (
+                          <div className="flex flex-wrap justify-center items-center gap-2 py-2">
+                            <button
+                              onClick={handlePreviousPage}
+                              disabled={currentPage === 1}
+                              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="2"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                                ></path>
+                              </svg>
+                              Previous
+                            </button>
+                            <div className="flex gap-2">
+                              {Array.from({ length: totalPages }, (_, i) => (
+                                <button
+                                  key={i + 1}
+                                  onClick={() => setCurrentPage(i + 1)}
+                                  className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${
+                                    currentPage === i + 1
+                                      ? "bg-gray-900 text-white"
+                                      : "bg-gray-200 text-black"
+                                  }`}
+                                >
+                                  {i + 1}
+                                </button>
+                              ))}
+                            </div>
+                            <button
+                              onClick={handleNextPage}
+                              disabled={currentPage === totalPages}
+                              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            >
+                              Next
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="2"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
                   {open && (
-                    <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[99%]">
+                    <div className="">
                       <div className="flex w-full flex-col items-center p-4 h-full">
                         <div className="text-2xl font-semibold tracking-wide">
                           Machine Time Slot
                         </div>
-                        <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[80%]">
+                        <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[50vh]">
                           <table className="w-full min-w-[460px] z-0 ">
                             <thead className="uppercase">
                               <tr className="bg-[#1F2937] text-white rounded-md">
@@ -263,8 +357,8 @@ function AdminListFollowUp() {
                               </tr>
                             </thead>
                             <tbody>
-                              {machineConsultingData.length > 0 ? (
-                                machineConsultingData.map((data, index) => {
+                              {paginateCustomers().length > 0 ? (
+                                paginateCustomers().map((data, index) => {
                                   return (
                                     <tr key={index} className="">
                                       <td className="py-3 px-4 border-b border-b-gray-50">
@@ -305,6 +399,70 @@ function AdminListFollowUp() {
                             </tbody>
                           </table>
                         </div>
+                        {/* Pagination Controls */}
+                        {totalPages !== 0 && (
+                          <div className="flex flex-wrap justify-center items-center gap-2 py-2">
+                            <button
+                              onClick={handlePreviousPage}
+                              disabled={currentPage === 1}
+                              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="2"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                                ></path>
+                              </svg>
+                              Previous
+                            </button>
+                            <div className="flex gap-2">
+                              {Array.from({ length: totalPages }, (_, i) => (
+                                <button
+                                  key={i + 1}
+                                  onClick={() => setCurrentPage(i + 1)}
+                                  className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${
+                                    currentPage === i + 1
+                                      ? "bg-gray-900 text-white"
+                                      : "bg-gray-200 text-black"
+                                  }`}
+                                >
+                                  {i + 1}
+                                </button>
+                              ))}
+                            </div>
+                            <button
+                              onClick={handleNextPage}
+                              disabled={currentPage === totalPages}
+                              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            >
+                              Next
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="2"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
