@@ -19,6 +19,44 @@ function ReportProgress() {
   const [loading, setLoading] = useState(true);
   const role = localStorage.getItem("role");
   const context = useOutletContext();
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 7;
+
+  const paginateCustomers = () => {
+    if (showQues) {
+      const indexOfLastRow = currentPage * rowsPerPage;
+      const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+      return getQues.slice(indexOfFirstRow, indexOfLastRow);
+    }
+    if (showComplain) {
+      const indexOfLastRow = currentPage * rowsPerPage;
+      const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+      return getComplains.slice(indexOfFirstRow, indexOfLastRow);
+    }
+    if (showProgress) {
+      const indexOfLastRow = currentPage * rowsPerPage;
+      const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+      return getProgess.slice(indexOfFirstRow, indexOfLastRow);
+    }
+  };
+
+  const totalPages = showQues
+    ? Math.ceil(getQues.length / rowsPerPage)
+    : showComplain
+    ? Math.ceil(getComplains.length / rowsPerPage)
+    : Math.ceil(getProgess.length / rowsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   const handleGetQues = async () => {
     const data =
@@ -236,7 +274,7 @@ function ReportProgress() {
                   </tr>
                 </thead>
                 <tbody>
-                  {getProgess.length === 0 ? (
+                  {paginateCustomers().length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -246,7 +284,7 @@ function ReportProgress() {
                       </th>
                     </tr>
                   ) : (
-                    getProgess?.map((val, index) => {
+                    paginateCustomers()?.map((val, index) => {
                       return (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
@@ -341,7 +379,7 @@ function ReportProgress() {
                   </tr>
                 </thead>
                 <tbody>
-                  {getComplains?.length === 0 ? (
+                  {paginateCustomers()?.length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -351,7 +389,7 @@ function ReportProgress() {
                       </th>
                     </tr>
                   ) : (
-                    getComplains?.map((val, index) => {
+                    paginateCustomers()?.map((val, index) => {
                       return (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
@@ -434,7 +472,7 @@ function ReportProgress() {
                   </tr>
                 </thead>
                 <tbody>
-                  {getQues?.length === 0 ? (
+                  {paginateCustomers()?.length === 0 ? (
                     <tr>
                       <th
                         className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
@@ -444,7 +482,7 @@ function ReportProgress() {
                       </th>
                     </tr>
                   ) : (
-                    getQues?.map((val, index) => {
+                    paginateCustomers()?.map((val, index) => {
                       return (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
@@ -483,6 +521,70 @@ function ReportProgress() {
                   )}
                 </tbody>
               </table>
+            </div>
+          )}
+          {/* Pagination Controls */}
+          {totalPages !== 0 && (
+            <div className="flex flex-wrap justify-center items-center gap-2 py-2">
+              <button
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                  ></path>
+                </svg>
+                Previous
+              </button>
+              <div className="flex gap-2">
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i + 1}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${
+                      currentPage === i + 1
+                        ? "bg-gray-900 text-white"
+                        : "bg-gray-200 text-black"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              >
+                Next
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  ></path>
+                </svg>
+              </button>
             </div>
           )}
         </div>
