@@ -65,6 +65,7 @@ function RTreatmentMedicine() {
 
     setFilteredMedicines(filtered);
   }, 300);
+  
 
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
