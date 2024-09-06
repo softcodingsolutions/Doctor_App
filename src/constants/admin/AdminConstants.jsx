@@ -1,6 +1,5 @@
 import { AiOutlineMedicineBox } from "react-icons/ai";
 import { BsNintendoSwitch } from "react-icons/bs";
-import { CiViewList } from "react-icons/ci";
 import {
   FaRegQuestionCircle,
   FaRegThumbsDown,

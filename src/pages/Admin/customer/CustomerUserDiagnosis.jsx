@@ -71,9 +71,14 @@ function CustomerUserDiagnosis() {
   }
 
   const reportButtonsMain = reportButtons.filter((button) => {
+    if (button.id === "7" && getCustomer?.treatment_packages?.length === 0) {
+      return false;
+    }
+
     if (button.id === "4") {
       return getAdmin.possibility_group === true || getAdmin.role === "doctor";
     }
+
     return true;
   });
 
@@ -199,7 +204,9 @@ function CustomerUserDiagnosis() {
 
         <div className="flex flex-col gap-2 justify-center h-28 w-[19rem]">
           <div className="flex">
-            <div className="text-right break-words font-medium text-md">Package:</div>
+            <div className="text-right break-words font-medium text-md">
+              Package:
+            </div>
             <div className="pl-1.5 text-md">
               {getCustomer?.user_packages?.[0]?.package_name ?? "Not Assigned"}
             </div>
