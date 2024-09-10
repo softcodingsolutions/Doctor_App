@@ -11,6 +11,7 @@ export default function Consulting(props) {
   const navigate = useNavigate();
   const handleSlot = (e) => {
     setSlot(e.target.value);
+    console.log(e.target.value, "Time");
   };
 
   const handleSubmit = (e) => {
@@ -20,7 +21,7 @@ export default function Consulting(props) {
     formdata.append("appointment[user_id]", props.user);
     formdata.append("appointment[date]", consultingTime);
     formdata.append("appointment[doctor_id]", props.doctor);
-    formdata.append("appointment[time]", slot);
+    formdata.append("appointment[time]", formatTime(slot));
     {
       if (consultingTime && slot) {
         axios
@@ -64,16 +65,22 @@ export default function Consulting(props) {
 
   function formatTime(time) {
     try {
+      
       const date = new Date(time);
+
+      // Define formatting options
       const options = {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-        timeZone: "UTC",
+        timeZone: "Asia/Kolkata", // Use the time zone from the original input (Asia/Kolkata for +05:30)
       };
+
+      // Format the date to UTC, or you can change the time zone as needed
       const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
         date
       );
+
       return formattedTime;
     } catch (error) {
       console.error("Error formatting time:", error);

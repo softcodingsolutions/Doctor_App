@@ -168,33 +168,43 @@ function FranchiesGeneraldetails({
                     />
                   </div>
                   <div className="flex gap-5 m-5">
-                    <label className="text-lg text-end w-1/3 mr-2">
-                      Gender:
-                    </label>
-                    <div className="flex gap-2 w-[21.5rem]">
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          value="male"
-                          {...register("gender")}
-                          className="mr-2"
-                        />
-                        Male
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          value="female"
-                          {...register("gender")}
-                          className="mr-2"
-                        />
-                        Female
-                      </label>
-                      {errors.gender && (
-                        <span className="text-base text-red-500 -mt-1.5">
-                          {errors.gender?.message}
-                        </span>
-                      )}
+                    <div className="flex">
+                      <div className="text-end w-1/3 mr-2">
+                        <label className="text-sm ">Gender:</label>
+                      </div>
+                      <div className="flex-col gap-2 w-[21.5rem] ml-8 text-sm" >
+                        <div className="flex">
+                          <div>
+                            <label className="flex items-center">
+                              <input
+                                type="radio"
+                                value="male"
+                                {...register("gender")}
+                                className="mr-2"
+                              />
+                              Male
+                            </label>
+                          </div>
+                          <div className="ml-2">
+                            <label className="flex items-center">
+                              <input
+                                type="radio"
+                                value="female"
+                                {...register("gender")}
+                                className="mr-2"
+                              />
+                              Female
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          {errors.gender && (
+                            <span className="text-base text-red-500 -mt-1.5 text-sm">
+                              {errors.gender?.message}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-5 m-2">
@@ -229,7 +239,7 @@ function FranchiesGeneraldetails({
                   {context[1]?.doctor?.first_name?.toLowerCase() ===
                     "bhavesh" && (
                     <div className="flex gap-5 m-5">
-                      <label className="text-lg text-end w-1/3 mr-2">
+                      <label className="text-sm text-end w-1/3 mr-2">
                         Overweight Since:
                       </label>
                       <select
@@ -237,7 +247,7 @@ function FranchiesGeneraldetails({
                         defaultValue="select"
                         placeholder="Select one"
                         {...register("overweight")}
-                        className="py-1 px-2 rounded-md border border-black"
+                        className="py-1 px-2 rounded-md border text-sm border-black"
                       >
                         <option value="select" disabled>
                           Select One

@@ -99,7 +99,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
               <div className="md:flex w-full justify-between gap-2">
                 <FormLabel
                   sx={{
-                    fontSize: "1.125rem",
+                    fontSize: "1rem",
                     textAlign: "end",
                     marginBottom: 1,
                   }}
@@ -117,6 +117,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
                     borderRadius: "md",
                     border: "1px solid black",
                     width: "100%",
+                    fontSize: "1rem",
                   }}
                 >
                   {getPackages.map((pkg) => (
@@ -132,7 +133,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
               </div>
               <div className="md:flex w-full  justify-between">
                 <>
-                  <label className="text-lg text-end w-1/3 mr-2">
+                  <label className="text-sm text-end w-1/3 mr-2">
                     From Date:
                   </label>
                   <input
@@ -142,11 +143,11 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
                     placeholder="From date"
                     autoComplete="off"
                     id="from_date"
-                    className="py-1 px-2 rounded-md border border-black w-[40vh]"
+                    className="py-1 px-2 rounded-md border text-sm border-black w-[40vh]"
                   />
                 </>
                 <>
-                  <label className="text-lg text-end w-1/3 mr-2">
+                  <label className="text-sm text-end w-1/3 mr-2">
                     To Date:
                   </label>
                   <input
@@ -156,7 +157,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
                     placeholder="To date"
                     autoComplete="off"
                     id="to_date"
-                    className="py-1 px-2 rounded-md border border-black w-[40vh]"
+                    className="py-1 px-2 rounded-md border text-sm border-black w-[40vh]"
                   />
                 </>
               </div>
@@ -206,7 +207,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
                 />
               </div>
               <div className="md:flex w-full justify-between">
-                <label className="text-lg text-end w-1/8 mr-2">
+                <label className="text-sm text-end w-1/8 mr-2">
                   Payment Method:
                 </label>
                 <Select
@@ -220,6 +221,7 @@ function FranchiesCheckout({ setStoreData, onBack, handleCallUserApi }) {
                     borderRadius: "md",
                     border: "1px solid black",
                     width: "100%",
+                    fontSize: "1rem",
                   }}
                 >
                   <Option value="online">Online</Option>

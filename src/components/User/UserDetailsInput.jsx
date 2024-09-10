@@ -18,7 +18,7 @@ function UserDetailsInput({
 
   return (
     <>
-      <label className="text-lg text-end w-1/3 mr-2">{label}:</label>
+      <label className="text-sm text-end w-1/3 mr-2">{label}:</label>
       <div className="flex flex-col">
         <input
           {...hook}
@@ -28,10 +28,10 @@ function UserDetailsInput({
           placeholder={placeholder}
           autoComplete="off"
           id={name}
-          className="py-1 px-2 rounded-md border border-black w-[40vh]"
+          className="py-1 px-2 rounded-md border border-black w-[40vh] text-sm"
         />
         {errors && (
-          <span className="text-base text-red-500">{errors.message}</span>
+          <span className="text-base text-red-500 text-sm">{errors.message}</span>
         )}
       </div>
     </>

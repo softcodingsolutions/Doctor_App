@@ -232,7 +232,7 @@ function CustomerUserDiagnosis() {
               Registration Through:
             </div>
             <div className="pl-1.5 text-md">
-              {getCustomer[1]?.creator === "doctor" ? "Doctor" : "Franchise"}
+              {getCustomer?.creator === "doctor" ? "Doctor" : "Franchise"} ({getCustomer?.doctor.first_name})
             </div>
           </div>
         </div>

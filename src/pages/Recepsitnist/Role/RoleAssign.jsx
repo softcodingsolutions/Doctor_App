@@ -14,14 +14,16 @@ export default function RoleAssign() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 7;
-
+  const rowsPerPage = 5;
   const handleShow = () => {
     axios
       .get(`api/v1/users`)
       .then((res) => {
-        console.log(res);
-        setDoctors(res.data.users);
+        console.log(res.data.users, "USE");
+        const doctor = res.data?.users?.filter(
+          (user) => user.role !== "super_admin" && user.role !== "patient"
+        );
+        setDoctors(doctor);
         setLoading(false);
       })
       .catch((err) => {
@@ -290,17 +292,9 @@ export default function RoleAssign() {
                 </tr>
               </thead>
               <tbody>
-                {paginateCustomers()
-                  .filter(
-                    (doctor) =>
-                      doctor.role !== "patient" && doctor.role !== "super_admin"
-                  )
-                  .map((doctor) => (
-                    <tr
-                      key={doctor.id}
-                      className=" hover:bg-gray-200
-              "
-                    >
+                {paginateCustomers().length > 0 ? (
+                  paginateCustomers().map((doctor) => (
+                    <tr key={doctor.id} className="hover:bg-gray-200">
                       <td className="py-3 px-4 border-b border-b-gray-50">
                         <span className="text-black text-base font-medium ml-1">
                           {doctor.first_name[0]?.toUpperCase() +
@@ -340,7 +334,14 @@ export default function RoleAssign() {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4">
+                      No doctors found.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
