@@ -21,7 +21,7 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
     {
       id: "1",
       title: "Diagnosis Details",
-      to: "user-diagnosis/profile",
+      // to: "user-diagnosis/profile",
       icons: <MdOutlineMedicalInformation size={18} />,
     },
   ];
