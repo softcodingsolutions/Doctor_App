@@ -5,7 +5,7 @@ import "./index.css";
 import axios from "axios";
 
 axios.defaults.baseURL =
-  "https://9ae4-2401-4900-1f3f-c911-3d1a-9e62-7fbf-4c4a.ngrok-free.app/";
+  "https://5362-2401-4900-8898-1edc-550f-9bce-e861-43b2.ngrok-free.app/";
 axios.defaults.headers.common["ngrok-skip-browser-warning"] = true;
 axios.interceptors.request.use(
   (config) => {
