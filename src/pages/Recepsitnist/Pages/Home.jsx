@@ -84,21 +84,18 @@ export default function Home() {
     }
   };
 
-  function formatTime(isoString) {
-    if (!isoString) return "Invalid Time";
+  function convertToAmPm(time24) {
+    // Split the input time into hours and minutes (e.g., "14:35" -> ["14", "35"])
+    let [hour, minute] = time24.split(":");
+    hour = parseInt(hour); // Convert the hour to an integer
 
-    const date = new Date(isoString);
+    let period = hour >= 12 ? "PM" : "AM"; // Determine AM or PM
 
-    if (isNaN(date.getTime())) {
-      console.error("Invalid time format:", isoString);
-      return "Invalid Time";
-    }
+    // Convert 24-hour format to 12-hour format
+    hour = hour % 12 || 12; // If hour is 0, set to 12 (for midnight), else convert
 
-    return date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
+    // Return the formatted time in 12-hour format with AM/PM
+    return `${hour}:${minute} ${period}`;
   }
 
   const formatDate = (date) => {
@@ -248,7 +245,7 @@ export default function Home() {
                                 </td>
                                 <td className="py-3 px-4 border-b border-b-gray-50">
                                   <span className="text-black text-base font-medium ml-1">
-                                    {formatTime(data.time)}
+                                    {data.time}
                                   </span>
                                 </td>
                               </tr>
@@ -324,7 +321,7 @@ export default function Home() {
                                 </td>
                                 <td className="py-3 px-4 border-b border-b-gray-50">
                                   <span className="text-black text-base font-medium ml-1">
-                                    {data.time}
+                                    {convertToAmPm(data.time)}
                                   </span>
                                 </td>
                               </tr>

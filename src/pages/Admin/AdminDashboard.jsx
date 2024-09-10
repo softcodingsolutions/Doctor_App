@@ -38,14 +38,16 @@ function AdminDashboard() {
     axios
       .get(`/api/v1/users`)
       .then((res) => {
+        console.log(res)
         const patients = res.data?.users?.filter(
           (user) => user.role === "patient" && user.created_by_id == main_id
         );
         const newPatients = res.data?.users?.filter(
           (user) =>
             user.role === "patient" &&
-            user.treatment_packages?.length === 0 &&
-            user.created_by_id == main_id
+            user.follow_up === false &&
+             user.created_by_id == main_id
+            
         );
         setGetNewPatients(newPatients?.length);
         setGetTotalPatients(patients?.length);
@@ -94,21 +96,18 @@ function AdminDashboard() {
     }
   };
 
-  function formatTime(isoString) {
-    if (!isoString) return "Invalid Time";
+  function convertToAmPm(time24) {
+    // Split the input time into hours and minutes (e.g., "14:35" -> ["14", "35"])
+    let [hour, minute] = time24.split(":");
+    hour = parseInt(hour); // Convert the hour to an integer
 
-    const date = new Date(isoString);
+    let period = hour >= 12 ? "PM" : "AM"; // Determine AM or PM
 
-    if (isNaN(date.getTime())) {
-      console.error("Invalid time format:", isoString);
-      return "Invalid Time";
-    }
+    // Convert 24-hour format to 12-hour format
+    hour = hour % 12 || 12; // If hour is 0, set to 12 (for midnight), else convert
 
-    return date.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
+    // Return the formatted time in 12-hour format with AM/PM
+    return `${hour}:${minute} ${period}`;
   }
 
   const handleDiagnosis = (id) => {
@@ -202,7 +201,11 @@ function AdminDashboard() {
                         className="flex text-md hover:bg-gray-200 items-center gap-3 border border-gray-200 min-h-20 shadow-inner rounded-md p-4"
                       >
                         <img
-                          src={res.user?.gender === "male" ? male : female}
+                          src={
+                            res.user?.personal_detail?.gender === "male"
+                              ? male
+                              : female
+                          }
                           alt="img"
                           className="size-16 mr-2"
                         />
@@ -273,8 +276,8 @@ function AdminDashboard() {
                             </div>
                             <div className="pl-2">
                               {res.machine_detail?.name
-                                ? res.time
-                                : formatTime(res.time)}
+                                ? convertToAmPm(res.time)
+                                : res.time}
                             </div>
                           </div>
                           {res.machine_detail?.name && (

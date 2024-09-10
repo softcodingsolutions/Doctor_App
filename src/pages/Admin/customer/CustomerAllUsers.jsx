@@ -12,7 +12,7 @@ function CustomerAllUsers() {
   const main_id = localStorage.getItem("main_id");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 8;
+  const rowsPerPage = 7;
 
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {

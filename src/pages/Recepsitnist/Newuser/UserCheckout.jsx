@@ -99,9 +99,10 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
               <div className="md:flex w-full justify-between gap-2">
                 <FormLabel
                   sx={{
-                    fontSize: "1.125rem",
+                    fontSize: "1rem",
                     textAlign: "end",
                     marginBottom: 1,
+                    fontSize: "1rem",
                   }}
                 >
                   Package:
@@ -117,6 +118,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
                     borderRadius: "md",
                     border: "1px solid black",
                     width: "100%",
+                    fontSize: "1rem",
                   }}
                 >
                   {getPackages.map((pkg) => (
@@ -192,7 +194,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
                 />
               </div>
               <div className="md:flex w-full justify-between">
-                <label className="text-lg text-end w-1/8 mr-2">
+                <label className="text-sm text-end w-1/8 mr-2">
                   Payment Method:
                 </label>
                 <Select
@@ -206,6 +208,7 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
                     borderRadius: "md",
                     border: "1px solid black",
                     width: "100%",
+                    fontSize: "1rem",
                   }}
                 >
                   <Option value="online">Online</Option>

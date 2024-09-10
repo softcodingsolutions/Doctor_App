@@ -68,6 +68,7 @@ export default function ConsultingTime() {
 
   function handleTimeChange(e) {
     setInputTime(e.target.value);
+    console.log(e.target.value,"R");
   }
 
   function handleSlotChange(e) {

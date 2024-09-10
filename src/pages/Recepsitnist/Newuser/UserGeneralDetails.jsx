@@ -130,7 +130,7 @@ function UserGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
             </div>
             {/* display hidden */}
             <div className="flex items-center gap-2 invisible">
-              <div className="text-xl font-semibold">Select Doctor:</div>
+              <div className=" font-semibold">Select Doctor:</div>
               <Select
                 placeholder="Select"
                 value={getDoctorId}
@@ -252,33 +252,43 @@ function UserGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     />
                   </div>
                   <div className="flex gap-5 m-5">
-                    <label className="text-lg text-end w-1/3 mr-2">
-                      Gender:
-                    </label>
-                    <div className="flex gap-2 w-[21.5rem]">
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          value="male"
-                          {...register("gender")}
-                          className="mr-2"
-                        />
-                        Male
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          value="female"
-                          {...register("gender")}
-                          className="mr-2"
-                        />
-                        Female
-                      </label>
-                      {errors.gender && (
-                        <span className="text-base text-red-500 -mt-1.5">
-                          {errors.gender?.message}
-                        </span>
-                      )}
+                    <div className="flex">
+                      <div className="text-end w-1/3 mr-2">
+                        <label className="text-sm ">Gender:</label>
+                      </div>
+                      <div className="flex-col gap-2 w-[21.5rem] ml-8 text-sm">
+                        <div className="flex">
+                          <div>
+                            <label className="flex items-center">
+                              <input
+                                type="radio"
+                                value="male"
+                                {...register("gender")}
+                                className="mr-2"
+                              />
+                              Male
+                            </label>
+                          </div>
+                          <div className="ml-2">
+                            <label className="flex items-center">
+                              <input
+                                type="radio"
+                                value="female"
+                                {...register("gender")}
+                                className="mr-2"
+                              />
+                              Female
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          {errors.gender && (
+                            <span className="text-base text-red-500 -mt-1.5 text-sm">
+                              {errors.gender?.message}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-5 m-2">
@@ -312,7 +322,7 @@ function UserGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                   </div>
                   {weightLossDoctor?.toLowerCase() === "bhavesh" && (
                     <div className="flex gap-5 m-5">
-                      <label className="text-lg text-end w-1/3 mr-2">
+                      <label className="text-sm text-end w-1/3 mr-2">
                         Overweight Since:
                       </label>
                       <select
@@ -320,7 +330,7 @@ function UserGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         defaultValue="select"
                         placeholder="Select one"
                         {...register("overweight")}
-                        className="py-1 px-2 rounded-md border border-black"
+                        className="py-1 text-sm px-2 rounded-md border border-black"
                       >
                         <option value="select" disabled>
                           Select One

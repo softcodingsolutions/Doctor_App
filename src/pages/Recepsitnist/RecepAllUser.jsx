@@ -13,7 +13,7 @@ function RecepAllUsers() {
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
+  const rowsPerPage = 6;
 
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
@@ -62,14 +62,17 @@ function RecepAllUsers() {
   const handleCheckboxChange = (e) => {
     const formdata = new FormData();
     formdata.append("user_id", e.target.value);
+    setLoading(true);
     axios
       .put(`/api/v1/users/indoor_activity_accessibility`, formdata)
       .then((res) => {
         console.log(res, "DATA RESPONSe");
+        setLoading(false);
         handleGetAllUsers();
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -85,13 +88,7 @@ function RecepAllUsers() {
     return formattedDate;
   };
 
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
+
 
   useEffect(() => {
     handleGetAllUsers();
@@ -137,6 +134,13 @@ function RecepAllUsers() {
               New Patient
             </button>
           </div>
+          <div className="flex items-center justify-end gap-2">
+            <input type="checkbox" checked className="w-4 h-4 border border-gray-800"/>
+            <div> - Indoor activity accessibility</div> 
+            <div className="w-4 h-4 bg-blue-300 border border-gray-800"> </div>
+            <div>- New Patient</div>
+          </div>
+
           <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out h-[75vh]">
             <table className="w-full min-w-[460px] z-0 ">
               <thead className="uppercase ">
@@ -144,12 +148,11 @@ function RecepAllUsers() {
                   <ThComponent moreClasses={"rounded-tl-md rounded-bl-md"} />
                   <ThComponent name="Case No." />
                   <ThComponent name="Patient Name" />
-                  <ThComponent name="Date" />
                   <ThComponent name="Age" />
                   <ThComponent name="Weight" />
                   <ThComponent name="Mobile Number" />
-                  <ThComponent name="Type" />
-                  <ThComponent name="Patient Created At" />
+                  {/* <ThComponent name="Type" /> */}
+                  <ThComponent name="Created At" />
                   <ThComponent name="Doctor Name" />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
@@ -168,10 +171,17 @@ function RecepAllUsers() {
                   paginateCustomers().map((val) => {
                     return (
                       val.role === "patient" && (
-                        <tr key={val.id} className=" hover:bg-gray-200">
+                        <tr
+                          key={val.id}
+                          className={
+                            val.follow_up === false
+                              ? "border-l-4 border-blue-300 hover:bg-gray-200"
+                              : "hover:bg-gray-200"
+                          }
+                        >
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <td className="py-2 px-4 border-b border-b-gray-50">
-                              <div className="flex items-center text-lg">
+                              <div className="flex items-center text-sm">
                                 <input
                                   value={val.id}
                                   checked={val.indoor_activity_access}
@@ -183,7 +193,7 @@ function RecepAllUsers() {
                             </td>
                           </td>
                           <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center text-lg">
+                            <div className="flex items-center text-sm">
                               {val.case_number}
                             </div>
                           </td>
@@ -191,9 +201,6 @@ function RecepAllUsers() {
                             <TdComponent
                               things={val?.first_name + " " + val?.last_name}
                             />
-                          </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50 break-all ">
-                            <TdComponent things={formatDate(val?.created_at)} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.personal_detail?.age} />
@@ -206,16 +213,16 @@ function RecepAllUsers() {
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          {/* <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent
                               things={val.follow_up ? "Follow Up" : "New Case"}
                             />
-                          </td>{" "}
+                          </td>{" "} */}
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={convertDate(val.created_at)} />
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
-                            <div className="text-black font-medium ml-1 text-wrap text-base">
+                            <div className="text-black font-medium ml-1 text-sm text-wrap ">
                               {val?.creator === "franchise"
                                 ? `${val?.doctor?.doctor?.first_name} ${val?.doctor?.doctor?.last_name}`
                                 : `${val?.doctor?.first_name} ${val?.doctor?.last_name}`}

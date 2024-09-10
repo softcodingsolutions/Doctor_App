@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Dialog } from "@headlessui/react";
 import InsideLoader from "../../InsideLoader";
+import { useNavigate } from "react-router-dom";
 
 const generateTimeSlots = () => {
   const slots = [];
@@ -143,6 +144,7 @@ const UserTable = ({
 };
 
 export default function Indooractivity() {
+  const navigate = useNavigate();
   const [machines, setMachines] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [assignedData, setAssignedData] = useState(false);
@@ -164,7 +166,6 @@ export default function Indooractivity() {
   const timeSlots = generateTimeSlots();
   const [appointments, setAppointments] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [error, setError] = useState("");
@@ -185,6 +186,9 @@ export default function Indooractivity() {
       });
   };
 
+  const handleRedirect = () => {
+    navigate(`/receptionist/patients/all-users`);
+  };
   const handleButtonClick = (
     machineId,
     doctorId,
@@ -259,14 +263,6 @@ export default function Indooractivity() {
       }
     }
   };
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setDialogData((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
 
   const resetDialog = () => {
     setDialogData({
@@ -397,7 +393,11 @@ export default function Indooractivity() {
         .then((res) => {
           setLoading(false);
           setGetParticularCustomer(res.data.users);
-          setError("");
+          if (res.data?.users?.length > 0) {
+            setError("");
+          } else {
+            setError("Not found in Indoor Activity List");
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -405,7 +405,6 @@ export default function Indooractivity() {
         });
     } else {
       setGetParticularCustomer([]);
-      setError("Please provide valid Patient name or phone number");
     }
   };
 
@@ -648,6 +647,13 @@ export default function Indooractivity() {
                     </div>
                   </div>
                   <div className="mt-4 flex justify-end space-x-2">
+                    <button
+                      type="button"
+                      onClick={handleRedirect}
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      Patient List
+                    </button>
                     <button
                       type="button"
                       onClick={handleSubmit}
