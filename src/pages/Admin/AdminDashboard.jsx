@@ -38,7 +38,7 @@ function AdminDashboard() {
     axios
       .get(`/api/v1/users`)
       .then((res) => {
-        console.log(res)
+        console.log(res);
         const patients = res.data?.users?.filter(
           (user) => user.role === "patient" && user.created_by_id == main_id
         );
@@ -46,8 +46,7 @@ function AdminDashboard() {
           (user) =>
             user.role === "patient" &&
             user.follow_up === false &&
-             user.created_by_id == main_id
-            
+            user.created_by_id == main_id
         );
         setGetNewPatients(newPatients?.length);
         setGetTotalPatients(patients?.length);

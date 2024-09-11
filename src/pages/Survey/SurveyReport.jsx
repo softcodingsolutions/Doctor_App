@@ -132,234 +132,237 @@ export default function SurveyReport() {
   };
 
   return (
-    <div className="">
-      <header className="bg-[#FEFAF6] ">
-        <div className=" items-center absolute p-3">
-          <img
-            src="https://slimandsmile.com/assets/front/images/logo.png"
-            alt=""
-            className="h-16"
-          />
-        </div>
-        <div className="flex justify-center p-3">
-          <h1 className="text-2xl  text-[#1F2937] font-bold">
-            Surveillance @ Overweight
-          </h1>
-        </div>
-      </header>
-      <main>
-        <div className="bg-[#FEFAF6]">
-          <div className="text-center font-semibold text-[#799351]">
-            <h2>
-              Summary of participants in the campaign of 'Surveillance @
-              Overweight'
-            </h2>
-            <h4>Total number of Surveys:{count}</h4>
+    <div className="w-full p-2">
+      <div className="rounded-lg bg-card h-[87vh] bg-white">
+        <header className="bg-[#FEFAF6] grid grid-cols-2 relative">
+          <div className="absolute left-0 top-0 p-5">
+            <img
+              src="https://slimandsmile.com/assets/front/images/logo.png"
+              alt="Logo"
+              className="h-12 sm:h-16 md:h-20 "
+            />
           </div>
-          <div className="flex justify-end pr-5 ">
-            <button
-              type="submit"
-              className="p-3 text-[#1F2937] rounded-md border border-gray-500 font-bold text-lg hover:scale-105"
-              style={{ backgroundColor: "#799351" }}
-              onClick={handleNext}
-            >
-              <FaHouseChimney size={28} />
-            </button>
+          <div className="flex justify-center w-full lg:ml-96 lg:mt-0 mt-16 p-3" >
+            <h1 className="text-lg sm:text-xl md:text-2xl text-[#1F2937] font-bold text-center">
+              Surveillance @ Overweight
+            </h1>
           </div>
-          <div className="grid grid-cols-2 bg-[#F6F5F2]">
-            <div className="flex flex-col p-10 items-center border-1 ">
-              <label className="font-semibold  text-[#1F2937] text-lg">
-                Obesity based on BMI
-              </label>
-              <Table aria-label="striped table">
-                <thead>
-                  <tr>
-                    <th style={styles.reason}>Reason</th>
-                    <th style={styles.total}>Total%</th>
-                    <th style={styles.male}>Male%</th>
-                    <th style={styles.female}>Female%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows1.map((row) => (
-                    <tr key={row.total}>
-                      <td style={styles.reason}>{row.reason}</td>
-                      <td style={styles.total}>{row.total}</td>
-                      <td style={styles.male}>{row.male}</td>
-                      <td style={styles.female}>{row.female}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-            <div className="flex flex-col p-10 items-center border-1 ">
-              <label className="font-semibold text-[#1F2937] text-lg">
-                The key reason for the weight gain is base on participants
-                opinion
-              </label>
-              <Table aria-label="striped table">
-                <thead>
-                  <tr>
-                    <th style={styles.reason}>Reason</th>
-                    <th style={styles.total}>Total%</th>
-                    <th style={styles.male}>Male%</th>
-                    <th style={styles.female}>Female%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {row2.map((row) => (
-                    <tr key={row.total}>
-                      <td style={styles.reason}>{row.reason}</td>
-                      <td style={styles.total}>{row.total}</td>
-                      <td style={styles.male}>{row.male}</td>
-                      <td style={styles.female}>{row.female}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-            <div className="flex flex-col  p-10 items-center border-1 ">
-              <label className="font-semibold text-[#1F2937] text-lg">
-                As per our scientific study the following key possibility for
-                weight gain
-              </label>
-              <Table aria-label="striped table">
-                <thead>
-                  <tr>
-                    <th style={styles.reason}>Reason</th>
-                    <th style={styles.total}>Total%</th>
-                    <th style={styles.male}>Male%</th>
-                    <th style={styles.female}>Female%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {row3.map((row) => (
-                    <tr key={row.total}>
-                      <td style={styles.reason}>{row.reason}</td>
-                      <td style={styles.total}>{row.total}</td>
-                      <td style={styles.male}>{row.male}</td>
-                      <td style={styles.female}>{row.female}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-            <div className="flex flex-col p-10 items-center border-1 ">
-              <label className="font-semibold text-[#1F2937] text-lg">
-                Participants of the survey are suffering the following disease,
-                due to overweight
-              </label>
-              <Table aria-label="striped table">
-                <thead>
-                  <tr>
-                    <th style={styles.reason}>Reason</th>
-                    <th style={styles.total}>Total%</th>
-                    <th style={styles.male}>Male%</th>
-                    <th style={styles.female}>Female%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {row4.map((row) => (
-                    <tr key={row.total}>
-                      <td style={styles.reason}>{row.reason}</td>
-                      <td style={styles.total}>{row.total}</td>
-                      <td style={styles.male}>{row.male}</td>
-                      <td style={styles.female}>{row.female}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          </div>
-          <div className="flex items-center  justify-center text-center font-semibold text-2xl bg-[#FEFAF6] text-[#799351] h-20">
-            <h2>Participants Ratio</h2>
-          </div>
-          <div className="grid grid-cols-2 bg-[#F6F5F2]">
-            <div
-              className="flex flex-col p-20 items-center border-1"
-              style={tableContainerStyle}
-            >
-              <label className="font-semibold  text-[#1F2937] text-lg">
-                Gender
-              </label>
-              <Table aria-label="striped table">
-                <tbody>
-                  {gender.map((row) => (
-                    <tr key={row.number}>
-                      <td>{row.string}</td>
-                      <td>{row.number}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-            <div
-              className="flex flex-col p-10 items-center border-1 "
-              style={tableContainerStyle}
-            >
-              <label className="font-semibold  text-[#1F2937] text-lg">
-                Age
-              </label>
-              <Table aria-label="striped table">
-                <thead>
-                  <tr>
-                    <th style={styles.reason}>Group</th>
-                    <th style={styles.total}>Total%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {age.map((row) => (
-                    <tr key={row.total}>
-                      <td style={styles.reason}>{row.string}</td>
-                      <td style={styles.total}>{row.number}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          </div>
-          <div className="bg-[#F6F5F2]">
-            <div
-              className="flex flex-col  p-10 items-center border-1 "
-              style={tableContainerStyle}
-            >
-              <label className="font-semibold text-[#1F2937] text-lg">
-                Summary of Fat Deposition Area
-              </label>
-              <Table aria-label="striped table">
-                <thead>
-                  <tr>
-                    <th style={styles.reason}>Reason</th>
-                    <th style={styles.total}>Total%</th>
-                    <th style={styles.male}>Male%</th>
-                    <th style={styles.female}>Female%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {summary.map((row) => (
-                    <tr key={row.total}>
-                      <td style={styles.reason}>{row.reason}</td>
-                      <td style={styles.total}>{row.total}</td>
-                      <td style={styles.male}>{row.male}</td>
-                      <td style={styles.female}>{row.female}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-              <h2 className="font-semibold text-[#1F2937] text-lg">
-                Note:The overall report may vary by 1%
+        </header>
+
+        <main>
+          <div className="bg-[#FEFAF6]">
+            <div className="grid grid-cols-1 text-center font-semibold text-[#799351] ">
+              <h2>
+                Summary of participants in the campaign of 'Surveillance @
+                Overweight'
               </h2>
+              <h4>Total number of Surveys:{count}</h4>
+            </div>
+            <div className="flex justify-end pr-5 ">
+              <button
+                type="submit"
+                className="p-3 text-[#1F2937] rounded-md border border-gray-500 font-bold text-lg hover:scale-105"
+                style={{ backgroundColor: "#799351" }}
+                onClick={handleNext}
+              >
+                <FaHouseChimney size={28} />
+              </button>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 bg-[#F6F5F2]">
+              <div className="flex flex-col p-10 items-center border-1 ">
+                <label className="font-semibold  text-[#1F2937] text-lg">
+                  Obesity based on BMI
+                </label>
+                <Table aria-label="striped table">
+                  <thead>
+                    <tr>
+                      <th style={styles.reason}>Reason</th>
+                      <th style={styles.total}>Total%</th>
+                      <th style={styles.male}>Male%</th>
+                      <th style={styles.female}>Female%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows1.map((row) => (
+                      <tr key={row.total}>
+                        <td style={styles.reason}>{row.reason}</td>
+                        <td style={styles.total}>{row.total}</td>
+                        <td style={styles.male}>{row.male}</td>
+                        <td style={styles.female}>{row.female}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+              <div className="flex flex-col p-10 items-center border-1 ">
+                <label className="font-semibold text-[#1F2937] text-lg">
+                  The key reason for the weight gain is base on participants
+                  opinion
+                </label>
+                <Table aria-label="striped table">
+                  <thead>
+                    <tr>
+                      <th style={styles.reason}>Reason</th>
+                      <th style={styles.total}>Total%</th>
+                      <th style={styles.male}>Male%</th>
+                      <th style={styles.female}>Female%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {row2.map((row) => (
+                      <tr key={row.total}>
+                        <td style={styles.reason}>{row.reason}</td>
+                        <td style={styles.total}>{row.total}</td>
+                        <td style={styles.male}>{row.male}</td>
+                        <td style={styles.female}>{row.female}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+              <div className="flex flex-col  p-10 items-center border-1 ">
+                <label className="font-semibold text-[#1F2937] text-lg">
+                  As per our scientific study the following key possibility for
+                  weight gain
+                </label>
+                <Table aria-label="striped table">
+                  <thead>
+                    <tr>
+                      <th style={styles.reason}>Reason</th>
+                      <th style={styles.total}>Total%</th>
+                      <th style={styles.male}>Male%</th>
+                      <th style={styles.female}>Female%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {row3.map((row) => (
+                      <tr key={row.total}>
+                        <td style={styles.reason}>{row.reason}</td>
+                        <td style={styles.total}>{row.total}</td>
+                        <td style={styles.male}>{row.male}</td>
+                        <td style={styles.female}>{row.female}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+              <div className="flex flex-col p-10 items-center border-1 ">
+                <label className="font-semibold text-[#1F2937] text-lg">
+                  Participants of the survey are suffering the following
+                  disease, due to overweight
+                </label>
+                <Table aria-label="striped table">
+                  <thead>
+                    <tr>
+                      <th style={styles.reason}>Reason</th>
+                      <th style={styles.total}>Total%</th>
+                      <th style={styles.male}>Male%</th>
+                      <th style={styles.female}>Female%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {row4.map((row) => (
+                      <tr key={row.total}>
+                        <td style={styles.reason}>{row.reason}</td>
+                        <td style={styles.total}>{row.total}</td>
+                        <td style={styles.male}>{row.male}</td>
+                        <td style={styles.female}>{row.female}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            </div>
+            <div className="flex items-center  justify-center text-center font-semibold text-2xl bg-[#FEFAF6] text-[#799351] h-20">
+              <h2>Participants Ratio</h2>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 bg-[#F6F5F2]">
+              <div
+                className="flex flex-col p-20 items-center border-1"
+                style={tableContainerStyle}
+              >
+                <label className="font-semibold  text-[#1F2937] text-lg">
+                  Gender
+                </label>
+                <Table aria-label="striped table">
+                  <tbody>
+                    {gender.map((row) => (
+                      <tr key={row.number}>
+                        <td>{row.string}</td>
+                        <td>{row.number}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+              <div
+                className="flex flex-col p-10 items-center border-1 "
+                style={tableContainerStyle}
+              >
+                <label className="font-semibold  text-[#1F2937] text-lg">
+                  Age
+                </label>
+                <Table aria-label="striped table">
+                  <thead>
+                    <tr>
+                      <th style={styles.reason}>Group</th>
+                      <th style={styles.total}>Total%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {age.map((row) => (
+                      <tr key={row.total}>
+                        <td style={styles.reason}>{row.string}</td>
+                        <td style={styles.total}>{row.number}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            </div>
+            <div className="bg-[#F6F5F2]">
+              <div
+                className="flex flex-col  p-10 items-center border-1 "
+                style={tableContainerStyle}
+              >
+                <label className="font-semibold text-[#1F2937] text-lg">
+                  Summary of Fat Deposition Area
+                </label>
+                <Table aria-label="striped table">
+                  <thead>
+                    <tr>
+                      <th style={styles.reason}>Reason</th>
+                      <th style={styles.total}>Total%</th>
+                      <th style={styles.male}>Male%</th>
+                      <th style={styles.female}>Female%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {summary.map((row) => (
+                      <tr key={row.total}>
+                        <td style={styles.reason}>{row.reason}</td>
+                        <td style={styles.total}>{row.total}</td>
+                        <td style={styles.male}>{row.male}</td>
+                        <td style={styles.female}>{row.female}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+                <h2 className="font-semibold text-[#1F2937] text-lg">
+                  Note:The overall report may vary by 1%
+                </h2>
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-      <footer>
-        <div className="flex justify-center items-center text-center bg-[#FEFAF6] h-16">
-          <a className="text-lg text-[#799351] font-semibold" href="/">
-            Contact Us @ Slim And Smile
-          </a>
-        </div>
-      </footer>
+        </main>
+        <footer>
+          <div className="flex justify-center items-center text-center bg-[#FEFAF6] h-16">
+            <a className="text-lg text-[#799351] font-semibold" href="/">
+              Contact Us @ Slim And Smile
+            </a>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

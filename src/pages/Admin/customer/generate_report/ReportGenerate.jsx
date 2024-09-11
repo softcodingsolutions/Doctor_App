@@ -27,41 +27,41 @@ Font.register({
 });
 
 const styles = StyleSheet.create({
-  page: { padding: 30 },
-  section: { margin: 10, padding: 10 },
+  page: { padding: 10 },
+  section: { margin: 5, padding: 5 },
   header: {
-    fontSize: 20,
+    fontSize: 18,
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
   },
   body: { justifyContent: "center" },
-  s: { marginBottom: 20, justifyContent: "center" },
-  heading: { margin: 10, padding: 10, display: "grid" },
-  subtitle: { fontSize: 16, marginTop: 10 },
-  Name: { fontSize: 16, fontFamily: "Tiro Devanagari Hindi" },
-  table: { display: "table", width: "auto", margin: "10px 0" },
+  s: { marginBottom: 15, justifyContent: "center" },
+  heading: { margin: 5, padding: 5, display: "grid" },
+  subtitle: { fontSize: 14, marginTop: 5 },
+  Name: { fontSize: 14, fontFamily: "Tiro Devanagari Hindi" },
+  table: { display: "table", width: "auto", margin: "5px 0" },
   tableRow: { flexDirection: "row" },
   tableCol: {
     width: "25%",
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#bfbfbf",
-    padding: 5,
+    padding: 3,
   },
   tableCell: {
     margin: "auto",
-    marginTop: 5,
-    fontSize: 10,
+    marginTop: 3,
+    fontSize: 8,
     fontFamily: "Noto Sans Gujarati",
   },
   tableCellHindi: {
     margin: "auto",
-    marginTop: 5,
-    fontSize: 10,
+    marginTop: 3,
+    fontSize: 8,
     fontFamily: "Tiro Devanagari Hindi",
   },
-  image: { width: 140, height: 50 },
+  image: { width: 120, height: 40 },
 });
 
 export const BillDocument = ({ data }) => (
@@ -379,7 +379,7 @@ export const BillDocument = ({ data }) => (
                   flexDirection: "row",
                   backgroundColor: "black",
                   color: "white",
-                  fontWeight: "bold", // Ensures header text stands out
+                  fontWeight: "bold",
                 }}
               >
                 <View style={styles.tableCol}>

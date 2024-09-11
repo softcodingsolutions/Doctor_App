@@ -12,16 +12,9 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
   const [selected, setSelected] = useState("1");
 
   const sidebarItems = [
-    // {
-    //   id: "0",
-    //   title: "Dashboard",
-    //   to: "dashboard",
-    //   icons: <IoMdHome size={18} />,
-    // },
     {
       id: "1",
       title: "Diagnosis Details",
-      // to: "user-diagnosis/profile",
       icons: <MdOutlineMedicalInformation size={18} />,
     },
   ];
