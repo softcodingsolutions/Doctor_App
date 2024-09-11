@@ -27,6 +27,7 @@ function LoginPage() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -150,6 +151,10 @@ function LoginPage() {
                 size="lg"
                 name="email"
                 {...register("email")}
+                onBlur={(e) => {
+                  const trimmedEmail = e.target.value.trim();
+                  setValue("email", trimmedEmail); // Manually set the trimmed value
+                }}
               />
               {errors.email && (
                 <span className="text-s text-red-500 -mt-4">
