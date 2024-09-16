@@ -96,24 +96,25 @@ function TreatmentQuestionPart1() {
   };
 
   const handleSendQuestionToBeAnswered = async (e) => {
-    console.log("min", e.target.value);
+    const selectedValue = e.target.value; 
+    console.log("min", selectedValue);
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
       context[0] === "null" ? null : context[0]
     );
     formData.append("package[user_id]", main_id);
-    formData.append("package[number_of_question_one]", e.target.value);
-
+    formData.append("package[number_of_question_one]", selectedValue);
     try {
       await axios
         .post("/api/v1/packages", formData)
         .then((res) => {
           console.log("min question list:", res);
+          setDefaultDropdownValue(selectedValue); 
           context[1]();
           Swal.fire({
             icon: "success",
-            title: `${e.target.value} questions are to be answered!`,
+            title: `${selectedValue} questions are to be answered!`,
             showCancelButtons: true,
           });
         })
@@ -225,15 +226,16 @@ function TreatmentQuestionPart1() {
 
             {!showCheckboxes && (
               <div className="flex items-center gap-2 font-bold text-lg">
-                <span>No. of questions to be answered:</span>{" "}
+                <span>No. of questions to be answered:</span>
                 {defaultDropdownValue}
-                <Select required placeholder="Select">
+                <Select
+                  required
+                  placeholder="Select"
+                  value={defaultDropdownValue}
+                  onChange={(e) => handleSendQuestionToBeAnswered(e)}
+                >
                   {[...Array(selectedCheckboxes.length).keys()].map((index) => (
-                    <MenuItem
-                      key={index}
-                      value={index + 1}
-                      onClick={handleSendQuestionToBeAnswered}
-                    >
+                    <MenuItem key={index} value={index + 1}>
                       {index + 1}
                     </MenuItem>
                   ))}

@@ -2,12 +2,14 @@ import { Option, Select } from "@mui/joy";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
+import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 
 function AdminTreatment() {
   const context = useOutletContext();
   const [getWeightReason, setGetWeightReason] = useState([]);
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [getPackages, setPackages] = useState([]);
+  const [seeRequired, setSeeRequired] = useState(true);
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
 
@@ -68,22 +70,31 @@ function AdminTreatment() {
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+      <div className=" h-screen flex-grow overflow-auto flex flex-col flex-wrap content-start p-2">
         <div className="w-fit p-2">
           <div className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"></div>
-          <Select required placeholder="Select">
-            {getWeightReason.map((res) => {
-              return (
-                <Option
-                  key={res.id}
-                  value={res.name}
-                  onClick={() => handleSendWeightReason(res.name, res.user_id)}
-                >
-                  {res.name}
-                </Option>
-              );
-            })}
-          </Select>
+          <div className="flex gap-2">
+            <Select required placeholder="Select a reason">
+              {getWeightReason.map((res) => {
+                return (
+                  <Option
+                    key={res.id}
+                    value={res.name}
+                    onClick={() => {
+                      handleSendWeightReason(res.name, res.user_id);
+                      setSeeRequired(false);
+                    }}
+                  >
+                    {res.name}
+                  </Option>
+                );
+              })}
+            </Select>
+            {seeRequired && (
+              <div className="text-red-500 text-sm">**Required</div>
+            )}
+          </div>
+
           <button
             onClick={context[0]}
             type="button"
@@ -95,7 +106,12 @@ function AdminTreatment() {
             />
           </button>
         </div>
-        <Outlet context={[sendWeightReason, handlegetPackages, getPackages]} />
+
+        {sendWeightReason !== null && (
+          <Outlet
+            context={[sendWeightReason, handlegetPackages, getPackages]}
+          />
+        )}
       </div>
     </div>
   );

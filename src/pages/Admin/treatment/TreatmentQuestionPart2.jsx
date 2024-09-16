@@ -96,24 +96,25 @@ function TreatmentQuestionPart2() {
   };
 
   const handleSendQuestionToBeAnswered = async (e) => {
-    console.log("min", e.target.value);
+    const selectedValue = e.target.value; 
+    console.log("min", selectedValue);
     const formData = new FormData();
     formData.append(
       "package[weight_reason]",
       context[0] === "null" ? null : context[0]
     );
     formData.append("package[user_id]", main_id);
-    formData.append("package[number_of_question_two]", e.target.value);
-
+    formData.append("package[number_of_question_two]", selectedValue);
     try {
       await axios
         .post("/api/v1/packages", formData)
         .then((res) => {
           console.log("min question list:", res);
+          setDefaultDropdownValue(selectedValue); 
           context[1]();
           Swal.fire({
             icon: "success",
-            title: `${e.target.value} questions are to be answered!`,
+            title: `${selectedValue} questions are to be answered!`,
             showCancelButtons: true,
           });
         })

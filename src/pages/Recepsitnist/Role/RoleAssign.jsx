@@ -23,6 +23,7 @@ export default function RoleAssign() {
         const doctor = res.data?.users?.filter(
           (user) => user.role !== "super_admin" && user.role !== "patient"
         );
+        console.log(doctor,"LIst")
         setDoctors(doctor);
         setLoading(false);
       })

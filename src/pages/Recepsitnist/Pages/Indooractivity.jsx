@@ -527,7 +527,20 @@ export default function Indooractivity() {
               <div className="fixed inset-0 bg-black/30 " aria-hidden="true" />
               <div className="fixed inset-0 flex items-center justify-center p-4">
                 <div className="bg-white rounded p-6 max-w-sm w-full">
-                  <h3 className="text-lg font-semibold">Patient Details</h3>
+                  <div className="grid grid-cols-2 gap-22">
+                    <div>
+                      <h3 className="text-lg font-semibold">Patient Details</h3>
+                    </div>
+                    <div className="flex w-full justify-end">
+                      <button
+                        type="button"
+                        onClick={closeDialog}
+                        className="inline-flex items-center px-4  py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
                   <div className="mt-4">
                     <div className="flex gap-3 p-2 items-center">
                       <input
@@ -660,13 +673,6 @@ export default function Indooractivity() {
                       className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
                       Submit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={closeDialog}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      Close
                     </button>
                   </div>
                 </div>

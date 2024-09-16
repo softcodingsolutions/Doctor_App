@@ -62,7 +62,7 @@ function RTreatmentMedicine() {
       const isBMapped = getPredictionMedicine.some((med) => med.id === b.id);
       return isBMapped - isAMapped;
     });
-
+    
     setFilteredMedicines(filtered);
   }, 300);
   
