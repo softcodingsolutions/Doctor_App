@@ -63,9 +63,9 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     },
     {
       id: "6",
-      title: "Master",
-      to: `master/questions`,
-      icons: <FaLightbulb size={18} />,
+      title: "Patient List",
+      to: "recpatients/recall-users",
+      icons: <IoPersonSharp size={18} />,
     },
   ];
 

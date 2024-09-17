@@ -36,6 +36,10 @@ function CustomerAllUsers() {
     setSearchTerm(value);
   };
 
+  const handleInventory = (caseNumber) => {
+    navigate(`/admin/admin-bill-history`, { state: { caseNumber } });
+  };
+
   const sortedCustomers = getParticularCustomer.sort((a, b) => {
     const aHasNoPackage = a.creator === "franchise";
     const bHasNoPackage = b.creator === "franchise";
@@ -153,31 +157,37 @@ function CustomerAllUsers() {
                           : "hover:bg-gray-200"
                       }
                     >
-                      <td className="py-2 px-4 border-b border-b-gray-50">
+                      <td className="py-2 px-4 border-b border-b-gray-50 text-sm">
                         {val.case_number}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
+                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
                         {val.first_name} {val.last_name}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
+                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
                         {val.personal_detail?.age}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
+                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
                         {val.personal_detail?.weight} kg
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
+                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
                         {val.phone_number}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
+                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
                         {val.follow_up ? "Follow Up" : "New Case"}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
+                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
                         {convertDate(val.created_at)}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
+                      <td className=" py-3 px-4 border-b  border-b-gray-50">
+                        <button
+                          className="font-medium p-1 text-green-600 border border-gray-300  text-sm rounded-md hover:bg-green-600 hover:text-white"
+                          onClick={() => handleInventory(val.case_number)}
+                        >
+                          Bill List
+                        </button>
                         <button
                           onClick={() => handleDiagnosis(val.id)}
-                          className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
+                          className="font-medium p-1 text-green-600 border text-sm ml-1 border-gray-300 rounded-md hover:bg-green-600 hover:text-white"
                         >
                           Diagnosis
                         </button>

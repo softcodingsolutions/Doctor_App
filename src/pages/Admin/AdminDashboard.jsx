@@ -16,13 +16,30 @@ function AdminDashboard() {
   const [getAppointments, setGetAppointments] = useState([]);
   const main_id = localStorage.getItem("main_id");
   const today = new Date();
-  const formattedDate = today.toISOString().split("T")[0];
+  const [isToday, setIsToday] = useState(true);
+  const [consultingTime, setConsultingTime] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
 
-  const handleGetAppointment = () => {
+  const handleConsulting = (e) => {
+    const selectedDate = e.target.value;
+    setConsultingTime(selectedDate);
+    handleGetAppointment(selectedDate);
+    const today = new Date().toISOString().split("T")[0];
+
+    if (selectedDate !== today) {
+      setIsToday(false);
+      setLoading(false);
+    } else {
+      setIsToday(true);
+    }
+  };
+
+  const handleGetAppointment = (date) => {
     axios
-      .get(`api/v1/appointments?date=${formattedDate}&doctor_id=${main_id}`)
+      .get(`api/v1/appointments?date=${date}&doctor_id=${main_id}`)
       .then((res) => {
         console.log("Todays Appointment: ", res.data?.appointments);
         setGetAppointments(res.data?.appointments);
@@ -105,7 +122,6 @@ function AdminDashboard() {
     // Convert 24-hour format to 12-hour format
     hour = hour % 12 || 12; // If hour is 0, set to 12 (for midnight), else convert
 
-    // Return the formatted time in 12-hour format with AM/PM
     return `${hour}:${minute} ${period}`;
   }
 
@@ -113,11 +129,11 @@ function AdminDashboard() {
     localStorage.setItem("userId", id);
     navigate(`../patients/user-diagnosis/questions`);
   };
-
   useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
     handleGetPatients();
     handleGetFranchise();
-    handleGetAppointment();
+    handleGetAppointment(today);
   }, []);
 
   if (loading) {
@@ -187,7 +203,19 @@ function AdminDashboard() {
               </div>
 
               <div className=" mt-5 w-full h-[76vh] flex flex-col gap-3 bg-white rounded-lg px-4 py-3">
-                <div className="font-medium text-xl">Todays Appointments: </div>
+                {isToday && (
+                  <label className="flex text-xl font-bold p-1 tracking-wide">
+                    Today's Appointments
+                  </label>
+                )}
+                <input
+                  type="date"
+                  placeholder="select date"
+                  className="py-1 px-2 rounded-md border mr-5 border-black w-[40vh]"
+                  value={consultingTime} // This ensures today's date is set by default
+                  onChange={handleConsulting}
+                />
+
                 <div className="bg-white h-[60vh] overflow-y-auto flex flex-col rounded-lg ">
                   {paginateCustomers().length === 0 ? (
                     <div className="flex w-full h-full items-center justify-center text-2xl">

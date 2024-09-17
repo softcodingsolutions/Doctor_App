@@ -131,6 +131,20 @@ function App() {
 
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>
+          <Route path="admin-bill-history" element={<BillHistory />} />
+
+          <Route path="recpatients" element={<RecepsitnistCustomers />}>
+            <Route path="recall-users" element={<RecepAllUsers />} />
+
+            {/* user created by receptionist */}
+            <Route path="recnew-user" element={<NewUser />}>
+              <Route
+                path="recgeneral-details"
+                element={<UserGeneralDetails />}
+              />
+            </Route>
+          </Route>
+
           <Route path="dashboard" element={<AdminDashboard />} />
 
           {/* user created by admin */}
