@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   body: { justifyContent: "center" },
   s: { marginBottom: 15, justifyContent: "center" },
   heading: { margin: 5, padding: 5, display: "grid" },
-  subtitle: { fontSize: 14, marginTop: 5 },
+  subtitle: { fontSize: 16, marginTop: 5 , fontWeight: "bold"  },
   Name: { fontSize: 14, fontFamily: "Tiro Devanagari Hindi" },
   table: { display: "table", width: "auto", margin: "5px 0" },
   tableRow: { flexDirection: "row" },

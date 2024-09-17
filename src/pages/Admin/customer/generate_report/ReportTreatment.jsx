@@ -15,6 +15,7 @@ function ReportTreatment() {
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [mappingPackages, setMappingPackages] = useState([]);
   const user_id = localStorage.getItem("userId");
+  let main_id = localStorage.getItem("main_id");
   const [loading, setLoading] = useState(false);
   const role = localStorage.getItem("role");
 
@@ -81,45 +82,82 @@ function ReportTreatment() {
       });
   };
 
-  const handleGetTreatmentPackages = () => {
-    axios
-      .get(`/api/v1/treatment_packages`)
-      .then((res) => {
-        console.log("Treatment Packages: ", res.data?.treatment_packages);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
-  };
-
   const handleGetWeightReason = () => {
-    axios
-      .get(`/api/v1/packages/find_packages?id=${user_id}`)
-      .then((res) => {
-        console.log(
-          "Got weight reason of the user",
-          res.data?.matching_packages
-        );
-        setMappingPackages(res.data?.matching_packages);
+    // Fetch doctor's weight reasons
+    console.log(role, "Role");
+    if (role == "franchise") {
+      main_id = localStorage.getItem("doctor_id");
+    }
+    console.log(main_id, "main id");
+    axios.get(`/api/v1/weight_reasons?user_id=${main_id}`).then((res) => {
+      console.log(
+        "Weight Reasons of particular doctor: ",
+        res.data?.weight_reasons
+      );
+      const doctorWeightReasons = res.data?.weight_reasons;
 
-        const data = res.data?.matching_packages.map((pack) => {
-          return [pack.package.weight_reason, pack.meets_requirements];
+      // Extract both id and name from doctor's weight reasons
+      const doctorWeightReasonsMap = doctorWeightReasons.reduce(
+        (acc, reason) => {
+          acc[reason.id] = reason.name; // Store both id and name in a map for easy lookup
+          return acc;
+        },
+        {}
+      );
+
+      // Fetch patient's matching packages
+      axios
+        .get(`/api/v1/packages/find_packages?id=${user_id}`)
+        .then((res) => {
+          console.log(
+            "Got weight reason of the user",
+            res.data?.matching_packages
+          );
+          setMappingPackages(res.data?.matching_packages);
+
+          // Map the patient's matching packages and extract both id and name
+          const patientWeightReasons = res.data?.matching_packages.map(
+            (pack) => {
+              return {
+                id: pack.package.weight_reason_id,
+                name: pack.package.weight_reason,
+                meets_requirements: pack.meets_requirements,
+              };
+            }
+          );
+
+          // Filter the patient's weight reasons to match both id and name with doctor's reasons
+          const filteredWeightReasons = patientWeightReasons.filter(
+            (pack) => doctorWeightReasonsMap[pack.id] === pack.name // Match by both id and name
+          );
+
+          // If no matches found, default to doctor's weight reasons (fallback)
+          const finalWeightReasons = filteredWeightReasons.length
+            ? filteredWeightReasons
+            : doctorWeightReasons.map((reason) => ({
+                id: reason.id,
+                name: reason.name,
+                meets_requirements: false, // Default `meets_requirements` to false for fallback
+              }));
+
+          console.log(finalWeightReasons);
+
+          // Set the final filtered weight reasons in state
+          setGetWeightReason(
+            finalWeightReasons.map((reason) => [
+              reason.name,
+              reason.meets_requirements,
+            ])
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.response?.data?.message + "!");
         });
-        setGetWeightReason(data);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
-  };
-
-  const handleSendWeightReason = (val) => {
-    setSendWeightReason(val);
+    });
   };
 
   useEffect(() => {
-    handleGetTreatmentPackages();
     handleGetWeightReason();
   }, [selectedId]);
 
@@ -142,8 +180,9 @@ function ReportTreatment() {
                   <Select
                     sx={{
                       width: "250px",
-                      border: "1px solid black"
+                      border: "1px solid black",
                     }}
+                    value={sendWeightReason ? sendWeightReason[0] : ""}
                     required
                     placeholder="Select Weight Reason"
                   >
@@ -151,14 +190,14 @@ function ReportTreatment() {
                       return (
                         <Option
                           style={{
-                            backgroundColor: res[1] ? "lightgreen" : "",
+                            backgroundColor: res[1] ? "" : "lightgreen",
                             marginBottom: "1px",
                           }}
                           key={res[0]}
                           value={res[0]}
-                          onClick={() => handleSendWeightReason(res)}
+                          onClick={() => setSendWeightReason(res)}
                         >
-                          {res}
+                          {res[0]}
                         </Option>
                       );
                     })}

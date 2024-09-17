@@ -157,11 +157,11 @@ export default function Home() {
             <div className="flex">
               <select
                 onChange={handleDoctorList}
-                defaultValue="select1"
+                defaultValue=""
                 value={doctorList}
                 className="p-2 rounded-md border border-black mr-5 w-[40vh]"
               >
-                <option value="select1" selected>
+                <option value={""} selected>
                   Select Doctor
                 </option>
                 {filteredDoctors

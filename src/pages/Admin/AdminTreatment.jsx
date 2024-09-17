@@ -44,7 +44,7 @@ function AdminTreatment() {
 
   const handlegetPackages = () => {
     axios
-      .get("/api/v1/packages")
+      .get(`/api/v1/packages?user_id=${main_id}`)
       .then((res) => {
         console.log("Packages", res.data?.packages);
         setPackages(res.data?.packages);

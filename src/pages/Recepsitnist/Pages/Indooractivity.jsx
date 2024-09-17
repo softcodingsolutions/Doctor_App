@@ -60,7 +60,7 @@ const UserTable = ({
   return (
     <div className="m-1 w-full overflow-x-auto">
       <div className="flex flex-col h-full space-y-4">
-        <div className="text-lg font-medium text-center mt-5">{userName}</div>
+        <div className="text-lg font-medium text-center mt-5">Dr. {userName}</div>
         <table className="min-w-80 divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>

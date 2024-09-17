@@ -81,13 +81,13 @@ function TreatmentMedicines() {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
 
-    if (isChecked) {
-      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
-    } else {
-      setSelectedCheckboxes((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
-      );
-    }
+    setSelectedCheckboxes((prevState) => {
+      if (isChecked) {
+        return [...new Set([...prevState, checkboxValue])]; // Add and remove duplicates
+      } else {
+        return prevState.filter((value) => value !== checkboxValue); // Remove unchecked item
+      }
+    });
   };
 
   const handleSave = async () => {
@@ -136,16 +136,15 @@ function TreatmentMedicines() {
   };
 
   useEffect(() => {
-    const preSelectedMedicine = context[2]?.reduce((acc, packages) => {
+    const preSelectedMedicines = context[2]?.reduce((acc, packages) => {
       if (context[0] === packages.weight_reason) {
-        acc = [...acc, ...packages.medicines.map((q) => String(q.id))];
+        acc.push(...packages.medicines.map((med) => String(med.id)));
       }
       return acc;
     }, []);
-    console.log("pre", preSelectedMedicine);
-    setSelectedCheckboxes(preSelectedMedicine);
-  }, [context]);
 
+    setSelectedCheckboxes([...new Set(preSelectedMedicines)]); // Remove duplicates
+  }, [context]);
   useEffect(() => {
     handleGetMedicines();
   }, [context[0]]);
@@ -237,13 +236,9 @@ function TreatmentMedicines() {
                               onChange={handleCheckboxChange}
                               type="checkbox"
                               className="size-4"
-                              defaultChecked={context[2]?.some(
-                                (packages) =>
-                                  context[0] === packages.weight_reason &&
-                                  packages.medicines?.some(
-                                    (med) => med.id === val.id
-                                  )
-                              )}
+                              checked={selectedCheckboxes.includes(
+                                String(val.id)
+                              )} // Controlled input
                             />
                           </td>
                         )}

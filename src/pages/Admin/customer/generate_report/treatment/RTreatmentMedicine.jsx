@@ -21,6 +21,7 @@ function RTreatmentMedicine() {
   const [dropdownValues, setDropdownValues] = useState({});
 
   const handleGetMedicines = () => {
+    console.log(mappingPackages)
     if (sendWeightReason) {
       const data = mappingPackages.filter((pack) => {
         return sendWeightReason[0] === pack.package.weight_reason;
