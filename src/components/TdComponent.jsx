@@ -1,6 +1,6 @@
 function TdComponent(props) {
   return (
-    <div className="text-black font-medium ml-1 text-wrap  text-md text-base">
+    <div className="text-black font-medium ml-1 text-wrap  text-sm ">
       {props.things}
     </div>
   );

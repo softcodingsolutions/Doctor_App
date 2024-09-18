@@ -24,7 +24,7 @@ const steps = [
   "Complains",
   "Questions",
   "Diagnosis",
-  "Checkout",
+  // "Checkout",
 ];
 
 function FranchiseNewcustomer() {
@@ -39,7 +39,7 @@ function FranchiseNewcustomer() {
     complains: [],
     questions: [],
     diagnosis: [],
-    checkout: [],
+    // checkout: [],
     doctorId: "",
   });
 
@@ -57,9 +57,8 @@ function FranchiseNewcustomer() {
     setIsGeneralDetailsValid(isValid);
   };
 
-  const handleCallUserApi = async (checkout) => {
+  const handleCallUserApi = async () => {
     console.log("Waah");
-    console.log("Checkout...", checkout);
     try {
       setLoading(true);
       const res = await axios.get(`/api/v1/users/app_creds`);
@@ -93,35 +92,34 @@ function FranchiseNewcustomer() {
           client_id: res.data?.client_id,
         })
         .then((res) => {
-          const formData = new FormData();
-          formData.append("user_package[user_id]", res.data?.user?.user?.id);
-          formData.append("user_package[no_of_days]", checkout?.duration);
-          formData.append("user_package[package_name]", checkout?.package_name);
-          formData.append("user_package[package_price]", checkout?.grand_total);
-          formData.append("user_package[starting_date]", checkout?.from_date);
-          formData.append("user_package[ending_date]", checkout?.to_date);
-          axios
-            .post("/api/v1/user_packages", formData)
-            .then((res) => {
-              console.log(res);
-              setLoading(false);
-              if (res.data) {
-                Swal.fire({
-                  position: "top-end",
-                  icon: "success",
-                  title: "Created!",
-                  text: `New user has been created.`,
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-                localStorage.removeItem("client_email");
-                navigate("../../franchise/patients/all-users");
-              }
-            })
-            .catch((err) => {
-              setLoading(false);
-              alert(err.response?.data?.message + "!");
+          console.log(res);
+          setLoading(false);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Created!",
+              text: `New user has been created.`,
+              showConfirmButton: false,
+              timer: 1500,
             });
+            localStorage.removeItem("client_email");
+            navigate("../../franchise/patients/all-users");
+          }
+          // const formData = new FormData();
+          // formData.append("user_package[user_id]", res.data?.user?.user?.id);
+          // formData.append("user_package[no_of_days]", checkout?.duration);
+          // formData.append("user_package[package_name]", checkout?.package_name);
+          // formData.append("user_package[package_price]", checkout?.grand_total);
+          // formData.append("user_package[starting_date]", checkout?.from_date);
+          // formData.append("user_package[ending_date]", checkout?.to_date);
+          // axios
+          //   .post("/api/v1/user_packages", formData)
+          //   .then((res) => {})
+          //   .catch((err) => {
+          //     setLoading(false);
+          //     alert(err.response?.data?.message + "!");
+          //   });
         });
     } catch (error) {
       setLoading(false);
@@ -223,15 +221,15 @@ function FranchiseNewcustomer() {
             onNext={handleNextStep}
             onBack={handleBackStep}
             onValidate={handleValidation}
-          />
-        )}
-        {currentStep === 6 && (
-          <FranchiesCheckout
-            setStoreData={setStoreData}
-            onBack={handleBackStep}
             handleCallUserApi={handleCallUserApi}
           />
         )}
+        {/* {currentStep === 6 && (
+          <FranchiesCheckout
+            setStoreData={setStoreData}
+            onBack={handleBackStep}
+          />
+        )} */}
       </div>
     </div>
   );

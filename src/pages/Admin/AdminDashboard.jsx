@@ -21,7 +21,7 @@ function AdminDashboard() {
     new Date().toISOString().split("T")[0]
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
+  const rowsPerPage = 4;
 
   const handleConsulting = (e) => {
     const selectedDate = e.target.value;
@@ -163,11 +163,11 @@ function AdminDashboard() {
 
           <div className="relative overflow-y-auto">
             <div className="px-4">
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                      <span className="text-lg sm:text-xl leading-none font-bold text-gray-900">
                         {getTotalPatients}
                       </span>
                       <h3 className="text-base font-normal text-gray-500">
@@ -176,10 +176,10 @@ function AdminDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+                <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                      <span className="text-lg sm:text-xl leading-none font-bold text-gray-900">
                         {getTotalFranchise}
                       </span>
                       <h3 className="text-base font-normal text-gray-500">
@@ -188,10 +188,10 @@ function AdminDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+                <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <span className="text-2xl sm:text-3xl leading-none font-bold text-gray-900">
+                      <span className="text-lg sm:text-xl leading-none font-bold text-gray-900">
                         {getNewPatients}
                       </span>
                       <h3 className="text-base font-normal text-gray-500">
@@ -202,20 +202,21 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              <div className=" mt-5 w-full h-[76vh] flex flex-col gap-3 bg-white rounded-lg px-4 py-3">
+              <div className=" mt-2 w-full h-[76vh] flex flex-col gap-3 bg-white rounded-lg px-4 py-3">
                 {isToday && (
-                  <label className="flex text-xl font-bold p-1 tracking-wide">
+                  <label className="flex justify-center text-lg font-bold  tracking-wide">
                     Today's Appointments
                   </label>
                 )}
-                <input
-                  type="date"
-                  placeholder="select date"
-                  className="py-1 px-2 rounded-md border mr-5 border-black w-[40vh]"
-                  value={consultingTime} // This ensures today's date is set by default
-                  onChange={handleConsulting}
-                />
-
+                <div className="w-full flex justify-end ">
+                  <input
+                    type="date"
+                    placeholder="select date"
+                    className="py-1 px-1  rounded-md border  border-black w-[40vh]"
+                    value={consultingTime} // This ensures today's date is set by default
+                    onChange={handleConsulting}
+                  />
+                </div>
                 <div className="bg-white h-[60vh] overflow-y-auto flex flex-col rounded-lg ">
                   {paginateCustomers().length === 0 ? (
                     <div className="flex w-full h-full items-center justify-center text-2xl">
@@ -225,7 +226,7 @@ function AdminDashboard() {
                     paginateCustomers().map((res) => (
                       <div
                         key={res.id}
-                        className="flex text-md hover:bg-gray-200 items-center gap-3 border border-gray-200 min-h-20 shadow-inner rounded-md p-4"
+                        className="flex text-md hover:bg-gray-200 items-center gap-1 border border-gray-200 min-h-16 shadow-inner rounded-md p-2"
                       >
                         <img
                           src={
@@ -239,16 +240,18 @@ function AdminDashboard() {
 
                         <div className=" w-[16rem]">
                           <div className="flex w-80">
-                            <div className=" text-right break-words font-medium">
+                            <div className=" text-right break-words font-medium text-sm">
                               Case Number:
                             </div>
-                            <div className=" pl-2">{res.user?.case_number}</div>
+                            <div className=" pl-2 text-sm">
+                              {res.user?.case_number}
+                            </div>
                           </div>
                           <div className="flex">
-                            <div className=" text-right break-words font-medium">
+                            <div className=" text-right break-words font-medium text-sm">
                               Patient Name:
                             </div>
-                            <div className="pl-2">
+                            <div className="pl-2 text-sm">
                               {res.user?.first_name?.[0]?.toUpperCase() +
                                 res.user?.first_name?.slice(1) +
                                 " " +
@@ -260,18 +263,18 @@ function AdminDashboard() {
 
                         <div className=" w-[12rem]">
                           <div className="flex items-center ">
-                            <div className=" text-right break-words font-medium">
+                            <div className=" text-right break-words font-medium text-sm">
                               Age:
                             </div>
-                            <div className=" pl-2">
+                            <div className=" pl-2 text-sm">
                               {res.user?.personal_detail?.age}
                             </div>
                           </div>
                           <div className="flex items-center">
-                            <div className=" text-right break-words font-medium">
+                            <div className=" text-right break-words font-medium text-sm">
                               Weight:
                             </div>
-                            <div className="pl-2">
+                            <div className="pl-2 text-sm">
                               {res.user?.personal_detail?.weight} kg
                             </div>
                           </div>
@@ -279,18 +282,18 @@ function AdminDashboard() {
 
                         <div className=" w-[15rem]">
                           <div className="flex items-center ">
-                            <div className=" text-right break-words font-medium">
+                            <div className=" text-right break-words font-medium text-sm">
                               <BsFillTelephoneFill />
                             </div>
-                            <div className=" pl-2">
+                            <div className=" pl-2 text-sm">
                               {res.user?.phone_number}
                             </div>
                           </div>
                           <div className="flex items-center">
-                            <div className=" text-right break-words font-medium">
+                            <div className=" text-right break-words font-medium text-sm">
                               Type:
                             </div>
-                            <div className="pl-2">
+                            <div className="pl-2 text-sm">
                               {res.user?.follow_up ? "Follow Up" : "New Case"}
                             </div>
                           </div>
@@ -298,10 +301,10 @@ function AdminDashboard() {
 
                         <div className=" w-[14rem]">
                           <div className="flex items-center">
-                            <div className=" text-right break-words font-medium">
+                            <div className=" text-right break-words font-medium text-sm">
                               Time:
                             </div>
-                            <div className="pl-2">
+                            <div className="pl-2 text-sm">
                               {res.machine_detail?.name
                                 ? convertToAmPm(res.time)
                                 : res.time}
@@ -309,10 +312,10 @@ function AdminDashboard() {
                           </div>
                           {res.machine_detail?.name && (
                             <div className="flex items-center">
-                              <div className=" text-right break-words font-medium">
+                              <div className=" text-right break-words font-medium text-sm">
                                 Machine Name:
                               </div>
-                              <div className=" pl-2">
+                              <div className=" pl-2 text-sm">
                                 {res.machine_detail?.name}
                               </div>
                             </div>
@@ -321,7 +324,7 @@ function AdminDashboard() {
 
                         <button
                           onClick={() => handleDiagnosis(res.user?.id)}
-                          className="font-semibold text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
+                          className="font-medium text-sm text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
                         >
                           Diagnosis
                         </button>

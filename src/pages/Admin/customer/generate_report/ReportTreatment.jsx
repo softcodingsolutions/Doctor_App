@@ -169,7 +169,7 @@ function ReportTreatment() {
     <div className="w-full p-2">
       <div
         className={`rounded-lg bg-card ${
-          role === "patient" ? "h-[85vh]" : "h-[89vh]"
+          role === "patient" ? "h-[85vh]" : "h-[95vh]"
         } bg-white`}
       >
         <div className="flex px-4 py-3 h-full flex-col">

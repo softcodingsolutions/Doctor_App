@@ -107,11 +107,8 @@ export default function SurveyExersice() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="No."
-                  />
-                  <ThComponent name="Name" />
+                 
+                  <ThComponent name="Name"  moreClasses={"rounded-tl-md rounded-bl-md"} />
                   <ThComponent name="In English" />
                   <ThComponent name="In Gujarati" />
                   <ThComponent />
@@ -132,9 +129,7 @@ export default function SurveyExersice() {
                   paginateCustomers().map((val, index) => {
                     return (
                       <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">{index + 1}</div>
-                        </td>
+                        
                         <td className="py-2 px-4 border-b border-b-gray-50">
                           <div className="flex items-center">{val.name}</div>
                         </td>

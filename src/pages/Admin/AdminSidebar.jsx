@@ -67,6 +67,12 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "recpatients/recall-users",
       icons: <IoPersonSharp size={18} />,
     },
+    {
+      id: "12",
+      title: "Medicine List",
+      to: "recpatients/admin-medicine-inventory",
+      icons: <IoPersonSharp size={18} />,
+    },
   ];
 
   const masterItems = [

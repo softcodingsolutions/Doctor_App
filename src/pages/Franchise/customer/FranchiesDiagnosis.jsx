@@ -9,10 +9,11 @@ import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
 function FranchiesDiagnosis({
   onBack,
-  onNext,
+  // onNext,
   onValidate,
   storedData,
   setStoreData,
+  handleCallUserApi,
 }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
@@ -72,15 +73,7 @@ function FranchiesDiagnosis({
       diagnosis: selectedQuestions,
     }));
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Saved!",
-      text: `Your diagnosis questions has been saved.`,
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    onNext();
+    handleCallUserApi();
   };
 
   useEffect(() => {

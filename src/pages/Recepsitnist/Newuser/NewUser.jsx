@@ -24,7 +24,7 @@ const steps = [
   "Complains",
   "Questions",
   "Diagnosis",
-  "Checkout",
+  // "Checkout",
 ];
 
 function NewUser() {
@@ -39,7 +39,6 @@ function NewUser() {
     complains: [],
     questions: [],
     diagnosis: [],
-    checkout: [],
     doctorId: "",
   });
 
@@ -57,9 +56,8 @@ function NewUser() {
     setIsGeneralDetailsValid(isValid);
   };
 
-  const handleCallUserApi = async (checkout) => {
+  const handleCallUserApi = async () => {
     console.log("Waah");
-    console.log("Checking...", checkout);
     try {
       setLoading(true);
       const res = await axios.get(`/api/v1/users/app_creds`);
@@ -93,35 +91,35 @@ function NewUser() {
           client_id: res.data?.client_id,
         })
         .then((res) => {
-          const formData = new FormData();
-          formData.append("user_package[user_id]", res.data?.user?.user?.id);
-          formData.append("user_package[no_of_days]", checkout?.duration);
-          formData.append("user_package[package_name]", checkout?.package_name);
-          formData.append("user_package[package_price]", checkout?.grand_total);
-          formData.append("user_package[starting_date]", checkout?.from_date);
-          formData.append("user_package[ending_date]", checkout?.to_date);
-          axios
-            .post("/api/v1/user_packages", formData)
-            .then((res) => {
-              console.log(res);
-              setLoading(false);
-              if (res.data) {
-                Swal.fire({
-                  position: "top-end",
-                  icon: "success",
-                  title: "Created!",
-                  text: `New user has been created.`,
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-                localStorage.removeItem("client_email");
-                navigate("/receptionist/patients/all-users");
-              }
-            })
-            .catch((err) => {
-              setLoading(false);
-              alert(err.response?.data?.message + "!");
+          setLoading(false);
+          if (res.data) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Created!",
+              text: `New user has been created.`,
+              showConfirmButton: false,
+              timer: 1500,
             });
+            localStorage.removeItem("client_email");
+            navigate("/receptionist/patients/all-users");
+          }
+          // const formData = new FormData();
+          // formData.append("user_package[user_id]", res.data?.user?.user?.id);
+          // formData.append("user_package[no_of_days]", checkout?.duration);
+          // formData.append("user_package[package_name]", checkout?.package_name);
+          // formData.append("user_package[package_price]", checkout?.grand_total);
+          // formData.append("user_package[starting_date]", checkout?.from_date);
+          // formData.append("user_package[ending_date]", checkout?.to_date);
+          // axios
+          //   .post("/api/v1/user_packages", formData)
+          //   .then((res) => {
+          //     console.log(res);
+          //   })
+          //   .catch((err) => {
+          //     setLoading(false);
+          //     alert(err.response?.data?.message + "!");
+          //   });
         });
     } catch (error) {
       setLoading(false);
@@ -215,18 +213,19 @@ function NewUser() {
           <UserQuestionsPart2
             storedData={storeData.diagnosis}
             setStoreData={setStoreData}
-            onNext={handleNextStep}
+            // onNext={handleNextStep}
             onBack={handleBackStep}
             onValidate={handleValidation}
+            handleCallUserApi={handleCallUserApi}
           />
         )}
-        {currentStep === 6 && (
+        {/* {currentStep === 6 && (
           <UserCheckout
             setStoreData={setStoreData}
             onBack={handleBackStep}
             handleCallUserApi={handleCallUserApi}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

@@ -60,11 +60,13 @@ const UserTable = ({
   return (
     <div className="m-1 w-full overflow-x-auto">
       <div className="flex flex-col h-full space-y-4">
-        <div className="text-lg font-medium text-center mt-5">Dr. {userName}</div>
+        <div className="text-md  font-semibold text-center mt-5">
+          Dr. {userName}
+        </div>
         <table className="min-w-80 divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-5 sm:px-5 py-3 text-left text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wider">
+              <th className="px-5 sm:px-5 py-3 text-left text-xs sm:text-xs font-semibold text-gray-900 uppercase tracking-wider">
                 Time
               </th>
               {machines
@@ -72,14 +74,14 @@ const UserTable = ({
                 .map((machine) => (
                   <th
                     key={machine.id}
-                    className="px-5 sm:px-2 py-3 text-left text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wider"
+                    className="px-5 sm:px-2 py-3 text-left text-xs sm:text-xs font-semibold text-gray-900 uppercase tracking-wider"
                   >
                     {machine.name}
                   </th>
                 ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y text-xs divide-gray-200">
             {timeSlots.map((time, index) => {
               let bookedCount = 0;
               const rowItems = machines
@@ -100,7 +102,7 @@ const UserTable = ({
                   return (
                     <td
                       key={machine.id}
-                      className="px-5 sm:px-2 py-3 text-left text-xs sm:text-sm font-medium text-gray-900"
+                      className="px-5 sm:px-2 py-3 text-left text-xs sm:text-xs font-medium text-gray-900"
                     >
                       <div className="flex items-center justify-center sm:justify-start">
                         <div
@@ -189,6 +191,7 @@ export default function Indooractivity() {
   const handleRedirect = () => {
     navigate(`/receptionist/patients/all-users`);
   };
+
   const handleButtonClick = (
     machineId,
     doctorId,
@@ -383,6 +386,10 @@ export default function Indooractivity() {
     });
   };
 
+  const handleSheet = () => {
+    navigate("/receptionist/appointment/appointment-sheet");
+  };
+
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
     if (value) {
@@ -448,6 +455,16 @@ export default function Indooractivity() {
               <div className="text-md font-semibold ">
                 Date : {formatDate(consultingTime)}
               </div>
+            </div>
+            <div className="">
+              <button
+                type="submit"
+                className=" text-black p-1 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+                onClick={handleSheet}
+                style={{ backgroundColor: "#799351" }}
+              >
+                Appointments
+              </button>
             </div>
           </div>
           <div className="flex justify-center">

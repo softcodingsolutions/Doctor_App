@@ -100,6 +100,7 @@ import ErrorPage from "./pages/ErrorPage";
 import RecepsitnistCustomers from "./pages/Recepsitnist/RecepsitnistCustomers";
 import RecepAllUsers from "./pages/Recepsitnist/RecepAllUser";
 import Indooractivity from "./pages/Recepsitnist/Pages/Indooractivity";
+import AppointmentSheet from "./pages/Recepsitnist/Pages/AppointmentSheet";
 
 function App() {
   return (
@@ -114,7 +115,6 @@ function App() {
         <Route path="forget-password" element={<ForgetPassword />} />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="signup" element={<UserChooseDoctor />} />
-
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
@@ -134,14 +134,12 @@ function App() {
           <Route path="admin-bill-history" element={<BillHistory />} />
 
           <Route path="recpatients" element={<RecepsitnistCustomers />}>
+            <Route path="admin-medicine-inventory" element={<MedicalInventory />} />
             <Route path="recall-users" element={<RecepAllUsers />} />
 
             {/* user created by receptionist */}
-            <Route path="recnew-user" element={<NewUser />}>
-              <Route
-                path="recgeneral-details"
-                element={<UserGeneralDetails />}
-              />
+            <Route path="new-user" element={<NewUser />}>
+              <Route path="general-details" element={<UserGeneralDetails />} />
             </Route>
           </Route>
 
@@ -275,8 +273,10 @@ function App() {
 
           {/* appointment */}
           <Route path="appointment" element={<Appointment />}>
+            <Route path="appointment-sheet" element={<AppointmentSheet />} />
             <Route path="home" element={<Home />} />
             <Route path="create-appointment" element={<CreateAppointment />} />
+
             <Route
               path="create-machine-appointment"
               element={<Indooractivity />}

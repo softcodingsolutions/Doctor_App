@@ -180,14 +180,14 @@ function CustomerAllUsers() {
                       </td>
                       <td className=" py-3 px-4 border-b  border-b-gray-50">
                         <button
-                          className="font-medium p-1 text-green-600 border border-gray-300  text-sm rounded-md hover:bg-green-600 hover:text-white"
+                          className="font-medium p-1 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
                           onClick={() => handleInventory(val.case_number)}
                         >
                           Bill List
                         </button>
                         <button
                           onClick={() => handleDiagnosis(val.id)}
-                          className="font-medium p-1 text-green-600 border text-sm ml-1 border-gray-300 rounded-md hover:bg-green-600 hover:text-white"
+                          className="font-medium p-1 text-green-600 bg-white border text-sm ml-1 border-gray-300 rounded-md hover:bg-green-600 hover:text-white"
                         >
                           Diagnosis
                         </button>
