@@ -438,10 +438,21 @@ export default function Indooractivity() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card  bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
-          <div className="flex justify-center">
-            <h2 className="text-xl font-semibold m-5">
-              Indoor Activity Time Slot
-            </h2>
+          <div className="flex w-full justify-center">
+            <div className="text-right justify-end flex w-full ">
+              <h2 className="text-xl font-semibold  m-5">
+                Indoor Activity Time Slot
+              </h2>
+            </div>
+            <div className="text-right justify-end w-[65%] p-4">
+              <button
+                type="submit"
+                className=" text-black p-1 bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+                onClick={handleSheet}
+              >
+                Appointments
+              </button>
+            </div>
           </div>
           <div className="flex justify-center mt-5 gap-5">
             <div>
@@ -456,16 +467,6 @@ export default function Indooractivity() {
               <div className="text-md font-semibold ">
                 Date : {formatDate(consultingTime)}
               </div>
-            </div>
-            <div className="">
-              <button
-                type="submit"
-                className=" text-black p-1 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                onClick={handleSheet}
-                style={{ backgroundColor: "#799351" }}
-              >
-                Appointments
-              </button>
             </div>
           </div>
           <div className="flex justify-center">

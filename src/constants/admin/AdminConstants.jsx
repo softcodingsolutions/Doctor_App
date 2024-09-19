@@ -130,12 +130,12 @@ export const reportButtons = [
     icons: <TbReport size={18} />,
     to: "progress-report",
   },
-  {
-    id: "8",
-    name: "Generate Report",
-    icons: <MdOutlinePictureAsPdf size={18} />,
-    to: "generate-report",
-  },
+  // {
+  //   id: "8",
+  //   name: "Generate Report",
+  //   icons: <MdOutlinePictureAsPdf size={18} />,
+  //   to: "generate-report",
+  // },
 ];
 
 export const reportTreatmentButtons = [

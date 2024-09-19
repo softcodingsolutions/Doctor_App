@@ -131,7 +131,7 @@ export default function AppointmentSheet() {
                 key={doctorIndex}
                 className=" rounded-md overflow-auto mb-6 "
               >
-                <h3 className="text-md font-semibold mb-2">Dr. {doctor}</h3>
+                <h3 className="text-lg font-medium mb-1 p-1 bg-green-500 justify-center flex">Dr. {doctor}</h3>
                 <div className="flex gap-1">
                   {machines.map((machine, machineIndex) => {
                     const timeSlots = Object.keys(
@@ -139,26 +139,26 @@ export default function AppointmentSheet() {
                     );
 
                     return (
-                      <div key={machineIndex} className="rounded-md ">
+                      <div key={machineIndex} className="rounded-md">
                         {timeSlots.length > 0 ? (
-                          <table className="bg-white w-full">
+                          <table className="bg-white w-full ">
                             <thead>
                               <tr className="bg-gray-200">
-                                <th className="px-4 py-3 text-left text-sm font-medium text-black">
+                                <th className="px-4 py-3 text-left text-xs font-bold text-black">
                                   Time
                                 </th>
-                                <th className="px-4 py-3 text-left text-sm font-medium text-black">
+                                <th className="px-4 py-3 text-left text-xs font-bold text-black">
                                   {machine}
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
                               {timeSlots.map((time, timeIndex) => (
-                                <tr key={timeIndex}>
-                                  <td className="px-4 py-4 text-sm text-gray-900">
+                                <tr key={timeIndex} className="border-b-2" >
+                                  <td className="px-4 py-7 text-xs font-semibold ">
                                     {time}
                                   </td>
-                                  <td className="px-4 py-4 text-sm text-gray-900">
+                                  <td className="px-4 py-4 text-xs font-medium ">
                                     {transformedData[doctor][machine][
                                       time
                                     ]?.map((patient, patientIndex) => (

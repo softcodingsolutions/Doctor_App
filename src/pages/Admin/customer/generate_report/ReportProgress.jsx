@@ -7,9 +7,11 @@ import Swal from "sweetalert2";
 import AddNewProgresReport from "../../../../components/Admin/AddNewProgresReport";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { FaRegThumbsDown } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
 import InsideLoader from "../../../InsideLoader";
 
 function ReportProgress() {
+  const navigate = useNavigate();
   const [getProgess, setGetProgress] = useState([]);
   const [getQues, setGetQues] = useState([]);
   const [getComplains, setGetComplains] = useState([]);
@@ -179,6 +181,10 @@ function ReportProgress() {
       });
   };
 
+  const handleRedirect = () => {
+    navigate("/admin/patients/user-diagnosis/generate-report");
+  };
+
   useEffect(() => {
     handleGetProgress();
     handleGetComplains();
@@ -242,6 +248,18 @@ function ReportProgress() {
               >
                 Complains
               </button>
+              <button
+                onClick={() => {
+                  handleRedirect()
+                }}
+                className={`px-3 py-1.5 rounded-md ${
+                  showComplain
+                    ? "scale-105 bg-gray-700 text-white"
+                    : "bg-gray-50"
+                } hover:scale-105  border-x-gray-300 border-[1.5px]`}
+              >
+                Generate Report
+              </button>
             </div>
             {(role === "super_admin" ||
               role === "franchise" ||
@@ -264,10 +282,9 @@ function ReportProgress() {
                 <thead className="uppercase ">
                   <tr className="bg-[#1F2937] text-white rounded-md">
                     <ThComponent
+                      name="Date"
                       moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
                     />
-                    <ThComponent name="Date" />
                     <ThComponent name="Weight" />
                     <ThComponent name="Package Assigned" />
                     <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
@@ -287,9 +304,6 @@ function ReportProgress() {
                     paginateCustomers()?.map((val, index) => {
                       return (
                         <tr key={val.id}>
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">{index + 1}</div>
-                          </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.date} />
                           </td>

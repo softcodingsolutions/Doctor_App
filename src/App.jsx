@@ -115,12 +115,12 @@ function App() {
         <Route path="forget-password" element={<ForgetPassword />} />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="signup" element={<UserChooseDoctor />} />
+        <Route path="generate-report" element={<ReportGenerate />} />
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
             <Route path="past-history" element={<ReportPastHistory />} />
             <Route path="progress-report" element={<ReportProgress />} />
-            <Route path="generate-report" element={<ReportGenerate />} />
           </Route>
         </Route>
 
