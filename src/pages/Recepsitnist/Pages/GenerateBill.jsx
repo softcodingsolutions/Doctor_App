@@ -156,6 +156,7 @@ export default function GenerateBill() {
   };
 
   const handleUserSelect = (user) => {
+    setSearchTerm("");
     console.log(user, "SELECTED USER");
     setLoader(false);
     setUser(user);
@@ -165,7 +166,6 @@ export default function GenerateBill() {
     );
     setId(user.id);
     setGetParticularCustomer([]);
-    setSearchTerm("");
   };
   return (
     <div className="flex w-full">
@@ -194,6 +194,7 @@ export default function GenerateBill() {
               <div className="flex gap-5 w-full py-3">
                 <input
                   type="text"
+                  value={searchTerm}
                   placeholder="Search by First name or Last name or Phone number"
                   onChange={(e) => handleSearch(e.target.value)}
                   className={`py-2 px-4 rounded-md border ${

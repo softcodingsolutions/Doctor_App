@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import Swal from "sweetalert2";
-import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentButtons";
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
 import InsideLoader from "../../../../InsideLoader";
@@ -13,6 +11,7 @@ function RTreatmentDiet() {
   const [getPredictionDiet, setGetPredictionDiet] = useState([]);
   const [getDiet, setGetDiet] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [selectAll, setSelectAll] = useState(false); // Added for "Select All" checkbox
   const [loading, setLoading] = useState(true);
 
   const handleGetDiet = () => {
@@ -38,51 +37,67 @@ function RTreatmentDiet() {
       });
   };
 
+  useEffect(() => {
+    handleGetDiet();
+  }, [sendWeightReason]);
+
+  useEffect(() => {
+    if (storeData.diet) {
+      const selectedDietIds = storeData.diet.map((diet) => diet.id.toString());
+      setSelectedCheckboxes(selectedDietIds);
+    }
+  }, [storeData.diet]);
+
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
 
+    let updatedCheckboxes;
     if (isChecked) {
-      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
+      updatedCheckboxes = [...selectedCheckboxes, checkboxValue];
     } else {
-      setSelectedCheckboxes((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
+      updatedCheckboxes = selectedCheckboxes.filter(
+        (value) => value !== checkboxValue
       );
-    }
-  };
-
-  const handleSave = async () => {
-    const selectedDiet = selectedCheckboxes
-      .map((id) => getDiet.find((med) => med.id === Number(id)))
-      .filter((med) => med);
-
-    if (selectedDiet.length === 0) {
-      return Swal.fire({
-        icon: "warning",
-        title: "No Diet Selected",
-        text: "Please select at least one diet to save.",
-      });
+      setSelectAll(false); // Uncheck "Select All" if any individual checkbox is unchecked
     }
 
-    console.log("Selected Diet: ", selectedDiet);
+    setSelectedCheckboxes(updatedCheckboxes);
 
-    const formData = new FormData();
-    formData.append(
-      "package[weight_reason]",
-      sendWeightReason === "null" ? null : sendWeightReason
-    );
-    formData.append("package[medicines]", JSON.stringify(selectedDiet));
+    const selectedDiet = updatedCheckboxes
+      .map((id) => getDiet.find((diet) => diet.id === Number(id)))
+      .filter((diet) => diet);
 
     setStoreData((prev) => ({
       ...prev,
       diet: selectedDiet,
     }));
+  };
 
-    Swal.fire({
-      icon: "Success",
-      title: "Saved!",
-      text: "Your selected diet has been saved.",
-    });
+  // Handle "Select All" checkbox
+  const handleSelectAll = () => {
+    if (!selectAll) {
+      // When checked, select all predicted diets
+      const allMappedDietIds = getPredictionDiet.map((diet) => diet.id.toString());
+      setSelectedCheckboxes(allMappedDietIds);
+
+      const allMappedDiets = allMappedDietIds
+        .map((id) => getDiet.find((diet) => diet.id === Number(id)))
+        .filter((diet) => diet);
+
+      setStoreData((prev) => ({
+        ...prev,
+        diet: allMappedDiets,
+      }));
+    } else {
+      // When unchecked, deselect all
+      setSelectedCheckboxes([]);
+      setStoreData((prev) => ({
+        ...prev,
+        diet: [],
+      }));
+    }
+    setSelectAll(!selectAll);
   };
 
   const predictedDiets = getDiet.filter((diet) =>
@@ -94,20 +109,6 @@ function RTreatmentDiet() {
   );
 
   const sortedDiets = [...predictedDiets, ...otherDiets];
-
-  useEffect(() => {
-    const preSelectedDiet = getPredictionDiet.map((val) => val.id.toString());
-    console.log("pre", preSelectedDiet);
-    setSelectedCheckboxes(preSelectedDiet);
-  }, [getPredictionDiet]);
-
-  useEffect(() => {
-    console.log("Updated storeData: ", storeData);
-  }, [storeData]);
-
-  useEffect(() => {
-    handleGetDiet();
-  }, [sendWeightReason]);
 
   if (loading) {
     return <InsideLoader />;
@@ -121,24 +122,28 @@ function RTreatmentDiet() {
             <div className="font-[550] text-lg">
               No. of Diet checked: {selectedCheckboxes.length}
             </div>
+            <div className="font-[550] text-lg flex items-center">
+              Mapped Diet -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[75vh]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="Select"
-                  />
+                  <th className="py-3 px-4">
+                    <input
+                      type="checkbox"
+                      onChange={handleSelectAll}
+                      checked={selectAll}
+                    />
+                  </th>
                   <ThComponent name="Diet Code" />
                   <ThComponent name="Diet Name" />
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
-                  <ThComponent
-                    moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="In Gujarati"
-                  />
+                  <ThComponent name="In Gujarati" />
                 </tr>
               </thead>
               <tbody>
@@ -168,9 +173,7 @@ function RTreatmentDiet() {
                             onChange={handleCheckboxChange}
                             type="checkbox"
                             className="size-4"
-                            defaultChecked={getPredictionDiet.some(
-                              (med) => med.id === val.id
-                            )}
+                            checked={selectedCheckboxes.includes(val.id.toString())}
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
@@ -218,17 +221,6 @@ function RTreatmentDiet() {
                 )}
               </tbody>
             </table>
-          </div>
-          <div className="flex justify-between">
-            <div className="font-[550] text-lg flex items-center invisible">
-              Checked Diet -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-            </div>
-            <SaveTreatmentButtons function={handleSave} />{" "}
-            <div className="font-[550] text-lg flex items-center">
-              Mapped Diet -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-            </div>
           </div>
         </div>
       </div>

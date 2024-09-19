@@ -113,7 +113,7 @@ export const BillDocument = ({ data }) => (
       </View>
       <View style={styles.body}>
         {/* Diet */}
-        {data.treatment_packages?.[0]?.treatment_package?.diet?.length !==
+        {data?.treatment_packages?.[0]?.treatment_package?.diet?.length !==
           0 && (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Diet</Text>
@@ -138,23 +138,23 @@ export const BillDocument = ({ data }) => (
                   <Text style={styles.tableCell}>Hindi</Text>
                 </View>
               </View>
-              {data.treatment_packages?.[0]?.treatment_package?.diet?.map(
+              {data?.treatment_packages?.[0]?.treatment_package?.diet?.map(
                 (diet, index) => (
                   <View style={styles.tableRow} key={index}>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.name}</Text>
+                      <Text style={styles.tableCell}>{diet?.name}</Text>
                     </View>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.chart_english}</Text>
+                      <Text style={styles.tableCell}>{diet?.chart_english}</Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>
-                        {diet.chart_gujarati}
+                        {diet?.chart_gujarati}
                       </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCellHindi}>
-                        {diet.chart_hindi}
+                        {diet?.chart_hindi}
                       </Text>{" "}
                     </View>
                   </View>
@@ -165,7 +165,7 @@ export const BillDocument = ({ data }) => (
         )}
 
         {/* Don'ts */}
-        {data.treatment_packages?.[0]?.treatment_package?.dont?.length !==
+        {data?.treatment_packages?.[0]?.treatment_package?.dont?.length !==
           0 && (
           <View style={styles.s}>
             <Text style={styles.subtitle}>{"Don'ts"}</Text>
@@ -190,25 +190,25 @@ export const BillDocument = ({ data }) => (
                   <Text style={styles.tableCell}>Hindi</Text>
                 </View>
               </View>
-              {data.treatment_packages?.[0]?.treatment_package?.dont?.map(
+              {data?.treatment_packages?.[0]?.treatment_package?.dont?.map(
                 (diet, index) => (
                   <View style={styles.tableRow} key={index}>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.name}</Text>
+                      <Text style={styles.tableCell}>{diet?.name}</Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>
-                        {diet.details_in_english}
+                        {diet?.details_in_english}
                       </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>
-                        {diet.details_in_gujarati}
+                        {diet?.details_in_gujarati}
                       </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCellHindi}>
-                        {diet.details_in_hindi}
+                        {diet?.details_in_hindi}
                       </Text>{" "}
                     </View>
                   </View>
@@ -219,7 +219,7 @@ export const BillDocument = ({ data }) => (
         )}
 
         {/* Dos */}
-        {data.treatment_packages?.[0]?.treatment_package?.dos?.length !== 0 && (
+        {data?.treatment_packages?.[0]?.treatment_package?.dos?.length !== 0 && (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Dos</Text>
             <View style={styles.table}>
@@ -243,25 +243,25 @@ export const BillDocument = ({ data }) => (
                   <Text style={styles.tableCell}>Hindi</Text>
                 </View>
               </View>
-              {data.treatment_packages?.[0]?.treatment_package?.dos?.map(
+              {data?.treatment_packages?.[0]?.treatment_package?.dos?.map(
                 (diet, index) => (
                   <View style={styles.tableRow} key={index}>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.name}</Text>
+                      <Text style={styles.tableCell}>{diet?.name}</Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>
-                        {diet.details_in_english}
+                        {diet?.details_in_english}
                       </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>
-                        {diet.details_in_gujarati}
+                        {diet?.details_in_gujarati}
                       </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCellHindi}>
-                        {diet.details_in_hindi}
+                        {diet?.details_in_hindi}
                       </Text>{" "}
                     </View>
                   </View>
@@ -272,7 +272,7 @@ export const BillDocument = ({ data }) => (
         )}
 
         {/* Medicines */}
-        {data.treatment_packages?.[0]?.treatment_package?.medicines?.length !==
+        {data?.treatment_packages?.[0]?.treatment_package?.medicines?.length !==
           0 && (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Medicines</Text>
@@ -300,28 +300,28 @@ export const BillDocument = ({ data }) => (
                   <Text style={styles.tableCell}>With Milk</Text>
                 </View>
               </View>
-              {data.treatment_packages?.[0]?.treatment_package?.medicines?.map(
+              {data?.treatment_packages?.[0]?.treatment_package?.medicines?.map(
                 (diet, index) => (
                   <View style={styles.tableRow} key={index}>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.medicine_name}</Text>
+                      <Text style={styles.tableCell}>{diet?.medicine_name}</Text>
                     </View>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.dosage}</Text>
+                      <Text style={styles.tableCell}>{diet?.dosage}</Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>
-                        {diet.frequency?.join(", ")}
+                        {diet?.frequency?.join(", ")}
                       </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>
-                        {diet.quantity?.join(", ")}
+                        {diet?.quantity?.join(", ")}
                       </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCellHindi}>
-                        {diet.with_milk}
+                        {diet?.with_milk}
                       </Text>{" "}
                     </View>
                   </View>
@@ -332,7 +332,7 @@ export const BillDocument = ({ data }) => (
         )}
 
         {/* Exercises */}
-        {data.treatment_packages?.[0]?.treatment_package?.exercise?.length !==
+        {data?.treatment_packages?.[0]?.treatment_package?.exercise?.length !==
           0 && (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Exercises</Text>
@@ -352,14 +352,14 @@ export const BillDocument = ({ data }) => (
                   <Text style={styles.tableCell}>English</Text>
                 </View>
               </View>
-              {data.treatment_packages?.[0]?.treatment_package?.exercise?.map(
+              {data?.treatment_packages?.[0]?.treatment_package?.exercise?.map(
                 (diet, index) => (
                   <View style={styles.tableRow} key={index}>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.name}</Text>
+                      <Text style={styles.tableCell}>{diet?.name}</Text>
                     </View>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.details}</Text>
+                      <Text style={styles.tableCell}>{diet?.details}</Text>
                     </View>
                   </View>
                 )
@@ -369,7 +369,7 @@ export const BillDocument = ({ data }) => (
         )}
 
         {/* Nutritions */}
-        {data.treatment_packages?.[0]?.treatment_package?.nutrition?.length !==
+        {data?.treatment_packages?.[0]?.treatment_package?.nutrition?.length !==
           0 && (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Nutrition</Text>
@@ -389,14 +389,14 @@ export const BillDocument = ({ data }) => (
                   <Text style={styles.tableCell}>Reason</Text>
                 </View>
               </View>
-              {data.treatment_packages?.[0]?.treatment_package?.nutrition?.map(
+              {data?.treatment_packages?.[0]?.treatment_package?.nutrition?.map(
                 (diet, index) => (
                   <View style={styles.tableRow} key={index}>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.name}</Text>
+                      <Text style={styles.tableCell}>{diet?.name}</Text>
                     </View>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet.weight_reason}</Text>
+                      <Text style={styles.tableCell}>{diet?.weight_reason}</Text>
                     </View>
                   </View>
                 )
@@ -406,7 +406,7 @@ export const BillDocument = ({ data }) => (
         )}
 
         {/* LabTest */}
-        {data.user_labtests?.length !== 0 && (
+        {data?.user_labtests?.length !== 0 && (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Labtest</Text>
             <View style={styles.table}>
@@ -425,8 +425,8 @@ export const BillDocument = ({ data }) => (
                   <Text style={styles.tableCell}>Comment</Text>
                 </View>
               </View>
-              {data.user_labtests?.[
-                data.user_labtests?.length - 1
+              {data?.user_labtests?.[
+                data?.user_labtests?.length - 1
               ]?.labtest?.map((test, index) => (
                 <View style={styles.tableRow} key={index}>
                   <View style={styles.tableCol}>

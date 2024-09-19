@@ -21,7 +21,7 @@ function RTreatmentMedicine() {
   const [dropdownValues, setDropdownValues] = useState({});
 
   const handleGetMedicines = () => {
-    console.log(mappingPackages)
+    console.log(mappingPackages);
     if (sendWeightReason) {
       const data = mappingPackages.filter((pack) => {
         return sendWeightReason[0] === pack.package.weight_reason;
@@ -63,68 +63,50 @@ function RTreatmentMedicine() {
       const isBMapped = getPredictionMedicine.some((med) => med.id === b.id);
       return isBMapped - isAMapped;
     });
-    
+
     setFilteredMedicines(filtered);
   }, 300);
-  
 
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
 
+    let updatedCheckboxes;
     if (isChecked) {
-      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
+      updatedCheckboxes = [...selectedCheckboxes, checkboxValue];
     } else {
-      setSelectedCheckboxes((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
+      updatedCheckboxes = selectedCheckboxes.filter(
+        (value) => value !== checkboxValue
       );
     }
-  };
 
-  const handleDropdownChange = (id, field, value) => {
-    setDropdownValues((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        [field]: value,
-      },
-    }));
-  };
+    setSelectedCheckboxes(updatedCheckboxes);
 
-  const validateSelections = () => {
-    for (const id of selectedCheckboxes) {
-      const selections = dropdownValues[id] || {};
-      if (
-        !selections.dosage ||
-        !selections.frequency ||
-        !selections.quantity ||
-        !selections.with_milk
-      ) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const handleSave = async () => {
-    if (!validateSelections()) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Incomplete Selections",
-        text: "Please ensure all dropdowns are selected for each selected medicine.",
-      });
-    }
-
-    const selectedMedicine = selectedCheckboxes
+    // Automatically save selected medicines when checkboxes change
+    const selectedMedicine = updatedCheckboxes
       .map((id) => getMedicines.find((med) => med.id === Number(id)))
       .filter((med) => med);
 
-    if (selectedMedicine.length === 0) {
-      return Swal.fire({
-        icon: "warning",
-        title: "No Medicines Selected",
-        text: "Please select at least one medicine to save.",
+    const invalidMedicines = selectedMedicine.filter((med) => {
+      const { dosage, frequency, quantity, with_milk } =
+        dropdownValues[med.id] || {};
+      return !dosage || !frequency || !quantity || !with_milk;
+    });
+
+    if (invalidMedicines.length > 0) {
+      Swal.fire({
+        title: "Error",
+        text: "Please fill all dropdown fields for selected medicines.",
+        icon: "error",
+        confirmButtonText: "OK",
       });
+      // Optionally, you can uncheck the boxes for medicines that are missing values
+      setSelectedCheckboxes(
+        selectedCheckboxes.filter(
+          (id) => !invalidMedicines.some((med) => med.id === Number(id))
+        )
+      );
+      return; // Exit early
     }
 
     const formattedData = selectedMedicine.map((med) => ({
@@ -137,38 +119,21 @@ function RTreatmentMedicine() {
 
     console.log("Formatted Data: ", formattedData);
 
-    const formData = new FormData();
-    formData.append(
-      "package[weight_reason]",
-      sendWeightReason === "null" ? null : sendWeightReason
-    );
-    formData.append(
-      "treatment_package[weight_reason]",
-      JSON.stringify(formattedData)
-    );
-
     setStoreData((prev) => ({
       ...prev,
       medicine: formattedData,
     }));
-    Swal.fire({
-      icon: "Success",
-      title: "Saved!",
-      text: "Your selected medicines has been saved.",
-    });
   };
 
-  useEffect(() => {
-    const preSelectedMedicine = getPredictionMedicine.map((val) =>
-      val.id.toString()
-    );
-    console.log("pre", preSelectedMedicine);
-    setSelectedCheckboxes(preSelectedMedicine);
-  }, [getPredictionMedicine]);
-
-  useEffect(() => {
-    console.log("Updated storeData: ", storeData);
-  }, [storeData]);
+  const handleDropdownChange = (id, field, value) => {
+    setDropdownValues((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: value,
+      },
+    }));
+  };
 
   useEffect(() => {
     handleGetMedicines();
@@ -199,8 +164,9 @@ function RTreatmentMedicine() {
               className="py-2 px-4 rounded-md border border-gray-800 w-1/2 focus:outline-none focus:ring-1 focus:ring-black"
             />
 
-            <div className="font-[550] text-lg invisible">
-              No. of medicines checked: {selectedCheckboxes.length}
+            <div className="font-[550] text-lg flex">
+              Mapped Medicine -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
             </div>
           </div>
 
@@ -419,17 +385,6 @@ function RTreatmentMedicine() {
                 )}
               </tbody>
             </table>
-          </div>
-          <div className="flex justify-between w-full items-center gap-2">
-            <div className="font-[550] text-lg flex invisible">
-              Checked Medicine -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-            </div>
-            <SaveTreatmentButtons function={handleSave} />{" "}
-            <div className="font-[550] text-lg flex">
-              Mapped Medicine -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-            </div>
           </div>
         </div>
       </div>

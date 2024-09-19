@@ -131,10 +131,13 @@ function App() {
 
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>
+          <Route
+            path="admin-medicine-inventory"
+            element={<MedicalInventory />}
+          />
           <Route path="admin-bill-history" element={<BillHistory />} />
 
           <Route path="recpatients" element={<RecepsitnistCustomers />}>
-            <Route path="admin-medicine-inventory" element={<MedicalInventory />} />
             <Route path="recall-users" element={<RecepAllUsers />} />
 
             {/* user created by receptionist */}
@@ -252,7 +255,7 @@ function App() {
           {/* list follow up */}
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
         </Route>
-
+        <Route path="appointment-sheet" element={<AppointmentSheet />} />
         {/* Receptionist */}
         <Route path="receptionist" element={<RecepsitnistMain />}>
           {/* appointment */}
@@ -273,7 +276,6 @@ function App() {
 
           {/* appointment */}
           <Route path="appointment" element={<Appointment />}>
-            <Route path="appointment-sheet" element={<AppointmentSheet />} />
             <Route path="home" element={<Home />} />
             <Route path="create-appointment" element={<CreateAppointment />} />
 

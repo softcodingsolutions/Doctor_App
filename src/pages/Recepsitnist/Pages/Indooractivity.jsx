@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { Dialog } from "@headlessui/react";
 import InsideLoader from "../../InsideLoader";
 import { useNavigate } from "react-router-dom";
+import { GiCancel } from "react-icons/gi";
 
 const generateTimeSlots = () => {
   const slots = [];
@@ -387,7 +388,7 @@ export default function Indooractivity() {
   };
 
   const handleSheet = () => {
-    navigate("/receptionist/appointment/appointment-sheet");
+    navigate("/appointment-sheet");
   };
 
   const handleSearchTerm = (value) => {
@@ -533,7 +534,7 @@ export default function Indooractivity() {
                       onClick={closeDialog}
                       className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
-                      Close
+                      <GiCancel size={20} />
                     </button>
                   </div>
                 </div>
@@ -552,9 +553,9 @@ export default function Indooractivity() {
                       <button
                         type="button"
                         onClick={closeDialog}
-                        className="inline-flex items-center px-4  py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="inline-flex items-center px-4  py-2 border border-transparent text-sm font-medium rounded-md   shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       >
-                        Close
+                        <GiCancel size={20} />
                       </button>
                     </div>
                   </div>

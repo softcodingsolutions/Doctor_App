@@ -13,6 +13,7 @@ function RecepAllUsers() {
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const role = localStorage.getItem("role");
   const rowsPerPage = 6;
 
   const handleGetAllUsers = () => {
@@ -36,7 +37,11 @@ function RecepAllUsers() {
   };
 
   const handleInventory = (caseNumber) => {
-    navigate(`/receptionist/bill-history`, { state: { caseNumber } });
+    if (role === "receptionist") {
+      navigate(`/receptionist/bill-history`, { state: { caseNumber } });
+    } else {
+      navigate(`../../admin-bill-history`, { state: { caseNumber } });
+    }
   };
 
   const paginateCustomers = () => {
@@ -88,8 +93,6 @@ function RecepAllUsers() {
     return formattedDate;
   };
 
-
-
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
@@ -135,8 +138,12 @@ function RecepAllUsers() {
             </button>
           </div>
           <div className="flex items-center justify-end gap-2">
-            <input type="checkbox" checked className="w-4 h-4 border border-gray-800"/>
-            <div> - Indoor activity accessibility</div> 
+            <input
+              type="checkbox"
+              checked
+              className="w-4 h-4 border border-gray-800"
+            />
+            <div> - Indoor activity accessibility</div>
             <div className="w-4 h-4 bg-blue-300 border border-gray-800"> </div>
             <div>- New Patient</div>
           </div>

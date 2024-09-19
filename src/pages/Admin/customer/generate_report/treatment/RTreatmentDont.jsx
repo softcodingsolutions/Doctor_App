@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
-import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentButtons";
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
 import InsideLoader from "../../../../InsideLoader";
@@ -13,35 +12,38 @@ function RTreatmentDont() {
   const [getPredictionDonts, setGetPredictionDonts] = useState([]);
   const [getDonts, setGetDonts] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [selectAll, setSelectAll] = useState(false); // For the "Select All" checkbox
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    handleGetDonts();
+
+    // Initialize selected checkboxes from storeData when the component mounts
+    if (storeData.dont) {
+      const selectedDontsIds = storeData.dont.map((dont) => dont.id.toString());
+      setSelectedCheckboxes(selectedDontsIds);
+    }
+  }, [sendWeightReason]);
 
   const handleGetDonts = () => {
     if (sendWeightReason) {
-      const data = mappingPackages.filter((pack) => {
-        return sendWeightReason[0] === pack.package.weight_reason;
-      });
-      console.log("Predicted Donts:", data[0]);
-      setGetPredictionDonts(data[0]?.package?.dont);
+      const data = mappingPackages.filter((pack) => sendWeightReason[0] === pack.package.weight_reason);
+      setGetPredictionDonts(data[0]?.package?.dont || []);
     }
 
     axios
-      .get(
-        `/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`
-      )
+      .get(`/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`)
       .then((res) => {
-        console.log(
-          "All the Donts",
-          res.data?.avoid_and_adds.filter((res) => res.category === "dont")
-        );
-        setGetDonts(
-          res.data?.avoid_and_adds.filter((res) => res.category === "dont")
-        );
+        setGetDonts(res.data?.avoid_and_adds.filter((res) => res.category === "dont") || []);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
-        alert(err.response?.data?.message + "!");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: err.response?.data?.message || 'An error occurred!',
+        });
       });
   };
 
@@ -49,72 +51,57 @@ function RTreatmentDont() {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
 
-    if (isChecked) {
-      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
-    } else {
-      setSelectedCheckboxes((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
-      );
-    }
-  };
+    const updatedCheckboxes = isChecked
+      ? [...selectedCheckboxes, checkboxValue]
+      : selectedCheckboxes.filter((value) => value !== checkboxValue);
 
-  const handleSave = async () => {
-    const selectedDonts = selectedCheckboxes
-      .map((id) => getDonts.find((med) => med.id === Number(id)))
-      .filter((med) => med);
+    setSelectedCheckboxes(updatedCheckboxes);
 
-    if (selectedDonts.length === 0) {
-      return Swal.fire({
-        icon: "warning",
-        title: "No Donts Selected",
-        text: "Please select at least one donts to save.",
-      });
-    }
-
-    console.log("Selected Nutrition: ", selectedDonts);
-
-    const formData = new FormData();
-    formData.append(
-      "package[weight_reason]",
-      sendWeightReason === "null" ? null : sendWeightReason
-    );
-    formData.append("package[medicines]", JSON.stringify(selectedDonts));
+    const selectedDonts = updatedCheckboxes
+      .map((id) => getDonts.find((dont) => dont.id === Number(id)))
+      .filter((dont) => dont);
 
     setStoreData((prev) => ({
       ...prev,
-      donts: selectedDonts,
+      dont: selectedDonts,
     }));
-
-    Swal.fire({
-      icon: "Success",
-      title: "Saved!",
-      text: "Your selected donts has been saved.",
-    });
   };
 
-  const predictedDonts = getDonts.filter((diet) =>
-    getPredictionDonts.some((med) => med.id === diet.id)
+  // Handle "Select All" checkbox change
+  const handleSelectAllChange = (e) => {
+    const isChecked = e.target.checked;
+    setSelectAll(isChecked);
+
+    if (isChecked) {
+      const allPredictionDontsIds = getPredictionDonts.map((dont) => dont.id.toString());
+      setSelectedCheckboxes(allPredictionDontsIds);
+
+      const selectedDonts = getPredictionDonts.map((dont) => ({
+        ...dont,
+      }));
+
+      setStoreData((prev) => ({
+        ...prev,
+        dont: selectedDonts,
+      }));
+    } else {
+      setSelectedCheckboxes([]);
+      setStoreData((prev) => ({
+        ...prev,
+        dont: [],
+      }));
+    }
+  };
+
+  const predictedDonts = getDonts.filter((dont) =>
+    getPredictionDonts.some((pred) => pred.id === dont.id)
   );
 
   const otherDonts = getDonts.filter(
-    (diet) => !getPredictionDonts.some((med) => med.id === diet.id)
+    (dont) => !getPredictionDonts.some((pred) => pred.id === dont.id)
   );
 
   const sortedDonts = [...predictedDonts, ...otherDonts];
-
-  useEffect(() => {
-    console.log("Updated storeData: ", storeData);
-  }, [storeData]);
-
-  useEffect(() => {
-    const preSelectedDonts = getPredictionDonts.map((val) => val.id.toString());
-    console.log("pre", preSelectedDonts);
-    setSelectedCheckboxes(preSelectedDonts);
-  }, [getPredictionDonts]);
-
-  useEffect(() => {
-    handleGetDonts();
-  }, [sendWeightReason]);
 
   if (loading) {
     return <InsideLoader />;
@@ -128,22 +115,26 @@ function RTreatmentDont() {
             <div className="font-[550] text-lg">
               No. of don'ts checked: {selectedCheckboxes.length}
             </div>
+            <div className="font-[550] text-lg flex items-center">
+              Mapped Don'ts -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[75vh]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="Select"
-                  />
+                  <th className="rounded-tl-md rounded-bl-md py-2">
+                    <input
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={handleSelectAllChange}
+                    />
+                  </th>
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
-                  <ThComponent
-                    moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="In Gujarati"
-                  />
+                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} name="In Gujarati" />
                 </tr>
               </thead>
               <tbody>
@@ -157,53 +148,38 @@ function RTreatmentDont() {
                     </th>
                   </tr>
                 ) : (
-                  sortedDonts.map((val) => {
-                    return (
-                      <tr
-                        className={`${
-                          getPredictionDonts.some((med) => med.id === val.id)
-                            ? "bg-gray-400 "
-                            : ""
-                        } w-full`}
-                        key={val.id}
-                      >
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <input
-                            value={val.id}
-                            onChange={handleCheckboxChange}
-                            type="checkbox"
-                            className="size-4"
-                            defaultChecked={getPredictionDonts.some(
-                              (med) => med.id === val.id
-                            )}
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details_in_english} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details_in_hindi} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details_in_gujarati} />
-                        </td>
-                      </tr>
-                    );
-                  })
+                  sortedDonts.map((val) => (
+                    <tr
+                      className={`${
+                        getPredictionDonts.some((med) => med.id === val.id)
+                          ? "bg-gray-400 "
+                          : ""
+                      } w-full`}
+                      key={val.id}
+                    >
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <input
+                          value={val.id}
+                          onChange={handleCheckboxChange}
+                          type="checkbox"
+                          className="size-4"
+                          checked={selectedCheckboxes.includes(val.id.toString())}
+                        />
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <TdComponent things={val.details_in_english} />
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <TdComponent things={val.details_in_hindi} />
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <TdComponent things={val.details_in_gujarati} />
+                      </td>
+                    </tr>
+                  ))
                 )}
               </tbody>
             </table>
-          </div>
-          <div className="flex justify-between">
-            <div className="font-[550] text-lg flex items-center invisible">
-              Checked Don'ts -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-            </div>
-            <SaveTreatmentButtons function={handleSave} />{" "}
-            <div className="font-[550] text-lg flex items-center">
-              Mapped Don'ts -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-            </div>
           </div>
         </div>
       </div>

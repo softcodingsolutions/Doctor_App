@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import InsideLoader from "../../InsideLoader";
+import { useNavigate } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 export default function AppointmentSheet() {
+  const navigate = useNavigate();
   const [allConsultingTimes, setAllConsultingTimes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [consultingTime, setConsultingTime] = useState(
@@ -30,6 +33,9 @@ export default function AppointmentSheet() {
     }
   };
 
+  const handleRedirect = () => {
+    navigate("/receptionist/appointment/create-machine-appointment");
+  };
   const formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
@@ -91,83 +97,92 @@ export default function AppointmentSheet() {
   const transformedData = transformData(allConsultingTimes);
 
   return (
-    <div className="w-full p-2 bg-gray-50 h-[92vh]">
-      <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
-        <div className="grid grid-col-1 lg:grid-cols-2 justify-center mt-5 w-full gap-5">
-          <div>
+    <div className="w-full p-2 bg-gray-50 h-[100vh]">
+      <div className="grid grid-cols-3 gap-4 mb-6 md:grid-cols-2">
+        <div className="grid grid-col-1 lg:grid-cols-3 justify-center mt-5 w-[210vh]  gap-20">
+          <div className="">
+            <button
+              className="font-medium p-2  text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
+              onClick={handleRedirect}
+            >
+              <IoMdArrowRoundBack size={20} />
+            </button>
+          </div>
+          <div className=" flex justify-start w-[110vh] ">
             <input
               type="date"
               placeholder="select date"
-              className="py-1 px-2 rounded-md border-2 lg:w-[35vh]"
+              className="py-1 px-2 rounded-md border-2 lg:w-[30vh]"
               onChange={handleConsulting}
             />
-          </div>
-          <div className="w-full">
-            <div className="text-md font-semibold w-full">
+            <div className="text-md font-semibold ml-10 ">
               Date : {formatDate(consultingTime)}
             </div>
           </div>
         </div>
       </div>
+      {allConsultingTimes.length > 0 ? (
+        <div className="flex justify-center gap-1 w-full">
+          {Object.keys(transformedData).map((doctor, doctorIndex) => {
+            const machines = Object.keys(transformedData[doctor]);
 
-      <div className="flex justify-center gap-1 w-full">
-        {Object.keys(transformedData).map((doctor, doctorIndex) => {
-          const machines = Object.keys(transformedData[doctor]);
+            return (
+              <div
+                key={doctorIndex}
+                className=" rounded-md overflow-auto mb-6 "
+              >
+                <h3 className="text-md font-semibold mb-2">Dr. {doctor}</h3>
+                <div className="flex gap-1">
+                  {machines.map((machine, machineIndex) => {
+                    const timeSlots = Object.keys(
+                      transformedData[doctor][machine]
+                    );
 
-          return (
-            <div key={doctorIndex} className=" rounded-md overflow-auto mb-6 ">
-              <h3 className="text-md font-semibold mb-2">Dr. {doctor}</h3>
-              <div className="flex gap-1">
-                {machines.map((machine, machineIndex) => {
-                  const timeSlots = Object.keys(
-                    transformedData[doctor][machine]
-                  );
-
-                  return (
-                    <div
-                      key={machineIndex}
-                      className="rounded-md "
-                    >
-                      {timeSlots.length > 0 ? (
-                        <table className="bg-white w-full">
-                          <thead>
-                            <tr className="bg-gray-200">
-                              <th className="px-4 py-3 text-left text-sm font-medium text-black">
-                                Time
-                              </th>
-                              <th className="px-4 py-3 text-left text-sm font-medium text-black">
-                                {machine}
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {timeSlots.map((time, timeIndex) => (
-                              <tr key={timeIndex}>
-                                <td className="px-4 py-4 text-sm text-gray-900">
-                                  {time}
-                                </td>
-                                <td className="px-4 py-4 text-sm text-gray-900">
-                                  {transformedData[doctor][machine][time]?.map(
-                                    (patient, patientIndex) => (
-                                      <div key={patientIndex}>{patient}</div>
-                                    )
-                                  ) || "No Appointments"}
-                                </td>
+                    return (
+                      <div key={machineIndex} className="rounded-md ">
+                        {timeSlots.length > 0 ? (
+                          <table className="bg-white w-full">
+                            <thead>
+                              <tr className="bg-gray-200">
+                                <th className="px-4 py-3 text-left text-sm font-medium text-black">
+                                  Time
+                                </th>
+                                <th className="px-4 py-3 text-left text-sm font-medium text-black">
+                                  {machine}
+                                </th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      ) : (
-                        <div>No Appointments</div>
-                      )}
-                    </div>
-                  );
-                })}
+                            </thead>
+                            <tbody>
+                              {timeSlots.map((time, timeIndex) => (
+                                <tr key={timeIndex}>
+                                  <td className="px-4 py-4 text-sm text-gray-900">
+                                    {time}
+                                  </td>
+                                  <td className="px-4 py-4 text-sm text-gray-900">
+                                    {transformedData[doctor][machine][
+                                      time
+                                    ]?.map((patient, patientIndex) => (
+                                      <div key={patientIndex}>{patient}</div>
+                                    )) || "No Appointments"}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        ) : (
+                          <div>No Appointments</div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="flex w-full justify-center">No Appointments</div>
+      )}
     </div>
   );
 }

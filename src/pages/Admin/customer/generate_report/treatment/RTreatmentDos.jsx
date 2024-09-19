@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
-import SaveTreatmentButtons from "../../../../../components/Admin/SaveTreatmentButtons";
 import TdComponent from "../../../../../components/TdComponent";
 import ThComponent from "../../../../../components/ThComponent";
 import InsideLoader from "../../../../InsideLoader";
@@ -14,34 +13,37 @@ function RTreatmentDos() {
   const [getDos, setGetDos] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectAllMapped, setSelectAllMapped] = useState(false); // State to track header checkbox
+
+  useEffect(() => {
+    handleGetDos();
+
+    // Preselect checkboxes based on storeData when the component mounts
+    if (storeData.dos) {
+      const selectedDosIds = storeData.dos.map((dos) => dos.id.toString());
+      setSelectedCheckboxes(selectedDosIds);
+    }
+  }, [sendWeightReason]);
 
   const handleGetDos = () => {
     if (sendWeightReason) {
-      const data = mappingPackages.filter((pack) => {
-        return sendWeightReason[0] === pack.package.weight_reason;
-      });
-      console.log("Predicted Dos:", data[0]);
-      setGetPredictionDos(data[0]?.package?.dos);
+      const data = mappingPackages.filter((pack) => sendWeightReason[0] === pack.package.weight_reason);
+      setGetPredictionDos(data[0]?.package?.dos || []);
     }
 
     axios
-      .get(
-        `/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`
-      )
+      .get(`/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`)
       .then((res) => {
-        console.log(
-          "All the Dos",
-          res.data?.avoid_and_adds.filter((res) => res.category === "do")
-        );
-        setGetDos(
-          res.data?.avoid_and_adds.filter((res) => res.category === "do")
-        );
+        setGetDos(res.data?.avoid_and_adds.filter((res) => res.category === "do") || []);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
-        alert(err.response?.data?.message + "!");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: err.response?.data?.message || 'An error occurred!',
+        });
       });
   };
 
@@ -49,72 +51,72 @@ function RTreatmentDos() {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
 
-    if (isChecked) {
-      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
-    } else {
-      setSelectedCheckboxes((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
-      );
-    }
-  };
+    const updatedCheckboxes = isChecked
+      ? [...selectedCheckboxes, checkboxValue]
+      : selectedCheckboxes.filter((value) => value !== checkboxValue);
 
-  const handleSave = async () => {
-    const selectedDos = selectedCheckboxes
-      .map((id) => getDos.find((med) => med.id === Number(id)))
-      .filter((med) => med);
+    setSelectedCheckboxes(updatedCheckboxes);
 
-    if (selectedDos.length === 0) {
-      return Swal.fire({
-        icon: "warning",
-        title: "No Dos Selected",
-        text: "Please select at least one dos to save.",
-      });
-    }
+    const selectedDos = updatedCheckboxes
+      .map((id) => getDos.find((dos) => dos.id === Number(id)))
+      .filter((dos) => dos);
 
-    console.log("Selected Nutrition: ", selectedDos);
-
-    const formData = new FormData();
-    formData.append(
-      "package[weight_reason]",
-      sendWeightReason === "null" ? null : sendWeightReason
-    );
-    formData.append("package[medicines]", JSON.stringify(selectedDos));
-
+    // Automatically update storeData whenever a checkbox is selected or deselected
     setStoreData((prev) => ({
       ...prev,
       dos: selectedDos,
     }));
-
-    Swal.fire({
-      icon: "Success",
-      title: "Saved!",
-      text: "Your selected dos has been saved.",
-    });
   };
 
-  const predictedDos = getDos.filter((diet) =>
-    getPredictionDos.some((med) => med.id === diet.id)
+  // Preselect dos based on getPredictionDos
+  const predictedDos = getDos.filter((dos) =>
+    getPredictionDos.some((pred) => pred.id === dos.id)
   );
 
   const otherDos = getDos.filter(
-    (diet) => !getPredictionDos.some((med) => med.id === diet.id)
+    (dos) => !getPredictionDos.some((pred) => pred.id === dos.id)
   );
 
   const sortedDos = [...predictedDos, ...otherDos];
 
-  useEffect(() => {
-    console.log("Updated storeData: ", storeData);
-  }, [storeData]);
+  const handleSelectAllMapped = () => {
+    const isSelectAll = !selectAllMapped;
+    setSelectAllMapped(isSelectAll);
 
-  useEffect(() => {
-    const preSelectedDos = getPredictionDos.map((val) => val.id.toString());
-    console.log("pre", preSelectedDos);
-    setSelectedCheckboxes(preSelectedDos);
-  }, [getPredictionDos]);
+    const mappedDosIds = predictedDos.map((dos) => dos.id.toString());
 
-  useEffect(() => {
-    handleGetDos();
-  }, [sendWeightReason]);
+    if (isSelectAll) {
+      // Select all mapped items
+      const updatedCheckboxes = [
+        ...new Set([...selectedCheckboxes, ...mappedDosIds]),
+      ];
+      setSelectedCheckboxes(updatedCheckboxes);
+
+      const selectedDos = updatedCheckboxes
+        .map((id) => getDos.find((dos) => dos.id === Number(id)))
+        .filter((dos) => dos);
+
+      setStoreData((prev) => ({
+        ...prev,
+        dos: selectedDos,
+      }));
+    } else {
+      // Deselect all mapped items
+      const updatedCheckboxes = selectedCheckboxes.filter(
+        (id) => !mappedDosIds.includes(id)
+      );
+      setSelectedCheckboxes(updatedCheckboxes);
+
+      const selectedDos = updatedCheckboxes
+        .map((id) => getDos.find((dos) => dos.id === Number(id)))
+        .filter((dos) => dos);
+
+      setStoreData((prev) => ({
+        ...prev,
+        dos: selectedDos,
+      }));
+    }
+  };
 
   if (loading) {
     return <InsideLoader />;
@@ -122,28 +124,33 @@ function RTreatmentDos() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[80vh] bg-white ">
+      <div className="rounded-lg bg-card h-[80vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex gap-5 text-center items-center justify-between">
             <div className="font-[550] text-lg">
               No. of dos checked: {selectedCheckboxes.length}
             </div>
+            <div className="font-[550] text-lg flex items-center">
+              Mapped Dos -{" "}
+              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+            </div>
           </div>
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[75vh]">
             <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase ">
+              <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="Select"
-                  />
+                  <th className="rounded-tl-md rounded-bl-md py-3 px-4">
+                    <input
+                      type="checkbox"
+                      onChange={handleSelectAllMapped}
+                      checked={selectAllMapped}
+                      className="size-4"
+                    />
+                  </th>
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
-                  <ThComponent
-                    moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="In Gujarati"
-                  />
+                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} name="In Gujarati" />
                 </tr>
               </thead>
               <tbody>
@@ -157,53 +164,38 @@ function RTreatmentDos() {
                     </th>
                   </tr>
                 ) : (
-                  sortedDos.map((val) => {
-                    return (
-                      <tr
-                        className={`${
-                          getPredictionDos.some((med) => med.id === val.id)
-                            ? "bg-gray-400 "
-                            : ""
-                        } w-full`}
-                        key={val.id}
-                      >
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <input
-                            value={val.id}
-                            onChange={handleCheckboxChange}
-                            type="checkbox"
-                            className="size-4"
-                            defaultChecked={getPredictionDos.some(
-                              (med) => med.id === val.id
-                            )}
-                          />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details_in_english} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details_in_hindi} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.details_in_gujarati} />
-                        </td>
-                      </tr>
-                    );
-                  })
+                  sortedDos.map((val) => (
+                    <tr
+                      className={`${
+                        getPredictionDos.some((med) => med.id === val.id)
+                          ? "bg-gray-400 "
+                          : ""
+                      } w-full`}
+                      key={val.id}
+                    >
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <input
+                          value={val.id}
+                          onChange={handleCheckboxChange}
+                          type="checkbox"
+                          className="size-4"
+                          checked={selectedCheckboxes.includes(val.id.toString())}
+                        />
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <TdComponent things={val.details_in_english} />
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <TdComponent things={val.details_in_hindi} />
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <TdComponent things={val.details_in_gujarati} />
+                      </td>
+                    </tr>
+                  ))
                 )}
               </tbody>
             </table>
-          </div>
-          <div className="flex justify-between">
-            <div className="font-[550] text-lg flex items-center invisible">
-              Checked Dos -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-            </div>
-            <SaveTreatmentButtons function={handleSave} />{" "}
-            <div className="font-[550] text-lg flex items-center">
-              Mapped Dos -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
-            </div>
           </div>
         </div>
       </div>

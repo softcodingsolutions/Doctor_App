@@ -203,11 +203,13 @@ function AdminDashboard() {
               </div>
 
               <div className=" mt-2 w-full h-[76vh] flex flex-col gap-3 bg-white rounded-lg px-4 py-3">
-                {isToday && (
-                  <label className="flex justify-center text-lg font-bold  tracking-wide">
-                    Today's Appointments
-                  </label>
-                )}
+                <div>
+                  {isToday && (
+                    <label className="flex justify-start text-lg font-bold  tracking-wide">
+                      Today's Appointments
+                    </label>
+                  )}
+                </div>
                 <div className="w-full flex justify-end ">
                   <input
                     type="date"
@@ -217,6 +219,7 @@ function AdminDashboard() {
                     onChange={handleConsulting}
                   />
                 </div>
+
                 <div className="bg-white h-[60vh] overflow-y-auto flex flex-col rounded-lg ">
                   {paginateCustomers().length === 0 ? (
                     <div className="flex w-full h-full items-center justify-center text-2xl">

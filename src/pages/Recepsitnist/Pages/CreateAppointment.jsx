@@ -24,6 +24,9 @@ export default function CreateAppointment() {
   const [message, setMessage] = useState("Create Consulting Appointment");
 
   const handleSearchTerm = (value) => {
+    setNewCase(false);
+    setDoctorName("");
+    setOldCase(false);
     setSearchTerm(value);
     setError("");
 
@@ -54,11 +57,11 @@ export default function CreateAppointment() {
       setDoctorList("");
       setMachineList([]);
       setMachineConsultingTime([]);
-    
     }
   };
 
   const handleUserSelect = (user) => {
+    setSearchTerm("");
     if (user.follow_up === true) {
       setOldCase(true);
       setNewCase(false);
@@ -79,7 +82,6 @@ export default function CreateAppointment() {
       setDoctorList(user?.doctor?.id);
     }
     setGetParticularCustomer([]);
-   
   };
 
   useEffect(() => {
@@ -200,7 +202,7 @@ export default function CreateAppointment() {
                 {message && (
                   <div className="flex justify-center">
                     <label className="text-xl bg-white rounded-md p-2 font-semibold text-center">
-                     {message}
+                      {message}
                     </label>
                   </div>
                 )}

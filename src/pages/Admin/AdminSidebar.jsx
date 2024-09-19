@@ -70,7 +70,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "12",
       title: "Medicine List",
-      to: "recpatients/admin-medicine-inventory",
+      to: "admin-medicine-inventory",
       icons: <IoPersonSharp size={18} />,
     },
   ];

@@ -69,6 +69,7 @@ function AdminListFollowUp() {
   };
 
   const handleUserSelect = (user) => {
+    setSearchTerm("")
     console.log(user, "SELECTED USER");
     setData(user);
     setOpenConsulting(true);

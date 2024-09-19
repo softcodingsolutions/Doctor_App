@@ -29,7 +29,7 @@ export default function MedicalInventory() {
       .get(`api/v1/medicines`)
       .then((res) => {
         console.log(res, "Medicine");
-        setData(res.data.medicines);
+        setData(res.data?.medicines);
         setLoading(false);
       })
       .catch((err) => {
@@ -117,7 +117,7 @@ export default function MedicalInventory() {
       <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-fit p-2">
           <button
-            onClick={context[0]}
+            onClick={context?.[0]}
             type="button"
             className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
           >
