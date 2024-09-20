@@ -92,11 +92,11 @@ export default function CreateAppointment() {
   }, [searchTerm]);
 
   return (
-    <div className="w-full p-5">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
-        <div className="flex flex-col px-4 py-3 h-full space-y-4">
-          <div className="text-xl font-semibold text-center mb-4">
-            Create Consulting Appointment
+    <div className="w-full ">
+      <div className="rounded-lg bg-card h-[95vh] bg-white">
+        <div className="flex flex-col px-2 py-1 h-full space-y-4">
+          <div className="text-xl font-semibold text-center p-3">
+            Consulting Appointment
           </div>
           {/* <div className="flex flex-row w-full justify-center gap-5 mb-4">
             <button
@@ -124,15 +124,15 @@ export default function CreateAppointment() {
               className="py-1 px-2 rounded-md border border-black w-full"
             />
           </div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[80%]">
+          
             {loading && <InsideLoader />}
             {error && <div className="text-red-500">{error}</div>}
             {getParticularCustomer?.length > 0 && (
-              <div className="space-y-1 w-[1800vw]">
+              <div className="space-y-1 ">
                 {getParticularCustomer.map((user) => (
                   <div
                     key={user.id}
-                    className="border p-4 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                    className="border p-3 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex justify-between items-center"
                     onClick={() => handleUserSelect(user)}
                   >
                     <div>
@@ -208,7 +208,7 @@ export default function CreateAppointment() {
                 )}
               </form>
             )}
-          </div>
+          
         </div>
       </div>
     </div>

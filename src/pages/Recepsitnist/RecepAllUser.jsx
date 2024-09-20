@@ -14,7 +14,7 @@ function RecepAllUsers() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const role = localStorage.getItem("role");
-  const rowsPerPage = 6;
+  const rowsPerPage = 10;
 
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
@@ -119,10 +119,10 @@ function RecepAllUsers() {
   }
 
   return (
-    <div className="w-full p-2">
-      <div className="rounded-lg bg-card md:h-[94vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-4">
-          <div className="flex justify-between gap-5 p-2 w-full">
+    <div className="w-full ">
+      <div className="rounded-lg bg-card md:h-[95vh] bg-white">
+        <div className="flex p-5 h-full flex-col space-y-4">
+          <div className="flex justify-between gap-5  w-full">
             <input
               type="text"
               value={searchTerm}
@@ -138,6 +138,44 @@ function RecepAllUsers() {
             </button>
           </div>
           <div className="flex items-center justify-end gap-2">
+            <div className="flex flex-start gap-2 w-[67%]">
+              <div className="flex items-start ">
+                <select
+                  name="overweight"
+                  defaultValue="select"
+                  placeholder="Type"
+                  className="py-2 text-sm px-3 rounded-md border border-black"
+                >
+                  <option value="select" disabled>
+                    Select Type
+                  </option>
+                  <option value="new case">New Case</option>
+                  <option value="follow up">Follow Up</option>
+                </select>
+              </div>
+              <div className="flex items-start ">
+                <input
+                  type="date"
+                  placeholder="select date"
+                  className="py-1 text-sm px-3 rounded-md border border-black"
+                />
+              </div>
+              <div className="flex items-start ">
+                <select
+                  name="overweight"
+                  defaultValue="select"
+                  placeholder="Type"
+                  className="py-2 text-sm px-3 rounded-md border border-black"
+                >
+                  <option value="select" disabled>
+                    Package Details
+                  </option>
+                  <option value="activate">Activate</option>
+                  <option value="expired">Expired</option>
+                  <option value="about_to_expired">About to Expried</option>
+                </select>
+              </div>
+            </div>
             <input
               type="checkbox"
               checked
@@ -148,8 +186,8 @@ function RecepAllUsers() {
             <div>- New Patient</div>
           </div>
 
-          <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out h-[75vh]">
-            <table className="w-full min-w-[460px] z-0 ">
+          <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out ">
+            <table className="w-full min-w-[460px] z-0 min-h-96">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent moreClasses={"rounded-tl-md rounded-bl-md"} />
@@ -204,38 +242,38 @@ function RecepAllUsers() {
                               {val.case_number}
                             </div>
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50 break-all ">
+                          <td className="py-2 px-4 border-b border-b-gray-50 break-all ">
                             <TdComponent
                               things={val?.first_name + " " + val?.last_name}
                             />
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.personal_detail?.age} />
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-4 border-b border-b-gray-50">
                             <TdComponent
                               things={val.personal_detail?.weight + "kg"}
                             />
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
                           </td>
-                          {/* <td className="py-3 px-4 border-b border-b-gray-50">
+                          {/* <td className="py-2 px-4 border-b border-b-gray-50">
                             <TdComponent
                               things={val.follow_up ? "Follow Up" : "New Case"}
                             />
                           </td>{" "} */}
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-4 border-b border-b-gray-50">
                             <TdComponent things={convertDate(val.created_at)} />
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-4 border-b border-b-gray-50">
                             <div className="text-black font-medium ml-1 text-sm text-wrap ">
                               {val?.creator === "franchise"
                                 ? `${val?.doctor?.doctor?.first_name} ${val?.doctor?.doctor?.last_name}`
                                 : `${val?.doctor?.first_name} ${val?.doctor?.last_name}`}
                             </div>
                           </td>
-                          <td className="py-3 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-3 flex gap-2 border-b border-b-gray-50">
                             <Button
                               variant="outlined"
                               color="neutral"
@@ -243,6 +281,14 @@ function RecepAllUsers() {
                             >
                               Bill History
                             </Button>
+                            <button
+                              variant="outlined"
+                              color="neutral"
+                              className="font-medium p-2 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
+                              onClick={() => handleInventory(val.case_number)}
+                            >
+                              View Details
+                            </button>
                           </td>
                         </tr>
                       )

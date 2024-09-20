@@ -435,12 +435,12 @@ export default function Indooractivity() {
   }
 
   return (
-    <div className="w-full p-2">
-      <div className="rounded-lg bg-card  bg-white">
-        <div className="flex flex-col px-4 py-3 h-full space-y-4 ">
+    <div className="w-full  ">
+      <div className="rounded-lg bg-card h-full bg-white">
+        <div className="flex flex-col px-2 py-1 h-full space-y-2 ">
           <div className="flex w-full justify-center">
             <div className="text-right justify-end flex w-full ">
-              <h2 className="text-xl font-semibold  m-5">
+              <h2 className="text-xl font-semibold  p-3">
                 Indoor Activity Time Slot
               </h2>
             </div>

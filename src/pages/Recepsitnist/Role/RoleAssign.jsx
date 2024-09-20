@@ -14,7 +14,7 @@ export default function RoleAssign() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
+  const rowsPerPage = 6;
   const handleShow = () => {
     axios
       .get(`api/v1/users`)
@@ -176,8 +176,8 @@ export default function RoleAssign() {
   }
 
   return (
-    <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[87vh] bg-white">
+    <div className="w-full ">
+      <div className="rounded-lg bg-card h-[95vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4">
           <div>
             <div>
@@ -268,26 +268,26 @@ export default function RoleAssign() {
             </div>
           </div>
 
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-full">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-2 px-2 text-left">
                     Name
                   </th>
-                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-2 px-2 text-left">
                     Mobile Number
                   </th>
-                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-2 px-2 text-left">
                     Email
                   </th>
-                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-2 px-2 text-left">
                     Role
                   </th>
-                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-2 px-2 text-left">
                     Password
                   </th>
-                  <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                  <th className="text-sm uppercase tracking-wide font-medium py-2 px-2 text-left">
                     Action
                   </th>
                 </tr>
@@ -296,8 +296,8 @@ export default function RoleAssign() {
                 {paginateCustomers().length > 0 ? (
                   paginateCustomers().map((doctor) => (
                     <tr key={doctor.id} className="hover:bg-gray-200">
-                      <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-base font-medium ml-1">
+                      <td className="py-1 px-1 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
                           {doctor.first_name[0]?.toUpperCase() +
                             doctor.first_name?.slice(1) +
                             " " +
@@ -305,28 +305,28 @@ export default function RoleAssign() {
                             doctor.last_name?.slice(1)}
                         </span>
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-base font-medium ml-1">
+                      <td className="py-1 px-1 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
                           {doctor.phone_number}
                         </span>
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-base font-medium ml-1">
+                      <td className="py-1 px-1 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
                           {doctor.email}
                         </span>
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-base font-medium ml-1">
+                      <td className="py-1 px-1 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
                           {doctor?.role[0]?.toUpperCase() +
                             doctor?.role?.slice(1)}
                         </span>
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
-                        <span className="text-black text-base font-medium ml-1">
+                      <td className="py-1 px-1 border-b border-b-gray-50">
+                        <span className="text-black text-sm font-medium ml-1">
                           {doctor?.show_password}
                         </span>
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50">
+                      <td className="py-1 px-1 border-b border-b-gray-50">
                         <button
                           onClick={() => handleRemoveDoctor(doctor.id)}
                           className="min-w-fit border cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 m-2 rounded-md"

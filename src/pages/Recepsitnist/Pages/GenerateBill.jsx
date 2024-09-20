@@ -185,225 +185,224 @@ export default function GenerateBill() {
             />
           </button>
         </div>
-        <div className="w-full p-5 bg-gray-100">
-          <div className="rounded-lg bg-white shadow-lg overflow-hidden">
-            <div className="flex flex-col px-4 py-6 space-y-2">
-              <div className="text-2xl font-semibold text-center">
-                Generate Bill
-              </div>
-              <div className="flex gap-5 w-full py-3">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  placeholder="Search by First name or Last name or Phone number"
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className={`py-2 px-4 rounded-md border ${
-                    errors.searchTerm ? "border-red-500" : "border-gray-300"
-                  } w-full focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                />
-              </div>
-              <div>
-                {error && <div className="text-red-500">{error}</div>}
-                {getParticularCustomer?.length > 0 ? (
-                  <div className="space-y-1 w-[1800vw]">
-                    {getParticularCustomer.map((user) => (
-                      <div
-                        key={user.id}
-                        className="border p-4 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex justify-between items-center"
-                        onClick={() => handleUserSelect(user)}
-                      >
-                        <div>
-                          <div className="font-semibold">
-                            {user.first_name} {user.last_name}
-                          </div>
-                          <div className="text-gray-500">
-                            Phone: {user.phone_number}
-                          </div>
+
+        <div className="rounded-lg w-full bg-white shadow-lg overflow-hidden h-[95vh]">
+          <div className="flex flex-col px-4 py-6 space-y-2">
+            <div className="text-xl font-semibold text-center">
+              Generate Bill
+            </div>
+            <div className="flex gap-5 w-full py-3">
+              <input
+                type="text"
+                value={searchTerm}
+                placeholder="Search by First name or Last name or Phone number"
+                onChange={(e) => handleSearch(e.target.value)}
+                className={`py-2 px-4 rounded-md border ${
+                  errors.searchTerm ? "border-red-500" : "border-gray-300"
+                } w-full focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              />
+            </div>
+            <div>
+              {error && <div className="text-red-500">{error}</div>}
+              {getParticularCustomer?.length > 0 ? (
+                <div className="space-y-1 ">
+                  {getParticularCustomer.map((user) => (
+                    <div
+                      key={user.id}
+                      className="border p-2 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                      onClick={() => handleUserSelect(user)}
+                    >
+                      <div>
+                        <div className="font-semibold">
+                          {user.first_name} {user.last_name}
                         </div>
-                        <div className="text-gray-600 text-sm">
-                          {user.follow_up ? "Follow Up" : "New Case"}
+                        <div className="text-gray-500">
+                          Phone: {user.phone_number}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex gap-48">
-                    <div className="text-lg font-bold mb-4">
-                      <div>
-                        Patient Name:{" "}
-                        <span className="font-medium">
-                          {userDetails?.first_name} {userDetails?.last_name}
-                        </span>
-                      </div>
-                      <div>
-                        Case Number:{" "}
-                        <span className="font-medium">
-                          {userDetails?.case_number}
-                        </span>
+                      <div className="text-gray-600 text-sm">
+                        {user.follow_up ? "Follow Up" : "New Case"}
                       </div>
                     </div>
-                    <div className="text-lg font-bold mb-4">
-                      <div>
-                        Package Name:{" "}
-                        <span className="font-medium">
-                          {packageDetail?.package_name ?? "No Package Assigned"}
-                        </span>
-                      </div>
-                      <div>
-                        Package Duration:{" "}
-                        <span className="font-medium">
-                          {packageDetail?.no_of_days} Days
-                        </span>
-                      </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex gap-48">
+                  <div className="text-md font-bold mb-4">
+                    <div>
+                      Patient Name:{" "}
+                      <span className="font-medium">
+                        {userDetails?.first_name} {userDetails?.last_name}
+                      </span>
+                    </div>
+                    <div>
+                      Case Number:{" "}
+                      <span className="font-medium">
+                        {userDetails?.case_number}
+                      </span>
                     </div>
                   </div>
-                )}
-              </div>
-              <div className="w-full">
-                {medicines.length > 0 && (
-                  <div className="bg-white shadow-md rounded-lg overflow-hidden">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-100">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                            Medicine Name
-                          </th>
-                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                            Medicine Intake
-                          </th>
-                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                            Assigned Medicine
-                          </th>
-                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                            Total Quantity
-                          </th>
-                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                            With Milk
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {medicines.length > 0 ? (
-                          medicines.map((med, index) => (
-                            <tr key={med.id}>
-                              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">
-                                {med.medicine_name}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-base ">
-                                {formatDosage(med?.dosage)}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-base ">
-                                {med.is_assigned ? "Yes" : "No"}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-base ">
-                                <input
-                                  type="number"
-                                  className={`border rounded-md p-2 ${
-                                    errors[`totalQuantities_${index}`]
-                                      ? "border-red-500"
-                                      : "border-blue-gray-400"
-                                  }`}
-                                  min={0}
-                                  onChange={(e) =>
-                                    handleTotalMedicine(index, e.target.value)
-                                  }
-                                />
-                                {errors[`totalQuantities_${index}`] && (
-                                  <p className="text-red-500 text-sm">
-                                    {errors[`totalQuantities_${index}`]}
-                                  </p>
-                                )}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-base ">
-                                {med.with_milk ? "Yes" : "No"}
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td
-                              colSpan={5}
-                              className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
-                            >
-                              No medicines assigned.
+                  <div className="text-md font-bold mb-4">
+                    <div>
+                      Package Name:{" "}
+                      <span className="font-medium">
+                        {packageDetail?.package_name ?? "No Package Assigned"}
+                      </span>
+                    </div>
+                    <div>
+                      Package Duration:{" "}
+                      <span className="font-medium">
+                        {packageDetail?.no_of_days} Days
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="w-full">
+              {medicines.length > 0 && (
+                <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          Medicine Name
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          Medicine Intake
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          Assigned Medicine
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          Total Quantity
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                          With Milk
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {medicines.length > 0 ? (
+                        medicines.map((med, index) => (
+                          <tr key={med.id}>
+                            <td className="px-3 py-4 text-sm whitespace-nowrap  font-medium text-gray-900">
+                              {med.medicine_name}
+                            </td>
+                            <td className="px-3 py-4 text-sm whitespace-nowrap  ">
+                              {formatDosage(med?.dosage)}
+                            </td>
+                            <td className="px-3 py-4 text-sm whitespace-nowrap  ">
+                              {med.is_assigned ? "Yes" : "No"}
+                            </td>
+                            <td className="px-3 py-4 text-sm whitespace-nowrap  ">
+                              <input
+                                type="number"
+                                className={`border rounded-md p-2 ${
+                                  errors[`totalQuantities_${index}`]
+                                    ? "border-red-500"
+                                    : "border-blue-gray-400"
+                                }`}
+                                min={0}
+                                onChange={(e) =>
+                                  handleTotalMedicine(index, e.target.value)
+                                }
+                              />
+                              {errors[`totalQuantities_${index}`] && (
+                                <p className="text-red-500 text-sm">
+                                  {errors[`totalQuantities_${index}`]}
+                                </p>
+                              )}
+                            </td>
+                            <td className="px-3 py-4 text-sm whitespace-nowrap  ">
+                              {med.with_milk ? "Yes" : "No"}
                             </td>
                           </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-              {medicines.length > 0 && (
-                <div className="flex gap-5 py-3">
-                  <div className=" flex">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Total Price
-                    </label>
-                    <input
-                      type="number"
-                      value={price}
-                      onChange={handlePrice}
-                      className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                        errors.price ? "border-red-500" : "border-gray-300"
-                      } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                    />
-                    {errors.price && (
-                      <p className="text-red-500 text-sm">{errors.price}</p>
-                    )}
-                  </div>
-                  <div className="flex">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid Amount
-                    </label>
-                    <input
-                      type="number"
-                      value={pay}
-                      onChange={handlePay}
-                      className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                        errors.pay ? "border-red-500" : "border-gray-300"
-                      } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                    />
-                    {errors.pay && (
-                      <p className="text-red-500 text-sm">{errors.pay}</p>
-                    )}
-                  </div>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan={5}
+                            className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
+                          >
+                            No medicines assigned.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               )}
-              {medicines.length > 0 && (
-                <div className="flex justify-start ">
-                  <label className="text-sm text-start mr-1">
-                    Payment Method:
+            </div>
+            {medicines.length > 0 && (
+              <div className="flex gap-5 py-3">
+                <div className=" flex">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Total Price
                   </label>
-                  <select
-                    placeholder="Select Method"
-                    onChange={handleMethod}
-                    required
-                    value={method}
+                  <input
+                    type="number"
+                    value={price}
+                    onChange={handlePrice}
                     className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                      errors.method ? "border-red-500" : "border-gray-300"
+                      errors.price ? "border-red-500" : "border-gray-300"
                     } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                  >
-                    <option value="Online">Online</option>
-                    <option value="Cash">Cash</option>
-                  </select>
-                  {errors.method && (
-                    <p className="text-red-500 text-sm">{errors.method}</p>
+                  />
+                  {errors.price && (
+                    <p className="text-red-500 text-sm">{errors.price}</p>
                   )}
                 </div>
-              )}
-              <div className="w-full flex justify-center items-center mt-4">
-                {medicines.length > 0 && (
-                  <Button
-                    onClick={handleBill}
-                    variant="solid"
-                    size="md"
-                    className="bg-blue-500 text-white hover:bg-blue-600"
-                  >
-                    Generate Bill
-                  </Button>
+                <div className="flex">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Paid Amount
+                  </label>
+                  <input
+                    type="number"
+                    value={pay}
+                    onChange={handlePay}
+                    className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
+                      errors.pay ? "border-red-500" : "border-gray-300"
+                    } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                  />
+                  {errors.pay && (
+                    <p className="text-red-500 text-sm">{errors.pay}</p>
+                  )}
+                </div>
+              </div>
+            )}
+            {medicines.length > 0 && (
+              <div className="flex justify-start ">
+                <label className="text-sm text-start mr-1">
+                  Payment Method:
+                </label>
+                <select
+                  placeholder="Select Method"
+                  onChange={handleMethod}
+                  required
+                  value={method}
+                  className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
+                    errors.method ? "border-red-500" : "border-gray-300"
+                  } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                >
+                  <option value="Online">Online</option>
+                  <option value="Cash">Cash</option>
+                </select>
+                {errors.method && (
+                  <p className="text-red-500 text-sm">{errors.method}</p>
                 )}
               </div>
+            )}
+            <div className="w-full flex justify-center items-center mt-4">
+              {medicines.length > 0 && (
+                <Button
+                  onClick={handleBill}
+                  variant="solid"
+                  size="md"
+                  className="bg-blue-500 text-white hover:bg-blue-600"
+                >
+                  Generate Bill
+                </Button>
+              )}
             </div>
           </div>
         </div>

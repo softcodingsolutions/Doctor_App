@@ -15,7 +15,7 @@ export default function Home() {
   const [consultingOpen, setConsultingOpen] = useState(true);
   const [isToday, setIsToday] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 8;
+  const rowsPerPage = 6;
 
   const handleDoctorList = (e) => {
     setDoctorList(e.target.value);
@@ -135,9 +135,9 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full p-5">
-      <div className="rounded-lg bg-card h-[90vh] bg-white">
-        <div className="flex flex-col px-4 py-3 h-full space-y-2.5 ">
+    <div className="w-full ">
+      <div className="rounded-lg bg-card h-[93vh] bg-white">
+        <div className="flex flex-col px-2 py-1 h-full space-y-2.5 ">
           <div className="flex flex-col gap-2 p-2 w-full">
             <div className="flex items-center">
               <div className="flex w-full items-center justify-between">
@@ -196,15 +196,15 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full flex flex-col flex-wrap xl:flex-nowrap justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[75vh]">
+          
             <div className="flex w-full h-full items-center justify-center gap-1">
               {/* consulting time table */}
               {consultingOpen && (
-                <div className="flex w-full flex-col items-center p-1 h-full">
-                  <div className="text-2xl font-semibold tracking-wide">
+                <div className="flex w-full flex-col items-center h-full">
+                  <div className="text-lg font-semibold tracking-wide">
                     Consulting Time Slot
                   </div>
-                  <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
+                  <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[90%]">
                     <table className="w-full min-w-[460px] z-0">
                       <thead className="uppercase">
                         <tr className="bg-[#1F2937] text-white rounded-md">
@@ -268,11 +268,11 @@ export default function Home() {
               )}
               {/* machine time table */}
               {machineOpen && (
-                <div className="flex w-full flex-col items-center p-1 h-full">
-                  <div className="text-2xl font-semibold tracking-wide">
+                <div className="flex w-full flex-col items-center  h-full">
+                  <div className="text-lg font-semibold tracking-wide">
                     Machine Time Slot
                   </div>
-                  <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[93%]">
+                  <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[90%]">
                     <table className="w-full min-w-[460px] z-0">
                       <thead className="uppercase">
                         <tr className="bg-[#1F2937] text-white rounded-md">
@@ -405,7 +405,7 @@ export default function Home() {
                 </button>
               </div>
             )}
-          </div>
+        
         </div>
       </div>
     </div>

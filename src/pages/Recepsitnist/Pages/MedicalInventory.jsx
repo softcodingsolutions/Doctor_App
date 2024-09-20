@@ -22,7 +22,7 @@ export default function MedicalInventory() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 7;
+  const rowsPerPage = 6;
 
   const handleShow = () => {
     axios
@@ -127,13 +127,13 @@ export default function MedicalInventory() {
             />
           </button>
         </div>
-        <div className="w-full p-5">
-          <div className="rounded-lg bg-card h-[90vh] bg-white">
+        <div className="w-full ">
+          <div className="rounded-lg bg-card h-[95vh] bg-white">
             <div className="flex flex-col px-4 py-2.5 h-full space-y-3">
               <div className="text-xl font-semibold">Medical Inventory</div>
-              <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
+              
                 <MedicalTable data={paginateCustomers()} refreshData={handleShow} />
-              </div>
+      
               {/* Pagination Controls */}
               {totalPages !== 0 && (
                 <div className="flex flex-wrap justify-center items-center gap-2 py-2">

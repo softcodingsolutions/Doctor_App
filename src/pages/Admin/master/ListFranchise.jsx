@@ -20,7 +20,7 @@ function ListFranchise() {
   const [getDoctorId, setGetDoctorId] = useState("all");
   const [getFranchiseUsers, setGetFranchiseUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 4;
+  const rowsPerPage = 6;
 
   const paginateCustomers = () => {
     const indexOfLastRow = currentPage * rowsPerPage;
@@ -300,9 +300,9 @@ function ListFranchise() {
             />
           </button>
         </div>
-        <div className="w-full p-2">
-          <div className="rounded-lg bg-card h-[91vh] bg-white">
-            <div className="flex px-4 py-3 h-full flex-col space-y-4">
+     
+          <div className="rounded-lg bg-card h-[95vh] w-full bg-white">
+            <div className="flex px-3 py-3 h-full flex-col space-y-4">
               <div className="flex items-center">
                 <div className="font-semibold text-xl">Franchise List</div>
                 <div className="flex-grow" />
@@ -358,8 +358,8 @@ function ListFranchise() {
                 </div>
               </div>
 
-              <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[75%]">
-                <table className="w-full min-w-[500px]  z-0">
+              <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[85%]">
+                <table className="w-full  z-0">
                   <thead className="uppercase ">
                     <tr className="bg-[#1F2937] text-white rounded-md">
                       <ThComponent
@@ -549,7 +549,7 @@ function ListFranchise() {
               )}
             </div>
           </div>
-        </div>
+        
       </div>
     </div>
   );
