@@ -47,7 +47,7 @@ function AdminMaster() {
           >
             <div
               style={{ transform: `translateX(-${translate}px)` }}
-              className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"
+              className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-10 sm:grid-cols-6 gap-2 p-1 min-w-fit xl:flex "
             >
               {masterButtons.map((res) => {
                 return (
@@ -55,14 +55,14 @@ function AdminMaster() {
                     to={res.to}
                     key={res.id}
                     className={clsx(
-                      "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
+                      "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-1 rounded-md",
                       pathName == res.to
                         ? "bg-[#1F2937] text-white"
                         : "bg-white"
                     )}
                   >
                     {res.icons}
-                    <span className="ml-1.5">{res.name}</span>
+                    <span className="ml-1.5 ">{res.name}</span>
                   </Link>
                 );
               })}

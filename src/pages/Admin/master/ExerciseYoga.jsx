@@ -324,7 +324,9 @@ function ExerciseYoga() {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">{index + 1}</div>
+                          <div className="flex items-center">
+                            {index + 1 + (currentPage - 1) * rowsPerPage}
+                          </div>{" "}
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.name} />

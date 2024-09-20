@@ -13,7 +13,7 @@ function AdminListFollowUp() {
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [message, setMessage] = useState("Search User's List Follow Up");
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 6;
+  const rowsPerPage = 5;
 
   const paginateCustomers = () => {
     if (openconsulting) {
@@ -42,6 +42,20 @@ function AdminListFollowUp() {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  function convertToAmPm(time24) {
+    // Split the input time into hours and minutes (e.g., "14:35" -> ["14", "35"])
+    let [hour, minute] = time24.split(":");
+    hour = parseInt(hour); // Convert the hour to an integer
+
+    let period = hour >= 12 ? "PM" : "AM"; // Determine AM or PM
+
+    // Convert 24-hour format to 12-hour format
+    hour = hour % 12 || 12; // If hour is 0, set to 12 (for midnight), else convert
+
+    // Return the formatted time in 12-hour format with AM/PM
+    return `${hour}:${minute} ${period}`;
+  }
 
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
@@ -210,7 +224,7 @@ function AdminListFollowUp() {
                   {openconsulting && (
                     <div className="">
                       <div className="flex w-full flex-col items-center ">
-                        <div className="text-2xl font-semibold tracking-wide">
+                        <div className="text-lg font-semibold tracking-wide">
                           Consulting Time Slot
                         </div>
                         <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[50vh]">
@@ -247,7 +261,7 @@ function AdminListFollowUp() {
                                       </td>
                                       <td className="py-3 px-4 border-b border-b-gray-50">
                                         <span className="text-black text-base font-medium ml-1">
-                                          {formatTime(data.time)}
+                                          {data.time}
                                         </span>
                                       </td>
                                     </tr>
@@ -336,7 +350,7 @@ function AdminListFollowUp() {
                   {open && (
                     <div className="">
                       <div className="flex w-full flex-col items-center p-4 h-full">
-                        <div className="text-2xl font-semibold tracking-wide">
+                        <div className="text-lg font-semibold tracking-wide">
                           Machine Time Slot
                         </div>
                         <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[50vh]">
@@ -380,7 +394,7 @@ function AdminListFollowUp() {
                                       </td>
                                       <td className="py-3 px-4 border-b border-b-gray-50">
                                         <span className="text-black text-base font-medium ml-1">
-                                          {data?.time}
+                                          {convertToAmPm(data?.time)}
                                         </span>
                                       </td>
                                     </tr>

@@ -96,7 +96,7 @@ function TreatmentQuestionPart2() {
   };
 
   const handleSendQuestionToBeAnswered = async (e) => {
-    const selectedValue = e.target.value; 
+    const selectedValue = e.target.value;
     console.log("min", selectedValue);
     const formData = new FormData();
     formData.append(
@@ -110,7 +110,7 @@ function TreatmentQuestionPart2() {
         .post("/api/v1/packages", formData)
         .then((res) => {
           console.log("min question list:", res);
-          setDefaultDropdownValue(selectedValue); 
+          setDefaultDropdownValue(selectedValue);
           context[1]();
           Swal.fire({
             icon: "success",
@@ -317,7 +317,9 @@ function TreatmentQuestionPart2() {
                         )}
                         {!showCheckboxes && (
                           <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">{index + 1}</div>
+                            <div className="flex items-center">
+                              {index + 1 + (currentPage - 1) * rowsPerPage}
+                            </div>{" "}
                           </td>
                         )}
                         <td className="py-3 px-4 border-b border-b-gray-50">
