@@ -36,8 +36,9 @@ function CustomerAllUsers() {
     setSearchTerm(value);
   };
 
-  const handleInventory = (caseNumber) => {
-    navigate(`/admin/admin-bill-history`, { state: { caseNumber } });
+  const handleInventory = (val) => {
+    localStorage.setItem("userId", val);
+    navigate(`/admin/patients/customer-detials`);
   };
 
   const sortedCustomers = getParticularCustomer.sort((a, b) => {
@@ -105,8 +106,8 @@ function CustomerAllUsers() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card md:h-[94vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-1">
+      <div className="rounded-lg bg-card md:h-[92vh] bg-white">
+        <div className="flex p-2 h-full flex-col space-y-1">
           <div className="flex justify-between gap-5 p-2 w-full">
             <input
               type="text"
@@ -123,6 +124,44 @@ function CustomerAllUsers() {
             </button>
           </div>
           <div className="flex items-center justify-end gap-2">
+            <div className="flex p-2 gap-2 w-[84%] ">
+              <div className="flex items-start ">
+                <select
+                  name="overweight"
+                  defaultValue="select"
+                  placeholder="Type"
+                  className="py-2 text-sm px-3 rounded-md border border-black"
+                >
+                  <option value="select" disabled>
+                    Select Type
+                  </option>
+                  <option value="new case">New Case</option>
+                  <option value="follow up">Follow Up</option>
+                </select>
+              </div>
+              <div className="flex items-start ">
+                <input
+                  type="date"
+                  placeholder="select date"
+                  className="py-1 text-sm px-3 rounded-md border border-black"
+                />
+              </div>
+              <div className="flex items-start ">
+                <select
+                  name="overweight"
+                  defaultValue="select"
+                  placeholder="Type"
+                  className="py-2 text-sm px-3 rounded-md border border-black"
+                >
+                  <option value="select" disabled>
+                    Package Details
+                  </option>
+                  <option value="activate">Activate</option>
+                  <option value="expired">Expired</option>
+                  <option value="about_to_expired">About to Expried</option>
+                </select>
+              </div>
+            </div>
             <div className="w-4 h-4 bg-red-300 border border-gray-800"> </div>
             <div>- Franchise Patient</div>
           </div>
@@ -130,7 +169,7 @@ function CustomerAllUsers() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md ">
-                  <ThComponent name="Case No." />
+                  <ThComponent name="Case No." className="rounded-md" />
                   <ThComponent name="Patient Name" />
                   <ThComponent name="Age" />
                   <ThComponent name="Weight" />
@@ -157,39 +196,39 @@ function CustomerAllUsers() {
                           : "hover:bg-gray-200"
                       }
                     >
-                      <td className="py-2 px-4 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
                         {val.case_number}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
                         {val.first_name} {val.last_name}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
                         {val.personal_detail?.age}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
                         {val.personal_detail?.weight} kg
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
                         {val.phone_number}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
                         {val.follow_up ? "Follow Up" : "New Case"}
                       </td>
-                      <td className="py-3 px-4 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
                         {convertDate(val.created_at)}
                       </td>
-                      <td className=" py-3 px-4 border-b  border-b-gray-50">
-                        <button
-                          className="font-medium p-1 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
-                          onClick={() => handleInventory(val.case_number)}
-                        >
-                          Bill List
-                        </button>
+                      <td className=" py-3 px-2 border-b  border-b-gray-50">
                         <button
                           onClick={() => handleDiagnosis(val.id)}
                           className="font-medium p-1 text-green-600 bg-white border text-sm ml-1 border-gray-300 rounded-md hover:bg-green-600 hover:text-white"
                         >
                           Diagnosis
+                        </button>
+                        <button
+                          className="font-medium p-1 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
+                          onClick={() => handleInventory(val.id)}
+                        >
+                          New Patient
                         </button>
                       </td>
                     </tr>

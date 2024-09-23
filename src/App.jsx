@@ -101,6 +101,8 @@ import RecepsitnistCustomers from "./pages/Recepsitnist/RecepsitnistCustomers";
 import RecepAllUsers from "./pages/Recepsitnist/RecepAllUser";
 import Indooractivity from "./pages/Recepsitnist/Pages/Indooractivity";
 import AppointmentSheet from "./pages/Recepsitnist/Pages/AppointmentSheet";
+import CustomerDetails from "./pages/Admin/customerdetails/CustomerDetails";
+import PackageDetails from "./pages/Admin/customerdetails/PackageDetails";
 
 function App() {
   return (
@@ -181,6 +183,9 @@ function App() {
                 <Route path="dos" element={<RTreatmentDos />} />
                 <Route path="donts" element={<RTreatmentDont />} />
               </Route>
+            </Route>
+            <Route path="customer-detials" element={<CustomerDetails />}>
+              <Route path="package-details" element={<PackageDetails />} />
             </Route>
           </Route>
 
