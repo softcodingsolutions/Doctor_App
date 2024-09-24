@@ -32,6 +32,12 @@ export const masterButtons = [
     to: "medicine",
   },
   {
+    id: "10",
+    name: "Weight Reason",
+    icons: <MdOutlinePostAdd size={18} />,
+    to: "weight-reason",
+  },
+  {
     id: "4",
     name: "Diet",
     icons: <MdFoodBank size={18} />,
@@ -68,12 +74,6 @@ export const masterButtons = [
     to: "complains",
   },
   {
-    id: "10",
-    name: "Weight Reason",
-    icons: <MdOutlinePostAdd size={18} />,
-    to: "weight-reason",
-  },
-  {
     id: "11",
     name: "Lab Tests",
     icons: <GrTest size={18} />,
@@ -88,12 +88,12 @@ export const masterButtons = [
 ];
 
 export const reportButtons = [
-//   {
-//     id: "1",
-//     name: "Profile",
-//     icons: <CiViewList size={18} />,
-//     to: "profile",
-//   },
+  //   {
+  //     id: "1",
+  //     name: "Profile",
+  //     icons: <CiViewList size={18} />,
+  //     to: "profile",
+  //   },
   {
     id: "2",
     name: "Questions",
@@ -106,6 +106,57 @@ export const reportButtons = [
     icons: <GoHistory size={18} />,
     to: "past-history",
   },
+  {
+    id: "4",
+    name: "Treatment",
+    icons: <LiaProceduresSolid size={18} />,
+    to: "treatment/medicine",
+  },
+  {
+    id: "5",
+    name: "Lab Tests",
+    icons: <GrTest size={18} />,
+    to: "lab-tests",
+  },
+  {
+    id: "6",
+    name: "Package",
+    icons: <LuPackagePlus size={18} />,
+    to: "package",
+  },
+  {
+    id: "7",
+    name: "Progress Report",
+    icons: <TbReport size={18} />,
+    to: "progress-report",
+  },
+  // {
+  //   id: "8",
+  //   name: "Generate Report",
+  //   icons: <MdOutlinePictureAsPdf size={18} />,
+  //   to: "generate-report",
+  // },
+];
+
+export const packagesButton = [
+  //   {
+  //     id: "1",
+  //     name: "Profile",
+  //     icons: <CiViewList size={18} />,
+  //     to: "profile",
+  //   },
+  // {
+  //   id: "2",
+  //   name: "Questions",
+  //   icons: <FaRegQuestionCircle size={18} />,
+  //   to: "questions",
+  // },
+  // {
+  //   id: "3",
+  //   name: "Past History",
+  //   icons: <GoHistory size={18} />,
+  //   to: "past-history",
+  // },
   {
     id: "4",
     name: "Treatment",

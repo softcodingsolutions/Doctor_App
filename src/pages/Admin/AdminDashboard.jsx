@@ -210,7 +210,19 @@ function AdminDashboard() {
                     </label>
                   )}
                 </div>
-                <div className="w-full flex justify-end ">
+                <div className="w-full flex justify-end  gap-2">
+                  <select
+                    name="overweight"
+                    defaultValue="select"
+                    placeholder="Type"
+                    className="py-2 text-sm px-3 rounded-md border border-black"
+                  >
+                    <option value="select" disabled>
+                      Select Type
+                    </option>
+                    <option value="new case">New Case</option>
+                    <option value="follow up">Follow Up</option>
+                  </select>
                   <input
                     type="date"
                     placeholder="select date"

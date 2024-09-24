@@ -8,8 +8,10 @@ import Swal from "sweetalert2";
 import { useOutletContext } from "react-router-dom";
 import SelectTreatmentButton from "../../../components/Admin/SelectTreatmentButton";
 import InsideLoader from "../../InsideLoader";
+import { useNavigate } from "react-router-dom";
 
 function TreatmentDonts() {
+  const navigate = useNavigate();
   const context = useOutletContext();
   const [getDonts, setGetDonts] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
@@ -145,6 +147,11 @@ function TreatmentDonts() {
       setSelectedCheckboxes([]);
       setShowCheckboxes(false);
     }
+  };
+
+  const handleRedirect = () => {
+    navigate(`/admin/treatment/question-part1`);
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -346,9 +353,17 @@ function TreatmentDonts() {
             </div>
           )}
           {!showCheckboxes && (
-            <div className="flex justify-between">
-              <PrevPageButton to="../dos" />
-            </div>
+            <>
+              <div className="flex justify-between">
+                <PrevPageButton to="../dos" />
+                <button
+                  className={`px-3 py-1.5 border-[1.5px] rounded-md text-white text-lg bg-gray-800 hover:scale-105 border-x-gray-300`}
+                  onClick={handleRedirect}
+                >
+                  SAVE
+                </button>
+              </div>
+            </>
           )}
           {showCheckboxes && (
             <div className="flex justify-center">

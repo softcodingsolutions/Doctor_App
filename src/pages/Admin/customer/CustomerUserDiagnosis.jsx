@@ -149,9 +149,9 @@ function CustomerUserDiagnosis() {
           </div>
           <div className="flex">
             <div className="text-right break-words font-medium text-sm md:text-md">
-              <GiWeight size={22} />
+              <GiWeight size={30} />
             </div>
-            <div className="pl-1.5 text-sm md:text-md">
+            <div className="pl-1.5 text-sm md:text-md mt-2">
               {getCustomer?.personal_detail?.weight} kgs
             </div>
           </div>

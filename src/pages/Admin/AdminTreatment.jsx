@@ -10,6 +10,7 @@ function AdminTreatment() {
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [getPackages, setPackages] = useState([]);
   const [seeRequired, setSeeRequired] = useState(true);
+  const [isDropdownDisabled, setIsDropdownDisabled] = useState(false); 
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
 
@@ -58,6 +59,7 @@ function AdminTreatment() {
   const handleSendWeightReason = (val, doc_id) => {
     setSendWeightReason(val);
     localStorage.setItem("map_doctor_id", doc_id);
+    setIsDropdownDisabled(true); 
   };
 
   useEffect(() => {
@@ -74,7 +76,11 @@ function AdminTreatment() {
         <div className="w-fit p-2">
           <div className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"></div>
           <div className="flex gap-2">
-            <Select required placeholder="Select a reason">
+            <Select
+              required
+              placeholder="Select a reason"
+              disabled={isDropdownDisabled} // Disable dropdown based on state
+            >
               {getWeightReason.map((res) => {
                 return (
                   <Option

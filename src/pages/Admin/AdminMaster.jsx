@@ -1,105 +1,36 @@
 import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef } from "react";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { masterButtons } from "../../constants/admin/AdminConstants";
-
-const TRANSLATE_AMOUNT = 200;
 
 function AdminMaster() {
   const location = useLocation();
   const pathName = location.pathname?.slice(14);
   const context = useOutletContext();
-  const [translate, setTranslate] = useState(0);
-  const [isLeftVisible, setIsLeftVisible] = useState(false);
-  const [isRightVisible, setIsRightVisible] = useState(true);
-  const containerRef = useRef();
-
-  useEffect(() => {
-    if (containerRef == null) return;
-
-    const observer = new ResizeObserver((entries) => {
-      const container = entries[0]?.target;
-      if (container == null) return;
-
-      setIsLeftVisible(translate > 0);
-      setIsRightVisible(
-        translate + container.clientWidth < container.scrollWidth
-      );
-    });
-
-    observer.observe(containerRef.current);
-    return () => {
-      observer.disconnect();
-    };
-  }, [translate]);
 
   return (
     <div className="flex w-full">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
+      <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
         <div className="w-full sm:flex p-2 items-end">
-          <div
-            ref={containerRef}
-            className="sm:flex-grow flex justify-between overflow-x-hidden"
-          >
-            <div
-              style={{ transform: `translateX(-${translate}px)` }}
-              className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-10 sm:grid-cols-6 gap-2 p-1 min-w-fit xl:flex "
-            >
-              {masterButtons.map((res) => {
-                return (
-                  <Link
-                    to={res.to}
-                    key={res.id}
-                    className={clsx(
-                      "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-1 rounded-md",
-                      pathName == res.to
-                        ? "bg-[#1F2937] text-white"
-                        : "bg-white"
-                    )}
-                  >
-                    {res.icons}
-                    <span className="ml-1.5 ">{res.name}</span>
-                  </Link>
-                );
-              })}
+          <div className=" flex justify-between w-full overflow-x-auto">
+            <div className="grid grid-cols-4 gap-1 p-1 lg:grid-cols-10  w-full ">
+              {masterButtons.map((res) => (
+                <Link
+                  to={res.to}
+                  key={res.id}
+                  className={clsx(
+                    "flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-1 rounded-md",
+                    pathName === res.to ? "bg-[#1F2937] text-white" : "bg-white"
+                  )}
+                >
+                  {res.icons}
+                  <span className="ml-1.5">{res.name}</span>
+                </Link>
+              ))}
             </div>
-            {isLeftVisible && (
-              <div className=" absolute left-[16rem] top-[1.2rem] p-1 h-11 hidden xl:flex items-center justify-start bg-gradient-to-r w-14 from-white from-60% to-transparent">
-                <FaChevronLeft
-                  onClick={() => {
-                    setTranslate((translate) => {
-                      const newTranslate = translate - TRANSLATE_AMOUNT;
-                      if (newTranslate <= 0) return 0;
-                      return newTranslate;
-                    });
-                  }}
-                  className="aspect-square cursor-pointer w-auto h-fit p-2 hover:bg-gray-200 rounded-full"
-                />
-              </div>
-            )}
-            {isRightVisible && (
-              <div className="absolute right-4 top-[1.2rem] p-1 h-11 hidden xl:flex items-center justify-end bg-gradient-to-l w-14 from-white from-70% to-transparent">
-                <FaChevronRight
-                  onClick={() => {
-                    setTranslate((translate) => {
-                      if (containerRef.current === null) return translate;
-                      const newTranslate = translate + TRANSLATE_AMOUNT;
-                      const edge = containerRef.current.scrollWidth;
-                      const width = containerRef.current.clientWidth;
-                      if (newTranslate + width >= edge) {
-                        return edge - width + 250;
-                      }
-                      return newTranslate;
-                    });
-                  }}
-                  className="aspect-square cursor-pointer w-auto h-fit p-2 hover:bg-gray-200 rounded-full"
-                />
-              </div>
-            )}
             <button
               onClick={context[0]}
               type="button"

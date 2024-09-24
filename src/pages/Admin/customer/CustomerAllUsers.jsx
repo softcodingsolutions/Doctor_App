@@ -228,7 +228,7 @@ function CustomerAllUsers() {
                           className="font-medium p-1 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
                           onClick={() => handleInventory(val.id)}
                         >
-                          New Patient
+                          View Patient
                         </button>
                       </td>
                     </tr>

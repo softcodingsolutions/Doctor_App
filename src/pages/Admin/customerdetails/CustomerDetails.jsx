@@ -2,7 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import { reportButtons } from "../../../constants/admin/AdminConstants";
+import {
+  packagesButton,
+  reportButtons,
+} from "../../../constants/admin/AdminConstants";
 import InsideLoader from "../../InsideLoader";
 import male from "../../../assets/images/male.avif";
 import female from "../../../assets/images/female.avif";
@@ -71,7 +74,7 @@ const CustomerDetails = () => {
     return <InsideLoader />;
   }
 
-  const reportButtonsMain = reportButtons.filter((button) => {
+  const reportButtonsMain = packagesButton.filter((button) => {
     if (button.id === "7" && getCustomer?.treatment_packages?.length === 0) {
       return false;
     }
@@ -150,9 +153,9 @@ const CustomerDetails = () => {
           </div>
           <div className="flex">
             <div className="text-right break-words font-medium text-sm md:text-md">
-              <GiWeight size={22} />
+              <GiWeight size={30} />
             </div>
-            <div className="pl-1.5 text-sm md:text-md">
+            <div className="pl-1.5 text-sm md:text-md mt-2">
               {getCustomer?.personal_detail?.weight} kgs
             </div>
           </div>
@@ -232,31 +235,30 @@ const CustomerDetails = () => {
           </div>
         </div>
       </div>
-
-      <div className="w-full sm:flex items-end mt-3">
-        <div className="sm:flex-grow flex justify-between overflow-x-hidden">
-          <div className="flex flex-wrap justify-center transition-transform gap-3 p-1 w-full">
-            {reportButtonsMain.map((res) => {
-              return (
-                <Link
-                  to={res.to}
-                  onClick={() => setSelectedId(res.id)}
-                  key={res.id}
-                  className={clsx(
-                    "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
-                    pathname === res.to ? "bg-[#1F2937] text-white" : "bg-white"
-                  )}
-                >
-                  {res.icons}
-                  <span className="ml-1.5">{res.name}</span>
-                </Link>
-              );
-            })}
-          </div>
+      <div className="flex w-full h-[80%]">
+        <div className=" flex flex-col items-start m-2 h-[97%] bg-white  ml-2 w-[20%] rounded-md">
+          {reportButtonsMain.map((res) => {
+            return (
+              <Link
+                to={res.to}
+                onClick={() => setSelectedId(res.id)}
+                key={res.id}
+                className={clsx(
+                  "w-full flex items-center justify-start shadow-mdcursor-pointer hover:bg-[#1F2937] hover:text-white rounded-md p-4",
+                  pathname === res.to ? "bg-[#1F2937] text-white" : "bg-white"
+                )}
+              >
+                {res.icons}
+                <span className="ml-1.5">{res.name}</span>
+              </Link>
+            );
+          })}
+        </div>
+        <div className="flex w-[80%] p-2 bg-white m-2 rounded-md ">
+          <h2>Hello</h2>
         </div>
       </div>
-
-      {selectedId && <Outlet context={[id, getCustomer, handlegetUser]} />}
+   
     </>
   );
 };
