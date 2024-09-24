@@ -129,6 +129,7 @@ function AdminDashboard() {
     localStorage.setItem("userId", id);
     navigate(`../patients/user-diagnosis/questions`);
   };
+
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     handleGetPatients();
@@ -163,7 +164,7 @@ function AdminDashboard() {
 
           <div className="relative overflow-y-auto">
             <div className="px-4">
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
                 <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -200,218 +201,27 @@ function AdminDashboard() {
                     </div>
                   </div>
                 </div>
+                <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <span className="text-lg sm:text-xl leading-none font-bold text-gray-900">
+                        {getNewPatients}
+                      </span>
+                      <h3 className="text-base font-normal text-gray-500">
+                        New Patients
+                      </h3>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className=" mt-2 w-full h-[76vh] flex flex-col gap-3 bg-white rounded-lg px-4 py-3">
-                <div>
-                  {isToday && (
-                    <label className="flex justify-start text-lg font-bold  tracking-wide">
-                      Today's Appointments
-                    </label>
-                  )}
-                </div>
-                <div className="w-full flex justify-end  gap-2">
-                  <select
-                    name="overweight"
-                    defaultValue="select"
-                    placeholder="Type"
-                    className="py-2 text-sm px-3 rounded-md border border-black"
-                  >
-                    <option value="select" disabled>
-                      Select Type
-                    </option>
-                    <option value="new case">New Case</option>
-                    <option value="follow up">Follow Up</option>
-                  </select>
-                  <input
-                    type="date"
-                    placeholder="select date"
-                    className="py-1 px-1  rounded-md border  border-black w-[40vh]"
-                    value={consultingTime} // This ensures today's date is set by default
-                    onChange={handleConsulting}
-                  />
-                </div>
-
-                <div className="bg-white h-[60vh] overflow-y-auto flex flex-col rounded-lg ">
-                  {paginateCustomers().length === 0 ? (
-                    <div className="flex w-full h-full items-center justify-center text-2xl">
-                      No Appointments Today!
-                    </div>
-                  ) : (
-                    paginateCustomers().map((res) => (
-                      <div
-                        key={res.id}
-                        className="flex text-md hover:bg-gray-200 items-center gap-1 border border-gray-200 min-h-16 shadow-inner rounded-md p-2"
-                      >
-                        <img
-                          src={
-                            res.user?.personal_detail?.gender === "male"
-                              ? male
-                              : female
-                          }
-                          alt="img"
-                          className="size-16 mr-2"
-                        />
-
-                        <div className=" w-[16rem]">
-                          <div className="flex w-80">
-                            <div className=" text-right break-words font-medium text-sm">
-                              Case Number:
-                            </div>
-                            <div className=" pl-2 text-sm">
-                              {res.user?.case_number}
-                            </div>
-                          </div>
-                          <div className="flex">
-                            <div className=" text-right break-words font-medium text-sm">
-                              Patient Name:
-                            </div>
-                            <div className="pl-2 text-sm">
-                              {res.user?.first_name?.[0]?.toUpperCase() +
-                                res.user?.first_name?.slice(1) +
-                                " " +
-                                res.user?.last_name?.[0]?.toUpperCase() +
-                                res.user?.last_name?.slice(1)}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className=" w-[12rem]">
-                          <div className="flex items-center ">
-                            <div className=" text-right break-words font-medium text-sm">
-                              Age:
-                            </div>
-                            <div className=" pl-2 text-sm">
-                              {res.user?.personal_detail?.age}
-                            </div>
-                          </div>
-                          <div className="flex items-center">
-                            <div className=" text-right break-words font-medium text-sm">
-                              Weight:
-                            </div>
-                            <div className="pl-2 text-sm">
-                              {res.user?.personal_detail?.weight} kg
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className=" w-[15rem]">
-                          <div className="flex items-center ">
-                            <div className=" text-right break-words font-medium text-sm">
-                              <BsFillTelephoneFill />
-                            </div>
-                            <div className=" pl-2 text-sm">
-                              {res.user?.phone_number}
-                            </div>
-                          </div>
-                          <div className="flex items-center">
-                            <div className=" text-right break-words font-medium text-sm">
-                              Type:
-                            </div>
-                            <div className="pl-2 text-sm">
-                              {res.user?.follow_up ? "Follow Up" : "New Case"}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className=" w-[14rem]">
-                          <div className="flex items-center">
-                            <div className=" text-right break-words font-medium text-sm">
-                              Time:
-                            </div>
-                            <div className="pl-2 text-sm">
-                              {res.machine_detail?.name
-                                ? convertToAmPm(res.time)
-                                : res.time}
-                            </div>
-                          </div>
-                          {res.machine_detail?.name && (
-                            <div className="flex items-center">
-                              <div className=" text-right break-words font-medium text-sm">
-                                Machine Name:
-                              </div>
-                              <div className=" pl-2 text-sm">
-                                {res.machine_detail?.name}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        <button
-                          onClick={() => handleDiagnosis(res.user?.id)}
-                          className="font-medium text-sm text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
-                        >
-                          Diagnosis
-                        </button>
-                      </div>
-                    ))
-                  )}
-                </div>
-
-                {/* Pagination Controls */}
-                {totalPages !== 0 && (
-                  <div className="flex flex-wrap justify-center items-center gap-2 py-1">
-                    <button
-                      onClick={handlePreviousPage}
-                      disabled={currentPage === 1}
-                      className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                        ></path>
-                      </svg>
-                      Previous
-                    </button>
-                    <div className="flex gap-2">
-                      {Array.from({ length: totalPages }, (_, i) => (
-                        <button
-                          key={i + 1}
-                          onClick={() => setCurrentPage(i + 1)}
-                          className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${
-                            currentPage === i + 1
-                              ? "bg-gray-900 text-white"
-                              : "bg-gray-200 text-black"
-                          }`}
-                        >
-                          {i + 1}
-                        </button>
-                      ))}
-                    </div>
-                    <button
-                      onClick={handleNextPage}
-                      disabled={currentPage === totalPages}
-                      className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                    >
-                      Next
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                        ></path>
-                      </svg>
-                    </button>
-                  </div>
-                )}
+              <div className=" mt-2 w-full  h-[76vh] flex gap-2  rounded-lg ">
+               <div className="bg-white w-[50%] border rounded-md">
+               
+               </div>
+               <div className="bg-white w-[50%] border rounded-md">
+          
+               </div>
               </div>
             </div>
           </div>

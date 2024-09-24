@@ -36,9 +36,10 @@ function CustomerAllUsers() {
     setSearchTerm(value);
   };
 
-  const handleInventory = (val) => {
+  const handleInventory = (val,caseNumber) => {
     localStorage.setItem("userId", val);
-    navigate(`/admin/patients/customer-detials`);
+    localStorage.setItem("caseNumber", caseNumber);
+    navigate(`/admin/patients/customer-details/progress-questions`);
   };
 
   const sortedCustomers = getParticularCustomer.sort((a, b) => {
@@ -226,7 +227,7 @@ function CustomerAllUsers() {
                         </button>
                         <button
                           className="font-medium p-1 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
-                          onClick={() => handleInventory(val.id)}
+                          onClick={() => handleInventory(val.id ,val.case_number)}
                         >
                           View Patient
                         </button>

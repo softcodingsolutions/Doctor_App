@@ -236,7 +236,7 @@ const CustomerDetails = () => {
         </div>
       </div>
       <div className="flex w-full h-[80%]">
-        <div className=" flex flex-col items-start m-2 h-[97%] bg-white  ml-2 w-[20%] rounded-md">
+        <div className=" flex flex-col items-start m-2 h-[97%] bg-white gap-1 ml-2 w-[20%] rounded-md">
           {reportButtonsMain.map((res) => {
             return (
               <Link
@@ -244,7 +244,7 @@ const CustomerDetails = () => {
                 onClick={() => setSelectedId(res.id)}
                 key={res.id}
                 className={clsx(
-                  "w-full flex items-center justify-start shadow-mdcursor-pointer hover:bg-[#1F2937] hover:text-white rounded-md p-4",
+                  "w-full flex items-center justify-start shadow-mdcursor-pointer hover:bg-[#1F2937] hover:text-white rounded-md p-3",
                   pathname === res.to ? "bg-[#1F2937] text-white" : "bg-white"
                 )}
               >
@@ -254,11 +254,10 @@ const CustomerDetails = () => {
             );
           })}
         </div>
-        <div className="flex w-[80%] p-2 bg-white m-2 rounded-md ">
-          <h2>Hello</h2>
+        <div className="flex w-[80%] p-2 bg-white mt-2 mr-2 mb-2 rounded-md ">
+          {selectedId && <Outlet context={[id, getCustomer, handlegetUser]} />}
         </div>
       </div>
-   
     </>
   );
 };

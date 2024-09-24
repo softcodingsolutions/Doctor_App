@@ -5,8 +5,9 @@ import Button from "@mui/joy/Button";
 import { useLocation } from "react-router-dom";
 
 export default function BillHistory(props) {
+  const caseNumber = localStorage.getItem("caseNumber");
   const location = useLocation();
-  const { caseNumber } = location.state || {};
+  // const { caseNumber } = location.state || {};
   const context = useOutletContext();
   const navigate = useNavigate();
 
@@ -82,30 +83,13 @@ export default function BillHistory(props) {
 
   return (
     <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </div>
-      <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
-        <div className="w-fit p-2">
-          <button
-            onClick={context[0]}
-            type="button"
-            className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
-          >
-            <img
-              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
-              alt=""
-            />
-          </button>
-        </div>
-
-        <div className="rounded-lg bg-white shadow-lg w-full overflow-hidden">
-          <div className="flex flex-col px-4 py-6 space-y-4">
-            <div className="text-xl font-semibold text-center mb-4">
-              Bill History
-            </div>
-            <div className="w-full">
-              <div className="flex gap-48">
+      <div className=" flex-grow overflow-auto flex flex-wrap content-start p-1">
+        <div className="rounded-lg   w-full overflow-hidden">
+          <div className="text-md font-semibold mb-2 text-center ">
+            Bill History
+          </div>
+          <div className="w-full">
+            {/* <div className="flex gap-48">
                 <div className="text-md font-bold mb-4">
                   <div>
                     Patient Name:{" "}
@@ -141,113 +125,118 @@ export default function BillHistory(props) {
                     </span>
                   </div>
                 </div>
-              </div>
-              {bills.length > 0 ? (
-                <div className="bg-white shadow-md rounded-lg overflow-hidden">
-                  {bills.map((bill) => (
-                    <div
-                      key={bill.id}
-                      className="mb-4 border border-gray-400 rounded-lg"
-                    >
-                      <div className="p-4 flex justify-between ">
+              </div> */}
+            {bills.length > 0 ? (
+              <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                {bills.map((bill) => (
+                  <div
+                    key={bill.id}
+                    className="mb-4 border border-gray-400  rounded-lg"
+                  >
+                    <div className="font-semibold text-md p-2">
+                      Bill ID: {bill.id}
+                    </div>
+                    <table className="min-w-full divide-y divide-gray-200 ">
+                      <thead className="bg-gray-100">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                            Medicine Name
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                            Quantity
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200 ">
+                        {bill.bill_items.map((item, itemIndex) => (
+                          <tr key={itemIndex} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
+                              {item.medicine_name}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                              {item.quantity}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="p-4 flex justify-between text-sm ">
+                      <div>
+                        <div>Total Price: {bill.total_price}</div>
                         <div>
-                          <div className="font-semibold">
-                            Bill ID: {bill.id}
-                          </div>
-                          <div>Total Price: {bill.total_price}</div>
-                          <div>
-                            Paid Price:{" "}
-                            {editBillId === bill.id ? (
-                              <input
-                                type="number"
-                                value={editableValues.paid_payment}
-                                onChange={(e) =>
-                                  handlePaidAmountChange(e, bill.total_price)
-                                }
-                                className="py-1 px-2 border rounded"
-                              />
-                            ) : (
-                              bill.paid_payment
-                            )}
-                          </div>
-                          <div>
-                            Remaining Price:{" "}
-                            {editBillId === bill.id ? (
-                              <input
-                                type="number"
-                                value={editableValues.remaining_payment}
-                                onChange={(e) =>
-                                  setEditableValues({
-                                    ...editableValues,
-                                    remaining_payment: e.target.value,
-                                  })
-                                }
-                                className="py-1 px-2 border rounded"
-                                readOnly
-                              />
-                            ) : (
-                              bill.remaining_payment
-                            )}
-                          </div>
-                          <div>
-                            Created At:{" "}
-                            {new Date(bill.created_at).toLocaleString()}
-                          </div>
-                          <div>Payment Method: {bill.payment_method}</div>
-                        </div>
-                        <div>
+                          Paid Price:{" "}
                           {editBillId === bill.id ? (
-                            <Button
-                              variant="solid"
-                              color="success"
-                              onClick={() => handleSave(bill.id)}
-                            >
-                              Save
-                            </Button>
+                            <input
+                              type="number"
+                              value={editableValues.paid_payment}
+                              onChange={(e) =>
+                                handlePaidAmountChange(e, bill.total_price)
+                              }
+                              className="py-1 px-2 border rounded"
+                            />
                           ) : (
-                            <Button
-                              variant="solid"
-                              color="primary"
-                              onClick={() => handleEdit(bill)}
-                            >
-                              Edit
-                            </Button>
+                            bill.paid_payment
                           )}
                         </div>
+                        <div>
+                          Remaining Price:{" "}
+                          {editBillId === bill.id ? (
+                            <input
+                              type="number"
+                              value={editableValues.remaining_payment}
+                              onChange={(e) =>
+                                setEditableValues({
+                                  ...editableValues,
+                                  remaining_payment: e.target.value,
+                                })
+                              }
+                              className="py-1 px-2 border rounded"
+                              readOnly
+                            />
+                          ) : (
+                            bill.remaining_payment
+                          )}
+                        </div>
+                        <div>
+                          {new Date(bill.created_at).toLocaleString("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: "2-digit",
+                          })}
+                        </div>
+                        <div>Payment Method: {bill.payment_method}</div>
                       </div>
-                      <table className="min-w-full divide-y divide-gray-200 overflow-auto">
-                        <thead className="bg-gray-100">
-                          <tr>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
-                              Medicine Name
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider">
-                              Quantity
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {bill.bill_items.map((item, itemIndex) => (
-                            <tr key={itemIndex} className="hover:bg-gray-50">
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
-                                {item.medicine_name}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                                {item.quantity}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                      <div>
+                        {editBillId === bill.id ? (
+                          <Button
+                            variant="solid"
+                            color="success"
+                            onClick={() => handleSave(bill.id)}
+                          >
+                            Save
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="solid"
+                            color="primary"
+                            onClick={() => handleEdit(bill)}
+                          >
+                            Edit
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex justify-center">
-                  <h2>Bill has not been generated yet!</h2>
-                </div>
-              )}
-            </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex justify-center">
+                <h2>Bill has not been generated yet!</h2>
+              </div>
+            )}
           </div>
         </div>
       </div>

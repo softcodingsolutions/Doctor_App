@@ -74,6 +74,7 @@ function AddNewProgresReport(props) {
                   required
                 />
               </FormControl>
+              
 
               <Button type="submit">Submit</Button>
             </Stack>

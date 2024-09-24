@@ -93,7 +93,7 @@ function CustomerUserDiagnosis() {
 
         <div className="flex flex-col gap-1.5 justify-center h-auto w-full md:w-[16rem] text-balance">
           <div className="flex w-full">
-            <div className="text-right break-words font-small text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Case Number:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -101,7 +101,7 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Name:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -113,7 +113,7 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium mt-1 text-sm md:text-md">
+            <div className="text-right break-words font-semibold mt-1 text-sm md:text-md">
               <MdEmail />
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -121,7 +121,7 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium mt-1 text-sm md:text-md">
+            <div className="text-right break-words font-semibold mt-1 text-sm md:text-md">
               <BsFillTelephoneFill />
             </div>
             <div className="ml-1 pl-1.5 text-sm md:text-md">
@@ -132,7 +132,7 @@ function CustomerUserDiagnosis() {
 
         <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[16rem]">
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Age:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -140,7 +140,7 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Height:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -148,10 +148,10 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
-              <GiWeight size={30} />
+            <div className="text-right break-words font-semibold text-sm md:text-md">
+              <GiWeight size={25} />
             </div>
-            <div className="pl-1.5 text-sm md:text-md mt-2">
+            <div className="pl-1.5 text-sm md:text-md mt-1">
               {getCustomer?.personal_detail?.weight} kgs
             </div>
           </div>
@@ -159,7 +159,7 @@ function CustomerUserDiagnosis() {
 
         <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[16rem]">
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Created At:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -171,7 +171,7 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Starting Date:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -183,7 +183,7 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Ending Date:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -198,7 +198,7 @@ function CustomerUserDiagnosis() {
 
         <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[19rem]">
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Package:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -206,7 +206,7 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Treatment Package:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
@@ -221,7 +221,7 @@ function CustomerUserDiagnosis() {
             </div>
           </div>
           <div className="flex">
-            <div className="text-right break-words font-medium text-sm md:text-md">
+            <div className="text-right break-words font-semibold text-sm md:text-md">
               Registration Through:
             </div>
             <div className="pl-1.5 text-sm md:text-md">

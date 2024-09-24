@@ -46,6 +46,12 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <CiViewList size={18} />,
       to: "list-franchise",
     },
+    {
+      id: "14",
+      title: "Appointment Details",
+      icons: <CiViewList size={18} />,
+      to: "appointments",
+    }
   ];
 
   const adminSidebarItems = [

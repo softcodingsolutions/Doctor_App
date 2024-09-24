@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function AdminListFollowUp() {
+  const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
@@ -83,7 +85,7 @@ function AdminListFollowUp() {
   };
 
   const handleUserSelect = (user) => {
-    setSearchTerm("")
+    setSearchTerm("");
     console.log(user, "SELECTED USER");
     setData(user);
     setOpenConsulting(true);
@@ -124,6 +126,11 @@ function AdminListFollowUp() {
     } else {
       setMessage("Please search the User");
     }
+  };
+
+  const handleInventory = (val) => {
+    localStorage.setItem("userId", val);
+    navigate(`/admin/patients/customer-detials`);
   };
 
   return (
@@ -218,6 +225,14 @@ function AdminListFollowUp() {
                             {packageDetail?.no_of_days} Days
                           </span>
                         </div>
+                      </div>
+                      <div className="ml-20">
+                        <button
+                          className="font-medium p-3 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
+                          onClick={() => handleInventory(userDetails.id)}
+                        >
+                          View Patient
+                        </button>
                       </div>
                     </div>
                   )}
