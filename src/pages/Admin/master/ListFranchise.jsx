@@ -370,14 +370,11 @@ function ListFranchise() {
                       <ThComponent name="Password" />
                       <ThComponent name="Mobile No." />
                       <ThComponent name="City" />
-                      <ThComponent name="Amount" />
+                      <ThComponent name="Recharged Amount" />
+                      <ThComponent name="Balance" />
                       <ThComponent name="%" />
                       <th
-                        className={` uppercase tracking-wide text-sm font-medium py-3 px-2 text-left`}
-                      />
-                      <th
-                        className={` uppercase tracking-wide text-sm font-medium py-3 px-2 text-left`}
-                      />
+                        className={` uppercase tracking-wide text-sm font-medium  w-25 text-left`} colSpan={2}/>
                       <th
                         className={` uppercase rounded-tr-md rounded-br-md tracking-wide text-sm font-medium py-3 px-2 text-left`}
                       />
@@ -441,14 +438,14 @@ function ListFranchise() {
                             <td className="py-1 px-2 border-b border-b-gray-50">
                               <TdComponent things={val.commission + "%"} />
                             </td>
-                            <td className="py-3 px-2 border-b border-b-gray-50">
+                            <td className="py-2 px-2 border-b border-b-gray-50">
                               <TdComponent
                                 things={
                                   <button
                                     onClick={() => handleAddAmount(val.id)}
                                     className="font-semibold text-green-600 border text-sm border-gray-300 py-2 px-3 rounded-md hover:bg-[#33a92b] hover:text-white"
                                   >
-                                    Add Amount
+                                    Recharge 
                                   </button>
                                 }
                               />
@@ -462,7 +459,7 @@ function ListFranchise() {
                                 users={getFranchiseUsers}
                               />
                             </td>
-                            <td className="py-3 pl-2 pr-4 border-b border-b-gray-50">
+                            <td className="py-3  border-b border-b-gray-50">
                               <TdComponent
                                 things={
                                   <button

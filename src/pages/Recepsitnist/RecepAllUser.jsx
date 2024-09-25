@@ -14,7 +14,7 @@ function RecepAllUsers() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const role = localStorage.getItem("role");
-  const rowsPerPage = 10;
+  const rowsPerPage = 7;
 
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
@@ -42,6 +42,11 @@ function RecepAllUsers() {
     } else {
       navigate(`../../admin-bill-history`, { state: { caseNumber } });
     }
+  };
+  const handleRedirect = (val,caseNumber) => {
+    localStorage.setItem("userId", val);
+    localStorage.setItem("caseNumber", caseNumber);
+    navigate("/receptionist/patients/recp-customer-details/progress-questions");
   };
 
   const paginateCustomers = () => {
@@ -149,7 +154,7 @@ function RecepAllUsers() {
                   <option value="select" disabled>
                     Select Type
                   </option>
-                  <option value="new case">New Case</option>
+                  <option value="new case">New Case / Unread</option>
                   <option value="follow up">Follow Up</option>
                 </select>
               </div>
@@ -172,6 +177,8 @@ function RecepAllUsers() {
                   </option>
                   <option value="activate">Activate</option>
                   <option value="expired">Expired</option>
+                  <option value="deactivate">Deactivated</option>
+                  <option value="renew">Renew</option>
                   <option value="about_to_expired">About to Expried</option>
                 </select>
               </div>
@@ -224,8 +231,8 @@ function RecepAllUsers() {
                               : "hover:bg-gray-200"
                           }
                         >
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <td className="py-2 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-3 border-b border-b-gray-50">
+                            <td className="py-2 px-3 border-b border-b-gray-50">
                               <div className="flex items-center text-sm">
                                 <input
                                   value={val.id}
@@ -237,25 +244,25 @@ function RecepAllUsers() {
                               </div>
                             </td>
                           </td>
-                          <td className="py-2 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-3 border-b border-b-gray-50">
                             <div className="flex items-center text-sm">
                               {val.case_number}
                             </div>
                           </td>
-                          <td className="py-2 px-4 border-b border-b-gray-50 break-all ">
+                          <td className="py-2 px-3 border-b border-b-gray-50 break-all ">
                             <TdComponent
                               things={val?.first_name + " " + val?.last_name}
                             />
                           </td>
-                          <td className="py-2 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-3 border-b border-b-gray-50">
                             <TdComponent things={val.personal_detail?.age} />
                           </td>
-                          <td className="py-2 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-3 border-b border-b-gray-50">
                             <TdComponent
                               things={val.personal_detail?.weight + "kg"}
                             />
                           </td>
-                          <td className="py-2 px-4 border-b border-b-gray-50">
+                          <td className="py-2 px-3 border-b border-b-gray-50">
                             <TdComponent things={val.phone_number} />
                           </td>
                           {/* <td className="py-2 px-4 border-b border-b-gray-50">
@@ -274,20 +281,20 @@ function RecepAllUsers() {
                             </div>
                           </td>
                           <td className="py-2 px-3 flex gap-2 border-b border-b-gray-50">
-                            <Button
+                            {/* <Button
                               variant="outlined"
                               color="neutral"
                               onClick={() => handleInventory(val.case_number)}
                             >
                               Bill History
-                            </Button>
+                            </Button> */}
                             <button
                               variant="outlined"
                               color="neutral"
                               className="font-medium p-2 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
-                              onClick={() => handleInventory(val.case_number)}
+                              onClick={() => handleRedirect(val.id,val.case_number)}
                             >
-                              View Details
+                              View Patient
                             </button>
                           </td>
                         </tr>

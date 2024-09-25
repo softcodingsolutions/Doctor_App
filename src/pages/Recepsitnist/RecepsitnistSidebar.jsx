@@ -8,6 +8,7 @@ import { MdMenuBook } from "react-icons/md";
 import { MdApps } from "react-icons/md";
 import { FaLightbulb } from "react-icons/fa";
 import { IoCloseOutline, IoPersonSharp } from "react-icons/io5";
+import { IoIosSend } from "react-icons/io";
 
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
     },
     {
       id: "7",
-      title: "Indoor Activity Appointment",
+      title: "Indoor Activity",
       to: "appointment/create-machine-appointment",
       icons: <IoIosPaper size={18} />,
     },
@@ -59,6 +60,13 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "medical-inventory",
       icons: <FaClinicMedical size={18} />,
     },
+    {
+      id: "8",
+      title: "Send Message",
+      to: "medical-inventory",
+      icons: <IoIosSend size={18} />,
+    },
+
   ];
 
   const handleLogoutClick = () => {
@@ -109,7 +117,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
             to={i.to}
             key={i.id}
             className={clsx(
-              "w-full mt-6 flex items-center px-3 text-base py-1.5 sm:px-0 xl:px-3 justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer",
+              "w-full flex items-center px-2 text-base py-1.5 sm:px-0 xl:px-2 justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-2 cursor-pointer",
               selected === i.id ? "sidebar-item-selected" : "sidebar-item"
             )}
             onClick={() => setSelected(i.id)}

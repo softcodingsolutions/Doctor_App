@@ -6,6 +6,7 @@ import Button from "@mui/joy/Button";
 
 const ProgressMedicine = () => {
   const context = useOutletContext();
+  const caseNumber = localStorage.getItem("caseNumber");
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
@@ -63,107 +64,95 @@ const ProgressMedicine = () => {
     return dosage || "No dosage info";
   };
 
-  const handleSearch = (value) => {
-    setSearchTerm(value);
-    setLoader(true);
-    if (value) {
-      axios
-        .get(`/api/v2/users/search?search_query=${value}`)
-        .then((res) => {
-          console.log(res, "search term");
-          const userId = res?.data?.user?.id;
-          setGetParticularCustomer(res.data.user);
-          setError("");
-          setSearchTerm("");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      setGetParticularCustomer([]);
-      setPackageDetail({});
-      setUser({});
-      setMedicines([]);
-      setSearchTerm("");
-    }
+  
+
+  const handleData = () => {
+    axios
+      .get(`/api/v2/users/search?search_query=${caseNumber}`)
+      .then((res) => {
+        console.log(res, "search term");
+        setMedicines(
+          res?.data?.user[0]?.treatment_packages?.[0]?.treatment_package
+            ?.medicines
+        );
+        console.log(
+          res?.data?.user[0]?.treatment_packages?.[0]?.treatment_package
+            ?.medicines,
+          "MED"
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const handleUserSelect = (user) => {
-    setSearchTerm("");
-    console.log(user, "SELECTED USER");
-    setLoader(false);
-    setUser(user);
-    setPackageDetail(user?.treatment_packages[0]?.treatment_package);
-    setMedicines(
-      user?.treatment_packages?.[0]?.treatment_package?.medicines || []
-    );
-    setId(user.id);
-    setGetParticularCustomer([]);
-  };
+  useEffect(() => {
+    handleData();
+  }, []);
+
   return (
     <div className="flex w-full">
-     
+      <div className="rounded-lg  overflow-hidden w-full">
+        <div className="text-lg font-semibold text-center ">Medicine</div>
+        <div className="w-full mt-2">
+          {medicines?.length > 0 && (
+            <div className="  rounded-lg overflow-hidden">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                      Medicine Name
+                    </th>
+                    <th
+                      className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider"
+                    
+                    >
+                      Medicine Intake
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                      Quantity
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                      With Milk
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className=" divide-y divide-gray-200">
+                  {medicines.length > 0 ? (
+                    medicines.map((med, index) => (
+                      <tr key={med.id}>
+                        <td className="px-3 py-4 text-sm whitespace-nowrap  font-medium text-gray-900">
+                          {med.medicine_name}
+                        </td>
+                        <td className="px-3 py-4 text-sm whitespace-nowrap  ">
+                          {formatDosage(med?.dosage)}
+                        </td>
+                        <td className="px-3 py-4 text-sm whitespace-nowrap  ">
+                          {med.quantity}
+                        </td>
 
-        <div className="rounded-lg  overflow-hidden w-full">
-          <div className="text-xl font-semibold text-center ">Medicine</div>
-
-          <div className="w-full">
-            {medicines.length > 0 && (
-              <div className=" shadow-md rounded-lg overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                        Medicine Name
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                        Medicine Intake
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                        Assigned Medicine
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                        With Milk
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {medicines.length > 0 ? (
-                      medicines.map((med, index) => (
-                        <tr key={med.id}>
-                          <td className="px-3 py-4 text-sm whitespace-nowrap  font-medium text-gray-900">
-                            {med.medicine_name}
-                          </td>
-                          <td className="px-3 py-4 text-sm whitespace-nowrap  ">
-                            {formatDosage(med?.dosage)}
-                          </td>
-                          <td className="px-3 py-4 text-sm whitespace-nowrap  ">
-                            {med.is_assigned ? "Yes" : "No"}
-                          </td>
-
-                          <td className="px-3 py-4 text-sm whitespace-nowrap  ">
-                            {med.with_milk ? "Yes" : "No"}
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan={5}
-                          className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
-                        >
-                          No medicines assigned.
+                        <td className="px-3 py-4 text-sm whitespace-nowrap  ">
+                          {med.with_milk ? "Yes" : "No"}
                         </td>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
+                      >
+                        No medicines assigned.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
- 
+    </div>
   );
 };
 

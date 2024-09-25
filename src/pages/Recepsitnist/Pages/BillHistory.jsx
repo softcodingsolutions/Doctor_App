@@ -162,9 +162,12 @@ export default function BillHistory(props) {
                     </table>
                     <div className="p-4 flex justify-between text-sm ">
                       <div>
-                        <div>Total Price: {bill.total_price}</div>
                         <div>
-                          Paid Price:{" "}
+                          <label className="font-semibold">Total Price:</label>{" "}
+                          {bill.total_price}
+                        </div>
+                        <div>
+                          <label className="font-semibold">Paid Price: </label>
                           {editBillId === bill.id ? (
                             <input
                               type="number"
@@ -179,7 +182,9 @@ export default function BillHistory(props) {
                           )}
                         </div>
                         <div>
-                          Remaining Price:{" "}
+                          <label className="font-semibold">
+                            Remaining Price:{" "}
+                          </label>
                           {editBillId === bill.id ? (
                             <input
                               type="number"
@@ -198,6 +203,7 @@ export default function BillHistory(props) {
                           )}
                         </div>
                         <div>
+                        <label className="font-semibold"> Created At: </label>
                           {new Date(bill.created_at).toLocaleString("en-GB", {
                             day: "2-digit",
                             month: "2-digit",
@@ -207,7 +213,7 @@ export default function BillHistory(props) {
                             hour12: "2-digit",
                           })}
                         </div>
-                        <div>Payment Method: {bill.payment_method}</div>
+                        <div><label className="font-semibold">Payment Method: </label>{bill.payment_method}</div>
                       </div>
                       <div>
                         {editBillId === bill.id ? (

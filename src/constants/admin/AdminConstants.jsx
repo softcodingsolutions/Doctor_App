@@ -88,12 +88,7 @@ export const masterButtons = [
 ];
 
 export const reportButtons = [
-  //   {
-  //     id: "1",
-  //     name: "Profile",
-  //     icons: <CiViewList size={18} />,
-  //     to: "profile",
-  //   },
+
   {
     id: "2",
     name: "Questions",
@@ -118,12 +113,12 @@ export const reportButtons = [
     icons: <GrTest size={18} />,
     to: "lab-tests",
   },
-  // {
-  //   id: "6",
-  //   name: "Package",
-  //   icons: <LuPackagePlus size={18} />,
-  //   to: "package",
-  // },
+  {
+    id: "6",
+    name: "View Patient",
+    icons: <LuPackagePlus size={18} />,
+    to: "/admin/patients/customer-details/progress-questions",
+  },
   // {
   //   id: "7",
   //   name: "Progress Report",
@@ -146,37 +141,37 @@ export const packagesButton = [
   //     to: "profile",
   //   },
   {
-    id: "2",
+    id: "12",
     name: "Questions",
     icons: <FaRegQuestionCircle size={18} />,
     to: "progress-questions",
   },
   {
-    id: "5",
+    id: "15",
     name: "Complains",
     icons:  <MdError size={18} />,
     to: "progress-complains",
   },
   {
-    id: "6",
+    id: "16",
     name: "Package",
     icons: <LuPackagePlus size={18} />,
     to: "package",
   },
   {
-    id: "7",
+    id: "17",
     name: "Progress Report",
     icons: <TbReport size={18} />,
     to: "progress-report",
   },
   {
-    id: "4",
+    id: "14",
     name: "Assigned Medicines",
     icons: <LiaProceduresSolid size={18} />,
     to: "package-medicine",
   },
    {
-    id: "3",
+    id: "13",
     name: "Bill History",
     icons: <GoHistory size={18} />,
     to: "admin-bill-history",

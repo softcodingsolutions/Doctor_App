@@ -48,29 +48,28 @@ const Appointments = () => {
       });
   };
 
-//   const handleGetPatients = () => {
-//     axios
-//       .get(`/api/v1/users`)
-//       .then((res) => {
-//         console.log(res);
-//         const patients = res.data?.users?.filter(
-//           (user) => user.role === "patient" && user.created_by_id == main_id
-//         );
-//         const newPatients = res.data?.users?.filter(
-//           (user) =>
-//             user.role === "patient" &&
-//             user.follow_up === false &&
-//             user.created_by_id == main_id
-//         );
-//         setGetNewPatients(newPatients?.length);
-//         setGetTotalPatients(patients?.length);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         setLoading(false);
-//       });
-//   };
-
+  //   const handleGetPatients = () => {
+  //     axios
+  //       .get(`/api/v1/users`)
+  //       .then((res) => {
+  //         console.log(res);
+  //         const patients = res.data?.users?.filter(
+  //           (user) => user.role === "patient" && user.created_by_id == main_id
+  //         );
+  //         const newPatients = res.data?.users?.filter(
+  //           (user) =>
+  //             user.role === "patient" &&
+  //             user.follow_up === false &&
+  //             user.created_by_id == main_id
+  //         );
+  //         setGetNewPatients(newPatients?.length);
+  //         setGetTotalPatients(patients?.length);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         setLoading(false);
+  //       });
+  //   };
 
   const paginateCustomers = () => {
     const indexOfLastRow = currentPage * rowsPerPage;
@@ -146,12 +145,16 @@ const Appointments = () => {
           </div>
           <div className="  w-full h-full flex flex-col gap-3 bg-white rounded-lg px-4 py-3 ">
             <div className="grid gap-2 ">
-              {isToday && (
+              {isToday ? (
                 <label className="flex justify-start text-lg font-bold  tracking-wide">
                   Today's Appointments
                 </label>
+              ) : (
+                <label className="flex justify-start text-lg font-bold  tracking-wide">
+                  Appointments
+                </label>
               )}
-              <label  className="flex  justify-start text-md font-semibold tracking-wide">
+              <label className="flex  justify-start text-md font-semibold tracking-wide">
                 {formatDate(consultingTime)}
               </label>
             </div>

@@ -141,7 +141,7 @@ export default function GenerateBill() {
           const userId = res?.data?.user?.id;
           setGetParticularCustomer(res.data.user);
           setError("");
-          setSearchTerm("");
+         
         })
         .catch((err) => {
           console.log(err);

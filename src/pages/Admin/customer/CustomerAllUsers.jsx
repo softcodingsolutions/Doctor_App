@@ -12,15 +12,24 @@ function CustomerAllUsers() {
   const main_id = localStorage.getItem("main_id");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [type, setType] = useState("");
+  const [created_at, setCreatedAt] = useState("");
   const rowsPerPage = 7;
 
   const handleGetAllUsers = () => {
-    axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
-      console.log("Patients by Doctor: ", res.data?.users);
-      setGetCustomers(res.data?.users);
-      setGetParticularCustomer(res.data?.users);
-      setLoading(false);
-    });
+    axios
+      .get(`/api/v1/users?user_id=${main_id}?user_type=${type}`)
+      .then((res) => {
+        console.log("Patients by Doctor: ", res.data?.users);
+        setGetCustomers(res.data?.users);
+        setGetParticularCustomer(res.data?.users);
+        setLoading(false);
+      });
+  };
+
+  const handleType = (e) => {
+    setType(e.target.value);
+    handleGetAllUsers();
   };
 
   const handleDiagnosis = (val) => {
@@ -36,7 +45,7 @@ function CustomerAllUsers() {
     setSearchTerm(value);
   };
 
-  const handleInventory = (val,caseNumber) => {
+  const handleInventory = (val, caseNumber) => {
     localStorage.setItem("userId", val);
     localStorage.setItem("caseNumber", caseNumber);
     navigate(`/admin/patients/customer-details/progress-questions`);
@@ -129,22 +138,22 @@ function CustomerAllUsers() {
               <div className="flex items-start ">
                 <select
                   name="overweight"
-                  defaultValue="select"
+                  onChange={handleType}
                   placeholder="Type"
-                  className="py-2 text-sm px-3 rounded-md border border-black"
+                  className="py-3 text-sm px-2 rounded-md border border-black"
                 >
                   <option value="select" disabled>
                     Select Type
                   </option>
-                  <option value="new case">New Case</option>
-                  <option value="follow up">Follow Up</option>
+                  <option value="new_case">New Case / Unread </option>
+                  <option value="old_case">Follow Up</option>
                 </select>
               </div>
               <div className="flex items-start ">
                 <input
                   type="date"
                   placeholder="select date"
-                  className="py-1 text-sm px-3 rounded-md border border-black"
+                  className="py-2 text-sm px-3 rounded-md border border-black"
                 />
               </div>
               <div className="flex items-start ">
@@ -152,13 +161,15 @@ function CustomerAllUsers() {
                   name="overweight"
                   defaultValue="select"
                   placeholder="Type"
-                  className="py-2 text-sm px-3 rounded-md border border-black"
+                  className="py-3 text-sm px-2 rounded-md border border-black"
                 >
                   <option value="select" disabled>
                     Package Details
                   </option>
                   <option value="activate">Activate</option>
                   <option value="expired">Expired</option>
+                  <option value="deactivate">Deactivated</option>
+                  <option value="renew">Renew</option>
                   <option value="about_to_expired">About to Expried</option>
                 </select>
               </div>
@@ -227,7 +238,9 @@ function CustomerAllUsers() {
                         </button>
                         <button
                           className="font-medium p-1 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
-                          onClick={() => handleInventory(val.id ,val.case_number)}
+                          onClick={() =>
+                            handleInventory(val.id, val.case_number)
+                          }
                         >
                           View Patient
                         </button>

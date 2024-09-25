@@ -102,11 +102,12 @@ import RecepAllUsers from "./pages/Recepsitnist/RecepAllUser";
 import Indooractivity from "./pages/Recepsitnist/Pages/Indooractivity";
 import AppointmentSheet from "./pages/Recepsitnist/Pages/AppointmentSheet";
 import CustomerDetails from "./pages/Admin/customerdetails/CustomerDetails";
-import PackageDetails from "./pages/Admin/customerdetails/PackageDetails";
+// import PackageDetails from "./pages/Admin/customerdetails/PackageDetails";
 import ProgressQuestion from "./pages/Admin/customer/ProgressReport/ProgressQuestion";
 import ProgressComplains from "./pages/Admin/customer/ProgressReport/ProgressComplains";
 import ProgressMedicine from "./pages/Admin/customer/ProgressReport/ProgressMedicine";
 import Appointments from "./pages/Admin/Appointments";
+import ViewFranchiseDetails from "./components/Admin/ViewFranchiseDetails";
 
 function App() {
   return (
@@ -196,12 +197,14 @@ function App() {
               />
               <Route path="progress-questions" element={<ProgressQuestion />} />
               <Route path="progress-report" element={<ReportProgress />} />
-              <Route path="package-details" element={<PackageDetails />} />
+              {/* <Route path="package-details" element={<PackageDetails />} /> */}
             </Route>
           </Route>
 
           {/* list-franchise */}
-          <Route path="list-franchise" element={<ListFranchise />} />
+          <Route path="list-franchise" element={<ListFranchise />} >
+            <Route path="franchise-details" element={<ViewFranchiseDetails />}/>
+          </Route>
 
           {/* master */}
           <Route path="master" element={<AdminMaster />}>
@@ -272,6 +275,7 @@ function App() {
           <Route path="list-follow-up" element={<AdminListFollowUp />} />
         </Route>
         <Route path="appointment-sheet" element={<AppointmentSheet />} />
+
         {/* Receptionist */}
         <Route path="receptionist" element={<RecepsitnistMain />}>
           {/* appointment */}
@@ -284,10 +288,24 @@ function App() {
           <Route path="patients" element={<RecepsitnistCustomers />}>
             <Route path="all-users" element={<RecepAllUsers />} />
 
+            <Route path="recp-customer-details" element={<CustomerDetails />}>
+              <Route path="admin-bill-history" element={<BillHistory />} />
+              <Route path="package" element={<ReportPackage />} />
+              <Route path="package-medicine" element={<ProgressMedicine />} />
+              <Route
+                path="progress-complains"
+                element={<ProgressComplains />}
+              />
+              <Route path="progress-questions" element={<ProgressQuestion />} />
+              <Route path="progress-report" element={<ReportProgress />} />
+              {/* <Route path="package-details" element={<PackageDetails />} /> */}
+            </Route>
+
             {/* user created by receptionist */}
             <Route path="new-user" element={<NewUser />}>
               <Route path="general-details" element={<UserGeneralDetails />} />
             </Route>
+            
           </Route>
 
           {/* appointment */}
