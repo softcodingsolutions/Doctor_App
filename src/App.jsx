@@ -107,7 +107,8 @@ import ProgressQuestion from "./pages/Admin/customer/ProgressReport/ProgressQues
 import ProgressComplains from "./pages/Admin/customer/ProgressReport/ProgressComplains";
 import ProgressMedicine from "./pages/Admin/customer/ProgressReport/ProgressMedicine";
 import Appointments from "./pages/Admin/Appointments";
-import ViewFranchiseDetails from "./components/Admin/ViewFranchiseDetails";
+import FranchiseUserDetails from "./pages/Admin/FranchiseUserDetails";
+import UserComplains from "./components/User/UserComplains";
 
 function App() {
   return (
@@ -126,8 +127,9 @@ function App() {
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
-            <Route path="past-history" element={<ReportPastHistory />} />
+            <Route path="package-medicine" element={<ProgressMedicine />} />
             <Route path="progress-report" element={<ReportProgress />} />
+            <Route path="user-complains" element={<UserComplains />} />
           </Route>
         </Route>
 
@@ -202,9 +204,11 @@ function App() {
           </Route>
 
           {/* list-franchise */}
-          <Route path="list-franchise" element={<ListFranchise />} >
-            <Route path="franchise-details" element={<ViewFranchiseDetails />}/>
-          </Route>
+          <Route path="list-franchise" element={<ListFranchise />} />
+          <Route
+            path="view-franchise-users"
+            element={<FranchiseUserDetails />}
+          />
 
           {/* master */}
           <Route path="master" element={<AdminMaster />}>
@@ -305,7 +309,6 @@ function App() {
             <Route path="new-user" element={<NewUser />}>
               <Route path="general-details" element={<UserGeneralDetails />} />
             </Route>
-            
           </Route>
 
           {/* appointment */}

@@ -20,14 +20,12 @@ import axios from "axios";
 function AddNewProgresReport(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset, watch } = useForm();
-  const [file, setFile] = useState(null); // State to store uploaded file
+  const [file, setFile] = useState(null); 
 
   const progressWeight = watch("progress_weight", 0);
 
   const submittedData = (data) => {
     console.log(data);
-
-    // Handle file upload
     if (file) {
       const formData = new FormData();
       formData.append("progress_date", data.progress_date);
@@ -35,7 +33,7 @@ function AddNewProgresReport(props) {
       formData.append("progress_weight", data.progress_weight);
       formData.append("diet", data.diet);
       formData.append("exercise", data.exercise);
-      formData.append("file", file); // Add the file to the form data
+      formData.append("file", file);
 
       // Send the form data with axios
       props.handleApi(formData);

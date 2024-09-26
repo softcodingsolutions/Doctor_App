@@ -17,8 +17,21 @@ function CustomerAllUsers() {
   const rowsPerPage = 7;
 
   const handleGetAllUsers = () => {
+    axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
+      console.log("Patients by Doctor: ", res.data?.users);
+      setGetCustomers(res.data?.users);
+      setGetParticularCustomer(res.data?.users);
+      setLoading(false);
+    });
+  };
+
+  const handleType = (e) => {
+    const selectedType = e.target.value;
+    console.log(selectedType, "Type");
+    setType(selectedType);
+
     axios
-      .get(`/api/v1/users?user_id=${main_id}?user_type=${type}`)
+      .get(`/api/v1/users?user_id=${main_id}&user_type=${selectedType}`)
       .then((res) => {
         console.log("Patients by Doctor: ", res.data?.users);
         setGetCustomers(res.data?.users);
@@ -27,9 +40,20 @@ function CustomerAllUsers() {
       });
   };
 
-  const handleType = (e) => {
-    setType(e.target.value);
-    handleGetAllUsers();
+  const handleDate = (e) => {
+    const inputDate = new Date(e.target.value); 
+    const formattedDate = inputDate.toISOString().split("T")[0];
+
+    setCreatedAt(formattedDate);
+
+    axios
+      .get(`/api/v1/users?user_id=${main_id}&created_at=${formattedDate}`)
+      .then((res) => {
+        console.log("Patients by Doctor: ", res.data?.users);
+        setGetCustomers(res.data?.users);
+        setGetParticularCustomer(res.data?.users);
+        setLoading(false);
+      });
   };
 
   const handleDiagnosis = (val) => {
@@ -74,6 +98,20 @@ function CustomerAllUsers() {
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const formatType = (type) => {
+    if (type === true) {
+      return (
+        <div className="bg-[#f0d5bb] p-1 rounded  text-[#e78f3d]">
+          Follow Up
+        </div>
+      );
+    } else if (type === false) {
+      return (
+        <div className="bg-[#D6F4F8] p-1 rounded  text-[#00bad1]">New Case</div>
+      );
     }
   };
 
@@ -142,9 +180,7 @@ function CustomerAllUsers() {
                   placeholder="Type"
                   className="py-3 text-sm px-2 rounded-md border border-black"
                 >
-                  <option value="select" disabled>
-                    Select Type
-                  </option>
+                  <option value="">Select Type</option>
                   <option value="new_case">New Case / Unread </option>
                   <option value="old_case">Follow Up</option>
                 </select>
@@ -153,6 +189,7 @@ function CustomerAllUsers() {
                 <input
                   type="date"
                   placeholder="select date"
+                  onChange={handleDate}
                   className="py-2 text-sm px-3 rounded-md border border-black"
                 />
               </div>
@@ -205,28 +242,28 @@ function CustomerAllUsers() {
                       className={
                         val.creator === "franchise"
                           ? "border-l-4 border-red-300 hover:bg-gray-200"
-                          : "hover:bg-gray-200"
+                          : "hover:bg-gray-200 "
                       }
                     >
-                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm text-left ">
                         {val.case_number}
                       </td>
-                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm text-left">
                         {val.first_name} {val.last_name}
                       </td>
-                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm text-left">
                         {val.personal_detail?.age}
                       </td>
-                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm text-left">
                         {val.personal_detail?.weight} kg
                       </td>
-                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm text-left">
                         {val.phone_number}
                       </td>
-                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
-                        {val.follow_up ? "Follow Up" : "New Case"}
+                      <td className="py-3 px-2 border-b border-b-gray-50 flex justify-start   text-sm text-left  ">
+                        {formatType(val.follow_up)}
                       </td>
-                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm">
+                      <td className="py-3 px-2 border-b border-b-gray-50 text-sm text-left">
                         {convertDate(val.created_at)}
                       </td>
                       <td className=" py-3 px-2 border-b  border-b-gray-50">

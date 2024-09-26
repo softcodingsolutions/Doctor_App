@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function AdminListFollowUp() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
@@ -197,7 +197,7 @@ function AdminListFollowUp() {
                 <div className="flex flex-col ">
                   {userDetails?.first_name && (
                     <div className="flex gap-48">
-                      <div className="text-lg font-bold mb-4">
+                      <div className="text-md font-bold mb-4">
                         <div>
                           Patient Name:{" "}
                           <span className="font-medium">
@@ -211,7 +211,7 @@ function AdminListFollowUp() {
                           </span>
                         </div>
                       </div>
-                      <div className="text-lg font-bold mb-4">
+                      <div className="text-md font-bold mb-4">
                         <div>
                           Package Name:{" "}
                           <span className="font-medium">
@@ -226,9 +226,9 @@ function AdminListFollowUp() {
                           </span>
                         </div>
                       </div>
-                      <div className="ml-20">
+                      <div className="ml-32">
                         <button
-                          className="font-medium p-3 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
+                          className="w-[8rem] p-1 text-white bg-green-600  rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
                           onClick={() => handleInventory(userDetails.id)}
                         >
                           View Patient

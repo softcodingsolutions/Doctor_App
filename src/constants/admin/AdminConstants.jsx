@@ -88,7 +88,6 @@ export const masterButtons = [
 ];
 
 export const reportButtons = [
-
   {
     id: "2",
     name: "Questions",
@@ -177,12 +176,20 @@ export const packagesButton = [
     to: "admin-bill-history",
   },
   // {
+  //   id:"20",
+  //   name:"Complains",
+  //   icons:  <MdError size={18} />,
+  //   to: "user-complains",
+  // }
+  // {
   //   id: "8",
   //   name: "Generate Report",
   //   icons: <MdOutlinePictureAsPdf size={18} />,
   //   to: "generate-report",
   // },
 ];
+
+
 
 export const reportTreatmentButtons = [
   {

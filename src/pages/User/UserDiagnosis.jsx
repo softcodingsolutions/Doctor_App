@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import { reportButtons } from "../../constants/admin/AdminConstants";
+import { packagesButton } from "../../constants/admin/AdminConstants";
 import InsideLoader from "../InsideLoader";
 import male from "../../assets/images/male.avif";
 import female from "../../assets/images/female.avif";
@@ -16,6 +16,7 @@ function UserDiagnosis() {
   const id = localStorage.getItem("main_id");
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const [selectedId, setSelectedId] = useState("12");
   const pathname = location.pathname?.split("/user-diagnosis/")[1];
   console.log(pathname);
 
@@ -37,12 +38,13 @@ function UserDiagnosis() {
     handlegetUser();
   }, []);
 
-  const reportButtonsMain = reportButtons.filter((button) => {
+  const reportButtonsMain = packagesButton.filter((button) => {
     if (
-      button.id === "2" ||
-      button.id === "4" ||
-      button.id === "5" ||
-      button.id === "6"
+      button.id === "12" ||
+      button.id === "15" ||
+      button.id === "16" ||
+      button.id === "13" ||
+      button.id === "14"
     ) {
       return (
         getCustomer.role === "super_admin" ||
@@ -84,7 +86,7 @@ function UserDiagnosis() {
 
             <div className="flex flex-col gap-1.5 justify-center h-auto w-full md:w-[16rem] text-balance">
               <div className="flex w-full">
-                <div className="text-right break-words font-small text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Case Number:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -92,7 +94,7 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Name:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -104,7 +106,7 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium mt-1 text-sm md:text-md">
+                <div className="text-right break-words font-semibold mt-1 text-sm md:text-md">
                   <MdEmail />
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -112,7 +114,7 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium mt-1 text-sm md:text-md">
+                <div className="text-right break-words font-semibold mt-1 text-sm md:text-md">
                   <BsFillTelephoneFill />
                 </div>
                 <div className="ml-1 pl-1.5 text-sm md:text-md">
@@ -123,7 +125,7 @@ function UserDiagnosis() {
 
             <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[16rem]">
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Age:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -131,7 +133,7 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Height:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -139,10 +141,10 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
-                  <GiWeight size={22} />
+                <div className="text-right break-words font-semibold text-sm md:text-md">
+                  <GiWeight size={28} />
                 </div>
-                <div className="pl-1.5 text-sm md:text-md">
+                <div className="pl-1.5 text-sm mt-1 md:text-md">
                   {getCustomer?.personal_detail?.weight} kgs
                 </div>
               </div>
@@ -150,7 +152,7 @@ function UserDiagnosis() {
 
             <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[16rem]">
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Created At:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -162,7 +164,7 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Starting Date:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -174,7 +176,7 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Ending Date:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -189,7 +191,7 @@ function UserDiagnosis() {
 
             <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[19rem]">
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Package:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -198,7 +200,7 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Treatment Package:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -213,7 +215,7 @@ function UserDiagnosis() {
                 </div>
               </div>
               <div className="flex">
-                <div className="text-right break-words font-medium text-sm md:text-md">
+                <div className="text-right break-words font-semibold text-sm md:text-md">
                   Registration Through:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
@@ -224,31 +226,33 @@ function UserDiagnosis() {
             </div>
           </div>
 
-          <div className="w-full sm:flex items-end mt-3">
-            <div className="sm:flex-grow flex justify-between overflow-x-hidden">
-              <div className="flex flex-wrap justify-center transition-transform gap-3 p-1 w-full">
-                {reportButtonsMain.map((res) => {
-                  return (
-                    <Link
-                      to={res.to}
-                      key={res.id}
-                      className={clsx(
-                        "min-w-fit flex items-center justify-center col-span-2 border shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
-                        pathname === res.to
-                          ? "bg-[#1F2937] text-white"
-                          : "bg-white"
-                      )}
-                    >
-                      {res.icons}
-                      <span className="ml-1.5 font-sans">{res.name}</span>
-                    </Link>
-                  );
-                })}
-              </div>
+          <div className="flex w-full h-[80%]">
+            <div className=" flex flex-col items-start m-2 h-[97%] bg-white gap-1 ml-2 w-[20%] rounded-md">
+              {reportButtonsMain.map((res) => {
+                return (
+                  <Link
+                    to={res.to}
+                    onClick={() => setSelectedId(res.id)}
+                    key={res.id}
+                    className={clsx(
+                      "w-full flex items-center justify-start shadow-mdcursor-pointer hover:bg-[#1F2937] hover:text-white rounded-md p-3",
+                      pathname === res.to
+                        ? "bg-[#1F2937] text-white"
+                        : "bg-white"
+                    )}
+                  >
+                    {res.icons}
+                    <span className="ml-1.5">{res.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+            <div className="flex w-[80%] p-2 bg-white mt-2 mr-2 mb-2 rounded-md ">
+              {selectedId && (
+                <Outlet context={[id, getCustomer, handlegetUser]} />
+              )}
             </div>
           </div>
-
-          <Outlet context={[id, getCustomer]} />
         </>
       </div>
     </div>

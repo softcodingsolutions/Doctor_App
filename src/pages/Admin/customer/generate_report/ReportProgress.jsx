@@ -21,7 +21,7 @@ function ReportProgress() {
   const role = localStorage.getItem("role");
   const context = useOutletContext();
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
+  const rowsPerPage = 4;
 
   const paginateCustomers = () => {
     if (showProgress) {
@@ -124,11 +124,12 @@ function ReportProgress() {
       });
   };
 
-  const handleAddProgress = (date, weight) => {
+  const handleAddProgress = (date, weight ,pre_weight) => {
     const formData = new FormData();
 
     formData.append("progress_report[user_id]", context[0]);
     formData.append("progress_report[weight]", weight);
+    formData.append("progress_report[pre_weight]",pre_weight)
     formData.append("progress_report[date]", date);
 
     axios
@@ -202,7 +203,7 @@ function ReportProgress() {
 
   return (
     <div className="w-full p-2">
-      <div className="flex px-4 py-3  flex-col space-y-4">
+      <div className="flex px-4 py-3 h-[75vh] flex-col space-y-4">
         <div className="flex items-center justify-between">
           <div>
             {(role === "super_admin" ||
@@ -230,7 +231,7 @@ function ReportProgress() {
 
         {/* progress */}
         {showProgress && (
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto ">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">

@@ -159,7 +159,7 @@ function FranchiseAllCustomers() {
                       val.role === "patient" && (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center text-lg">
+                            <div className="flex items-center text-sm">
                               {val.case_number}
                             </div>
                           </td>

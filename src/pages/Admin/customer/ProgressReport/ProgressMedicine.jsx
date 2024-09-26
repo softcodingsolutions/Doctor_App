@@ -64,8 +64,6 @@ const ProgressMedicine = () => {
     return dosage || "No dosage info";
   };
 
-  
-
   const handleData = () => {
     axios
       .get(`/api/v2/users/search?search_query=${caseNumber}`)
@@ -95,7 +93,7 @@ const ProgressMedicine = () => {
       <div className="rounded-lg  overflow-hidden w-full">
         <div className="text-lg font-semibold text-center ">Medicine</div>
         <div className="w-full mt-2">
-          {medicines?.length > 0 && (
+          {medicines?.length > 0 ? (
             <div className="  rounded-lg overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-100">
@@ -103,10 +101,7 @@ const ProgressMedicine = () => {
                     <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       Medicine Name
                     </th>
-                    <th
-                      className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider"
-                    
-                    >
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
                       Medicine Intake
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
@@ -137,18 +132,15 @@ const ProgressMedicine = () => {
                       </tr>
                     ))
                   ) : (
-                    <tr>
-                      <td
-                        colSpan={5}
-                        className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
-                      >
-                        No medicines assigned.
-                      </td>
-                    </tr>
+                    <h2>""</h2>
                   )}
                 </tbody>
               </table>
             </div>
+          ) : (
+            <label className="text-center flex justify-center  px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">
+              No medicines assigned.
+            </label>
           )}
         </div>
       </div>

@@ -79,7 +79,7 @@ const CustomerDetails = () => {
       return false;
     }
 
-    if (button.id === "4") {
+    if (button.id === "4" ) {
       return getAdmin.possibility_group === true || getAdmin.role === "doctor";
     }
 
