@@ -13,8 +13,10 @@ function RecepAllUsers() {
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [type, setType] = useState("");
+  const [created_at, setCreatedAt] = useState("");
   const role = localStorage.getItem("role");
-  const rowsPerPage = 7;
+  const rowsPerPage = 6;
 
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
@@ -43,7 +45,7 @@ function RecepAllUsers() {
       navigate(`../../admin-bill-history`, { state: { caseNumber } });
     }
   };
-  const handleRedirect = (val,caseNumber) => {
+  const handleRedirect = (val, caseNumber) => {
     localStorage.setItem("userId", val);
     localStorage.setItem("caseNumber", caseNumber);
     navigate("/receptionist/patients/recp-customer-details/progress-questions");
@@ -61,6 +63,38 @@ function RecepAllUsers() {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
+  };
+
+  const handleDate = (e) => {
+    const inputDate = new Date(e.target.value);
+    const formattedDate = inputDate.toISOString().split("T")[0];
+
+    setCreatedAt(formattedDate);
+    axios.get(`/api/v1/users?created_at=${formattedDate}`).then((res) => {
+      const patients = res.data?.users?.filter(
+        (user) => user.role === "patient"
+      );
+      console.log("Patients by Super Admin: ", patients);
+      setGetCustomers(patients);
+      setGetParticularCustomer(patients);
+      setLoading(false);
+    });
+  };
+
+  const handleType = (e) => {
+    const selectedType = e.target.value;
+    console.log(selectedType, "Type");
+    setType(selectedType);
+
+    axios.get(`/api/v1/users?user_type=${selectedType}`).then((res) => {
+      const patients = res.data?.users?.filter(
+        (user) => user.role === "patient"
+      );
+      console.log("Patients by Super Admin: ", patients);
+      setGetCustomers(patients);
+      setGetParticularCustomer(patients);
+      setLoading(false);
+    });
   };
 
   const handlePreviousPage = () => {
@@ -147,22 +181,21 @@ function RecepAllUsers() {
               <div className="flex items-start ">
                 <select
                   name="overweight"
-                  defaultValue="select"
+                  onChange={handleType}
                   placeholder="Type"
                   className="py-2 text-sm px-3 rounded-md border border-black"
                 >
-                  <option value="select" disabled>
-                    Select Type
-                  </option>
-                  <option value="new case">New Case / Unread</option>
-                  <option value="follow up">Follow Up</option>
+                  <option value="">Select Type</option>
+                  <option value="new_case">New Case / Unread </option>
+                  <option value="old_case">Follow Up</option>
                 </select>
               </div>
               <div className="flex items-start ">
                 <input
                   type="date"
                   placeholder="select date"
-                  className="py-1 text-sm px-3 rounded-md border border-black"
+                  onChange={handleDate}
+                  className="py-1 text-sm px-2 rounded-md border border-black"
                 />
               </div>
               <div className="flex items-start ">
@@ -193,7 +226,7 @@ function RecepAllUsers() {
             <div>- New Patient</div>
           </div>
 
-          <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out ">
+          <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out h-[75vh]">
             <table className="w-full min-w-[460px] z-0 min-h-96">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -231,8 +264,8 @@ function RecepAllUsers() {
                               : "hover:bg-gray-200"
                           }
                         >
-                          <td className="py-2 px-3 border-b border-b-gray-50">
-                            <td className="py-2 px-3 border-b border-b-gray-50">
+                          <td className="py-2 px-2 border-b border-b-gray-50">
+                            <td className="py-2 px-2 border-b border-b-gray-50">
                               <div className="flex items-center text-sm">
                                 <input
                                   value={val.id}
@@ -244,34 +277,30 @@ function RecepAllUsers() {
                               </div>
                             </td>
                           </td>
-                          <td className="py-2 px-3 border-b border-b-gray-50">
+                          <td className="py-2 px-2 border-b border-b-gray-50">
                             <div className="flex items-center text-sm">
                               {val.case_number}
                             </div>
                           </td>
-                          <td className="py-2 px-3 border-b border-b-gray-50 break-all ">
-                            <TdComponent
-                              things={val?.first_name + " " + val?.last_name}
-                            />
+                          <td className="py-2 px-2 border-b border-b-gray-50 text-sm text-left">
+                            {val?.first_name + " " + val?.last_name}
                           </td>
-                          <td className="py-2 px-3 border-b border-b-gray-50">
-                            <TdComponent things={val.personal_detail?.age} />
+                          <td className="py-2 px-2 border-b border-b-gray-50 text-sm text-left ">
+                            {val.personal_detail?.age}
                           </td>
-                          <td className="py-2 px-3 border-b border-b-gray-50">
-                            <TdComponent
-                              things={val.personal_detail?.weight + "kg"}
-                            />
+                          <td className="py-2 px-2 border-b border-b-gray-50 text-sm text-left ">
+                            {val.personal_detail?.weight + "kg"}
                           </td>
-                          <td className="py-2 px-3 border-b border-b-gray-50">
-                            <TdComponent things={val.phone_number} />
+                          <td className="py-2 px-2 border-b border-b-gray-50 text-sm text-left ">
+                            {val.phone_number}
                           </td>
                           {/* <td className="py-2 px-4 border-b border-b-gray-50">
                             <TdComponent
                               things={val.follow_up ? "Follow Up" : "New Case"}
                             />
                           </td>{" "} */}
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <TdComponent things={convertDate(val.created_at)} />
+                          <td className="py-2 px-2 border-b border-b-gray-50 text-sm text-left ">
+                            {convertDate(val.created_at)}
                           </td>
                           <td className="py-2 px-4 border-b border-b-gray-50">
                             <div className="text-black font-medium ml-1 text-sm text-wrap ">
@@ -280,7 +309,7 @@ function RecepAllUsers() {
                                 : `${val?.doctor?.first_name} ${val?.doctor?.last_name}`}
                             </div>
                           </td>
-                          <td className="py-2 px-3 flex gap-2 border-b border-b-gray-50">
+                          <td className="py-2 px-2 flex gap-2 border-b border-b-gray-50">
                             {/* <Button
                               variant="outlined"
                               color="neutral"
@@ -291,8 +320,10 @@ function RecepAllUsers() {
                             <button
                               variant="outlined"
                               color="neutral"
-                              className="font-medium p-2 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
-                              onClick={() => handleRedirect(val.id,val.case_number)}
+                              className="font-medium p-1 text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"
+                              onClick={() =>
+                                handleRedirect(val.id, val.case_number)
+                              }
                             >
                               View Patient
                             </button>

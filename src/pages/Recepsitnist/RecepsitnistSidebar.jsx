@@ -63,7 +63,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "8",
       title: "Send Message",
-      to: "medical-inventory",
+      to: "send-message",
       icons: <IoIosSend size={18} />,
     },
 

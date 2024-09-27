@@ -109,6 +109,7 @@ import ProgressMedicine from "./pages/Admin/customer/ProgressReport/ProgressMedi
 import Appointments from "./pages/Admin/Appointments";
 import FranchiseUserDetails from "./pages/Admin/FranchiseUserDetails";
 import UserComplains from "./components/User/UserComplains";
+import SendMeassage from "./pages/Recepsitnist/SendMeassage";
 
 function App() {
   return (
@@ -327,7 +328,7 @@ function App() {
 
           {/* medical inventory */}
           <Route path="medical-inventory" element={<MedicalInventory />} />
-
+          <Route path="send-message" element={<SendMeassage/>} />
           {/* bill history */}
           <Route path="bill-history" element={<BillHistory />} />
         </Route>
