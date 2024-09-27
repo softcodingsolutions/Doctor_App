@@ -20,29 +20,23 @@ import axios from "axios";
 function AddNewProgresReport(props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset, watch } = useForm();
-  const [file, setFile] = useState(null); 
+  const [file, setFile] = useState(null);
 
   const progressWeight = watch("progress_weight", 0);
 
   const submittedData = (data) => {
     console.log(data);
-    if (file) {
-      const formData = new FormData();
-      formData.append("progress_date", data.progress_date);
-      formData.append("pre_weight", data.pre_weight);
-      formData.append("progress_weight", data.progress_weight);
-      formData.append("diet", data.diet);
-      formData.append("exercise", data.exercise);
-      formData.append("file", file);
 
-      // Send the form data with axios
-      props.handleApi(formData);
-    } else {
-      props.handleApi(data.progress_date, data.progress_weight);
-    }
+    props.handleApi(
+      data.progress_date,
+      data.progress_weight,
+      data.pre_weight,
+      data.diet,
+      data.exercise
+    );
 
     reset();
-    setFile(null); // Reset file input after submission
+    setFile(null);
   };
 
   const getWeightInputClass = () => {
@@ -113,18 +107,17 @@ function AddNewProgresReport(props) {
                 </FormControl>
 
                 <FormControl>
-                  <FormLabel>Following Diet</FormLabel>
-                  <RadioGroup name="diet" defaultValue="yes">
-                    <Radio value="yes" label="Yes" />
-                    <Radio value="no" label="No" />
+                  <FormLabel>Diet Followed</FormLabel>
+                  <RadioGroup defaultValue="yes" name="diet">
+                    <Radio {...register("diet")} label="Yes" value="true" />
+                    <Radio {...register("diet")} label="No" value="false" />
                   </RadioGroup>
                 </FormControl>
-
                 <FormControl>
-                  <FormLabel>Following Exercise</FormLabel>
-                  <RadioGroup name="exercise" defaultValue="yes">
-                    <Radio value="yes" label="Yes" />
-                    <Radio value="no" label="No" />
+                  <FormLabel>Exercise Followed</FormLabel>
+                  <RadioGroup defaultValue="yes" name="exercise">
+                    <Radio {...register("exercise")} label="Yes" value="true" />
+                    <Radio {...register("exercise")} label="No" value="false" />
                   </RadioGroup>
                 </FormControl>
 

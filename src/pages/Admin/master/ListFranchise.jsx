@@ -67,6 +67,7 @@ function ListFranchise() {
                 role: d.type_of_admin,
                 created_by_id: main_id,
                 creator: "doctor",
+                initial_amount: d.amount,
                 show_password: d.password,
               },
               personal_detail: {
@@ -424,7 +425,11 @@ function ListFranchise() {
                               }
                             />
                           </td>
-
+                          <td className="py-1 px-2 border-b border-b-gray-50">
+                            <TdComponent
+                              things={val.initial_amount <= 0 ? "0" : val.initial_amount}
+                            />
+                          </td>
                           <td className="py-1 px-2 border-b border-b-gray-50">
                             <TdComponent
                               things={val.amount <= 0 ? "0" : val.amount}
@@ -437,7 +442,12 @@ function ListFranchise() {
                             <TdComponent
                               things={
                                 <button
-                                  onClick={() => handleAddAmount(val.id,val.possibility_group)}
+                                  onClick={() =>
+                                    handleAddAmount(
+                                      val.id,
+                                      val.possibility_group
+                                    )
+                                  }
                                   className="font-semibold text-green-600 border text-sm border-gray-300 py-2 px-3 rounded-md hover:bg-[#33a92b] hover:text-white"
                                 >
                                   Recharge
@@ -446,14 +456,12 @@ function ListFranchise() {
                             />
                           </td>
                           <td className="py-3 px-2 border-b border-b-gray-50">
-                          
-                                <button
-                                  onClick={()=>handleViewDetails(val.id)}
-                                  className="font-semibold text-green-600 border text-sm border-gray-300 py-2 px-3 rounded-md hover:bg-[#33a92b] hover:text-white"
-                                >
-                                  View Details
-                                </button>
-                              
+                            <button
+                              onClick={() => handleViewDetails(val.id)}
+                              className="font-semibold text-green-600 border text-sm border-gray-300 py-2 px-3 rounded-md hover:bg-[#33a92b] hover:text-white"
+                            >
+                              Patient Lists
+                            </button>
                           </td>
                           <td className="py-3  border-b border-b-gray-50">
                             <TdComponent
