@@ -102,9 +102,42 @@ function ReportPackage() {
     }
   };
 
-  const handleDeactivatePackage = async () =>{
+  const handleDeactivatePackage = async (val) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, deactivate it!",
+      cancelButtonText: "No, cancel!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(val, "deactivate");
+        const formdata = new FormData();
+        // 1 = Deactivate Value
+        formdata.append("package_status", 1);
+        axios
+          .put(`/api/v1/user_packages/change_status?id=${val}`, formdata)
+          .then((res) => {
+            console.log(res);
+            Swal.fire(
+              "Deactivated!",
+              "The package has been deactivated.",
+              "success"
+            );
+            window.location.reload(); 
+          })
+          .catch((err) => {
+            console.log(err);
+            Swal.fire("Error!", "Failed to deactivate the package.", "error");
+          });
+      }
+    });
+  };
+  
 
-  }
   useEffect(() => {
     handleGetPackages();
   }, []);
@@ -142,7 +175,8 @@ function ReportPackage() {
             ) : (
               paginateCustomers().map((val, index) => {
                 const isUserPackage =
-                  context[1]?.user_packages?.[0]?.package_name == val.name;
+                  context[1]?.user_packages?.package_name == val.name;
+                const packageId = context[1]?.user_packages?.id;
                 return (
                   <tr
                     className={`${isUserPackage ? "bg-gray-400" : ""} w-full`}
@@ -171,12 +205,11 @@ function ReportPackage() {
                       </td>
                     ) : (
                       <td className="py-3 px-4 border-b border-b-gray-50">
-                        {" "}
                         <button
-                          onClick={() => handleDeactivatePackage(val)}
-                          className="border border-gray-700  hover:bg-red-700 p-1 rounded-md"
+                          onClick={() => handleDeactivatePackage(packageId)} // Fix: Use arrow function
+                          className="border border-gray-700 hover:bg-red-700 p-1 rounded-md"
                         >
-                          Deactivate 
+                          Deactivate
                         </button>
                       </td>
                     )}

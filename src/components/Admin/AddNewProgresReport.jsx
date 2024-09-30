@@ -25,18 +25,18 @@ function AddNewProgresReport(props) {
   const progressWeight = watch("progress_weight", 0);
 
   const submittedData = (data) => {
-    console.log(data);
-
+    
     props.handleApi(
       data.progress_date,
       data.progress_weight,
       data.pre_weight,
       data.diet,
-      data.exercise
+      data.exercise,
+      file
     );
 
-    reset();
-    setFile(null);
+    reset(); 
+    setFile(null); 
   };
 
   const getWeightInputClass = () => {
@@ -121,7 +121,6 @@ function AddNewProgresReport(props) {
                   </RadioGroup>
                 </FormControl>
 
-                {/* New File Upload Input */}
                 <FormControl>
                   <FormLabel>Upload Blood Report(PDF or JPG)</FormLabel>
                   <Input

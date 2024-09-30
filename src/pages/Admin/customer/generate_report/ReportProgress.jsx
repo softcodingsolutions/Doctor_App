@@ -11,7 +11,6 @@ import { Link, useNavigate } from "react-router-dom";
 import InsideLoader from "../../../InsideLoader";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { borderRadius, fontSize } from "@mui/system";
 
 function ReportProgress() {
   const navigate = useNavigate();
@@ -22,6 +21,7 @@ function ReportProgress() {
   const [userDetails, setUserDetails] = useState([]);
   const context = useOutletContext();
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewBloodReport, setViewBloodReport] = useState(null);
   const rowsPerPage = 5;
 
   const paginateCustomers = () => {
@@ -197,35 +197,42 @@ function ReportProgress() {
       });
   };
 
-  const handleAddProgress = (date, weight, preWeight, diet, exercise) => {
+  const handleAddProgress = (
+    date,
+    weight,
+    preWeight,
+    diet,
+    exercise,
+    blood_report
+  ) => {
     const formData = new FormData();
-
     formData.append("progress_report[user_id]", context[0]);
     formData.append("progress_report[weight]", weight);
     formData.append("progress_report[date]", date);
     formData.append("progress_report[pre_weight]", preWeight);
     formData.append("progress_report[following_diet]", diet);
     formData.append("progress_report[following_exercise]", exercise);
+    formData.append("progress_report[blood_report]", blood_report);
 
     axios
-      .post("api/v1/progress_reports", formData)
+      .post("/api/v1/progress_reports", formData)
       .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Added!",
-            text: "Your progress report has been added.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Added!",
+          text: "Your progress report has been added.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         handleGetProgress();
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
+        Swal.fire(
+          "Error",
+          err.response?.data?.message || "Something went wrong",
+          "error"
+        );
       });
   };
 
@@ -284,6 +291,8 @@ function ReportProgress() {
     }
   };
 
+
+
   useEffect(() => {
     handleGetProgress();
   }, [showProgress]);
@@ -308,6 +317,7 @@ function ReportProgress() {
                   progress_weight="Weight"
                   progress_date="Date"
                   weight_reason="Weight Reason"
+                  blood_report="Blood Report"
                 />
               )}
             </div>
@@ -395,7 +405,18 @@ function ReportProgress() {
                           />
                         </td>
                         <td className="py-2 px-2 border-b text-xs border-b-gray-50">
-                          <TdComponent />
+                        {val.blood_report ? (
+                          <button
+                            className="text-blue-500 hover:underline"
+                            onClick={() => window.open(val.blood_report)
+
+                            }
+                          >
+                            VIEW
+                          </button>
+                        ) : (
+                          <p>No Report</p>
+                        )}
                         </td>
                         <td className="py-2 px-2 border-b text-xs border-b-gray-50 flex gap-5">
                           {val.progress_report === null && (

@@ -203,36 +203,49 @@ export default function BillHistory(props) {
                           )}
                         </div>
                         <div>
-                        <label className="font-semibold"> Created At: </label>
-                          {new Date(bill.created_at).toLocaleString("en-GB", {
-                            day: "2-digit",
-                            month: "2-digit",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: "2-digit",
-                          })}
+                          {editBillId === bill.id ? (
+                            <Button
+                              variant="solid"
+                              color="success"
+                              onClick={() => handleSave(bill.id)}
+                            >
+                              Save
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="solid"
+                              color="primary"
+                              onClick={() => handleEdit(bill)}
+                            >
+                              Edit
+                            </Button>
+                          )}
                         </div>
-                        <div><label className="font-semibold">Payment Method: </label>{bill.payment_method}</div>
                       </div>
-                      <div>
-                        {editBillId === bill.id ? (
-                          <Button
-                            variant="solid"
-                            color="success"
-                            onClick={() => handleSave(bill.id)}
-                          >
-                            Save
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="solid"
-                            color="primary"
-                            onClick={() => handleEdit(bill)}
-                          >
-                            Edit
-                          </Button>
-                        )}
+
+                      <div className="flex flex-col">
+                        <div>
+                          <div>
+                            <label className="font-semibold">
+                              {" "}
+                              Created At:{" "}
+                            </label>
+                            {new Date(bill.created_at).toLocaleString("en-GB", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: "2-digit",
+                            })}
+                          </div>
+                          <div>
+                            <label className="font-semibold">
+                              Payment Method:{" "}
+                            </label>
+                            {bill.payment_method}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

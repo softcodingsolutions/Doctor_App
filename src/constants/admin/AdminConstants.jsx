@@ -16,6 +16,7 @@ import {
   MdOutlinePictureAsPdf,
   MdOutlinePostAdd,
 } from "react-icons/md";
+import { TbBrandGoogleAnalytics } from "react-icons/tb";
 import { TbReport } from "react-icons/tb";
 
 export const masterButtons = [
@@ -148,7 +149,7 @@ export const packagesButton = [
   {
     id: "15",
     name: "Complains",
-    icons:  <MdError size={18} />,
+    icons: <MdError size={18} />,
     to: "progress-complains",
   },
   {
@@ -169,11 +170,17 @@ export const packagesButton = [
     icons: <LiaProceduresSolid size={18} />,
     to: "package-medicine",
   },
-   {
+  {
     id: "13",
     name: "Bill History",
     icons: <GoHistory size={18} />,
     to: "admin-bill-history",
+  },
+  {
+    id: "14",
+    name: "Analysis",
+    icons: <TbBrandGoogleAnalytics size={18} />,
+    to: "patient-analysis",
   },
   // {
   //   id:"20",
@@ -188,8 +195,6 @@ export const packagesButton = [
   //   to: "generate-report",
   // },
 ];
-
-
 
 export const reportTreatmentButtons = [
   {

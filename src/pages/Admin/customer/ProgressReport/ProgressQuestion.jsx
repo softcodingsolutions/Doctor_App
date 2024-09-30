@@ -3,19 +3,13 @@ import TdComponent from "../../../../components/TdComponent";
 import ThComponent from "../../../../components/ThComponent";
 import { useOutletContext } from "react-router-dom";
 import axios from "axios";
-import Swal from "sweetalert2";
-import AddNewProgresReport from "../../../../components/Admin/AddNewProgresReport";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { FaRegThumbsDown } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
-import InsideLoader from "../../../InsideLoader";
+import {  useNavigate } from "react-router-dom";
 
 export default function ProgressQuestion() {
-  const navigate = useNavigate();
   const [getQues, setGetQues] = useState([]);
   const [showQues, setShowQues] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const role = localStorage.getItem("role");
   const context = useOutletContext();
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 6;

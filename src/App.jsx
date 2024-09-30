@@ -110,6 +110,7 @@ import Appointments from "./pages/Admin/Appointments";
 import FranchiseUserDetails from "./pages/Admin/FranchiseUserDetails";
 import UserComplains from "./components/User/UserComplains";
 import SendMeassage from "./pages/Recepsitnist/SendMeassage";
+import PatientAnalysis from "./pages/Admin/customer/ProgressReport/PatientAnalysis";
 
 function App() {
   return (
@@ -198,6 +199,7 @@ function App() {
                 path="progress-complains"
                 element={<ProgressComplains />}
               />
+              <Route path="patient-analysis" element={<PatientAnalysis />} />
               <Route path="progress-questions" element={<ProgressQuestion />} />
               <Route path="progress-report" element={<ReportProgress />} />
               {/* <Route path="package-details" element={<PackageDetails />} /> */}
@@ -328,7 +330,7 @@ function App() {
 
           {/* medical inventory */}
           <Route path="medical-inventory" element={<MedicalInventory />} />
-          <Route path="send-message" element={<SendMeassage/>} />
+          <Route path="send-message" element={<SendMeassage />} />
           {/* bill history */}
           <Route path="bill-history" element={<BillHistory />} />
         </Route>
