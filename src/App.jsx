@@ -111,6 +111,7 @@ import FranchiseUserDetails from "./pages/Admin/FranchiseUserDetails";
 import UserComplains from "./components/User/UserComplains";
 import SendMeassage from "./pages/Recepsitnist/SendMeassage";
 import PatientAnalysis from "./pages/Admin/customer/ProgressReport/PatientAnalysis";
+import OverallAnalysis from "./pages/Admin/OverallAnalysis";
 
 function App() {
   return (
@@ -142,6 +143,7 @@ function App() {
 
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>
+          <Route path="analysis" element={<OverallAnalysis />} />
           <Route path="appointments" element={<Appointments />} />
           <Route
             path="admin-medicine-inventory"

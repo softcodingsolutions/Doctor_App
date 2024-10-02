@@ -10,6 +10,7 @@ import { Option, Select } from "@mui/joy";
 import { MdManageAccounts } from "react-icons/md";
 import { AiFillDatabase } from "react-icons/ai";
 import img from "../../assets/images/icons_slime.png";
+import { BsGraphDown } from "react-icons/bs";
 import { CiViewList } from "react-icons/ci";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
@@ -38,7 +39,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       id: "13",
       title: "List Follow Up",
       to: "list-follow-up",
-      icons: <FaWpforms size={18} />,
+      icons:  <CiViewList size={18} />,
     },
     {
       id: "3",
@@ -49,9 +50,15 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "14",
       title: "Appointment Details",
-      icons: <CiViewList size={18} />,
+      icons: <FaWpforms size={18} />,
       to: "appointments",
-    }
+    },
+    {
+      id: "15",
+      title: "Analysis Reports",
+      icons: <BsGraphDown size={18} />,
+      to: "analysis",
+    },
   ];
 
   const adminSidebarItems = [
