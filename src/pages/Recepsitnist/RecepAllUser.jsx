@@ -18,6 +18,7 @@ function RecepAllUsers() {
   const role = localStorage.getItem("role");
   const rowsPerPage = 6;
 
+  console.log(role);
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users`).then((res) => {
       const patients = res.data?.users?.filter(
@@ -48,7 +49,13 @@ function RecepAllUsers() {
   const handleRedirect = (val, caseNumber) => {
     localStorage.setItem("userId", val);
     localStorage.setItem("caseNumber", caseNumber);
-    navigate("/receptionist/patients/recp-customer-details/progress-questions");
+    if (role === "receptionist") {
+      navigate(
+        "/receptionist/patients/recp-customer-details/progress-questions"
+      );
+    } else if (role === "super_admin") {
+      navigate(`/admin/patients/customer-details/progress-questions`);
+    }
   };
 
   const paginateCustomers = () => {

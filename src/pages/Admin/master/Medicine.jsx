@@ -98,15 +98,11 @@ function Medicine() {
       });
   };
 
-  const handleAddMedicine = (med_name, med_contact, med_quantity, doc_id) => {
+  const handleAddMedicine = (med_name, med_contact, med_quantity, doc_id , update) => {
     const formData = new FormData();
-    if (role === "doctor") {
-      formData.append("medicine[medicine_name]", med_name);
-      formData.append("medicine[medicine_content]", med_contact);
-      formData.append("medicine[medicine_quantity]", med_quantity);
-      formData.append("medicine[user_id]", main_id);
+    if (update) {
       axios
-        .post("api/v1/medicines", formData)
+        .put(`/api/v1/medicines/update_or_create_medicine?medicine_name=${med_name}&medicine_quantity=${med_quantity}&doctor_id=${main_id}`)
         .then((res) => {
           console.log(res);
           if (res.data) {
@@ -120,16 +116,19 @@ function Medicine() {
             });
           }
           handleGetMedicines();
+
         })
         .catch((err) => {
           console.log(err);
+
           alert(err.response?.data?.message + "!");
         });
-    } else {
+      }
+    else {
       formData.append("medicine[medicine_name]", med_name);
       formData.append("medicine[medicine_content]", med_contact);
       formData.append("medicine[medicine_quantity]", med_quantity);
-      formData.append("medicine[user_id]", doc_id);
+      formData.append("medicine[user_id]", main_id);
       axios
         .post("api/v1/medicines", formData)
         .then((res) => {

@@ -172,25 +172,25 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     />
                   </div>
                   <div className="flex gap-5 m-5">
-                    <label className="text-lg text-end w-1/3 mr-2">
+                    <label className="text-sm text-end w-1/3 mr-2">
                       Gender:
                     </label>
                     <div className="flex gap-2 w-[21.5rem]">
-                      <label className="flex items-center">
+                      <label className="flex items-center text-sm">
                         <input
                           type="radio"
                           value="male"
                           {...register("gender")}
-                          className="mr-2"
+                          className="mr-2 text-sm"
                         />
                         Male
                       </label>
-                      <label className="flex items-center">
+                      <label className="flex items-center text-sm">
                         <input
                           type="radio"
                           value="female"
                           {...register("gender")}
-                          className="mr-2"
+                          className="mr-2 text-sm"
                         />
                         Female
                       </label>

@@ -2,142 +2,32 @@ import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
 import InsideLoader from "../InsideLoader";
-
+import { FaUsersLine } from "react-icons/fa6";
+import { FaUserPlus } from "react-icons/fa";
+import { AiFillBulb } from "react-icons/ai";
+import { GoNorthStar } from "react-icons/go";
+import { FaClipboardList } from "react-icons/fa";
 
 function AdminDashboard() {
   const context = useOutletContext();
-  const navigate = useNavigate();
-  const [getTotalPatients, setGetTotalPatients] = useState(0);
-  const [getNewPatients, setGetNewPatients] = useState(0);
-  const [getTotalFranchise, setGetTotalFranchise] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [getAppointments, setGetAppointments] = useState([]);
   const main_id = localStorage.getItem("main_id");
-  const today = new Date();
-  const [isToday, setIsToday] = useState(true);
-  const [consultingTime, setConsultingTime] = useState(
-    new Date().toISOString().split("T")[0]
-  );
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 4;
+  const [data, setData] = useState("");
 
-  const handleConsulting = (e) => {
-    const selectedDate = e.target.value;
-    setConsultingTime(selectedDate);
-    handleGetAppointment(selectedDate);
-    const today = new Date().toISOString().split("T")[0];
-
-    if (selectedDate !== today) {
-      setIsToday(false);
-      setLoading(false);
-    } else {
-      setIsToday(true);
-    }
-  };
-
-  const handleGetAppointment = (date) => {
+  const handleData = (today) => {
     axios
-      .get(`api/v1/appointments?date=${date}&doctor_id=${main_id}`)
-      .then((res) => {
-        console.log("Todays Appointment: ", res.data?.appointments);
-        setGetAppointments(res.data?.appointments);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-      });
-  };
-
-  const handleGetPatients = () => {
-    axios
-      .get(`/api/v1/users`)
+      .get(`/api/v2/dashboards?doctor_id=${main_id}&date=${today}`)
       .then((res) => {
         console.log(res);
-        const patients = res.data?.users?.filter(
-          (user) => user.role === "patient" && user.created_by_id == main_id
-        );
-        const newPatients = res.data?.users?.filter(
-          (user) =>
-            user.role === "patient" &&
-            user.follow_up === false &&
-            user.created_by_id == main_id
-        );
-        setGetNewPatients(newPatients?.length);
-        setGetTotalPatients(patients?.length);
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
       });
   };
-
-  const handleGetFranchise = () => {
-    axios
-      .get("/api/v1/users/franchise_index")
-      .then((res) => {
-        const franchise = res.data?.users.filter(
-          (user) => user.created_by_id == main_id
-        );
-        console.log(franchise.length);
-        setGetTotalFranchise(franchise.length);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-        setLoading(false);
-      });
-  };
-
-  const paginateCustomers = () => {
-    const indexOfLastRow = currentPage * rowsPerPage;
-    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-    return getAppointments.slice(indexOfFirstRow, indexOfLastRow);
-  };
-
-  const totalPages = Math.ceil(getAppointments.length / rowsPerPage);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  function convertToAmPm(time24) {
-    // Split the input time into hours and minutes (e.g., "14:35" -> ["14", "35"])
-    let [hour, minute] = time24.split(":");
-    hour = parseInt(hour); // Convert the hour to an integer
-
-    let period = hour >= 12 ? "PM" : "AM"; // Determine AM or PM
-
-    // Convert 24-hour format to 12-hour format
-    hour = hour % 12 || 12; // If hour is 0, set to 12 (for midnight), else convert
-
-    return `${hour}:${minute} ${period}`;
-  }
-
-  const handleDiagnosis = (id) => {
-    localStorage.setItem("userId", id);
-    navigate(`../patients/user-diagnosis/questions`);
-  };
-
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
-    handleGetPatients();
-    handleGetFranchise();
-    handleGetAppointment(today);
+    handleData(today);
   }, []);
-
-  if (loading) {
-    return <InsideLoader />;
-  }
 
   return (
     <div className="flex w-full font-sans">
@@ -162,51 +52,88 @@ function AdminDashboard() {
 
           <div className="relative overflow-y-auto">
             <div className="px-4">
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-                <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3">
+                <div className="bg-white shadow  rounded-lg p-2 border-b-[#fff0e1] hover:border-b-[#ff9f43] border-y-4 sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <span className="text-lg sm:text-xl leading-none font-bold text-gray-900">
-                        {getTotalPatients}
-                      </span>
+                      <div className="flex gap-2">
+                        <div className="bg-[#fff0e1] p-1 rounded-md flex justify-center">
+                          <FaUsersLine size={25} color="#ff9f43" />
+                        </div>
+                        <span className="text-lg sm:text-xl mt-1 leading-none font-bold text-gray-900">
+                          {data.total_doctor_user}
+                        </span>
+                      </div>
                       <h3 className="text-base font-normal text-gray-500">
                         Total Patients
                       </h3>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
+                <div className="bg-white shadow  rounded-lg p-2 border-b-[#ddf6e8] border-y-4  hover:border-b-[#28c76f] sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <span className="text-lg sm:text-xl leading-none font-bold text-gray-900">
-                        {getTotalFranchise}
-                      </span>
-                      <h3 className="text-base font-normal text-gray-500">
-                        Total Franchise
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <span className="text-lg sm:text-xl leading-none font-bold text-gray-900">
-                        {getNewPatients}
-                      </span>
+                      <div className="flex gap-2">
+                        <div className="bg-[#ddf6e8] p-1 rounded-md flex justify-center">
+                          <FaUserPlus size={23} color="#28c76f" />
+                        </div>
+                        <span className="text-lg sm:text-xl mt-1 leading-none font-bold text-gray-900">
+                          {data.total_new_patient}
+                        </span>
+                      </div>
                       <h3 className="text-base font-normal text-gray-500">
                         New Patients
                       </h3>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white shadow rounded-lg p-4 sm:p-5 xl:p-8 ">
+                <div className="bg-white shadow  rounded-lg p-2  border-b-[#e9e7fd] border-y-4 hover:border-b-[#7367f0] sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <span className="text-lg sm:text-xl leading-none font-bold text-gray-900">
-                        {getNewPatients}
-                      </span>
+                      <div className="flex gap-2">
+                        <div className="bg-[#e9e7fd] p-1 rounded-md flex justify-center">
+                          <AiFillBulb size={22} color="#7367f0" />
+                        </div>
+                        <span className="text-lg sm:text-xl mt-1 leading-none font-bold text-gray-900">
+                          {data.total_followup_users}
+                        </span>
+                      </div>
                       <h3 className="text-base font-normal text-gray-500">
-                        New Patients
+                       FollowUp Patients
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white shadow  rounded-lg p-2 border-b-[#ffe2e3] border-y-4 hover:border-b-[#ff4c51] sm:p-5 xl:p-8 ">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="flex gap-2">
+                        <div className="bg-[#ffe2e3] p-1 rounded-md flex justify-center">
+                          <GoNorthStar size={22} color="#ff4c51" />
+                        </div>
+                        <span className="text-lg sm:text-xl mt-1 leading-none font-bold text-gray-900">
+                          {data.total_franchise_user}
+                        </span>
+                      </div>
+                      <h3 className="text-base font-normal text-gray-500">
+                         Franchise Patients
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white shadow  border-b-[#d6f4f8] border-y-4 rounded-lg p-2 sm:p-5 xl:p-8 hover:border-b-[#00bad1] ">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="flex gap-2">
+                        <div className="bg-[#d6f4f8] p-1 rounded-md flex justify-center">
+                          <FaClipboardList size={20} color="#00bad1" />
+                        </div>
+                        <span className="text-lg sm:text-xl mt-1 leading-none font-bold text-gray-900">
+                          {data.todays_appointment_count}
+                        </span>
+                      </div>
+                      <h3 className="text-base font-normal text-gray-500">
+                       Todays Appointments
                       </h3>
                     </div>
                   </div>
@@ -214,12 +141,8 @@ function AdminDashboard() {
               </div>
 
               <div className=" mt-2 w-full  h-[76vh] flex gap-2  rounded-lg ">
-               <div className="bg-white w-[50%] border rounded-md">
-               
-               </div>
-               <div className="bg-white w-[50%] border rounded-md">
-          
-               </div>
+                <div className="bg-white w-[50%] border rounded-md"></div>
+                <div className="bg-white w-[50%] border rounded-md"></div>
               </div>
             </div>
           </div>

@@ -124,7 +124,7 @@ function LoginPage() {
     } else if (role === "receptionist") {
       navigate("/receptionist/appointment/home");
     } else if (role === "patient") {
-      navigate("/user/user-diagnosis/past-history");
+      navigate("/user/user-diagnosis");
     }
   }, []);
 

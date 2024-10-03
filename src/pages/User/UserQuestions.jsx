@@ -102,7 +102,7 @@ function UserQuestions() {
             });
             localStorage.removeItem("client_email");
             localStorage.removeItem("doctor_id");
-            navigate("/user/user-diagnosis/profile");
+            navigate("/user/user-diagnosis");
           }
         })
         .catch((err) => {
