@@ -92,7 +92,7 @@ function LoginPage() {
                 title: `Welcome ${res.data?.user?.email}!`,
               });
             } else {
-              navigate("/user/user-diagnosis/past-history");
+              navigate("/user/user-diagnosis");
               Toast.fire({
                 icon: "success",
                 title: `Welcome ${res.data?.user?.email}!`,

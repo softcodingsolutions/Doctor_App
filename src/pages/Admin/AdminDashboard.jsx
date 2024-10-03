@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
 import InsideLoader from "../InsideLoader";
-import male from "../../assets/images/male.avif";
-import female from "../../assets/images/female.avif";
-import { BsFillTelephoneFill } from "react-icons/bs";
+
 
 function AdminDashboard() {
   const context = useOutletContext();
