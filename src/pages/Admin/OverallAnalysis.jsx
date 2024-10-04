@@ -15,11 +15,21 @@ import {
 import { FaAnglesUp } from "react-icons/fa6";
 import { FaAnglesDown } from "react-icons/fa6";
 import { FaRupeeSign } from "react-icons/fa";
+import axios from "axios";
 
 const OverallAnalysis = () => {
-  const [dailyData, setDailyData] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState("January");
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const main_id = localStorage.getItem("main_id");
+  // Set initial month and year
+  const currentDate = new Date();
+  const currentMonth = currentDate.toLocaleString("default", { month: "long" }); // Get current month name
+  const currentYear = currentDate.getFullYear(); // Get current year
+
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth); // Set initial month to current month
+  const [newData, setNewData] = useState({});
+  const [deactivatedData, setDeactivatedData] = useState({});
+  const [renewPackages, setRenewPackages] = useState({});
+  const [selectedYear, setSelectedYear] = useState(currentYear); // Set initial year to current year
+  const [overallData, setOverallData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Month options
@@ -38,8 +48,6 @@ const OverallAnalysis = () => {
     "December",
   ];
 
-  // Dynamically generate years
-  const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
 
   const getDaysInMonth = (month, year) => {
@@ -47,29 +55,43 @@ const OverallAnalysis = () => {
     return new Date(year, monthIndex + 1, 0).getDate();
   };
 
-  const generateDemoData = (daysInMonth) => {
-    return Array.from({ length: daysInMonth }, (_, i) => ({
-      day: i + 1,
-      value: Math.floor(Math.random() * 100) + 1,
-      weightLoss: Math.floor(Math.random() * 50) + 1,
-      weightGain: Math.floor(Math.random() * 50) + 1,
-    }));
+  const handleData = () => {
+    const monthIndex = months.indexOf(selectedMonth) + 1;
+    axios
+      .get(
+        `/api/v2/dashboards/fetch_analysis_reports?month=${monthIndex}&doctor_id=${main_id}&year=${selectedYear}`
+      )
+      .then((res) => {
+        console.log(res);
+        setNewData(res.data?.monthly_new_users);
+        setDeactivatedData(res.data?.deactivated_left_users);
+        setRenewPackages(res.data?.monthly_renew_package);
+        setOverallData(res.data?.overall_count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
-        const data = generateDemoData(daysInMonth);
-        setDailyData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-      setLoading(false);
-    };
+  const newCase = Object.entries(newData).map(([day, value]) => ({
+    day: parseInt(day),
+    value: value,
+  }));
 
-    fetchData();
+  const deactivatedPackage = Object.entries(deactivatedData).map(
+    ([day, value]) => ({
+      day: parseInt(day),
+      value: value,
+    })
+  );
+
+  const renewCase = Object.entries(renewPackages).map(([day, value]) => ({
+    day: parseInt(day),
+    value: value,
+  }));
+
+  useEffect(() => {
+    handleData();
   }, [selectedMonth, selectedYear]);
 
   const handleMonthChange = (event) => {
@@ -80,7 +102,6 @@ const OverallAnalysis = () => {
     setSelectedYear(event.target.value);
   };
 
-  // Sample data for Pie Charts
   const pieData1 = [
     { name: "Active Patients", value: 400 },
     { name: "Inactive Patients", value: 300 },
@@ -88,27 +109,46 @@ const OverallAnalysis = () => {
     { name: "Inactive Patients", value: 300 },
     { name: "Inactive Patients", value: 300 },
     { name: "Inactive Patients", value: 300 },
+    { name: "Active Patients", value: 400 },
+    { name: "Active Patients", value: 400 },
+    { name: "Active Patients", value: 400 },
+    { name: "Active Patients", value: 400 },
+    { name: "Active Patients", value: 400 },
+    { name: "Active Patients", value: 400 },
   ];
 
-  const pieData2 = [
-    { name: "Weight Loss", value: 500 },
-    { name: "Weight Gain", value: 200 },
-    { name: "Weight Gain", value: 200 },
-    { name: "Weight Gain", value: 200 },
-    { name: "Weight Gain", value: 200 },
-    { name: "Weight Gain", value: 200 },
-  ];
+  const pieData2 =
+    overallData.length > 0
+      ? [
+          { name: "New Users", value: overallData[0]?.day_wise_new_users || 0 },
+          {
+            name: "Renewed Packages",
+            value: overallData[1]?.day_wise_renew_package || 0,
+          },
+          {
+            name: "Deactivated/Left Users",
+            value: overallData[2]?.day_wise_deactivated_left_users || 0,
+          },
+        ]
+      : ["No Data Available"];
+
+  const totalPatients = pieData1.reduce((acc, curr) => acc + curr.value, 0);
+
+  const patientData = pieData1.map((item) => ({
+    ...item,
+    percentage: ((item.value / totalPatients) * 100).toFixed(2),
+  }));
 
   const COLORS = ["#0088FE", "#FFBB28", "#FF8042", "#FF6347"];
 
   return (
-    <div className="flex w-full font-sans bg-white">
+    <div className="flex w-full font-sans bg-white ">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className="h-screen flex-grow overflow-auto flex flex-wrap content-start p-1">
-        <div className="w-full p-2 flex flex-col gap-1 h-full">
-          <div className="flex justify-end gap-2">
+      <div className=" flex-grow overflow-auto   flex flex-wrap content-start p-1">
+        <div className="w-full p-2 flex flex-col gap-1 ">
+          <div className="flex justify-end gap-2 p-4">
             <select
               value={selectedYear}
               onChange={handleYearChange}
@@ -135,10 +175,10 @@ const OverallAnalysis = () => {
 
           <div className="flex flex-col">
             <div className="flex w-[100%] ">
-              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[50%] h-[90%]">
-                <div className="flex-shrink-0">
-                  <span className="text-lg sm:text-xl leading-none font-bold text-gray-900"></span>
-                  <h3 className="text-base font-normal text-gray-500"></h3>
+              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[30%] h-[90%]">
+                <div className="flex flex-col gap-2 w-full">
+                  <div className="bg-white shadow  rounded-lg p-2  sm:p-5 xl:p-8"></div>
+                  <div className="bg-white shadow  rounded-lg p-2  sm:p-5 xl:p-8 "></div>
                 </div>
               </div>
               <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[25%] h-[90%]">
@@ -154,7 +194,7 @@ const OverallAnalysis = () => {
                   <div className="flex justify-start mt-3 text-xl font-medium">
                     25%
                   </div>
-                  <div  className="text-[#6d6b77] font-medium text-sm">
+                  <div className="text-[#6d6b77] font-medium text-sm">
                     50 patient
                   </div>
                   <div className="mt-12 w-full bg-gray-200 rounded overflow-hidden">
@@ -238,63 +278,63 @@ const OverallAnalysis = () => {
                 </div>
               </div>
             </div>
-            <div className="flex w-[100%]">
+            <div className="flex w-[100%]  h-[20%]">
               {/* Pie Chart 1 */}
-              <div className="flex flex-col m-5 border rounded-md shadow-md p-4 w-[50%]">
-                <label className="flex justify-center">
-                  Patient Status Distribution
+              <div className="flex flex-col m-5 border rounded-md shadow-md p-4 w-[50%] ">
+                <label className="flex justify-center text-lg font-medium">
+                  Package Status
                 </label>
-                <ResponsiveContainer height={280} width="100%">
-                  <PieChart>
-                    <Pie
-                      data={pieData1}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percent }) =>
-                        `${name} ${(percent * 100).toFixed(0)}%`
-                      }
-                      outerRadius={100}
-                      dataKey="value"
-                    >
-                      {pieData1.map((_, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+                <div className="mt-4 flex flex-col gap-4 overflow-auto p-2">
+                  {patientData.map((patient, index) => (
+                    <div key={index} className="w-full">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-700">{patient.name}</span>
+                        <span className="text-gray-700">
+                          {patient.percentage}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded h-3">
+                        <div
+                          className="bg-blue-500 h-3 rounded"
+                          style={{ width: `${patient.percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Pie Chart 2 */}
-              <div className="flex flex-col m-5 border rounded-md shadow-md p-4 w-[50%]">
-                <label className="flex justify-center">
-                  Weight Change Distribution
+              <div className=" m-5 border rounded-md shadow-md p-2 w-[50%] ">
+                <label className="flex justify-center p-4">
+                  Overall Monthly Data
                 </label>
                 <ResponsiveContainer height={280} width="100%">
                   <PieChart>
                     <Pie
-                      data={pieData2}
+                      data={pieData2.filter((item) => item.value > 0)}
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ name, percent }) =>
-                        `${name} ${(percent * 100).toFixed(0)}%`
-                      }
                       outerRadius={100}
                       dataKey="value"
                     >
-                      {pieData2.map((_, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
+                      {pieData2
+                        .filter((item) => item.value > 0)
+                        .map((_, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
                     </Pie>
                     <Tooltip />
+
+                    <Legend
+                      layout="vertical"
+                      align="center"
+                      verticalAlign="bottom"
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -302,9 +342,9 @@ const OverallAnalysis = () => {
 
             {/* New Case Chart */}
             <div className="flex flex-col m-5 border rounded-md shadow-md p-4">
-              <label className="flex justify-center">New Case</label>
+              <label className="flex justify-center text-[#8884d8]">Monthly New Case</label>
               <ResponsiveContainer height={280} width="100%">
-                <LineChart data={dailyData} margin={{ top: 20 }}>
+                <LineChart data={newCase} margin={{ top: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="day" />
                   <YAxis />
@@ -317,32 +357,32 @@ const OverallAnalysis = () => {
 
             {/* Renew Packages Case Chart */}
             <div className="flex flex-col m-5 border rounded-md shadow-md p-4">
-              <label className="flex justify-center">Renew Packages Case</label>
+              <label className="flex justify-center text-[#00bad1]">Renew Packages Case</label>
               <ResponsiveContainer height={280} width="100%">
-                <LineChart data={dailyData} margin={{ top: 20 }}>
+                <LineChart data={renewCase} margin={{ top: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="day" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                  <Line type="monotone" dataKey="value" stroke="#00bad1" />
                 </LineChart>
               </ResponsiveContainer>
             </div>
 
             {/* Deactivate / Left Packages Cases Chart */}
             <div className="flex flex-col m-5 border rounded-md shadow-md p-4">
-              <label className="flex justify-center">
+              <label className="flex justify-center text-[#ff9f43]">
                 Deactivate / Left Packages Cases
               </label>
               <ResponsiveContainer height={280} width="100%">
-                <LineChart data={dailyData} margin={{ top: 20 }}>
+                <LineChart margin={{ top: 20 }} data={deactivatedPackage}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="day" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                  <Line type="monotone" dataKey="value" stroke="#ff9f43" />
                 </LineChart>
               </ResponsiveContainer>
             </div>
