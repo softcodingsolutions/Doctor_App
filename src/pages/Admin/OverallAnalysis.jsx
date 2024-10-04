@@ -173,15 +173,15 @@ const OverallAnalysis = () => {
             </select>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col ">
             <div className="flex w-[100%] ">
-              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[30%] h-[90%]">
+              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[30%]">
                 <div className="flex flex-col gap-2 w-full">
                   <div className="bg-white shadow  rounded-lg p-2  sm:p-5 xl:p-8"></div>
                   <div className="bg-white shadow  rounded-lg p-2  sm:p-5 xl:p-8 "></div>
                 </div>
               </div>
-              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[25%] h-[90%]">
+              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[25%]">
                 <div className="flex flex-col  ">
                   <div className="flex mt-2 ">
                     <div className="bg-[#d6f4f8] p-2 w-[25%] rounded-md flex justify-center ">
@@ -207,7 +207,7 @@ const OverallAnalysis = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[40%] h-[90%]">
+              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[40%]">
                 <div className="flex flex-col flex-shrink-0">
                   <div className="flex flex-col">
                     <lebal className="text-[#6d6b77] font-thin text-sm">
@@ -371,7 +371,7 @@ const OverallAnalysis = () => {
             </div>
 
             {/* Deactivate / Left Packages Cases Chart */}
-            <div className="flex flex-col m-5 border rounded-md shadow-md p-4">
+            <div className="flex flex-col m-5 border rounded-md shadow-md p-4 ">
               <label className="flex justify-center text-[#ff9f43]">
                 Deactivate / Left Packages Cases
               </label>
