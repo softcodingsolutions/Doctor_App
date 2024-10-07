@@ -15,24 +15,26 @@ import {
 import { FaAnglesUp } from "react-icons/fa6";
 import { FaAnglesDown } from "react-icons/fa6";
 import { FaRupeeSign } from "react-icons/fa";
+import { PiIntersectSquareFill } from "react-icons/pi";
+import { FaUsers } from "react-icons/fa6";
 import axios from "axios";
 
 const OverallAnalysis = () => {
   const main_id = localStorage.getItem("main_id");
-  // Set initial month and year
   const currentDate = new Date();
-  const currentMonth = currentDate.toLocaleString("default", { month: "long" }); // Get current month name
-  const currentYear = currentDate.getFullYear(); // Get current year
-
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth); // Set initial month to current month
+  const currentMonth = currentDate.toLocaleString("default", { month: "long" });
+  const currentYear = currentDate.getFullYear();
+  const [franchises, SetFranchises] = useState();
+  const [franchisesUsers, setFranchisesUsers] = useState();
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [newData, setNewData] = useState({});
   const [deactivatedData, setDeactivatedData] = useState({});
+  const [leftUserData, setLeftUserData] = useState({});
   const [renewPackages, setRenewPackages] = useState({});
-  const [selectedYear, setSelectedYear] = useState(currentYear); // Set initial year to current year
+  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [overallData, setOverallData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Month options
   const months = [
     "January",
     "February",
@@ -50,10 +52,10 @@ const OverallAnalysis = () => {
 
   const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
 
-  const getDaysInMonth = (month, year) => {
-    const monthIndex = months.indexOf(month);
-    return new Date(year, monthIndex + 1, 0).getDate();
-  };
+  // const getDaysInMonth = (month, year) => {
+  //   const monthIndex = months.indexOf(month);
+  //   return new Date(year, monthIndex + 1, 0).getDate();
+  // };
 
   const handleData = () => {
     const monthIndex = months.indexOf(selectedMonth) + 1;
@@ -63,10 +65,13 @@ const OverallAnalysis = () => {
       )
       .then((res) => {
         console.log(res);
+        SetFranchises(res.data?.franchises);
+        setFranchisesUsers(res.data?.frenchis_users);
         setNewData(res.data?.monthly_new_users);
-        setDeactivatedData(res.data?.deactivated_left_users);
+        setDeactivatedData(res.data?.monthly_deactivated_users);
         setRenewPackages(res.data?.monthly_renew_package);
         setOverallData(res.data?.overall_count);
+        setLeftUserData(res.data?.monthly_left_users);
       })
       .catch((err) => {
         console.log(err);
@@ -84,6 +89,11 @@ const OverallAnalysis = () => {
       value: value,
     })
   );
+
+  const leftUsers = Object.entries(leftUserData).map(([day, value]) => ({
+    day: parseInt(day),
+    value: value,
+  }));
 
   const renewCase = Object.entries(renewPackages).map(([day, value]) => ({
     day: parseInt(day),
@@ -126,8 +136,12 @@ const OverallAnalysis = () => {
             value: overallData[1]?.day_wise_renew_package || 0,
           },
           {
-            name: "Deactivated/Left Users",
-            value: overallData[2]?.day_wise_deactivated_left_users || 0,
+            name: "Deactivated Users",
+            value: overallData[2]?.day_wise_deactivated_users || 0,
+          },
+          {
+            name: "Left Users",
+            value: overallData[3]?.day_wise_left_users || 0,
           },
         ]
       : ["No Data Available"];
@@ -146,9 +160,9 @@ const OverallAnalysis = () => {
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" flex-grow overflow-auto   flex flex-wrap content-start p-1">
+      <div className=" flex-grow overflow-auto   flex flex-wrap content-start ">
         <div className="w-full p-2 flex flex-col gap-1 ">
-          <div className="flex justify-end gap-2 p-4">
+          <div className="flex justify-end gap-2 p-2">
             <select
               value={selectedYear}
               onChange={handleYearChange}
@@ -175,13 +189,33 @@ const OverallAnalysis = () => {
 
           <div className="flex flex-col ">
             <div className="flex w-[100%] ">
-              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[30%]">
+              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-[30%]">
                 <div className="flex flex-col gap-2 w-full">
-                  <div className="bg-white shadow  rounded-lg p-2  sm:p-5 xl:p-8"></div>
-                  <div className="bg-white shadow  rounded-lg p-2  sm:p-5 xl:p-8 "></div>
+                  <div className="flex flex-col bg-white shadow  rounded-lg sm:p-5 xl:p-4">
+                    <div className="flex justify-between">
+                      <div className="text-[#6d6b77] font-medium text-md ">
+                        Total Franchise
+                      </div>
+                      <div className="bg-[#fff0e1] p-1 rounded-md flex justify-center">
+                        <PiIntersectSquareFill size={25} color="#ff9f43" />
+                      </div>
+                    </div>
+                    <div>{franchises}</div>
+                  </div>
+                  <div className="flex flex-col bg-white shadow  rounded-lg p-2 justify-between sm:p-5 xl:p-4 ">
+                    <div className="flex justify-between ">
+                      <div className="text-[#6d6b77] font-medium text-md ">
+                        Franchise Users
+                      </div>
+                      <div className="bg-[#e9e7fd] p-1 rounded-md flex justify-center">
+                        <FaUsers size={22} color="#7367f0" />
+                      </div>
+                    </div>
+                    <div>{franchisesUsers}</div>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[25%]">
+              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-[25%]">
                 <div className="flex flex-col  ">
                   <div className="flex mt-2 ">
                     <div className="bg-[#d6f4f8] p-2 w-[25%] rounded-md flex justify-center ">
@@ -207,7 +241,7 @@ const OverallAnalysis = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center m-2 border rounded-md shadow-md p-4 w-[40%]">
+              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-[40%]">
                 <div className="flex flex-col flex-shrink-0">
                   <div className="flex flex-col">
                     <lebal className="text-[#6d6b77] font-thin text-sm">
@@ -278,7 +312,7 @@ const OverallAnalysis = () => {
                 </div>
               </div>
             </div>
-            <div className="flex w-[100%]  h-[20%]">
+            <div className="flex w-[100%] h-[18%]">
               {/* Pie Chart 1 */}
               <div className="flex flex-col m-5 border rounded-md shadow-md p-4 w-[50%] ">
                 <label className="flex justify-center text-lg font-medium">
@@ -342,7 +376,9 @@ const OverallAnalysis = () => {
 
             {/* New Case Chart */}
             <div className="flex flex-col m-5 border rounded-md shadow-md p-4">
-              <label className="flex justify-center text-[#8884d8]">Monthly New Case</label>
+              <label className="flex justify-center text-[#8884d8]">
+                Monthly New Case
+              </label>
               <ResponsiveContainer height={280} width="100%">
                 <LineChart data={newCase} margin={{ top: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -357,7 +393,9 @@ const OverallAnalysis = () => {
 
             {/* Renew Packages Case Chart */}
             <div className="flex flex-col m-5 border rounded-md shadow-md p-4">
-              <label className="flex justify-center text-[#00bad1]">Renew Packages Case</label>
+              <label className="flex justify-center text-[#00bad1]">
+                Renew Packages Case
+              </label>
               <ResponsiveContainer height={280} width="100%">
                 <LineChart data={renewCase} margin={{ top: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -370,10 +408,10 @@ const OverallAnalysis = () => {
               </ResponsiveContainer>
             </div>
 
-            {/* Deactivate / Left Packages Cases Chart */}
+            {/* Deactivate  Cases Chart */}
             <div className="flex flex-col m-5 border rounded-md shadow-md p-4 ">
               <label className="flex justify-center text-[#ff9f43]">
-                Deactivate / Left Packages Cases
+                Deactivate Cases
               </label>
               <ResponsiveContainer height={280} width="100%">
                 <LineChart margin={{ top: 20 }} data={deactivatedPackage}>
@@ -383,6 +421,23 @@ const OverallAnalysis = () => {
                   <Tooltip />
                   <Legend />
                   <Line type="monotone" dataKey="value" stroke="#ff9f43" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Left Users Cases Chart */}
+            <div className="flex flex-col m-5 border rounded-md shadow-md p-4 ">
+              <label className="flex justify-center text-[#ff4c51]">
+                Left Users Cases
+              </label>
+              <ResponsiveContainer height={280} width="100%">
+                <LineChart margin={{ top: 20 }} data={leftUsers}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="value" stroke="#ff4c51" />
                 </LineChart>
               </ResponsiveContainer>
             </div>

@@ -188,12 +188,12 @@ export const packagesButton = [
   //   icons:  <MdError size={18} />,
   //   to: "user-complains",
   // }
-  // {
-  //   id: "8",
-  //   name: "Generate Report",
-  //   icons: <MdOutlinePictureAsPdf size={18} />,
-  //   to: "generate-report",
-  // },
+  {
+    id: "8",
+    name: "Generate Report",
+    icons: <MdOutlinePictureAsPdf size={18} />,
+    to: "generate-report",
+  },
 ];
 
 export const reportTreatmentButtons = [

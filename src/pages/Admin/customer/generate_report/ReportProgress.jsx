@@ -291,8 +291,6 @@ function ReportProgress() {
     }
   };
 
-
-
   useEffect(() => {
     handleGetProgress();
   }, [showProgress]);
@@ -309,7 +307,8 @@ function ReportProgress() {
             <div>
               {(role === "super_admin" ||
                 role === "franchise" ||
-                role === "doctor") && (
+                role === "doctor" ||
+                role === "patient") && (
                 <AddNewProgresReport
                   handleApi={handleAddProgress}
                   name="Add New Report"
@@ -405,18 +404,16 @@ function ReportProgress() {
                           />
                         </td>
                         <td className="py-2 px-2 border-b text-xs border-b-gray-50">
-                        {val.blood_report ? (
-                          <button
-                            className="text-blue-500 hover:underline"
-                            onClick={() => window.open(val.blood_report)
-
-                            }
-                          >
-                            VIEW
-                          </button>
-                        ) : (
-                          <p>No Report</p>
-                        )}
+                          {val.blood_report ? (
+                            <button
+                              className="text-blue-500 hover:underline"
+                              onClick={() => window.open(val.blood_report)}
+                            >
+                              VIEW
+                            </button>
+                          ) : (
+                            <p>No Report</p>
+                          )}
                         </td>
                         <td className="py-2 px-2 border-b text-xs border-b-gray-50 flex gap-5">
                           {val.progress_report === null && (

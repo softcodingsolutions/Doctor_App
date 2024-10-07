@@ -130,6 +130,7 @@ function App() {
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
+            <Route path="generate-report" element={<ReportGenerate />} />
             <Route path="package-medicine" element={<ProgressMedicine />} />
             <Route path="progress-report" element={<ReportProgress />} />
             <Route path="user-complains" element={<UserComplains />} />
@@ -181,7 +182,7 @@ function App() {
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />
-              <Route path="generate-report" element={<ReportGenerate />} />
+          
 
               {/* customer treatment */}
               <Route path="treatment" element={<ReportTreatment />}>
@@ -204,6 +205,7 @@ function App() {
               <Route path="patient-analysis" element={<PatientAnalysis />} />
               <Route path="progress-questions" element={<ProgressQuestion />} />
               <Route path="progress-report" element={<ReportProgress />} />
+              <Route path="generate-report" element={<ReportGenerate />} />
               {/* <Route path="package-details" element={<PackageDetails />} /> */}
             </Route>
           </Route>
