@@ -13,6 +13,7 @@ function QueFamilyHistory({
   storedData,
   setStoreData,
 }) {
+  const language = localStorage.getItem("user_seleced_language");
   const [getFamily, setGetFamily] = useState([]);
   const [selectedFamilyReasons, setSelectedFamilyReasons] = useState([]);
   const {
@@ -61,11 +62,11 @@ function QueFamilyHistory({
       )
       .then((res) => {
         console.log("Family Reason: ", res.data?.family_reasons);
-        setGetFamily(res.data?.family_reasons);
+        setGetFamily(res.data?.family_reasons.map((data) => data));
       })
       .catch((err) => {
         console.log(err);
-        alert(err.response?.data?.message + "!");
+        // alert(err.response?.data?.message + "!");
       });
   };
 
@@ -84,6 +85,7 @@ function QueFamilyHistory({
     onValidate(isValid);
   }, [isValid, onValidate]);
 
+  console.log(getFamily, "GET");
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
@@ -116,12 +118,28 @@ function QueFamilyHistory({
                     },
                   }}
                 >
-                  {getFamily.map((res) => (
-                    <Option key={res.id} value={res.details_in_english}>
-                      {res.details_in_english}
-                    </Option>
-                  ))}
+                  {Object.entries(getFamily).map(([key, res]) => {
+                    let optionValue = "";
+                    console.log(res);
+                    if (language === "hindi") {
+                      optionValue =
+                        res[details_in_hindi] || "No information available";
+                    } else if (language === "english") {
+                      optionValue =
+                        res[details_in_english] || "No information available";
+                    } else if (language === "gujarati") {
+                      optionValue =
+                        res[details_in_gujarati] || "No information available";
+                    }
+
+                    return (
+                      <Option key={key} value={optionValue}>
+                        {optionValue}
+                      </Option>
+                    );
+                  })}
                 </Select>
+
                 <div className="flex flex-col gap-2 mt-10">
                   <label>Family Disease:</label>
                   <textarea

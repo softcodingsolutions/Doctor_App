@@ -46,7 +46,7 @@ function CustomerGeneralDetails({
       generalDetails: d,
       doctorId: getDoctorId,
     }));
-
+    localStorage.setItem('user_selected_language',d.language)
     if (role === "doctor") {
       localStorage.setItem("doctor_id", getAdmin.id);
     } else if (role === "super_admin") {
@@ -186,11 +186,9 @@ function CustomerGeneralDetails({
                 </div>
 
                 <div className="flex flex-col">
-                  <div className="flex gap-5 m-2">
-                    <div className="flex gap-5 m-5">
-                      <label className="text-sm text-end w-1/3 mr-2">
-                        Language:
-                      </label>
+                  <div className="flex flex-col mt-2  ml-20">
+                    <div>
+                      <label className="text-sm text-end mr-2">Language:</label>
                       <select
                         name="language"
                         defaultValue="select"
@@ -208,18 +206,11 @@ function CustomerGeneralDetails({
                     </div>
                     <div>
                       {errors.language && (
-                        <span className=" text-red-500 -mt-1.5 text-sm">
+                        <span className=" text-red-500  text-sm">
                           {errors.language?.message}
                         </span>
                       )}
                     </div>
-                    {/* <UserDetailsInput
-                      name="language"
-                      type="text"
-                      label="Language"
-                      placeholder="language"
-                      hook={register("language")}
-                    /> */}
                   </div>
                   <div className="flex gap-5 m-5">
                     <div className="flex">

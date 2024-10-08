@@ -29,6 +29,10 @@ export const UserSchema = yup.object().shape({
     .string()
     .oneOf(["male", "female"], "Select only one option")
     .required("Gender is required"),
+  language: yup
+    .string()
+    .oneOf(["english", "hindi", "gujarati"], "Language is required")
+    .required("Language is required"), 
 });
 
 export const CurrentDietSchema = yup.object().shape({

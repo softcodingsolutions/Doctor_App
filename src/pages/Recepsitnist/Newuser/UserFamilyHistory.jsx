@@ -14,6 +14,7 @@ function UserFamilyHistory({
   setStoreData,
 }) {
   const [getFamily, setGetFamily] = useState([]);
+  const { language } = storedData || {};
   const [selectedFamilyReasons, setSelectedFamilyReasons] = useState([]);
   const {
     register,
@@ -29,6 +30,7 @@ function UserFamilyHistory({
     const formData = {
       ...data,
       selected_family_reasons: selectedFamilyReasons,
+      language: language,
     };
 
     setStoreData((prev) => ({
@@ -59,9 +61,17 @@ function UserFamilyHistory({
       .get(
         `/api/v1/family_reasons?user_id=${localStorage.getItem("doctor_id")}`
       )
-      .then((res) => {
+      .then((res) => {9
         console.log("Family Reason: ", res.data?.family_reasons);
-        setGetFamily(res.data?.family_reasons);
+        if (storedData.generalDetails.language === "hindi") {
+          setGetFamily(res.data?.family_reasons.map((data)=>data.details_in_hindi));
+        }
+        else if (storedData.generalDetails.language === "english"){
+          setGetFamily(res.data?.family_reasons.map((data)=>data.details_in_english));
+        }
+        else if (storedData.generalDetails.language === "gujarati"){
+          setGetFamily(res.data?.family_reasons.map((data)=>data.details_in_gujarati));
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -70,6 +80,7 @@ function UserFamilyHistory({
   };
 
   useEffect(() => {
+    console.log(storedData.generalDetails.language, "SD");
     handleGetFamily();
 
     if (storedData) {
@@ -117,8 +128,8 @@ function UserFamilyHistory({
                   }}
                 >
                   {getFamily.map((res) => (
-                    <Option key={res.id} value={res.details_in_english}>
-                      {res.details_in_english}
+                    <Option key={res.id} value={res}>
+                      {res}
                     </Option>
                   ))}
                 </Select>
