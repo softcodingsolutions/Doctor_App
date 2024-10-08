@@ -13,12 +13,10 @@ import {
   Stack,
   Typography,
 } from "@mui/joy";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import JoditEditor from "jodit-react";
 
 function EditExercise(props) {
   const [open, setOpen] = useState(false);
@@ -72,7 +70,7 @@ function EditExercise(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog>
+        <ModalDialog sx={{ maxHeight: '90vh', overflowY: 'auto' }}>
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -82,9 +80,9 @@ function EditExercise(props) {
               setOpen(false);
             }}
           >
-            <Stack spacing={3}>
+            <Stack spacing={3} width={900}>
               <FormControl>
-                <FormLabel>{props.exercise_name} </FormLabel>
+                <FormLabel>{props.exercise_name}</FormLabel>
                 <Input
                   defaultValue={props.see[0]?.name}
                   placeholder="Name..."
@@ -97,7 +95,7 @@ function EditExercise(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl className="w-1/2">
-                  <FormLabel>Select Doctor </FormLabel>
+                  <FormLabel>Select Doctor</FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -119,15 +117,11 @@ function EditExercise(props) {
               )}
 
               <FormControl>
-                <FormLabel>{props.exercise_describe_english} </FormLabel>
-                <Box className="flex flex-col items-center w-full gap-2">
-                  <ReactQuill
-                    defaultValue={props.see[0]?.details}
-                    className="w-96 min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in English..."
-                    theme="snow"
-                    name={`exercise_describe_english`}
+                <FormLabel>{props.exercise_describe_english}</FormLabel>
+                <Box className="flex flex-col items-center w-full gap-3">
+                  <JoditEditor
                     value={text.english}
+                    config={{ placeholder: "Describe in English..." }}
                     onChange={(value) => {
                       setText((prev) => ({
                         ...prev,
@@ -137,13 +131,9 @@ function EditExercise(props) {
                     required
                   />
 
-                  <ReactQuill
-                    defaultValue={props.see[0]?.details_hindi}
-                    className="w-96 min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in Hindi..."
-                    theme="snow"
-                    name={`exercise_describe_hindi`}
+                  <JoditEditor
                     value={text.hindi}
+                    config={{ placeholder: "Describe in Hindi..." }}
                     onChange={(value) => {
                       setText((prev) => ({
                         ...prev,
@@ -153,13 +143,9 @@ function EditExercise(props) {
                     required
                   />
 
-                  <ReactQuill
-                    defaultValue={props.see[0]?.details_gujarati}
-                    className="w-96 min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in Gujarati..."
-                    theme="snow"
-                    name={`exercise_describe_gujarati`}
+                  <JoditEditor
                     value={text.gujarati}
+                    config={{ placeholder: "Describe in Gujarati..." }}
                     onChange={(value) => {
                       setText((prev) => ({
                         ...prev,

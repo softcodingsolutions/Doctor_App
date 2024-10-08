@@ -16,8 +16,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import JoditEditor from "jodit-react";
 
 function EditDiet(props) {
   const [open, setOpen] = useState(false);
@@ -26,6 +25,7 @@ function EditDiet(props) {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  
   const [text, setText] = useState({
     hindi: props.see[0]?.chart_hindi || "",
     gujarati: props.see[0]?.chart_gujarati || "",
@@ -72,7 +72,7 @@ function EditDiet(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog>
+        <ModalDialog sx={{ overflowY: 'auto', maxHeight: '80vh' }}>
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -132,52 +132,43 @@ function EditDiet(props) {
               <FormControl>
                 <FormLabel>{props.diet_describe_english} </FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
-                  <ReactQuill
-                    defaultValue={props.see[0]?.chart_english}
-                    className="w-full min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in English..."
-                    theme="snow"
-                    name={`diet_describe_english`}
+                  <JoditEditor
                     value={text.english}
+                    config={{
+                      placeholder: 'Describe in English...',
+                    }}
                     onChange={(value) => {
                       setText((prev) => ({
                         ...prev,
                         english: value,
                       }));
                     }}
-                    required
                   />
 
-                  <ReactQuill
-                    defaultValue={props.see[0]?.chart_hindi}
-                    className="w-full min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in Hindi..."
-                    theme="snow"
-                    name={`diet_describe_hindi`}
+                  <JoditEditor
                     value={text.hindi}
+                    config={{
+                      placeholder: 'Describe in Hindi...',
+                    }}
                     onChange={(value) => {
                       setText((prev) => ({
                         ...prev,
                         hindi: value,
                       }));
                     }}
-                    required
                   />
 
-                  <ReactQuill
-                    defaultValue={props.see[0]?.chart_gujarati}
-                    className="w-full min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in Gujarati..."
-                    theme="snow"
-                    name={`diet_describe_gujarati`}
+                  <JoditEditor
                     value={text.gujarati}
+                    config={{
+                      placeholder: 'Describe in Gujarati...',
+                    }}
                     onChange={(value) => {
                       setText((prev) => ({
                         ...prev,
                         gujarati: value,
                       }));
                     }}
-                    required
                   />
                 </Box>
               </FormControl>

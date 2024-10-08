@@ -187,20 +187,46 @@ function CustomerGeneralDetails({
 
                 <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
-                    <UserDetailsInput
+                    <div className="flex gap-5 m-5">
+                      <label className="text-sm text-end w-1/3 mr-2">
+                        Language:
+                      </label>
+                      <select
+                        name="language"
+                        defaultValue="select"
+                        placeholder="Select any language"
+                        {...register("language")}
+                        className="py-1 px-2 rounded-md border border-black text-sm"
+                      >
+                        <option value="select" disabled>
+                          Select Any Language
+                        </option>
+                        <option value="english">English</option>
+                        <option value="hindi">Hindi</option>
+                        <option value="gujarati">Gujarati</option>
+                      </select>
+                    </div>
+                    <div>
+                      {errors.language && (
+                        <span className=" text-red-500 -mt-1.5 text-sm">
+                          {errors.language?.message}
+                        </span>
+                      )}
+                    </div>
+                    {/* <UserDetailsInput
                       name="language"
                       type="text"
                       label="Language"
                       placeholder="language"
                       hook={register("language")}
-                    />
+                    /> */}
                   </div>
                   <div className="flex gap-5 m-5">
                     <div className="flex">
                       <div className="text-end w-1/3 mr-2">
                         <label className="text-sm ">Gender:</label>
                       </div>
-                      <div className="flex-col gap-2 w-[21.5rem] ml-8 text-sm" >
+                      <div className="flex-col gap-2 w-[21.5rem] ml-8 text-sm">
                         <div className="flex">
                           <div>
                             <label className="flex items-center">

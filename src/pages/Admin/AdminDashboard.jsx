@@ -12,6 +12,39 @@ function AdminDashboard() {
   const context = useOutletContext();
   const main_id = localStorage.getItem("main_id");
   const [data, setData] = useState("");
+  const [activeTab, setActiveTab] = useState("inbox");
+  const [complaints, setComplaints] = useState([
+    {
+      id: 1,
+      user: "John Doe",
+      complaint: "The app crashes frequently when I try to upload files.",
+      response: "",
+    },
+    {
+      id: 2,
+      user: "Jane Smith",
+      complaint: "I am unable to change my password from the settings page.",
+      response: "",
+    },
+  ]);
+
+  // Function to handle admin response
+  const handleResponseChange = (id, response) => {
+    setComplaints((prev) =>
+      prev.map((complaint) =>
+        complaint.id === id ? { ...complaint, response } : complaint
+      )
+    );
+  };
+
+  // Function to handle complaint submission
+  const handleResponseSubmit = (id) => {
+    console.log(
+      `Response for complaint ${id}:`,
+      complaints.find((c) => c.id === id).response
+    );
+    // Implement further logic for submitting the response (API call, etc.)
+  };
 
   const handleData = (today) => {
     axios
@@ -70,6 +103,23 @@ function AdminDashboard() {
                     </div>
                   </div>
                 </div>
+                <div className="bg-white shadow  border-b-[#d6f4f8] border-y-4 rounded-lg p-2 sm:p-5 xl:p-8 hover:border-b-[#00bad1] ">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="flex gap-2">
+                        <div className="bg-[#d6f4f8] p-1 rounded-md flex justify-center">
+                          <FaClipboardList size={20} color="#00bad1" />
+                        </div>
+                        <span className="text-lg sm:text-xl mt-1 leading-none font-bold text-gray-900">
+                          {data.todays_appointment_count}
+                        </span>
+                      </div>
+                      <h3 className="text-base font-normal text-gray-500">
+                        Todays Appointments
+                      </h3>
+                    </div>
+                  </div>
+                </div>
                 <div className="bg-white shadow  rounded-lg p-2 border-b-[#ddf6e8] border-y-4  hover:border-b-[#28c76f] sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -99,7 +149,7 @@ function AdminDashboard() {
                         </span>
                       </div>
                       <h3 className="text-base font-normal text-gray-500">
-                       FollowUp Patients
+                        FollowUp Patients
                       </h3>
                     </div>
                   </div>
@@ -116,24 +166,7 @@ function AdminDashboard() {
                         </span>
                       </div>
                       <h3 className="text-base font-normal text-gray-500">
-                         Franchise Patients
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white shadow  border-b-[#d6f4f8] border-y-4 rounded-lg p-2 sm:p-5 xl:p-8 hover:border-b-[#00bad1] ">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <div className="flex gap-2">
-                        <div className="bg-[#d6f4f8] p-1 rounded-md flex justify-center">
-                          <FaClipboardList size={20} color="#00bad1" />
-                        </div>
-                        <span className="text-lg sm:text-xl mt-1 leading-none font-bold text-gray-900">
-                          {data.todays_appointment_count}
-                        </span>
-                      </div>
-                      <h3 className="text-base font-normal text-gray-500">
-                       Todays Appointments
+                        Franchise Patients
                       </h3>
                     </div>
                   </div>
@@ -141,8 +174,77 @@ function AdminDashboard() {
               </div>
 
               <div className=" mt-2 w-full  h-[76vh] flex gap-2  rounded-lg ">
-                <div className="bg-white w-[50%] border rounded-md"></div>
-                <div className="bg-white w-[50%] border rounded-md"></div>
+                <div className="bg-white w-[50%] border p-4 rounded-md">
+                  <div className="flex justify-between border-b pb-2 mb-2">
+                    <div className="text-lg font-bold ">Notifications</div>
+                    <button className="text-sm font-medium text-blue-500">
+                      Mark all as read
+                    </button>
+                  </div>
+                  <div className="flex pt-2 pl-4 gap-5 border-b text-sm">
+                    <button
+                      className={`${
+                        activeTab === "inbox"
+                          ? "text-black border-b-2 border-black"
+                          : "text-gray-500 border-b-2 border-transparent"
+                      } pb-1`}
+                      onClick={() => setActiveTab("inbox")}
+                    >
+                      Inbox
+                    </button>
+                    <button
+                      className={`${
+                        activeTab === "unread"
+                          ? "text-black border-b-2 border-black"
+                          : "text-gray-500 border-b-2 border-transparent"
+                      } pb-1`}
+                      onClick={() => setActiveTab("unread")}
+                    >
+                      Unread
+                    </button>
+                  </div>
+                </div>
+                <div className="bg-white w-[50%] border rounded-md p-4 shadow-lg h-full">
+                  <div className="text-lg font-bold border-b pb-2 mb-2">
+                    Complaints
+                  </div>
+                  <div className="space-y-4 overflow-y-auto h-[60vh]">
+                    {complaints.map((complaint) => (
+                      <div
+                        key={complaint.id}
+                        className="border rounded-lg p-2 bg-gray-50"
+                      >
+                        <div className="mb-2 text-sm">
+                          <span className="font-semibold">User:</span>{" "}
+                          {complaint.user}
+                        </div>
+                        <div className="mb-2 text-sm">
+                          <span className="font-semibold">Complaint:</span>{" "}
+                          {complaint.complaint}
+                        </div>
+                        <div className="mb-4 text-sm">
+                          <label className="font-semibold block mb-1">
+                            Response:
+                          </label>
+                          <textarea
+                            className="w-full p-1 border text-sm rounded-md"
+                            value={complaint.response}
+                            onChange={(e) =>
+                              handleResponseChange(complaint.id, e.target.value)
+                            }
+                            placeholder="Write your response..."
+                          />
+                        </div>
+                        <button
+                          className="bg-blue-500 text-white text-sm px-1 py-1 rounded-md"
+                          onClick={() => handleResponseSubmit(complaint.id)}
+                        >
+                          Submit Response
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

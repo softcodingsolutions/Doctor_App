@@ -33,7 +33,6 @@ const OverallAnalysis = () => {
   const [renewPackages, setRenewPackages] = useState({});
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [overallData, setOverallData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const months = [
     "January",
@@ -191,9 +190,9 @@ const OverallAnalysis = () => {
             <div className="flex w-[100%] ">
               <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-[30%]">
                 <div className="flex flex-col gap-2 w-full">
-                  <div className="flex flex-col bg-white shadow  rounded-lg sm:p-5 xl:p-4">
+                  <div className="flex flex-col bg-white shadow rounded-lg sm:p-5 xl:p-4">
                     <div className="flex justify-between">
-                      <div className="text-[#6d6b77] font-medium text-md ">
+                      <div className="text-[#6d6b77] font-medium text-md">
                         Total Franchise
                       </div>
                       <div className="bg-[#fff0e1] p-1 rounded-md flex justify-center">
@@ -201,10 +200,19 @@ const OverallAnalysis = () => {
                       </div>
                     </div>
                     <div>{franchises}</div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                      <div
+                        className="bg-[#ff9f43] h-2 rounded-full"
+                        style={{
+                          width: `${franchises }%`,
+                        }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="flex flex-col bg-white shadow  rounded-lg p-2 justify-between sm:p-5 xl:p-4 ">
-                    <div className="flex justify-between ">
-                      <div className="text-[#6d6b77] font-medium text-md ">
+
+                  <div className="flex flex-col bg-white shadow rounded-lg p-2 justify-between sm:p-5 xl:p-4">
+                    <div className="flex justify-between">
+                      <div className="text-[#6d6b77] font-medium text-md">
                         Franchise Users
                       </div>
                       <div className="bg-[#e9e7fd] p-1 rounded-md flex justify-center">
@@ -212,6 +220,14 @@ const OverallAnalysis = () => {
                       </div>
                     </div>
                     <div>{franchisesUsers}</div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                      <div
+                        className="bg-[#7367f0] h-2 rounded-full"
+                        style={{
+                          width: `${franchisesUsers }%`,
+                        }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>

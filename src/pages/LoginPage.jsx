@@ -153,7 +153,7 @@ function LoginPage() {
                 {...register("email")}
                 onBlur={(e) => {
                   const trimmedEmail = e.target.value.trim();
-                  setValue("email", trimmedEmail); // Manually set the trimmed value
+                  setValue("email", trimmedEmail); 
                 }}
               />
               {errors.email && (

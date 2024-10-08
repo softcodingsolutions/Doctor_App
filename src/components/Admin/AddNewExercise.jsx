@@ -16,8 +16,7 @@ import {
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import JoditEditor from "jodit-react";
 
 function AddNewExercise(props) {
   const [open, setOpen] = useState(false);
@@ -27,28 +26,27 @@ function AddNewExercise(props) {
     reset,
     formState: { errors },
   } = useForm();
-  const [text, setText] = useState({
-    hindi: "",
-    gujarati: "",
-    english: "",
-  });
+
+  // State for each language's text separately
+  const [englishText, setEnglishText] = useState("");
+  const [hindiText, setHindiText] = useState("");
+  const [gujaratiText, setGujaratiText] = useState("");
 
   const submittedData = (d) => {
-    console.log(text);
+    console.log({ englishText, hindiText, gujaratiText });
     console.log(d);
     props.handleApi(
       d.exercise_name,
-      text.english,
-      text.hindi,
-      text.gujarati,
+      englishText,
+      hindiText,
+      gujaratiText,
       d.doctor_id
     );
     reset();
-    setText({
-      hindi: "",
-      gujarati: "",
-      english: "",
-    });
+    setEnglishText("");
+    setHindiText("");
+    setGujaratiText("");
+    setOpen(false); // Close the modal after submission
   };
 
   return (
@@ -67,19 +65,18 @@ function AddNewExercise(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog>
+        <ModalDialog className="max-h-[90vh] overflow-y-auto"> {/* Add styles here */}
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
             onSubmit={(event) => {
               event.preventDefault();
               handleSubmit(submittedData)(event);
-              setOpen(false);
             }}
           >
-            <Stack spacing={3}>
+            <Stack spacing={3} width={900}>
               <FormControl>
-                <FormLabel>{props.exercise_name} </FormLabel>
+                <FormLabel>{props.exercise_name}</FormLabel>
                 <Input
                   placeholder="Name..."
                   name={`exercise_name`}
@@ -91,7 +88,7 @@ function AddNewExercise(props) {
 
               {props?.role === "super_admin" && (
                 <FormControl>
-                  <FormLabel>Select Doctor </FormLabel>
+                  <FormLabel>Select Doctor</FormLabel>
                   <Select
                     required
                     placeholder="Select"
@@ -113,51 +110,51 @@ function AddNewExercise(props) {
               )}
 
               <FormControl>
-                <FormLabel>{props.exercise_describe_english} </FormLabel>
+                <FormLabel>{props.exercise_describe_english}</FormLabel>
                 <Box className="flex flex-col items-center w-full gap-2">
-                  <ReactQuill
-                    className="w-96 min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in English..."
-                    theme="snow"
-                    name={`exercise_describe_english`}
-                    value={text.english}
-                    onChange={(value) => {
-                      setText((prev) => ({
-                        ...prev,
-                        english: value,
-                      }));
+                  <JoditEditor
+                    value={englishText}
+                    config={{
+                      placeholder: "Describe in English...",
+                      toolbar: [
+                        "bold", "italic", "underline",
+                        "link", "image",
+                        "ol", "ul",
+                        "table",
+                        "clean",
+                      ],
                     }}
-                    required
+                    onChange={setEnglishText} 
                   />
 
-                  <ReactQuill
-                    className="w-96 min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in Hindi..."
-                    theme="snow"
-                    name={`exercise_describe_hindi`}
-                    value={text.hindi}
-                    onChange={(value) => {
-                      setText((prev) => ({
-                        ...prev,
-                        hindi: value,
-                      }));
+                  <JoditEditor
+                    value={hindiText}
+                    config={{
+                      placeholder: "Describe in Hindi...",
+                      toolbar: [
+                        "bold", "italic", "underline",
+                        "link", "image",
+                        "ol", "ul",
+                        "table",
+                        "clean",
+                      ],
                     }}
-                    required
+                    onChange={setHindiText} 
                   />
 
-                  <ReactQuill
-                    className="w-96 min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in Gujarati..."
-                    theme="snow"
-                    name={`exercise_describe_gujarati`}
-                    value={text.gujarati}
-                    onChange={(value) => {
-                      setText((prev) => ({
-                        ...prev,
-                        gujarati: value,
-                      }));
+                  <JoditEditor
+                    value={gujaratiText}
+                    config={{
+                      placeholder: "Describe in Gujarati...",
+                      toolbar: [
+                        "bold", "italic", "underline",
+                        "link", "image",
+                        "ol", "ul",
+                        "table",
+                        "clean",
+                      ],
                     }}
-                    required
+                    onChange={setGujaratiText} 
                   />
                 </Box>
               </FormControl>

@@ -14,10 +14,9 @@ import {
   Stack,
   Typography,
 } from "@mui/joy";
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import JoditEditor from "jodit-react";
 
 function AddNewMedicine(props) {
   const [open, setOpen] = useState(false);
@@ -33,24 +32,49 @@ function AddNewMedicine(props) {
     english: "",
   });
 
-  const submittedData = (d) => {
-    console.log("text: ", text);
-    console.log(d);
-    props.handleApi(
-      d.diet_code,
-      d.diet_name,
-      text.english,
-      text.hindi,
-      text.gujarati,
-      d.doctor_id
-    );
-    reset();
-    setText({
-      hindi: "",
-      gujarati: "",
-      english: "",
-    });
-  };
+  const submittedData = useCallback(
+    (d) => {
+      console.log("text: ", text);
+      console.log(d);
+      props.handleApi(
+        d.diet_code,
+        d.diet_name,
+        text.english,
+        text.hindi,
+        text.gujarati,
+        d.doctor_id
+      );
+      reset();
+      setText({ hindi: "", gujarati: "", english: "" });
+      setOpen(false);
+    },
+    [text, reset, props]
+  );
+
+  const editorConfig = useMemo(
+    () => ({
+      placeholder: "Type here...",
+      toolbar: [
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "|",
+        "ol",
+        "ul",
+        "|",
+        "font",
+        "fontsize",
+        "color",
+        "|",
+        "link",
+        "image",
+        "|",
+        "clean",
+      ],
+    }),
+    []
+  );
 
   return (
     <React.Fragment>
@@ -62,120 +86,91 @@ function AddNewMedicine(props) {
       >
         {props.name}
       </Button>
-      <Modal
-        open={open}
-        onClose={() => {
-          setOpen(false);
-        }}
-      >
-        <ModalDialog>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <ModalDialog sx={{ maxHeight: "90vh", overflow: "hidden" }}>
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              handleSubmit(submittedData)(event);
-              setOpen(false);
-            }}
-          >
-            <Stack spacing={2} width={500}>
-              <FormControl>
-                <FormLabel>{props.diet_code} </FormLabel>
-                <Input
-                  placeholder="Code..."
-                  name={`diet_code`}
-                  {...register(`diet_code`)}
-                  autoFocus
-                  required
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>{props.diet_name} </FormLabel>
-                <Input
-                  placeholder="Name..."
-                  name={`diet_name`}
-                  {...register(`diet_name`)}
-                  required
-                />
-              </FormControl>
-
-              {props?.role === "super_admin" && (
+          <Box sx={{ overflowY: "auto", maxHeight: "70vh", paddingRight: 2 }}>
+            <form onSubmit={handleSubmit(submittedData)}>
+              <Stack spacing={2} sx={{ width: "1000px" }}>
                 <FormControl>
-                  <FormLabel>Select Doctor </FormLabel>
-                  <Select
+                  <FormLabel>{props.diet_code}</FormLabel>
+                  <Input
+                    placeholder="Code..."
+                    name="diet_code"
+                    {...register("diet_code")}
+                    autoFocus
                     required
-                    placeholder="Select"
-                    name="doctor_id"
-                    {...register("doctor_id")}
-                  >
-                    {props?.doctors?.map((res) => (
-                      <Option key={res.id} value={res.id}>
-                        {res.first_name + " " + res.last_name}
-                      </Option>
-                    ))}
-                  </Select>
-                  {errors.doctor_id && (
-                    <Typography level="body2" color="danger">
-                      {errors.doctor_id.message}
-                    </Typography>
-                  )}
+                  />
                 </FormControl>
-              )}
 
-              <FormControl>
-                <FormLabel>{props.diet_describe_english} </FormLabel>
-                <Box className="flex flex-col items-center w-full gap-2">
-                  <ReactQuill
-                    className="w-full min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in English..."
-                    theme="snow"
-                    name={`diet_describe_english`}
-                    value={text.english}
-                    onChange={(value) => {
-                      setText((prev) => ({
-                        ...prev,
-                        english: value,
-                      }));
-                    }}
+                <FormControl>
+                  <FormLabel>{props.diet_name}</FormLabel>
+                  <Input
+                    placeholder="Name..."
+                    name="diet_name"
+                    {...register("diet_name")}
                     required
                   />
+                </FormControl>
 
-                  <ReactQuill
-                    className="w-full min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in Hindi..."
-                    theme="snow"
-                    name={`diet_describe_hindi`}
-                    value={text.hindi}
-                    onChange={(value) => {
-                      setText((prev) => ({
-                        ...prev,
-                        hindi: value,
-                      }));
-                    }}
-                    required
-                  />
+                {props?.role === "super_admin" && (
+                  <FormControl>
+                    <FormLabel>Select Doctor</FormLabel>
+                    <Select
+                      required
+                      placeholder="Select"
+                      name="doctor_id"
+                      {...register("doctor_id")}
+                    >
+                      {props?.doctors?.map((res) => (
+                        <Option key={res.id} value={res.id}>
+                          {`${res.first_name} ${res.last_name}`}
+                        </Option>
+                      ))}
+                    </Select>
+                    {errors.doctor_id && (
+                      <Typography level="body2" color="danger">
+                        {errors.doctor_id.message}
+                      </Typography>
+                    )}
+                  </FormControl>
+                )}
 
-                  <ReactQuill
-                    className="w-full min-h-fit max-h-28 overflow-auto"
-                    placeholder="Describe in Gujarati..."
-                    theme="snow"
-                    name={`diet_describe_gujarati`}
-                    value={text.gujarati}
-                    onChange={(value) => {
-                      setText((prev) => ({
-                        ...prev,
-                        gujarati: value,
-                      }));
-                    }}
-                    required
-                  />
-                </Box>
-              </FormControl>
+                <FormControl>
+                  <FormLabel>{props.diet_describe_english}</FormLabel>
+                  <Box className="flex flex-col items-center w-full gap-3">
+                    
+                    <JoditEditor
+                      value={text.english}
+                      config={editorConfig}
+                      onChange={(value) =>
+                        setText((prev) => ({ ...prev, english: value }))
+                      }
+                    />
 
-              <Button type="submit">Submit</Button>
-            </Stack>
-          </form>
+                    <JoditEditor
+                      value={text.hindi}
+                      config={editorConfig}
+                      onChange={(value) =>
+                        setText((prev) => ({ ...prev, hindi: value }))
+                      }
+                    />
+
+                    <JoditEditor
+                      value={text.gujarati}
+                      config={editorConfig}
+                      onChange={(value) =>
+                        setText((prev) => ({ ...prev, gujarati: value }))
+                      }
+                    />
+                  </Box>
+                </FormControl>
+
+                <Button type="submit">Submit</Button>
+              </Stack>
+            </form>
+          </Box>
         </ModalDialog>
       </Modal>
     </React.Fragment>
