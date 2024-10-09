@@ -85,7 +85,7 @@ function AdminDashboard() {
 
           <div className="relative overflow-y-auto">
             <div className="px-4">
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3">
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-2">
                 <div className="bg-white shadow  rounded-lg p-2 border-b-[#fff0e1] hover:border-b-[#ff9f43] border-y-4 sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -173,7 +173,7 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              <div className=" mt-2 w-full  h-[76vh] flex gap-2  rounded-lg ">
+              <div className=" mt-2 w-full  h-[72vh] flex gap-2  rounded-lg ">
                 <div className="bg-white w-[50%] border p-4 rounded-md">
                   <div className="flex justify-between border-b pb-2 mb-2">
                     <div className="text-lg font-bold ">Notifications</div>

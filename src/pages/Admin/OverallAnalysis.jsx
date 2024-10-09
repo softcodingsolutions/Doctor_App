@@ -28,11 +28,14 @@ const OverallAnalysis = () => {
   const [franchisesUsers, setFranchisesUsers] = useState();
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [newData, setNewData] = useState({});
+  const [weightData, setWeightData] = useState({});
   const [deactivatedData, setDeactivatedData] = useState({});
   const [leftUserData, setLeftUserData] = useState({});
   const [renewPackages, setRenewPackages] = useState({});
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [overallData, setOverallData] = useState([]);
+  const [duePayment, setDuePayment] = useState();
+  const [docPaitents, setDocPaitents] = useState();
 
   const months = [
     "January",
@@ -71,6 +74,9 @@ const OverallAnalysis = () => {
         setRenewPackages(res.data?.monthly_renew_package);
         setOverallData(res.data?.overall_count);
         setLeftUserData(res.data?.monthly_left_users);
+        setWeightData(res.data?.weight_gain_loos_data);
+        setDuePayment(res.data?.due_payment);
+        setDocPaitents(res.data?.doctor_total_paitent);
       })
       .catch((err) => {
         console.log(err);
@@ -204,7 +210,7 @@ const OverallAnalysis = () => {
                       <div
                         className="bg-[#ff9f43] h-2 rounded-full"
                         style={{
-                          width: `${franchises }%`,
+                          width: `${franchises}%`,
                         }}
                       ></div>
                     </div>
@@ -224,7 +230,7 @@ const OverallAnalysis = () => {
                       <div
                         className="bg-[#7367f0] h-2 rounded-full"
                         style={{
-                          width: `${franchisesUsers }%`,
+                          width: `${franchisesUsers}%`,
                         }}
                       ></div>
                     </div>
@@ -242,10 +248,10 @@ const OverallAnalysis = () => {
                     </div>
                   </div>
                   <div className="flex justify-start mt-3 text-xl font-medium">
-                    25%
+                    {duePayment}
                   </div>
                   <div className="text-[#6d6b77] font-medium text-sm">
-                    50 patient
+                    {docPaitents} patient
                   </div>
                   <div className="mt-12 w-full bg-gray-200 rounded overflow-hidden">
                     <div className="flex h-2">
@@ -264,7 +270,7 @@ const OverallAnalysis = () => {
                       Total Patient
                     </lebal>
                     <div className="flex justify-start mt-1 text-xl font-medium">
-                      80%
+                      {weightData.treatment_packages_count}
                     </div>
                   </div>
 
@@ -279,7 +285,7 @@ const OverallAnalysis = () => {
                         </div>
                       </div>
                       <div className="flex justify-start mt-3 text-md font-medium">
-                        62.2%
+                        {weightData.one_kg_loss_user_count}
                       </div>
                     </div>
 
@@ -307,7 +313,7 @@ const OverallAnalysis = () => {
                         </div>
                       </div>
                       <div className="flex justify-start mt-3 text-md font-medium">
-                        62.2%
+                        {weightData.one_kg_gain_user_count}
                       </div>
                     </div>
                   </div>
@@ -317,11 +323,15 @@ const OverallAnalysis = () => {
                     <div className="flex h-2">
                       <div
                         className="bg-[#d7ecbd] rounded-l"
-                        style={{ width: `90.2%` }}
+                        style={{
+                          width: `${weightData.one_kg_loss_user_count}`,
+                        }}
                       ></div>
                       <div
                         className="bg-[#C96868] rounded-r"
-                        style={{ width: `10.8%` }}
+                        style={{
+                          width: `${weightData.one_kg_gain_user_count}`,
+                        }}
                       ></div>
                     </div>
                   </div>

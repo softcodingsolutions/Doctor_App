@@ -12,6 +12,7 @@ import { AiFillDatabase } from "react-icons/ai";
 import img from "../../assets/images/icons_slime.png";
 import { BsGraphDown } from "react-icons/bs";
 import { CiViewList } from "react-icons/ci";
+import { MdDashboard } from "react-icons/md";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -30,6 +31,12 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <IoMdHome size={18} />,
     },
     {
+      id: "14",
+      title: "Appointment Details",
+      icons: <FaWpforms size={18} />,
+      to: "appointments",
+    },
+    {
       id: "2",
       title: "Patient List",
       to: "patients/all-users",
@@ -39,7 +46,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       id: "13",
       title: "List Follow Up",
       to: "list-follow-up",
-      icons:  <CiViewList size={18} />,
+      icons:  <MdDashboard size={18} />,
     },
     {
       id: "3",
@@ -47,12 +54,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <CiViewList size={18} />,
       to: "list-franchise",
     },
-    {
-      id: "14",
-      title: "Appointment Details",
-      icons: <FaWpforms size={18} />,
-      to: "appointments",
-    },
+  
     {
       id: "15",
       title: "Analysis Reports",
