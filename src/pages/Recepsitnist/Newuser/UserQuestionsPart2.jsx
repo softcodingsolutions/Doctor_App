@@ -15,6 +15,8 @@ function UserQuestionsPart2({
   setStoreData,
   handleCallUserApi,
 }) {
+  const language = localStorage.getItem("user_selected_language");
+  const gender = localStorage.getItem("user_selected_gender");
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const {
@@ -30,7 +32,10 @@ function UserQuestionsPart2({
       )
       .then((res) => {
         console.log(res.data);
-        setGetQuestionsPart2(res.data);
+        const filteredQuestions = res.data.filter(
+          (question) => question.gender === gender || question.gender === "both"
+        );
+        setGetQuestionsPart2(filteredQuestions);
       })
       .catch((err) => {
         console.log(err);
@@ -77,6 +82,19 @@ function UserQuestionsPart2({
     handleCallUserApi();
   };
 
+  const getQuestionText = (val) => {
+    switch (language) {
+      case "english":
+        return val.question_in_english;
+      case "hindi":
+        return val.question_in_hindi;
+      case "gujarati":
+        return val.question_in_gujarati;
+      default:
+        return val.question_in_english;
+    }
+  };
+
   useEffect(() => {
     if (storedData) {
       setSelectedCheckboxes(storedData.map((q) => q.id.toString()));
@@ -89,11 +107,11 @@ function UserQuestionsPart2({
   }, [isValid, onValidate]);
 
   return (
-    <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[80vh] bg-white flex-wrap content-start p-2 px-4">
+    <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[82vh] bg-white flex-wrap content-start p-2 px-4">
       <div className="text-xl font-semibold">User Diagnosis</div>
       <div className="flex flex-col rounded-lg bg-card h-[70vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5 ">
-          <div className="animate-fade-left w-full min-h-[450px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
+          <div className="animate-fade-left w-full min-h-[400px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
             <table className="w-full z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -101,12 +119,9 @@ function UserQuestionsPart2({
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="Select"
                   />
-                  <ThComponent name="In English" />
-                  <ThComponent name="In Hindi" />
-                  <ThComponent
-                    moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="In Gujarati"
-                  />
+                  <ThComponent />
+                  <ThComponent />
+                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
               <tbody>
@@ -131,18 +146,12 @@ function UserQuestionsPart2({
                             )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
-                            className="size-4"
+                            className="size-5"
                           />
                         </td>
 
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_english} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_hindi} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_gujarati} />
+                          <TdComponent things={getQuestionText(val)} />
                         </td>
                       </tr>
                     );

@@ -23,7 +23,8 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
       ...prev,
       generalDetails: d,
     }));
-
+    localStorage.setItem("user_selected_language", d.language);
+    localStorage.setItem("user_selected_gender", d.gender);
     Swal.fire({
       position: "top-end",
       showConfirmButton: false,

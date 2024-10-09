@@ -175,7 +175,7 @@ function CustomerUserDiagnosis() {
               Starting Date:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
-              {getCustomer?.user_packages?.[0]?.starting_date
+              {getCustomer?.user_packages?.starting_date
                 ?.slice(0, 10)
                 ?.split("-")
                 ?.reverse()
@@ -187,7 +187,7 @@ function CustomerUserDiagnosis() {
               Ending Date:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
-              {getCustomer?.user_packages?.[0]?.ending_date
+              {getCustomer?.user_packages?.ending_date
                 ?.slice(0, 10)
                 ?.split("-")
                 ?.reverse()
@@ -202,7 +202,7 @@ function CustomerUserDiagnosis() {
               Package:
             </div>
             <div className="pl-1.5 text-sm md:text-md">
-              {getCustomer?.user_packages?.[0]?.package_name ?? "Not Assigned"}
+              {getCustomer?.user_packages?.package_name ?? "Not Assigned"}
             </div>
           </div>
           <div className="flex">

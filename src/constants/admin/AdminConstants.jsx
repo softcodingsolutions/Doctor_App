@@ -64,7 +64,7 @@ export const masterButtons = [
   },
   {
     id: "8",
-    name: "Family Reason",
+    name: "Family History",
     icons: <MdFamilyRestroom size={18} />,
     to: "family-reason",
   },

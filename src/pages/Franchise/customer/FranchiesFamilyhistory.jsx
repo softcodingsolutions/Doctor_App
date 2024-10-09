@@ -14,6 +14,7 @@ function FranchiesFamilyhistory({
   storedData,
   setStoreData,
 }) {
+  const language = localStorage.getItem("user_selected_language")
   const [getFamily, setGetFamily] = useState([]);
   const {
     register,
@@ -117,16 +118,38 @@ function FranchiesFamilyhistory({
                     },
                   }}
                 >
-                  {getFamily.map((res) => {
+                   {Object.entries(getFamily).map(([key, res]) => {
+                    let optionValue = "";
+                    if (language === "hindi") {
+                      optionValue =
+                        res.details_in_hindi || "No information available";
+                    } else if (language === "english") {
+                      optionValue =
+                        res.details_in_english || "No information available";
+                    } else if (language === "gujarati") {
+                      optionValue =
+                        res.details_in_gujarati || "No information available";
+                    }
+
                     return (
-                      <Option key={res.id} value={res.details_in_english}>
-                        {res.details_in_english}
+                      <Option key={key} value={optionValue}>
+                        {optionValue}
                       </Option>
                     );
                   })}
                 </Select>
-                <div className="flex flex-col gap-2 mt-10">
-                  <label>Family Disease</label>
+
+                
+                <div className="mt-2">
+                  <h3 className="font-semibold">Selected Family Diseases:</h3>
+                  <ul className="list-disc list-inside">
+                    {selectedFamilyReasons.map((reason, index) => (
+                      <li key={index}>{reason}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-5">
                   <textarea
                     rows={3}
                     className="border-2 w-full rounded-md p-2"

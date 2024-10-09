@@ -13,7 +13,7 @@ function QueFamilyHistory({
   storedData,
   setStoreData,
 }) {
-  const language = localStorage.getItem("user_seleced_language");
+  const language = localStorage.getItem("user_selected_language");
   const [getFamily, setGetFamily] = useState([]);
   const [selectedFamilyReasons, setSelectedFamilyReasons] = useState([]);
   const {
@@ -61,7 +61,10 @@ function QueFamilyHistory({
         `/api/v1/family_reasons?user_id=${localStorage.getItem("doctor_id")}`
       )
       .then((res) => {
-        console.log("Family Reason: ", res.data?.family_reasons);
+        console.log(
+          "Family Reason: ",
+          res.data?.family_reasons.map((data) => data)
+        );
         setGetFamily(res.data?.family_reasons.map((data) => data));
       })
       .catch((err) => {
@@ -85,7 +88,6 @@ function QueFamilyHistory({
     onValidate(isValid);
   }, [isValid, onValidate]);
 
-  console.log(getFamily, "GET");
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
@@ -120,16 +122,15 @@ function QueFamilyHistory({
                 >
                   {Object.entries(getFamily).map(([key, res]) => {
                     let optionValue = "";
-                    console.log(res);
                     if (language === "hindi") {
                       optionValue =
-                        res[details_in_hindi] || "No information available";
+                        res.details_in_hindi || "No information available";
                     } else if (language === "english") {
                       optionValue =
-                        res[details_in_english] || "No information available";
+                        res.details_in_english || "No information available";
                     } else if (language === "gujarati") {
                       optionValue =
-                        res[details_in_gujarati] || "No information available";
+                        res.details_in_gujarati || "No information available";
                     }
 
                     return (
@@ -139,12 +140,20 @@ function QueFamilyHistory({
                     );
                   })}
                 </Select>
+                  
+                <div className="mt-2">
+                  <h3 className="font-semibold">Selected Family Diseases:</h3>
+                  <ul className="list-disc list-inside">
+                    {selectedFamilyReasons.map((reason, index) => (
+                      <li key={index}>{reason}</li>
+                    ))}
+                  </ul>
+                </div>
 
-                <div className="flex flex-col gap-2 mt-10">
-                  <label>Family Disease:</label>
+                <div className="flex flex-col gap-2 mt-5">
                   <textarea
                     rows={3}
-                    className="border-2 w-full rounded-md p-2"
+                    className="border-4  w-full rounded-md p-2"
                     {...register("additional_family_reasons")}
                   />
                   <h2 className="font-semibold text-md">

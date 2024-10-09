@@ -9,53 +9,46 @@ import { useForm } from "react-hook-form";
 
 function CustomerQuestionsPart2({
   onBack,
-  // onNext,
   onValidate,
   storedData,
   setStoreData,
   handleCallUserApi,
 }) {
+  const language = localStorage.getItem("user_selected_language");
+  const gender = localStorage.getItem("user_selected_gender");
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const {
-    formState: { isValid },
-  } = useForm({
+  
+  const { formState: { isValid } } = useForm({
     mode: "onChange",
   });
 
-  const handleGetQuestionsPart2 = () => {
-    axios
-      .get(
-        `/api/v1/questions/part2?user_id=${localStorage.getItem("doctor_id")}`
-      )
-      .then((res) => {
-        console.log(res.data);
-        setGetQuestionsPart2(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
-      });
+  const handleGetQuestionsPart2 = async () => {
+    try {
+      const res = await axios.get(`/api/v1/questions/part2?user_id=${localStorage.getItem("doctor_id")}`);
+      console.log(res.data);
+      const filteredQuestions = res.data.filter(question =>
+        question.gender === gender || question.gender === "both"
+      );
+      setGetQuestionsPart2(filteredQuestions);
+    } catch (err) {
+      console.log(err);
+      alert(err.response?.data?.message + "!");
+    }
   };
 
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
 
-    if (isChecked) {
-      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
-    } else {
-      setSelectedCheckboxes((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
-      );
-    }
+    setSelectedCheckboxes((prevState) =>
+      isChecked ? [...prevState, checkboxValue] : prevState.filter((value) => value !== checkboxValue)
+    );
   };
 
   const handleSave = async () => {
     const selectedQuestions = selectedCheckboxes
-      .map((id) =>
-        getQuestionsPart2.find((question) => question.id === Number(id))
-      )
+      .map((id) => getQuestionsPart2.find((question) => question.id === Number(id)))
       .filter((question) => question);
 
     if (selectedQuestions.length === 0) {
@@ -77,76 +70,67 @@ function CustomerQuestionsPart2({
     handleCallUserApi();
   };
 
+  const getQuestionText = (val) => {
+    switch (language) {
+      case "english":
+        return val.question_in_english;
+      case "hindi":
+        return val.question_in_hindi;
+      case "gujarati":
+        return val.question_in_gujarati;
+      default:
+        return val.question_in_english; 
+    }
+  };
+
   useEffect(() => {
+    handleGetQuestionsPart2();
     if (storedData) {
       setSelectedCheckboxes(storedData.map((q) => q.id.toString()));
     }
-    handleGetQuestionsPart2();
-  }, []);
+  }, [storedData]);
 
   useEffect(() => {
     onValidate(isValid);
   }, [isValid, onValidate]);
 
   return (
-    <div className="w-full m-5 gap-2 overflow-auto flex rounded-lg bg-card h-[87%] bg-white flex-wrap content-start p-2 px-4">
+    <div className="w-full my-1.5 gap-2.5 px-2 py-2.5 flex rounded-lg bg-card bg-white flex-col content-start">
       <div className="text-xl font-semibold">User Diagnosis</div>
-      <div className="flex flex-col rounded-lg bg-card h-[75vh] w-full">
-        <div className="flex w-full h-full flex-col gap-1.5 ">
-          <div className="animate-fade-left w-full min-h-[515px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
+      <div className="flex flex-col rounded-lg bg-card h-[78vh] w-full">
+        <div className="flex w-full h-full flex-col gap-1.5">
+          <div className="animate-fade-left w-full min-h-[452px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
             <table className="w-full z-0">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  <ThComponent
-                    moreClasses={"rounded-tl-md rounded-bl-md"}
-                    name="Select"
-                  />
-                  <ThComponent name="In English" />
-                  <ThComponent name="In Hindi" />
-                  <ThComponent
-                    moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="In Gujarati"
-                  />
+                  <ThComponent moreClasses={"rounded-tl-md rounded-bl-md"} name="Select" />
+                  <ThComponent name="Question" />
                 </tr>
               </thead>
               <tbody>
                 {getQuestionsPart2.length === 0 ? (
                   <tr>
-                    <th
-                      className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
-                      colSpan={8}
-                    >
-                      No Questions Found in Part-1!
+                    <th className="uppercase tracking-wide font-medium pt-[13rem] text-lg" colSpan={2}>
+                      No Questions Found in Part-2!
                     </th>
                   </tr>
                 ) : (
-                  getQuestionsPart2.map((val) => {
-                    return (
-                      <tr key={val.id}>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <input
-                            value={val.id}
-                            checked={selectedCheckboxes.includes(
-                              val.id.toString()
-                            )}
-                            onChange={handleCheckboxChange}
-                            type="checkbox"
-                            className="size-4"
-                          />
-                        </td>
-
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_english} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_hindi} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_gujarati} />
-                        </td>
-                      </tr>
-                    );
-                  })
+                  getQuestionsPart2.map((val) => (
+                    <tr key={val.id}>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <input
+                          value={val.id}
+                          checked={selectedCheckboxes.includes(val.id.toString())}
+                          onChange={handleCheckboxChange}
+                          type="checkbox"
+                          className="size-5"
+                        />
+                      </td>
+                      <td className="py-3 px-4 border-b border-b-gray-50">
+                        <TdComponent things={getQuestionText(val)} />
+                      </td>
+                    </tr>
+                  ))
                 )}
               </tbody>
             </table>

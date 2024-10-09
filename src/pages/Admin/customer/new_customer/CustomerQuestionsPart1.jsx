@@ -14,6 +14,8 @@ function CustomerQuestionsPart1({
   storedData,
   setStoreData,
 }) {
+  const language = localStorage.getItem('user_selected_language');
+  const gender = localStorage.getItem('user_selected_gender');
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
@@ -30,7 +32,10 @@ function CustomerQuestionsPart1({
       )
       .then((res) => {
         console.log(res.data);
-        setGetQuestionsPart1(res.data);
+        const filteredQuestions = res.data.filter(question =>
+          question.gender === gender || question.gender === "both"
+        );
+        setGetQuestionsPart1(filteredQuestions);
       })
       .catch((err) => {
         console.log(err);
@@ -42,13 +47,11 @@ function CustomerQuestionsPart1({
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
 
-    if (isChecked) {
-      setSelectedCheckboxes((prevState) => [...prevState, checkboxValue]);
-    } else {
-      setSelectedCheckboxes((prevState) =>
-        prevState.filter((value) => value !== checkboxValue)
-      );
-    }
+    setSelectedCheckboxes((prevState) => 
+      isChecked 
+        ? [...prevState, checkboxValue] 
+        : prevState.filter((value) => value !== checkboxValue)
+    );
   };
 
   const handleSave = async () => {
@@ -83,6 +86,19 @@ function CustomerQuestionsPart1({
     onNext();
   };
 
+  const getQuestionText = (val) => {
+    switch (language) {
+      case "english":
+        return val.question_in_english;
+      case "hindi":
+        return val.question_in_hindi;
+      case "gujarati":
+        return val.question_in_gujarati;
+      default:
+        return val.question_in_english; 
+    }
+  };
+
   useEffect(() => {
     handleGetQuestionsPart1();
   }, []);
@@ -94,12 +110,14 @@ function CustomerQuestionsPart1({
     onValidate(isValid);
   }, [storedData, isValid, onValidate]);
 
+
+
   return (
     <div className="w-full my-1.5 gap-2.5 px-2 py-2.5 flex rounded-lg bg-card bg-white flex-col content-start">
       <div className="text-xl font-semibold">User Questions</div>
-      <div className="flex flex-col rounded-lg bg-card h-[79vh] w-full">
+      <div className="flex flex-col rounded-lg bg-card h-[78vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5">
-          <div className="animate-fade-left w-full min-h-[515px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
+          <div className="animate-fade-left w-full min-h-[455px] animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto">
             <table className="w-full z-0 text-lg overflow-auto">
               <thead className="uppercase">
                 <tr className="bg-[#1F2937] text-white rounded-md">
@@ -107,11 +125,11 @@ function CustomerQuestionsPart1({
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="Select"
                   />
-                  <ThComponent name="In English" />
-                  <ThComponent name="In Hindi" />
+                  <ThComponent  />
+                  <ThComponent  />
                   <ThComponent
                     moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="In Gujarati"
+                    
                   />
                 </tr>
               </thead>
@@ -132,22 +150,14 @@ function CustomerQuestionsPart1({
                         <td className="py-3 px-4 border-b border-b-gray-50 ">
                           <input
                             value={val.id}
-                            checked={selectedCheckboxes.includes(
-                              val.id.toString()
-                            )}
+                            checked={selectedCheckboxes.includes(val.id.toString())}
                             onChange={handleCheckboxChange}
                             type="checkbox"
-                            className="size-4"
+                            className="size-5"
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_english} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_hindi} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_gujarati} />
+                          <TdComponent things={getQuestionText(val)} />
                         </td>
                       </tr>
                     );

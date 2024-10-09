@@ -10,7 +10,8 @@ function AdminTreatment() {
   const [sendWeightReason, setSendWeightReason] = useState(null);
   const [getPackages, setPackages] = useState([]);
   const [seeRequired, setSeeRequired] = useState(true);
-  const [isDropdownDisabled, setIsDropdownDisabled] = useState(false); 
+  const [isDropdownDisabled, setIsDropdownDisabled] = useState(false);
+  const [weightReason, setWeightReason] = useState("");
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
 
@@ -59,7 +60,9 @@ function AdminTreatment() {
   const handleSendWeightReason = (val, doc_id) => {
     setSendWeightReason(val);
     localStorage.setItem("map_doctor_id", doc_id);
-    setIsDropdownDisabled(true); 
+    setIsDropdownDisabled(true);
+    setWeightReason(val);
+    localStorage.setItem("weight_reason", val);
   };
 
   useEffect(() => {
@@ -75,27 +78,33 @@ function AdminTreatment() {
       <div className=" h-screen flex-grow overflow-auto flex flex-col flex-wrap content-start p-2">
         <div className="w-fit p-2">
           <div className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"></div>
-          <div className="flex gap-2">
-            <Select
-              required
-              placeholder="Select a reason"
-              disabled={isDropdownDisabled} // Disable dropdown based on state
-            >
-              {getWeightReason.map((res) => {
-                return (
-                  <Option
-                    key={res.id}
-                    value={res.name}
-                    onClick={() => {
-                      handleSendWeightReason(res.name, res.user_id);
-                      setSeeRequired(false);
-                    }}
-                  >
-                    {res.name}
-                  </Option>
-                );
-              })}
-            </Select>
+          <div className="flex  gap-2">
+            {weightReason ? (
+              <div className="flex justify-center font-semibold ">
+                <div className="">Selected Treatment: {weightReason} </div>
+              </div>
+            ) : (
+              <Select
+                required
+                placeholder="Select a reason"
+                disabled={isDropdownDisabled}
+              >
+                {getWeightReason.map((res) => {
+                  return (
+                    <Option
+                      key={res.id}
+                      value={res.name}
+                      onClick={() => {
+                        handleSendWeightReason(res.name, res.user_id);
+                        setSeeRequired(false);
+                      }}
+                    >
+                      {res.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            )}
             {seeRequired && (
               <div className="text-red-500 text-sm">**Required</div>
             )}

@@ -262,12 +262,12 @@ function FamilyReason() {
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
-            <div className="font-semibold text-xl">Family Reason List</div>
+            <div className="font-semibold text-xl">Family History List</div>
             <div className="flex gap-3">
               <AddNewFamily
                 handleApi={handleAddFamily}
-                name="Add Family Reason"
-                title="Add New Reason"
+                name="Add Family History"
+                title="Add New Family History"
                 details="Details"
                 role={role}
                 doctors={getDoctors}

@@ -17,6 +17,8 @@ function FranchiesDiagnosis({
 }) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const language = localStorage.getItem("user_selected_language");
+  const gender = localStorage.getItem("user_selected_gender");
   const {
     formState: { isValid },
   } = useForm({
@@ -30,7 +32,10 @@ function FranchiesDiagnosis({
       )
       .then((res) => {
         console.log(res.data);
-        setGetQuestionsPart2(res.data);
+        const filteredQuestions = res.data.filter(
+          (question) => question.gender === gender || question.gender === "both"
+        );
+        setGetQuestionsPart2(filteredQuestions);
       })
       .catch((err) => {
         console.log(err);
@@ -76,6 +81,19 @@ function FranchiesDiagnosis({
     handleCallUserApi();
   };
 
+  const getQuestionText = (val) => {
+    switch (language) {
+      case "english":
+        return val.question_in_english;
+      case "hindi":
+        return val.question_in_hindi;
+      case "gujarati":
+        return val.question_in_gujarati;
+      default:
+        return val.question_in_english;
+    }
+  };
+
   useEffect(() => {
     if (storedData) {
       setSelectedCheckboxes(storedData.map((q) => q.id.toString()));
@@ -100,12 +118,9 @@ function FranchiesDiagnosis({
                     moreClasses={"rounded-tl-md rounded-bl-md"}
                     name="Select"
                   />
-                  <ThComponent name="In English" />
-                  <ThComponent name="In Hindi" />
-                  <ThComponent
-                    moreClasses={"rounded-tr-md rounded-br-md"}
-                    name="In Gujarati"
-                  />
+                  <ThComponent />
+                  <ThComponent />
+                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
               <tbody>
@@ -130,18 +145,11 @@ function FranchiesDiagnosis({
                             )}
                             onChange={handleCheckboxChange}
                             type="checkbox"
-                            className="size-4"
+                            className="size-5"
                           />
                         </td>
-
                         <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_english} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_hindi} />
-                        </td>
-                        <td className="py-3 px-4 border-b border-b-gray-50">
-                          <TdComponent things={val.question_in_gujarati} />
+                          <TdComponent things={getQuestionText(val)} />
                         </td>
                       </tr>
                     );

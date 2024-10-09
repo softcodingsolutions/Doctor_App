@@ -28,7 +28,8 @@ function FranchiesGeneraldetails({
       ...prev,
       generalDetails: d,
     }));
-
+    localStorage.setItem('user_selected_language',d.language)
+    localStorage.setItem('user_selected_gender',d.gender)
     localStorage.setItem("client_email", d.email);
     localStorage.setItem("doctor_id", context[1]?.created_by_id);
 

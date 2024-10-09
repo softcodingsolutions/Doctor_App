@@ -47,6 +47,7 @@ function CustomerGeneralDetails({
       doctorId: getDoctorId,
     }));
     localStorage.setItem('user_selected_language',d.language)
+    localStorage.setItem('user_selected_gender',d.gender)
     if (role === "doctor") {
       localStorage.setItem("doctor_id", getAdmin.id);
     } else if (role === "super_admin") {
@@ -244,7 +245,7 @@ function CustomerGeneralDetails({
                         </div>
                         <div>
                           {errors.gender && (
-                            <span className="text-base text-red-500 -mt-1.5 text-sm">
+                            <span className=" text-red-500 -mt-1.5 text-sm">
                               {errors.gender?.message}
                             </span>
                           )}

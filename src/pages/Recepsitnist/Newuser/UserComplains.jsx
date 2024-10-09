@@ -122,7 +122,17 @@ function UserComplains({
                     );
                   })}
                 </Select>
-                <div className="flex flex-col gap-2 mt-10">
+
+                <div className="mt-2">
+                  <h3 className="font-semibold">Selected Complains:</h3>
+                  <ul className="list-disc list-inside">
+                    {selectedComplains.map((reason, index) => (
+                      <li key={index}>{reason}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-5">
                   <label>Other Complain:</label>
                   <textarea
                     rows={3}

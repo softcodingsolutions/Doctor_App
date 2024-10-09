@@ -122,8 +122,17 @@ function FranchiesComplains({
                     );
                   })}
                 </Select>
-                <div className="flex flex-col gap-2 mt-10">
-                  <label>Other Complain:</label>
+
+                <div className="mt-2">
+                  <h3 className="font-semibold">Selected Complains:</h3>
+                  <ul className="list-disc list-inside">
+                    {selectedComplains.map((reason, index) => (
+                      <li key={index}>{reason}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-5">
                   <textarea
                     rows={3}
                     className="border-2 w-full rounded-md p-2"

@@ -46,7 +46,8 @@ function UserGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
       setDoctorError(true);
       return;
     }
-
+    localStorage.setItem('user_selected_language',d.language)
+    localStorage.setItem('user_selected_gender',d.gender)
     setStoreData((prev) => ({
       ...prev,
       generalDetails: d,
