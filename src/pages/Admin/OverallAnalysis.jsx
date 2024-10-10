@@ -36,7 +36,7 @@ const OverallAnalysis = () => {
   const [overallData, setOverallData] = useState([]);
   const [duePayment, setDuePayment] = useState();
   const [docPaitents, setDocPaitents] = useState();
-
+  const [patientData, setPatientData] = useState({});
   const months = [
     "January",
     "February",
@@ -53,11 +53,6 @@ const OverallAnalysis = () => {
   ];
 
   const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
-
-  // const getDaysInMonth = (month, year) => {
-  //   const monthIndex = months.indexOf(month);
-  //   return new Date(year, monthIndex + 1, 0).getDate();
-  // };
 
   const handleData = () => {
     const monthIndex = months.indexOf(selectedMonth) + 1;
@@ -77,6 +72,8 @@ const OverallAnalysis = () => {
         setWeightData(res.data?.weight_gain_loos_data);
         setDuePayment(res.data?.due_payment);
         setDocPaitents(res.data?.doctor_total_paitent);
+        setPatientData(res.data?.treatment_package_analysis_data);
+        setCount;
       })
       .catch((err) => {
         console.log(err);
@@ -105,10 +102,6 @@ const OverallAnalysis = () => {
     value: value,
   }));
 
-  useEffect(() => {
-    handleData();
-  }, [selectedMonth, selectedYear]);
-
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
   };
@@ -117,20 +110,6 @@ const OverallAnalysis = () => {
     setSelectedYear(event.target.value);
   };
 
-  const pieData1 = [
-    { name: "Active Patients", value: 400 },
-    { name: "Inactive Patients", value: 300 },
-    { name: "Inactive Patients", value: 300 },
-    { name: "Inactive Patients", value: 300 },
-    { name: "Inactive Patients", value: 300 },
-    { name: "Inactive Patients", value: 300 },
-    { name: "Active Patients", value: 400 },
-    { name: "Active Patients", value: 400 },
-    { name: "Active Patients", value: 400 },
-    { name: "Active Patients", value: 400 },
-    { name: "Active Patients", value: 400 },
-    { name: "Active Patients", value: 400 },
-  ];
 
   const pieData2 =
     overallData.length > 0
@@ -151,15 +130,12 @@ const OverallAnalysis = () => {
         ]
       : ["No Data Available"];
 
-  const totalPatients = pieData1.reduce((acc, curr) => acc + curr.value, 0);
-
-  const patientData = pieData1.map((item) => ({
-    ...item,
-    percentage: ((item.value / totalPatients) * 100).toFixed(2),
-  }));
 
   const COLORS = ["#0088FE", "#FFBB28", "#FF8042", "#FF6347"];
 
+  useEffect(() => {
+    handleData();
+  }, [selectedMonth, selectedYear]);
   return (
     <div className="flex w-full font-sans bg-white ">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
@@ -339,28 +315,47 @@ const OverallAnalysis = () => {
               </div>
             </div>
             <div className="flex w-[100%] h-[18%]">
-              {/* Pie Chart 1 */}
               <div className="flex flex-col m-5 border rounded-md shadow-md p-4 w-[50%] ">
                 <label className="flex justify-center text-lg font-medium">
                   Package Status
                 </label>
                 <div className="mt-4 flex flex-col gap-4 overflow-auto p-2">
-                  {patientData.map((patient, index) => (
-                    <div key={index} className="w-full">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-700">{patient.name}</span>
-                        <span className="text-gray-700">
-                          {patient.percentage}%
-                        </span>
+                  {Object.keys(patientData)
+                    .map((patient) => {
+                      const count = patientData[patient][0];
+                      const percentage =
+                        count.true_count + count.false_count > 0
+                          ? (count.true_count /
+                              (count.true_count + count.false_count)) *
+                            100
+                          : 0;
+
+                      return {
+                        name: patient,
+                        percentage: percentage,
+                      };
+                    })
+                    .sort((a, b) => b.percentage - a.percentage) 
+                    .map((patientDataSorted, index) => (
+                      <div key={index} className="w-full mb-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-700">
+                            {patientDataSorted.name}
+                          </span>
+                          <span className="text-gray-700">
+                            {patientDataSorted.percentage.toFixed(2)}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded h-3">
+                          <div
+                            className="bg-blue-500 h-3 rounded"
+                            style={{
+                              width: `${patientDataSorted.percentage}%`,
+                            }}
+                          ></div>
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 rounded h-3">
-                        <div
-                          className="bg-blue-500 h-3 rounded"
-                          style={{ width: `${patient.percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
 
