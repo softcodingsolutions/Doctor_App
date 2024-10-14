@@ -82,7 +82,6 @@ function RTreatmentMedicine() {
 
     setSelectedCheckboxes(updatedCheckboxes);
 
-    // Automatically save selected medicines when checkboxes change
     const selectedMedicine = updatedCheckboxes
       .map((id) => getMedicines.find((med) => med.id === Number(id)))
       .filter((med) => med);
@@ -100,7 +99,7 @@ function RTreatmentMedicine() {
         icon: "error",
         confirmButtonText: "OK",
       });
-      // Optionally, you can uncheck the boxes for medicines that are missing values
+ 
       setSelectedCheckboxes(
         selectedCheckboxes.filter(
           (id) => !invalidMedicines.some((med) => med.id === Number(id))
@@ -179,6 +178,10 @@ function RTreatmentMedicine() {
                     name="Select"
                   />
                   <ThComponent name="Name" />
+                  <ThComponent name="Dose" />
+                  <ThComponent name="frequency" />
+                  <ThComponent name="quantity" />
+                  <ThComponent name="with Milk" />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
                 </tr>
               </thead>
@@ -220,44 +223,56 @@ function RTreatmentMedicine() {
                           <TdComponent things={val.medicine_name} />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50 flex gap-4">
-                          <Select
-                            placeholder="Select Dose"
-                            onChange={(event, value) =>
-                              handleDropdownChange(val.id, "dosage", value)
-                            }
-                            renderValue={(selected) =>
-                              selected ? (
-                                <Box sx={{ display: "flex", gap: "0.25rem" }}>
-                                  <Chip variant="soft" color="primary">
-                                    {selected.label}
-                                  </Chip>
-                                </Box>
-                              ) : (
-                                <Box sx={{ display: "flex", gap: "0.25rem" }}>
-                                  Select Dose
-                                </Box>
-                              )
-                            }
+                          <Box
                             sx={{
                               minWidth: "10rem",
-                            }}
-                            slotProps={{
-                              listbox: {
-                                sx: {
-                                  width: "100%",
-                                },
-                              },
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "0.5rem",
                             }}
                           >
-                            <Option
-                              disabled
-                              style={{ color: "gray", fontWeight: 500 }}
-                            >
-                              Dose
-                            </Option>
-                            <Option value="before-meal">Before Meal</Option>
-                            <Option value="after-meal">After Meal</Option>
-                          </Select>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name={`dosage-${val.id}`}
+                                value="before-meal"
+                                onChange={(event) =>
+                                  handleDropdownChange(
+                                    val.id,
+                                    "dosage",
+                                    event.target.checked ? "before-meal" : null
+                                  )
+                                }
+                                checked={
+                                  dropdownValues[val.id]?.dosage ===
+                                  "before-meal"
+                                }
+                              />
+                              Before Meal
+                            </label>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name={`dosage-${val.id}`}
+                                value="after-meal"
+                                onChange={(event) =>
+                                  handleDropdownChange(
+                                    val.id,
+                                    "dosage",
+                                    event.target.checked ? "after-meal" : null
+                                  )
+                                }
+                                checked={
+                                  dropdownValues[val.id]?.dosage ===
+                                  "after-meal"
+                                }
+                              />
+                              After Meal
+                            </label>
+                          </Box>
+                        </td>
+
+                        <td className="py-3 px-4 border-b border-b-gray-50 ">
                           <Select
                             multiple
                             placeholder="Select Frequency"
@@ -299,6 +314,8 @@ function RTreatmentMedicine() {
                             <Option value="evening">Evening</Option>
                             <Option value="dinner">Dinner</Option>
                           </Select>
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50 ">
                           <Select
                             multiple
                             placeholder="Select Quantity"
@@ -340,44 +357,53 @@ function RTreatmentMedicine() {
                             <Option value="1.5">1½</Option>
                             <Option value="2">2</Option>
                           </Select>
-                          <Select
-                            placeholder="Select with milk"
-                            onChange={(event, value) =>
-                              handleDropdownChange(val.id, "with_milk", value)
-                            }
-                            renderValue={(selected) =>
-                              selected ? (
-                                <Box sx={{ display: "flex", gap: "0.25rem" }}>
-                                  <Chip variant="soft" color="primary">
-                                    {selected.label}
-                                  </Chip>
-                                </Box>
-                              ) : (
-                                <Box sx={{ display: "flex", gap: "0.25rem" }}>
-                                  Select with milk
-                                </Box>
-                              )
-                            }
+                        </td>
+                        <td className="py-3 px-4 border-b border-b-gray-50 ">
+                          <Box
                             sx={{
                               minWidth: "10rem",
-                            }}
-                            slotProps={{
-                              listbox: {
-                                sx: {
-                                  width: "100%",
-                                },
-                              },
+                              display: "flex",
+                              flexDirection: "row",
+                              gap: "0.5rem",
                             }}
                           >
-                            <Option
-                              disabled
-                              style={{ color: "gray", fontWeight: 500 }}
-                            >
-                              With Milk
-                            </Option>
-                            <Option value="yes">Yes</Option>
-                            <Option value="no">No </Option>
-                          </Select>
+                            <label>
+                              <input
+                                type="radio"
+                                name={`with-milk-${val.id}`}
+                                value="yes"
+                                onChange={() =>
+                                  handleDropdownChange(
+                                    val.id,
+                                    "with_milk",
+                                    "yes"
+                                  )
+                                }
+                                checked={
+                                  dropdownValues[val.id]?.with_milk === "yes"
+                                }
+                              />
+                              Yes
+                            </label>
+                            <label>
+                              <input
+                                type="radio"
+                                name={`with-milk-${val.id}`}
+                                value="no"
+                                onChange={() =>
+                                  handleDropdownChange(
+                                    val.id,
+                                    "with_milk",
+                                    "no"
+                                  )
+                                }
+                                checked={
+                                  dropdownValues[val.id]?.with_milk === "no"
+                                }
+                              />
+                              No
+                            </label>
+                          </Box>
                         </td>
                       </tr>
                     );

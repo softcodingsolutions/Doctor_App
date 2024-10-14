@@ -14,11 +14,11 @@ function TreatmentMedicines() {
   const context = useOutletContext();
   const [getMedicines, setGetMedicines] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [showCheckboxes, setShowCheckboxes] = useState(true);
   const role = localStorage.getItem("role");
   const [loading, setLoading] = useState(true);
   const main_id = localStorage.getItem("main_id");
- 
+
   const handleGetMedicines = () => {
     if (role === "doctor") {
       axios
@@ -51,19 +51,15 @@ function TreatmentMedicines() {
     }
   };
 
-  const handleToggleCheckboxes = () => {
-    setShowCheckboxes(!showCheckboxes);
-  };
-
   const handleCheckboxChange = (e) => {
     const checkboxValue = e.target.value;
     const isChecked = e.target.checked;
 
     setSelectedCheckboxes((prevState) => {
       if (isChecked) {
-        return [...new Set([...prevState, checkboxValue])]; // Add and remove duplicates
+        return [...new Set([...prevState, checkboxValue])];
       } else {
-        return prevState.filter((value) => value !== checkboxValue); // Remove unchecked item
+        return prevState.filter((value) => value !== checkboxValue);
       }
     });
   };
@@ -109,7 +105,6 @@ function TreatmentMedicines() {
       console.error(err);
     } finally {
       setSelectedCheckboxes([]);
-      setShowCheckboxes(false);
     }
   };
 
@@ -136,20 +131,14 @@ function TreatmentMedicines() {
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
           <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes && (
-              <SelectTreatmentButton
-                name="Select Medicines"
-                function={handleToggleCheckboxes}
-              />
-            )}
-
+            
             {showCheckboxes && (
               <div className="font-[550] text-lg">
                 No. of medicines checked: {selectedCheckboxes.length}
               </div>
             )}
 
-            {!showCheckboxes && (
+            {showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Medicine -{" "}
                 <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
@@ -161,17 +150,11 @@ function TreatmentMedicines() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  {showCheckboxes ? (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="Select"
-                    />
-                  ) : (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
-                    />
-                  )}
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="Select"
+                  />
+
                   <ThComponent name="Drug's Name" />
                   <ThComponent name="Drug's Content" />
                   <ThComponent
@@ -207,26 +190,18 @@ function TreatmentMedicines() {
                         } w-full`}
                         key={val.id}
                       >
-                        {showCheckboxes && (
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <input
-                              value={val.id}
-                              onChange={handleCheckboxChange}
-                              type="checkbox"
-                              className="size-5"
-                              checked={selectedCheckboxes.includes(
-                                String(val.id)
-                              )} // Controlled input
-                            />
-                          </td>
-                        )}
-                        {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">
-                              {index + 1 }
-                            </div>{" "}
-                          </td>
-                        )}
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <input
+                            value={val.id}
+                            onChange={handleCheckboxChange}
+                            type="checkbox"
+                            className="size-5"
+                            checked={selectedCheckboxes.includes(
+                              String(val.id)
+                            )}
+                          />
+                        </td>
+
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.medicine_name} />
                         </td>
@@ -243,18 +218,20 @@ function TreatmentMedicines() {
               </tbody>
             </table>
           </div>
-      
-          {!showCheckboxes && (
-            <div className="flex justify-between">
-              <PrevPageButton to="../question-part2" />
-              <NextPageButton name="Diet" to="../diet" />
-            </div>
-          )}
+
           {showCheckboxes && (
-            <div className="flex justify-center">
-              <SaveTreatmentButtons function={handleSave} />{" "}
+            <div className="flex justify-between">
+              <div>
+                <PrevPageButton to="../question-part2" />
+              </div>
+              <div>
+                {" "}
+                <SaveTreatmentButtons function={handleSave} />{" "}
+                <NextPageButton name="Diet" to="../diet" />
+              </div>
             </div>
           )}
+         
         </div>
       </div>
     </div>

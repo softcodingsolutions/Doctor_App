@@ -132,6 +132,7 @@ function App() {
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
             <Route path="generate-report" element={<ReportGenerate />} />
             <Route path="package-medicine" element={<ProgressMedicine />} />
+            <Route path="patient-analysis" element={<PatientAnalysis />} />
             <Route path="progress-report" element={<ReportProgress />} />
             <Route path="user-complains" element={<UserComplains />} />
           </Route>

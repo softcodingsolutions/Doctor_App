@@ -75,12 +75,11 @@ function AdminTreatment() {
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" h-screen flex-grow overflow-auto flex flex-col flex-wrap content-start p-2">
-        <div className="w-fit p-2">
-          <div className="grid grid-cols-4 transition-transform lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 gap-3 p-1 min-w-fit xl:flex"></div>
-          <div className="flex  gap-2">
+      <div className=" h-screen flex-grow overflow-auto flex flex-col flex-wrap content-start">
+        <div className="w-fit ">
+          <div className="flex gap-2 p-2 justify-center w-[181vh]">
             {weightReason ? (
-              <div className="flex justify-center font-semibold ">
+              <div className="flex justify-center text-lg font-semibold ">
                 <div className="">Selected Treatment: {weightReason} </div>
               </div>
             ) : (
@@ -88,6 +87,7 @@ function AdminTreatment() {
                 required
                 placeholder="Select a reason"
                 disabled={isDropdownDisabled}
+                className=" w-full "
               >
                 {getWeightReason.map((res) => {
                   return (

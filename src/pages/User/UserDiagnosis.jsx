@@ -43,8 +43,7 @@ function UserDiagnosis() {
       button.id === "12" ||
       button.id === "15" ||
       button.id === "16" ||
-      button.id === "13" ||
-      button.id === "14"
+      button.id === "13" 
     ) {
       return (
         getCustomer.role === "super_admin" ||

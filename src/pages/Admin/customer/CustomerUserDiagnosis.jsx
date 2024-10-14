@@ -7,6 +7,8 @@ import InsideLoader from "../../InsideLoader";
 import male from "../../../assets/images/male.avif";
 import female from "../../../assets/images/female.avif";
 import { BsFillTelephoneFill } from "react-icons/bs";
+import TdComponent from "../../../components/TdComponent";
+import ThComponent from "../../../components/ThComponent";
 import { MdEmail } from "react-icons/md";
 import { GiWeight } from "react-icons/gi";
 
@@ -18,6 +20,10 @@ function CustomerUserDiagnosis() {
   const location = useLocation();
   const pathname = location.pathname?.split("/user-diagnosis/")[1];
   const [loading, setLoading] = useState(true);
+  const [showPart1, setShowPart1] = useState([]);
+  const [showPart2, setShowPart2] = useState(false);
+  const [pastHistory, setPastHistory] = useState([]);
+  const [show, setShow] = useState(true);
 
   const handlegetUser = () => {
     axios
@@ -25,6 +31,13 @@ function CustomerUserDiagnosis() {
       .then((res) => {
         console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
+        setShowPart1(
+          res.data?.user?.personal_detail?.user_selected_questions_one
+        );
+        setPastHistory(
+          res.data?.user?.personal_detail?.family_reasons
+            ?.selected_family_reasons
+        );
         if (res.data?.user?.creator === "doctor") {
           localStorage.setItem("doctor_id", res.data?.user.created_by_id);
           setLoading(false);
@@ -231,10 +244,122 @@ function CustomerUserDiagnosis() {
           </div>
         </div>
       </div>
+      <div className="flex flex-col md:flex-row mx-1 rounded-md gap-4 font-sans w-full h-[40%] p-2 overflow-hidden">
+        {/* Questions List Section */}
+        <div className="bg-white rounded-md p-4 w-full md:w-1/2 overflow-auto">
+          <div className="animate-fade-left animate-delay-75 rounded-md animate-once animate-ease-out overflow-auto">
+            <div className="flex items-center justify-between mb-2">
+              <div className="font-semibold text-sm">Questions List</div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShow(!show)}
+                  className={`p-2 border-2 rounded-md transition-transform duration-200 ${
+                    show ? "scale-105 bg-gray-700 text-white" : "bg-gray-50"
+                  } hover:scale-105 border-gray-300`}
+                >
+                  Part 1
+                </button>
+                <button
+                  onClick={() => setShow(!show)}
+                  className={`p-2 border-2 rounded-md transition-transform duration-200 ${
+                    !show ? "scale-105 bg-gray-700 text-white" : "bg-gray-50"
+                  } hover:scale-105 border-gray-300`}
+                >
+                  Part 2
+                </button>
+              </div>
+            </div>
 
-      <div className="w-full sm:flex items-end mt-3">
+            <table className="w-full z-0">
+              <thead className="uppercase text-xs">
+                <tr className="bg-gray-800 text-white">
+                  <ThComponent
+                    moreClasses="rounded-tl-md rounded-bl-md"
+                    name="No."
+                  />
+                  <ThComponent name="Questions" />
+                  <ThComponent moreClasses="rounded-tr-md rounded-br-md" />
+                </tr>
+              </thead>
+              <tbody>
+                {show ? (
+                  showPart1.length === 0 ? (
+                    <tr>
+                      <th
+                        className="uppercase tracking-wide font-medium py-20 text-sm text-center"
+                        colSpan={3}
+                      >
+                        No Questions found in Part 1!
+                      </th>
+                    </tr>
+                  ) : (
+                    showPart1.map((val, index) => (
+                      <tr key={val.id}>
+                        <td className="py-2 px-4 border-b border-gray-50 text-center text-sm">
+                          {index + 1}
+                        </td>
+                        <td className="py-3 px-4 border-b border-gray-50 text-sm">
+                          <TdComponent things={val} />
+                        </td>
+                      </tr>
+                    ))
+                  )
+                ) : null}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Family History Section */}
+        <div className="bg-white rounded-md p-4 w-full md:w-1/2 overflow-auto">
+          <div className="font-semibold text-sm mb-2">Family History</div>
+          <div className="animate-fade-left animate-delay-75 rounded-md animate-once animate-ease-out overflow-auto">
+            <table className="w-full min-w-[460px] z-0">
+              <thead className="uppercase text-xs">
+                <tr className="bg-gray-800 text-white">
+                  <ThComponent
+                    moreClasses="rounded-tl-md rounded-bl-md"
+                    name="No."
+                  />
+                  <ThComponent
+                    moreClasses="rounded-tr-md rounded-br-md"
+                    name="Details"
+                  />
+                </tr>
+              </thead>
+              <tbody>
+                {showPart1 ? (
+                  pastHistory.length === 0 ? (
+                    <tr>
+                      <th
+                        className="uppercase tracking-wide font-medium py-20 text-lg text-center"
+                        colSpan={2}
+                      >
+                        No Family Reason Found!
+                      </th>
+                    </tr>
+                  ) : (
+                    pastHistory.map((val, index) => (
+                      <tr key={val.id}>
+                        <td className="py-2 px-4 border-b border-gray-50 text-center">
+                          {index + 1}
+                        </td>
+                        <td className="py-3 px-4 border-b border-gray-50">
+                          <TdComponent things={val} />
+                        </td>
+                      </tr>
+                    ))
+                  )
+                ) : null}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full sm:flex items-end ">
         <div className="sm:flex-grow flex justify-between overflow-x-hidden">
-          <div className="flex flex-wrap justify-center transition-transform gap-3 p-1 w-full">
+          <div className="flex flex-wrap justify-center transition-transform gap-3  w-full">
             {reportButtonsMain.map((res) => {
               return (
                 <Link

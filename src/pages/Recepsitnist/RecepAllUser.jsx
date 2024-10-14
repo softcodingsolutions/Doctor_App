@@ -139,6 +139,35 @@ function RecepAllUsers() {
     return formattedDate;
   };
 
+  const handlePackageDetail = (e) => {
+    const selectedPackageStatus = e.target.value;
+
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        if (selectedPackageStatus === "select") {
+          const patients = res.data?.users?.filter(
+            (user) => user.role === "patient"
+          );
+          console.log("Patients by Super Admin: ", patients);
+          setGetCustomers(patients);
+        } else {
+          const filteredUsers = res.data?.users.filter((user) => {
+            if (user.user_packages) {
+              return (
+                user.user_packages.package_status === selectedPackageStatus
+              );
+            }
+            return false;
+          });
+          setGetCustomers(filteredUsers);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching users: ", error);
+      });
+  };
+
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
@@ -207,19 +236,17 @@ function RecepAllUsers() {
               </div>
               <div className="flex items-start ">
                 <select
-                  name="overweight"
                   defaultValue="select"
                   placeholder="Type"
-                  className="py-2 text-sm px-3 rounded-md border border-black"
+                  onChange={handlePackageDetail}
+                  className="py-2 text-sm px-2 rounded-md border border-black"
                 >
-                  <option value="select" disabled>
-                    Package Details
-                  </option>
+                  <option value="select">Package Details</option>
                   <option value="activate">Activate</option>
                   <option value="expired">Expired</option>
                   <option value="deactivate">Deactivated</option>
                   <option value="renew">Renew</option>
-                  <option value="about_to_expired">About to Expried</option>
+                  <option value="about_to_expired">About to Expire</option>
                 </select>
               </div>
             </div>

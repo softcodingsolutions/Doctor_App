@@ -41,7 +41,7 @@ function CustomerAllUsers() {
   };
 
   const handleDate = (e) => {
-    const inputDate = new Date(e.target.value); 
+    const inputDate = new Date(e.target.value);
     const formattedDate = inputDate.toISOString().split("T")[0];
 
     setCreatedAt(formattedDate);
@@ -58,7 +58,7 @@ function CustomerAllUsers() {
 
   const handleDiagnosis = (val) => {
     localStorage.setItem("userId", val);
-    navigate(`../user-diagnosis/questions`);
+    navigate(`../user-diagnosis/treatment/medicine`);
   };
 
   const handleAddUsers = () => {
@@ -73,6 +73,32 @@ function CustomerAllUsers() {
     localStorage.setItem("userId", val);
     localStorage.setItem("caseNumber", caseNumber);
     navigate(`/admin/patients/customer-details/progress-questions`);
+  };
+
+  const handlePackageDetail = (e) => {
+    const selectedPackageStatus = e.target.value;
+
+    axios
+      .get(`/api/v1/users?user_id=${main_id}`)
+      .then((res) => {
+        console.log("Patients by Doctor: ", res.data?.users);
+        if (selectedPackageStatus === "select") {
+          setGetCustomers(res.data?.users);
+        } else {
+          const filteredUsers = res.data?.users.filter((user) => {
+            if (user.user_packages) {
+              return (
+                user.user_packages.package_status === selectedPackageStatus
+              );
+            }
+            return false;
+          });
+          setGetCustomers(filteredUsers);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching users: ", error);
+      });
   };
 
   const sortedCustomers = getParticularCustomer.sort((a, b) => {
@@ -195,19 +221,17 @@ function CustomerAllUsers() {
               </div>
               <div className="flex items-start ">
                 <select
-                  name="overweight"
                   defaultValue="select"
                   placeholder="Type"
+                  onChange={handlePackageDetail}
                   className="py-3 text-sm px-2 rounded-md border border-black"
                 >
-                  <option value="select" disabled>
-                    Package Details
-                  </option>
+                  <option value="select">Package Details</option>
                   <option value="activate">Activate</option>
                   <option value="expired">Expired</option>
                   <option value="deactivate">Deactivated</option>
                   <option value="renew">Renew</option>
-                  <option value="about_to_expired">About to Expried</option>
+                  <option value="about_to_expired">About to Expire</option>
                 </select>
               </div>
             </div>
