@@ -34,6 +34,9 @@ function CustomerUserDiagnosis() {
         setShowPart1(
           res.data?.user?.personal_detail?.user_selected_questions_one
         );
+        setShowPart2(
+          res.data?.user?.personal_detail?.user_selected_questions_two
+        );
         setPastHistory(
           res.data?.user?.personal_detail?.family_reasons
             ?.selected_family_reasons
@@ -271,16 +274,6 @@ function CustomerUserDiagnosis() {
             </div>
 
             <table className="w-full z-0">
-              <thead className="uppercase text-xs">
-                <tr className="bg-gray-800 text-white">
-                  <ThComponent
-                    moreClasses="rounded-tl-md rounded-bl-md"
-                    name="No."
-                  />
-                  <ThComponent name="Questions" />
-                  <ThComponent moreClasses="rounded-tr-md rounded-br-md" />
-                </tr>
-              </thead>
               <tbody>
                 {show ? (
                   showPart1.length === 0 ? (
@@ -304,7 +297,27 @@ function CustomerUserDiagnosis() {
                       </tr>
                     ))
                   )
-                ) : null}
+                ) : showPart2.length === 0 ? (
+                  <tr>
+                    <th
+                      className="uppercase tracking-wide font-medium py-20 text-sm text-center"
+                      colSpan={3}
+                    >
+                      No Questions found in Part 2!
+                    </th>
+                  </tr>
+                ) : (
+                  showPart2.map((val, index) => (
+                    <tr key={val.id}>
+                      <td className="py-2 px-4 border-b border-gray-50 text-center text-sm">
+                        {index + 1}
+                      </td>
+                      <td className="py-3 px-4 border-b border-gray-50 text-sm">
+                        <TdComponent things={val} />
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -315,18 +328,6 @@ function CustomerUserDiagnosis() {
           <div className="font-semibold text-sm mb-2">Family History</div>
           <div className="animate-fade-left animate-delay-75 rounded-md animate-once animate-ease-out overflow-auto">
             <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase text-xs">
-                <tr className="bg-gray-800 text-white">
-                  <ThComponent
-                    moreClasses="rounded-tl-md rounded-bl-md"
-                    name="No."
-                  />
-                  <ThComponent
-                    moreClasses="rounded-tr-md rounded-br-md"
-                    name="Details"
-                  />
-                </tr>
-              </thead>
               <tbody>
                 {showPart1 ? (
                   pastHistory.length === 0 ? (

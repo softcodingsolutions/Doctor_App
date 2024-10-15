@@ -212,34 +212,34 @@ function RecepAllUsers() {
               New Patient
             </button>
           </div>
-          <div className="flex items-center justify-end gap-2">
-            <div className="flex flex-start gap-2 w-[67%]">
-              <div className="flex items-start ">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-2">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-[67%]">
+              <div className="flex items-start">
                 <select
                   name="overweight"
                   onChange={handleType}
                   placeholder="Type"
-                  className="py-2 text-sm px-3 rounded-md border border-black"
+                  className="py-2 text-sm px-3 rounded-md border border-black w-full sm:w-auto"
                 >
                   <option value="">Select Type</option>
-                  <option value="new_case">New Case / Unread </option>
+                  <option value="new_case">New Case / Unread</option>
                   <option value="old_case">Follow Up</option>
                 </select>
               </div>
-              <div className="flex items-start ">
+              <div className="flex items-start">
                 <input
                   type="date"
-                  placeholder="select date"
+                  placeholder="Select date"
                   onChange={handleDate}
-                  className="py-1 text-sm px-2 rounded-md border border-black"
+                  className="py-1 text-sm px-2 rounded-md border border-black w-full sm:w-auto"
                 />
               </div>
-              <div className="flex items-start ">
+              <div className="flex items-start">
                 <select
                   defaultValue="select"
                   placeholder="Type"
                   onChange={handlePackageDetail}
-                  className="py-2 text-sm px-2 rounded-md border border-black"
+                  className="py-2 text-sm px-2 rounded-md border border-black w-full sm:w-auto"
                 >
                   <option value="select">Package Details</option>
                   <option value="activate">Activate</option>
@@ -250,14 +250,17 @@ function RecepAllUsers() {
                 </select>
               </div>
             </div>
-            <input
-              type="checkbox"
-              checked
-              className="w-4 h-4 border border-gray-800"
-            />
-            <div> - Indoor activity accessibility</div>
-            <div className="w-4 h-4 bg-blue-300 border border-gray-800"> </div>
-            <div>- New Patient</div>
+
+            <div className="flex items-center gap-1">
+              <input
+                type="checkbox"
+                checked
+                className="w-4 h-4 border border-gray-800"
+              />
+              <div>- Indoor activity accessibility</div>
+              <div className="w-4 h-4 bg-blue-300 border border-gray-800"></div>
+              <div>- New Patient</div>
+            </div>
           </div>
 
           <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out h-[75vh]">

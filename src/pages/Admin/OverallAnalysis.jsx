@@ -110,7 +110,6 @@ const OverallAnalysis = () => {
     setSelectedYear(event.target.value);
   };
 
-
   const pieData2 =
     overallData.length > 0
       ? [
@@ -129,7 +128,6 @@ const OverallAnalysis = () => {
           },
         ]
       : ["No Data Available"];
-
 
   const COLORS = ["#0088FE", "#FFBB28", "#FF8042", "#FF6347"];
 
@@ -169,8 +167,8 @@ const OverallAnalysis = () => {
           </div>
 
           <div className="flex flex-col ">
-            <div className="flex w-[100%] ">
-              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-[30%]">
+            <div className="flex flex-wrap w-full">
+              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-full md:w-[30%]">
                 <div className="flex flex-col gap-2 w-full">
                   <div className="flex flex-col bg-white shadow rounded-lg sm:p-5 xl:p-4">
                     <div className="flex justify-between">
@@ -185,9 +183,7 @@ const OverallAnalysis = () => {
                     <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                       <div
                         className="bg-[#ff9f43] h-2 rounded-full"
-                        style={{
-                          width: `${franchises}%`,
-                        }}
+                        style={{ width: `${franchises}%` }}
                       ></div>
                     </div>
                   </div>
@@ -205,18 +201,17 @@ const OverallAnalysis = () => {
                     <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                       <div
                         className="bg-[#7367f0] h-2 rounded-full"
-                        style={{
-                          width: `${franchisesUsers}%`,
-                        }}
+                        style={{ width: `${franchisesUsers}%` }}
                       ></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-[25%]">
-                <div className="flex flex-col  ">
-                  <div className="flex mt-2 ">
-                    <div className="bg-[#d6f4f8] p-2 w-[25%] rounded-md flex justify-center ">
+
+              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-full md:w-[25%]">
+                <div className="flex flex-col w-full">
+                  <div className="flex mt-2">
+                    <div className="bg-[#d6f4f8] p-2 w-[25%] rounded-md flex justify-center">
                       <FaRupeeSign color="#00bad1" size={20} />
                     </div>
                     <div className="text-[#6d6b77] font-thin text-sm ml-2">
@@ -239,18 +234,19 @@ const OverallAnalysis = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-[40%]">
-                <div className="flex flex-col flex-shrink-0">
+
+              <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-full md:w-[40%]">
+                <div className="flex flex-col w-full">
                   <div className="flex flex-col">
-                    <lebal className="text-[#6d6b77] font-thin text-sm">
+                    <label className="text-[#6d6b77] font-thin text-sm">
                       Total Patient
-                    </lebal>
+                    </label>
                     <div className="flex justify-start mt-1 text-xl font-medium">
                       {weightData.treatment_packages_count}
                     </div>
                   </div>
 
-                  <div className="flex items-center mt-2 justify-center w-62 ">
+                  <div className="flex items-center mt-2 justify-center w-full">
                     <div className="text-center">
                       <div className="flex gap-2">
                         <div className="bg-[#d7ecbd] p-1 rounded-md flex justify-center">
@@ -265,17 +261,11 @@ const OverallAnalysis = () => {
                       </div>
                     </div>
 
-                    {/* Divider with v/s */}
                     <div className="flex flex-col items-center mx-5 gap-2 relative">
-                      {/* Left vertical line */}
                       <div className="h-4 w-[0.5px] bg-gray-300"></div>
-
-                      {/* v/s text */}
                       <div className="rounded-full bg-gray-200 text-sm px-1.5 py-1">
                         v/s
                       </div>
-
-                      {/* Right vertical line */}
                       <div className="h-4 w-[0.5px] bg-gray-300"></div>
                     </div>
 
@@ -294,19 +284,18 @@ const OverallAnalysis = () => {
                     </div>
                   </div>
 
-                  {/* Progress Bar */}
                   <div className="mt-4 w-full bg-gray-200 rounded overflow-hidden">
                     <div className="flex h-2">
                       <div
                         className="bg-[#d7ecbd] rounded-l"
                         style={{
-                          width: `${weightData.one_kg_loss_user_count}`,
+                          width: `${weightData.one_kg_loss_user_count}%`,
                         }}
                       ></div>
                       <div
                         className="bg-[#C96868] rounded-r"
                         style={{
-                          width: `${weightData.one_kg_gain_user_count}`,
+                          width: `${weightData.one_kg_gain_user_count}%`,
                         }}
                       ></div>
                     </div>
@@ -314,8 +303,10 @@ const OverallAnalysis = () => {
                 </div>
               </div>
             </div>
-            <div className="flex w-[100%] h-[18%]">
-              <div className="flex flex-col m-5 border rounded-md shadow-md p-4 w-[50%] ">
+
+            <div className="flex flex-col md:flex-row w-full h-[18%]">
+              {/* Package Status Card */}
+              <div className="flex flex-col m-5 border rounded-md shadow-md p-4 w-full md:w-[50%]">
                 <label className="flex justify-center text-lg font-medium">
                   Package Status
                 </label>
@@ -335,7 +326,7 @@ const OverallAnalysis = () => {
                         percentage: percentage,
                       };
                     })
-                    .sort((a, b) => b.percentage - a.percentage) 
+                    .sort((a, b) => b.percentage - a.percentage)
                     .map((patientDataSorted, index) => (
                       <div key={index} className="w-full mb-2">
                         <div className="flex justify-between items-center">
@@ -359,8 +350,8 @@ const OverallAnalysis = () => {
                 </div>
               </div>
 
-              {/* Pie Chart 2 */}
-              <div className=" m-5 border rounded-md shadow-md p-2 w-[50%] ">
+              {/* Pie Chart Card */}
+              <div className="m-5 border rounded-md shadow-md p-2 w-full md:w-[50%]">
                 <label className="flex justify-center p-4">
                   Overall Monthly Data
                 </label>
@@ -384,7 +375,6 @@ const OverallAnalysis = () => {
                         ))}
                     </Pie>
                     <Tooltip />
-
                     <Legend
                       layout="vertical"
                       align="center"

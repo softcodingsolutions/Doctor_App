@@ -99,7 +99,7 @@ export default function AppointmentSheet() {
   return (
     <div className="w-full p-2 bg-gray-50 h-[100vh]">
       <div className="grid grid-cols-3 gap-4 mb-6 md:grid-cols-2">
-        <div className="grid grid-col-1 lg:grid-cols-3 justify-center mt-5 w-[210vh]  gap-20">
+        <div className="grid grid-col-2 lg:grid-cols-3 justify-center mt-5 lg:w-[210vh] w-fit h-fit gap-20">
           <div className="">
             <button
               className="font-medium p-2  text-white bg-green-600 border border-gray-300  text-sm rounded-md hover:text-green-600 hover:bg-white"

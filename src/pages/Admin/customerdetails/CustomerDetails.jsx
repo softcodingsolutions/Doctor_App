@@ -14,20 +14,21 @@ import { MdEmail } from "react-icons/md";
 import { GiWeight } from "react-icons/gi";
 
 const CustomerDetails = () => {
-  const [selectedId, setSelectedId] = useState("12");
+  const [selectedId, setSelectedId] = useState("21");
   const [getCustomer, setGetCustomer] = useState([]);
   const [getAdmin, setGetAdmin] = useState([]);
   const id = localStorage.getItem("userId");
-  console.log(localStorage.getItem("userId"), "ID");
+  const role = localStorage.getItem("role");
   const location = useLocation();
-  const pathname = location.pathname?.split("/customer-details/")[1];
+  const pathname =
+    role === "doctor" ||  "super_admin"
+      ? location.pathname.split("/customer-details/")[1]
+      : location.pathname.split("/recp-customer-details/")[1];
   const [loading, setLoading] = useState(true);
-
   const handlegetUser = () => {
     axios
       .get(`/api/v2/users/search?id=${id}`)
       .then((res) => {
-        console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
         if (res.data?.user?.creator === "doctor") {
           localStorage.setItem("doctor_id", res.data?.user.created_by_id);
@@ -36,32 +37,24 @@ const CustomerDetails = () => {
           axios
             .get(`/api/v2/users/search?id=${res.data?.user?.created_by_id}`)
             .then((res) => {
-              console.log(
-                "User created by franchise's doctor: ",
-                res.data?.user
-              );
               setLoading(false);
               localStorage.setItem("doctor_id", res.data?.user?.created_by_id);
             })
             .catch((err) => {
-              console.log(err);
               setLoading(false);
             });
         }
       })
       .catch((err) => {
-        console.log(err);
         alert(err.response?.data?.message + "!");
       });
 
     axios
       .get(`/api/v2/users/search?id=${localStorage.getItem("main_id")}`)
       .then((res) => {
-        console.log("Admin: ", res.data?.user);
         setGetAdmin(res.data?.user);
       })
       .catch((err) => {
-        console.log(err);
         alert(err.response?.data?.message + "!");
       });
   };
@@ -79,7 +72,7 @@ const CustomerDetails = () => {
       return false;
     }
 
-    if (button.id === "4" ) {
+    if (button.id === "4") {
       return getAdmin.possibility_group === true || getAdmin.role === "doctor";
     }
 
@@ -235,8 +228,8 @@ const CustomerDetails = () => {
           </div>
         </div>
       </div>
-      <div className="flex w-full h-[80%]">
-        <div className=" flex flex-col items-start m-2 h-[97%] bg-white gap-1 ml-2 w-[20%] rounded-md">
+      <div className="flex flex-col md:flex-row w-full h-[80%]">
+        <div className="flex flex-col items-start m-2 h-[97%] bg-white gap-1 ml-2 w-full md:w-[20%] rounded-md">
           {reportButtonsMain.map((res) => {
             return (
               <Link
@@ -244,7 +237,7 @@ const CustomerDetails = () => {
                 onClick={() => setSelectedId(res.id)}
                 key={res.id}
                 className={clsx(
-                  "w-full flex items-center justify-start shadow-mdcursor-pointer hover:bg-[#1F2937] hover:text-white rounded-md p-3",
+                  "w-full flex items-center justify-start  cursor-pointer hover:bg-[#1F2937] hover:text-white rounded-md p-3",
                   pathname === res.to ? "bg-[#1F2937] text-white" : "bg-white"
                 )}
               >
@@ -254,7 +247,8 @@ const CustomerDetails = () => {
             );
           })}
         </div>
-        <div className="flex w-[80%] p-2 bg-white mt-2 mr-2 mb-2 rounded-md ">
+
+        <div className="flex w-full md:w-[80%] p-2 bg-white mt-0 md:mt-2 mr-2 mb-2 rounded-md">
           {selectedId && <Outlet context={[id, getCustomer, handlegetUser]} />}
         </div>
       </div>

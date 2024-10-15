@@ -171,11 +171,11 @@ function AdminListFollowUp() {
               </div>
 
               {getParticularCustomer?.length > 0 ? (
-                <div className="space-y-1 ">
+                <div className="space-y-1">
                   {getParticularCustomer.map((appointment) => (
                     <div
                       key={appointment.user.id}
-                      className="border p-4 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                      className="border p-4 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center"
                       onClick={() => handleUserSelect(appointment)}
                     >
                       <div>
@@ -187,17 +187,17 @@ function AdminListFollowUp() {
                           Phone: {appointment.user.phone_number}
                         </div>
                       </div>
-                      <div className="text-gray-600 text-sm">
+                      <div className="text-gray-600 text-sm mt-2 sm:mt-0">
                         {appointment.follow_up ? "Follow Up" : "New Case"}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col ">
+                <div className="flex flex-col">
                   {userDetails?.first_name && (
-                    <div className="flex gap-48">
-                      <div className="text-md font-bold mb-4">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-4">
+                      <div className="text-md font-bold">
                         <div>
                           Patient Name:{" "}
                           <span className="font-medium">
@@ -211,7 +211,7 @@ function AdminListFollowUp() {
                           </span>
                         </div>
                       </div>
-                      <div className="text-md font-bold mb-4">
+                      <div className="text-md font-bold">
                         <div>
                           Package Name:{" "}
                           <span className="font-medium">
@@ -226,9 +226,9 @@ function AdminListFollowUp() {
                           </span>
                         </div>
                       </div>
-                      <div className="ml-32">
+                      <div className="mt-4 sm:mt-0">
                         <button
-                          className="w-[8rem] p-1 text-white bg-green-600  rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+                          className="w-full sm:w-[9rem] p-2 text-white bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
                           onClick={() => handleInventory(userDetails.id)}
                         >
                           View Patient
@@ -237,267 +237,198 @@ function AdminListFollowUp() {
                     </div>
                   )}
                   {openconsulting && (
-                    <div className="">
-                      <div className="flex w-full flex-col items-center ">
-                        <div className="text-lg font-semibold tracking-wide">
-                          Consulting Time Slot
-                        </div>
-                        <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[50vh]">
-                          <table className="w-full min-w-[460px] z-0">
-                            <thead className="uppercase">
-                              <tr className="bg-[#1F2937] text-white rounded-md">
-                                <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                                  Doctor Name
-                                </th>
-                                <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                                  Date
-                                </th>
-                                <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                                  Time
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {paginateCustomers().length > 0 ? (
-                                paginateCustomers().map((data, index) => {
-                                  return (
-                                    <tr key={index} className="">
-                                      <td className="py-3 px-4 border-b border-b-gray-50">
-                                        <span className="text-black text-base font-medium ml-1">
-                                          {data?.doctor?.first_name}{" "}
-                                          {data?.doctor?.last_name}
-                                        </span>
-                                      </td>
-
-                                      <td className="py-3 px-4 border-b border-b-gray-50">
-                                        <span className="text-black text-base font-medium ml-1">
-                                          {formatDate(data.date)}
-                                        </span>
-                                      </td>
-                                      <td className="py-3 px-4 border-b border-b-gray-50">
-                                        <span className="text-black text-base font-medium ml-1">
-                                          {data.time}
-                                        </span>
-                                      </td>
-                                    </tr>
-                                  );
-                                })
-                              ) : (
-                                <tr>
-                                  <td
-                                    colSpan="4"
-                                    className="py-3 px-4 text-center justify-center"
-                                  >
-                                    No Data
+                    <div className="w-full flex flex-col items-center">7
+                      <div className="text-lg font-semibold tracking-wide mb-4">
+                        Consulting Time Slot
+                      </div>
+                      <div className="w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 overflow-auto h-[50vh]">
+                        <table className="w-full min-w-[460px]">
+                          <thead className="bg-[#1F2937] text-white uppercase">
+                            <tr>
+                              <th className="text-sm font-medium py-3 px-4 text-left">
+                                Doctor Name
+                              </th>
+                              <th className="text-sm font-medium py-3 px-4 text-left">
+                                Date
+                              </th>
+                              <th className="text-sm font-medium py-3 px-4 text-left">
+                                Time
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {paginateCustomers().length > 0 ? (
+                              paginateCustomers().map((data, index) => (
+                                <tr key={index}>
+                                  <td className="py-3 px-4 border-b border-b-gray-50">
+                                    <span className="text-black text-base font-medium">
+                                      {data?.doctor?.first_name}{" "}
+                                      {data?.doctor?.last_name}
+                                    </span>
+                                  </td>
+                                  <td className="py-3 px-4 border-b border-b-gray-50">
+                                    <span className="text-black text-base font-medium">
+                                      {formatDate(data.date)}
+                                    </span>
+                                  </td>
+                                  <td className="py-3 px-4 border-b border-b-gray-50">
+                                    <span className="text-black text-base font-medium">
+                                      {data.time}
+                                    </span>
                                   </td>
                                 </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                        {/* Pagination Controls */}
-                        {totalPages !== 0 && (
-                          <div className="flex flex-wrap justify-center items-center gap-2 py-2">
-                            <button
-                              onClick={handlePreviousPage}
-                              disabled={currentPage === 1}
-                              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                                className="w-4 h-4"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                                ></path>
-                              </svg>
-                              Previous
-                            </button>
-                            <div className="flex gap-2">
-                              {Array.from({ length: totalPages }, (_, i) => (
-                                <button
-                                  key={i + 1}
-                                  onClick={() => setCurrentPage(i + 1)}
-                                  className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${
-                                    currentPage === i + 1
-                                      ? "bg-gray-900 text-white"
-                                      : "bg-gray-200 text-black"
-                                  }`}
+                              ))
+                            ) : (
+                              <tr>
+                                <td
+                                  colSpan="3"
+                                  className="py-3 px-4 text-center"
                                 >
-                                  {i + 1}
-                                </button>
-                              ))}
-                            </div>
-                            <button
-                              onClick={handleNextPage}
-                              disabled={currentPage === totalPages}
-                              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                            >
-                              Next
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                                className="w-4 h-4"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                ></path>
-                              </svg>
-                            </button>
-                          </div>
-                        )}
+                                  No Data
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
                       </div>
+                      {/* Pagination Controls */}
+                      {totalPages !== 0 && (
+                        <div className="flex flex-wrap justify-center items-center gap-2 py-2">
+                          <button
+                            onClick={handlePreviousPage}
+                            disabled={currentPage === 1}
+                            className="px-6 py-3 text-xs font-bold text-gray-900 uppercase rounded-full hover:bg-gray-900/10"
+                          >
+                            Previous
+                          </button>
+                          <div className="flex gap-2">
+                            {Array.from({ length: totalPages }, (_, i) => (
+                              <button
+                                key={i + 1}
+                                onClick={() => setCurrentPage(i + 1)}
+                                className={`h-10 w-10 rounded-full text-center font-medium text-xs transition-all ${
+                                  currentPage === i + 1
+                                    ? "bg-gray-900 text-white"
+                                    : "bg-gray-200 text-black"
+                                }`}
+                              >
+                                {i + 1}
+                              </button>
+                            ))}
+                          </div>
+                          <button
+                            onClick={handleNextPage}
+                            disabled={currentPage === totalPages}
+                            className="px-6 py-3 text-xs font-bold text-gray-900 uppercase rounded-full hover:bg-gray-900/10"
+                          >
+                            Next
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                   {open && (
-                    <div className="">
-                      <div className="flex w-full flex-col items-center p-4 h-full">
-                        <div className="text-lg font-semibold tracking-wide">
-                          Machine Time Slot
-                        </div>
-                        <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[50vh]">
-                          <table className="w-full min-w-[460px] z-0 ">
-                            <thead className="uppercase">
-                              <tr className="bg-[#1F2937] text-white rounded-md">
-                                <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                                  Doctor Name
-                                </th>
-                                <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                                  Machine Name
-                                </th>
-                                <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                                  Date
-                                </th>
-                                <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                                  Time
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {paginateCustomers().length > 0 ? (
-                                paginateCustomers().map((data, index) => {
-                                  return (
-                                    <tr key={index} className="">
-                                      <td className="py-3 px-4 border-b border-b-gray-50">
-                                        <span className="text-black text-base font-medium ml-1">
-                                          {data?.doctor?.first_name}{" "}
-                                          {data?.doctor?.last_name}
-                                        </span>
-                                      </td>
-                                      <td className="py-3 px-4 border-b border-b-gray-50">
-                                        <span className="text-black text-base font-medium ml-1">
-                                          {data?.machine_detail?.name}
-                                        </span>
-                                      </td>
-                                      <td className="py-3 px-4 border-b border-b-gray-50">
-                                        <span className="text-black text-base font-medium ml-1">
-                                          {formatDate(data.date)}
-                                        </span>
-                                      </td>
-                                      <td className="py-3 px-4 border-b border-b-gray-50">
-                                        <span className="text-black text-base font-medium ml-1">
-                                          {convertToAmPm(data?.time)}
-                                        </span>
-                                      </td>
-                                    </tr>
-                                  );
-                                })
-                              ) : (
-                                <tr>
-                                  <td
-                                    colSpan="5"
-                                    className="py-3 px-4 text-center"
-                                  >
-                                    No Appointment is created for Machine
-                                    Consulting Time
+                    <div className="w-full flex flex-col items-center p-4 h-full">
+                      <div className="text-lg font-semibold tracking-wide mb-4">
+                        Machine Time Slot
+                      </div>
+                      <div className="bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 overflow-auto h-[50vh]">
+                        <table className="w-full min-w-[460px]">
+                          <thead className="bg-[#1F2937] text-white uppercase">
+                            <tr>
+                              <th className="text-sm font-medium py-3 px-4 text-left">
+                                Doctor Name
+                              </th>
+                              <th className="text-sm font-medium py-3 px-4 text-left">
+                                Machine Name
+                              </th>
+                              <th className="text-sm font-medium py-3 px-4 text-left">
+                                Date
+                              </th>
+                              <th className="text-sm font-medium py-3 px-4 text-left">
+                                Time
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {paginateCustomers().length > 0 ? (
+                              paginateCustomers().map((data, index) => (
+                                <tr key={index}>
+                                  <td className="py-3 px-4 border-b border-b-gray-50">
+                                    <span className="text-black text-base font-medium">
+                                      {data?.doctor?.first_name}{" "}
+                                      {data?.doctor?.last_name}
+                                    </span>
+                                  </td>
+                                  <td className="py-3 px-4 border-b border-b-gray-50">
+                                    <span className="text-black text-base font-medium">
+                                      {data?.machine_detail?.name}
+                                    </span>
+                                  </td>
+                                  <td className="py-3 px-4 border-b border-b-gray-50">
+                                    <span className="text-black text-base font-medium">
+                                      {formatDate(data.date)}
+                                    </span>
+                                  </td>
+                                  <td className="py-3 px-4 border-b border-b-gray-50">
+                                    <span className="text-black text-base font-medium">
+                                      {convertToAmPm(data?.time)}
+                                    </span>
                                   </td>
                                 </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                        {/* Pagination Controls */}
-                        {totalPages !== 0 && (
-                          <div className="flex flex-wrap justify-center items-center gap-2 py-2">
-                            <button
-                              onClick={handlePreviousPage}
-                              disabled={currentPage === 1}
-                              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                                className="w-4 h-4"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                                ></path>
-                              </svg>
-                              Previous
-                            </button>
-                            <div className="flex gap-2">
-                              {Array.from({ length: totalPages }, (_, i) => (
-                                <button
-                                  key={i + 1}
-                                  onClick={() => setCurrentPage(i + 1)}
-                                  className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${
-                                    currentPage === i + 1
-                                      ? "bg-gray-900 text-white"
-                                      : "bg-gray-200 text-black"
-                                  }`}
+                              ))
+                            ) : (
+                              <tr>
+                                <td
+                                  colSpan="4"
+                                  className="py-3 px-4 text-center"
                                 >
-                                  {i + 1}
-                                </button>
-                              ))}
-                            </div>
-                            <button
-                              onClick={handleNextPage}
-                              disabled={currentPage === totalPages}
-                              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                            >
-                              Next
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                                className="w-4 h-4"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                ></path>
-                              </svg>
-                            </button>
-                          </div>
-                        )}
+                                  No Appointments Created
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
                       </div>
+                      {/* Pagination Controls */}
+                      {totalPages !== 0 && (
+                        <div className="flex flex-wrap justify-center items-center gap-2 py-2">
+                          <button
+                            onClick={handlePreviousPage}
+                            disabled={currentPage === 1}
+                            className="px-6 py-3 text-xs font-bold text-gray-900 uppercase rounded-full hover:bg-gray-900/10"
+                          >
+                            Previous
+                          </button>
+                          <div className="flex gap-2">
+                            {Array.from({ length: totalPages }, (_, i) => (
+                              <button
+                                key={i + 1}
+                                onClick={() => setCurrentPage(i + 1)}
+                                className={`h-10 w-10 rounded-full text-center font-medium text-xs transition-all ${
+                                  currentPage === i + 1
+                                    ? "bg-gray-900 text-white"
+                                    : "bg-gray-200 text-black"
+                                }`}
+                              >
+                                {i + 1}
+                              </button>
+                            ))}
+                          </div>
+                          <button
+                            onClick={handleNextPage}
+                            disabled={currentPage === totalPages}
+                            className="px-6 py-3 text-xs font-bold text-gray-900 uppercase rounded-full hover:bg-gray-900/10"
+                          >
+                            Next
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
               )}
+
               {message && (
                 <div className="flex justify-center">
                   <label className="text-xl bg-white rounded-md p-2 font-semibold text-center">

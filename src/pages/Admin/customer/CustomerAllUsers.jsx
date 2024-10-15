@@ -197,34 +197,34 @@ function CustomerAllUsers() {
               New Patient
             </button>
           </div>
-          <div className="flex items-center justify-end gap-2">
-            <div className="flex p-2 gap-2 w-[84%] ">
-              <div className="flex items-start ">
+          <div className="flex items-center justify-end gap-2 flex-wrap md:flex-nowrap">
+            <div className="flex p-2 gap-2 flex-wrap  w-full justify-start md:w-auto">
+              <div className="flex items-start w-full  md:w-auto">
                 <select
                   name="overweight"
                   onChange={handleType}
                   placeholder="Type"
-                  className="py-3 text-sm px-2 rounded-md border border-black"
+                  className="py-3 text-sm px-2 w-full md:w-auto rounded-md border border-black"
                 >
                   <option value="">Select Type</option>
                   <option value="new_case">New Case / Unread </option>
                   <option value="old_case">Follow Up</option>
                 </select>
               </div>
-              <div className="flex items-start ">
+              <div className="flex items-start w-full md:w-auto">
                 <input
                   type="date"
                   placeholder="select date"
                   onChange={handleDate}
-                  className="py-2 text-sm px-3 rounded-md border border-black"
+                  className="py-2 text-sm px-3 w-full md:w-auto rounded-md border border-black"
                 />
               </div>
-              <div className="flex items-start ">
+              <div className="flex items-start w-full md:w-auto">
                 <select
                   defaultValue="select"
                   placeholder="Type"
                   onChange={handlePackageDetail}
-                  className="py-3 text-sm px-2 rounded-md border border-black"
+                  className="py-3 text-sm px-2 w-full md:w-auto rounded-md border border-black"
                 >
                   <option value="select">Package Details</option>
                   <option value="activate">Activate</option>
@@ -235,9 +235,12 @@ function CustomerAllUsers() {
                 </select>
               </div>
             </div>
-            <div className="w-4 h-4 bg-red-300 border border-gray-800"> </div>
-            <div>- Franchise Patient</div>
+            <div className="w-full md:w-auto flex items-center justify-end  gap-2">
+              <div className="w-4 h-4 bg-red-300 border border-gray-800"></div>
+              <div>- Franchise Patient</div>
+            </div>
           </div>
+
           <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out h-[75vh]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
