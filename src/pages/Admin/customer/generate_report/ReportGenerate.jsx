@@ -464,7 +464,7 @@ const ReportGenerate = () => {
     <div className="w-full p-2">
       <div
         className={`rounded-lg bg-card ${
-          role === "patient" ? "h-[85vh]" : "h-[89vh]"
+          role === "patient" ? "h-[70vh]" : "h-[70vh]"
         } bg-white`}
       >
         <div className="flex px-4 items-center justify-center py-3 h-full flex-col space-y-4">

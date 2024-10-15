@@ -109,9 +109,10 @@ const Appointments = () => {
     return new Date(date).toLocaleDateString(undefined, options);
   };
 
-  const handleDiagnosis = (id) => {
+  const handleDiagnosis = (id,caseNumber) => {
     localStorage.setItem("userId", id);
-    navigate(`../patients/user-diagnosis/questions`);
+    localStorage.setItem("caseNumber", caseNumber);
+    navigate(`../patients/user-diagnosis/treatment/medicine`);
   };
 
   useEffect(() => {
@@ -286,7 +287,7 @@ const Appointments = () => {
                     </div>
 
                     <button
-                      onClick={() => handleDiagnosis(res.user?.id)}
+                      onClick={() => handleDiagnosis(res.user?.id,res.user?.case_number)}
                       className="font-medium text-sm text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
                     >
                       Diagnosis

@@ -39,7 +39,7 @@ function FranchiseAllCustomers() {
 
   const handleDiagnosis = (val) => {
     localStorage.setItem("userId", val);
-    navigate(`../user-diagnosis/questions`);
+    navigate(`../user-diagnosis/treatment/medicine`);
   };
 
   const handleAddUsers = () => {

@@ -26,6 +26,8 @@ function UserDiagnosis() {
       .then((res) => {
         console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
+        localStorage.setItem("caseNumber",res.data?.user?.case_number);
+        
         setLoading(false);
       })
       .catch((err) => {
@@ -40,9 +42,9 @@ function UserDiagnosis() {
 
   const reportButtonsMain = packagesButton.filter((button) => {
     if (
-      button.id === "12" ||
-      button.id === "15" ||
-      button.id === "16" ||
+      button.id === "21" ||
+      button.id === "23" ||
+      button.id === "26" ||
       button.id === "13" 
     ) {
       return (
