@@ -130,17 +130,18 @@ function TreatmentExercise() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
-          <div className="flex gap-5 text-center items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-5 text-center items-center justify-between p-4">
             {showCheckboxes && (
               <div className="font-[550] text-lg">
-                No. of exercise checked: {selectedCheckboxes.length}
+                No. of exercises checked: {selectedCheckboxes.length}
               </div>
             )}
 
             {showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Exercise -{" "}
-                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+                <div className="ml-2 bg-gray-400 border border-gray-200 h-5 w-5"></div>{" "}
+                {/* Explicit size for the checked exercise indicator */}
               </div>
             )}
           </div>

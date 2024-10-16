@@ -11,27 +11,27 @@ function Section1({ scrollYProgress }) {
 
   const renderContent = (image, text1, text2, text3, text4, key) => (
     <div key={key} className="relative h-full">
-      <img src={image} alt={key} className="object-cover h-full" />
+      <img src={image} alt={key} className="object-cover w-full h-full" />
       <div
-        className={`absolute text-white top-72 ${
+        className={`absolute text-white top-1/2 transform -translate-y-1/2 space-y-4 p-4 sm:p-8 ${
           text1 === "Our " ||
           text1 === "Successful " ||
           text1 === "Personalized "
-            ? "left-28"
-            : "right-10"
-        } bg-opacity-50 space-y-8`}
+            ? "left-4 sm:left-16"
+            : "right-4 sm:right-16"
+        } bg-opacity-50`}
       >
         <div
           key={`${key}-1`}
-          className="animate-fade-down animate-normal animate-once animate-ease-out animate-delay-300 text-7xl font-semibold font-architects"
+          className="text-3xl sm:text-5xl lg:text-7xl font-semibold font-architects animate-fade-down animate-normal animate-once animate-ease-out animate-delay-300"
         >
           {text1} <span className="text-green-500">{text2}</span>
         </div>
         <div key={`${key}-2`} className="font-sans space-y-2">
-          <div className="text-4xl font-semibold animate-fade-down animate-once animate-ease-out animate-normal animate-delay-500">
+          <div className="text-xl sm:text-3xl lg:text-4xl font-semibold animate-fade-down animate-once animate-ease-out animate-normal animate-delay-500">
             {text3}
           </div>
-          <div className="text-2xl animate-fade-down animate-once animate-ease-out animate-normal animate-delay-700 w-3/4">
+          <div className="text-sm sm:text-lg lg:text-2xl animate-fade-down animate-once animate-ease-out animate-normal animate-delay-700 w-full sm:w-3/4">
             {text4}
           </div>
         </div>
@@ -128,21 +128,21 @@ function Section1({ scrollYProgress }) {
           "Experienced ",
           "Experts",
           "To Help You",
-          "We have been helping patients loose weight using authentic methods with no side effects!"
+          "We have been helping patients lose weight using authentic methods with no side effects!"
         )}
         {renderContent(
           image4,
           "Successful ",
           "Results",
           "For 21 Years",
-          "Till date we have helped over 10,000 patients to successfully lose weight, with 57 Kgs being maximum weight lose in a single patient."
+          "Till date we have helped over 10,000 patients successfully lose weight, with 57 Kgs being the maximum weight loss in a single patient."
         )}
         {renderContent(
           image5,
           "Our ",
           "Presence",
           "Across Gujarat",
-          "We have 6 clinics across Gujarat providing online consultation across the world to help overweight patients."
+          "We have 6 clinics across Gujarat providing online consultations worldwide to help overweight patients."
         )}
       </Carousel>
     </motion.div>

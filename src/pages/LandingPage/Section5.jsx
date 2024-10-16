@@ -1,3 +1,4 @@
+import { useState,useEffect } from "react";
 import { Carousel, IconButton } from "@material-tailwind/react";
 import { motion, useTransform } from "framer-motion";
 import review1 from "../../assets/videos/review1.mp4";
@@ -7,6 +8,7 @@ import review5 from "../../assets/videos/review5.mp4";
 import review6 from "../../assets/videos/review6.mp4";
 
 function Section5({ scrollYProgress }) {
+  const [cardsPerGroup, setCardsPerGroup] = useState(2);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
 
   const renderContent = (src, id) => (
@@ -24,8 +26,22 @@ function Section5({ scrollYProgress }) {
     { id: 5, src: review5 },
   ];
 
+  useEffect(() => {
+    const updateCardsPerGroup = () => {
+      if (window.innerWidth < 1024) {
+        setCardsPerGroup(1);
+      } else {
+        setCardsPerGroup(2); 
+      }
+    };
+
+    updateCardsPerGroup();
+    window.addEventListener("resize", updateCardsPerGroup);
+
+    return () => window.removeEventListener("resize", updateCardsPerGroup);
+  }, []);
+
   const groupedCards = [];
-  const cardsPerGroup = 2;
   for (let i = 0; i < cardContents.length; i += cardsPerGroup) {
     groupedCards.push(cardContents.slice(i, i + cardsPerGroup));
   }
@@ -36,7 +52,7 @@ function Section5({ scrollYProgress }) {
       className="sticky top-0 h-screen bg-teal-50 flex flex-col items-center py-7"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-sans font-medium mt-8">
+        <div className="lg:text-4xl text-xl font-sans font-medium lg:mt-8 mt-0">
           Special Treatments for Obesity
         </div>
         <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />

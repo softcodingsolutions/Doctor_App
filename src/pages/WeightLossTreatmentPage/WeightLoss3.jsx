@@ -8,13 +8,13 @@ function WeightLoss3({ scrollYProgress }) {
       style={{ scale }}
       className="sticky top-0 h-[100vh] w-full bg-orange-100 flex flex-col items-center"
     >
-      <div className="w-full pt-14 flex flex-col justify-center px-16 gap-10">
-        <div className="leading-relaxed text-lg">
+      <div className="w-full pt-14 flex flex-col justify-center px-6 md:px-16 gap-10">
+        <div className="leading-relaxed text-base md:text-lg">
           It is also important to consider the role of the adrenal glands in
           ensuring optimal bodily function, particularly in relation to
           abdominal fat.
         </div>
-        <div className="leading-relaxed text-lg">
+        <div className="leading-relaxed text-base md:text-lg">
           At <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
           Ayu Care, we are dedicated to addressing all these factors and more
           when developing our weight loss treatments. This holistic approach,
@@ -23,20 +23,19 @@ function WeightLoss3({ scrollYProgress }) {
           multiple aspects to achieve effective results.
         </div>
       </div>
-      <div className="w-full flex justify-center px-7">
-        <div className="flex flex-col w-1/2 py-5 pl-11 items-center">
-          <div className="font-semibold pt-7 leading-relaxed text-xl">
+
+      {/* List Section */}
+      <div className="w-full flex flex-col md:flex-row justify-center px-4 md:px-7 gap-8">
+        {/* Left Column */}
+        <div className="flex flex-col w-full md:w-1/2 py-5 items-start">
+          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl">
             When discussing body fat, it's important to recognize that viewing
             it solely as a negative or harmful element is incorrect. Body fat is
             essentially stored energy and serves several important functions,
             including:
           </div>
           <div className="flex justify-start w-full pt-4">
-            <ul className="space-y-2.5 leading-loose text-lg">
-              <li>
-                <span className="text-xl ">&#11037;</span> Absorbing essential
-                nutrients
-              </li>
+            <ul className="space-y-2.5 leading-loose text-base md:text-lg">
               <li>
                 <span className="text-xl">&#11037;</span> Absorbing essential
                 nutrients
@@ -56,13 +55,15 @@ function WeightLoss3({ scrollYProgress }) {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col w-1/2 py-5 pl-11 items-center">
-          <div className="font-semibold pt-7 leading-relaxed text-xl">
+
+        {/* Right Column */}
+        <div className="flex flex-col w-full md:w-1/2 py-5 items-start">
+          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl">
             However, some individuals end up with more body fat than others.
             Several factors can contribute to this:
           </div>
           <div className="flex justify-start w-full pt-4">
-            <ul className="space-y-2.5 leading-loose text-lg">
+            <ul className="space-y-2.5 leading-loose text-base md:text-lg">
               <li>
                 <span className="text-xl">&#11037;</span> Excessive stress
               </li>

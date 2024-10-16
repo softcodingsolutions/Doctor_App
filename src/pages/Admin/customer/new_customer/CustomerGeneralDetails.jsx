@@ -105,7 +105,7 @@ function CustomerGeneralDetails({
 
           <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[92%]">
             <form onSubmit={handleSubmit(submittedData)} method="post">
-              <div className="flex gap-10 text-lg">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 text-lg">
                 <div className="flex flex-col">
                   <div className="flex gap-5 m-2">
                     <UserDetailsInput

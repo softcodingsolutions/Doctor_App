@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useTransform, motion } from "framer-motion";
 import {
   Card,
@@ -13,24 +14,45 @@ import img3 from "../../assets/images/result03.jpg";
 import img4 from "../../assets/images/result04.jpg";
 
 function WeightLoss6({ scrollYProgress }) {
+  const [cardsPerGroup, setCardsPerGroup] = useState(2);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
 
   const renderContent = (id, details, src) => (
-    <Card key={id} className=" w-72 h-[26rem] mt-5">
+    <Card key={id} className="w-full sm:w-72 h-auto sm:h-[26rem] mt-5">
       <CardHeader color="blue-gray">
-        <img src={src} alt="card-image" className="relative" />
+        <img
+          src={src}
+          alt="card-image"
+          className="w-full h-48 object-cover rounded-t-md" // Ensures the image fits well and maintains aspect ratio
+        />
       </CardHeader>
-      <CardBody>
+      <CardBody className="p-4">
+        {" "}
+        {/* Add padding for spacing */}
         <Typography
           variant="h7"
           color="blue-gray"
-          className="leading-relaxed font-sans"
+          className="leading-relaxed font-sans text-sm sm:text-base" // Adjust font size for better readability
         >
           {details}
         </Typography>
       </CardBody>
     </Card>
   );
+  useEffect(() => {
+    const updateCardsPerGroup = () => {
+      if (window.innerWidth < 1024) {
+        setCardsPerGroup(1);
+      } else {
+        setCardsPerGroup(2);
+      }
+    };
+
+    updateCardsPerGroup();
+    window.addEventListener("resize", updateCardsPerGroup);
+
+    return () => window.removeEventListener("resize", updateCardsPerGroup);
+  }, []);
 
   const cardContents = [
     {
@@ -60,7 +82,6 @@ function WeightLoss6({ scrollYProgress }) {
   ];
 
   const groupedCards = [];
-  const cardsPerGroup = 2;
   for (let i = 0; i < cardContents.length; i += cardsPerGroup) {
     groupedCards.push(cardContents.slice(i, i + cardsPerGroup));
   }
@@ -70,20 +91,22 @@ function WeightLoss6({ scrollYProgress }) {
       style={{ scale }}
       className="sticky top-0 h-screen bg-deep-orange-50 flex flex-col items-center py-2"
     >
-      <div className="flex flex-col items-center">
-        <div className="text-4xl font-sans font-medium mt-8">
+      <div className="flex flex-col items-center px-4 md:px-0">
+        {/* Title and description */}
+        <div className="text-2xl md:text-4xl font-sans font-medium mt-8 text-center">
           Our results speak for themselves:
         </div>
-        <div className="text-lg font-sans mt-1.5">
+        <div className="text-base md:text-lg font-sans mt-1.5 text-center">
           We have successfully treated over 10,000 obese patients in the past 20
           years
         </div>
-        <div className="border-[2.5px] rounded-md border-deep-orange-200 w-20 mt-3" />
+        <div className="border-[2.5px] rounded-md border-deep-orange-200 w-16 md:w-20 mt-3" />
       </div>
 
-      <div className="flex items-center justify-center pt-14">
+      {/* Carousel */}
+      <div className="flex items-center justify-center pt-8 md:pt-14">
         <Carousel
-          className="flex w-3/4"
+          className="flex w-full md:w-3/4"
           autoplay={true}
           loop={true}
           prevArrow={({ handlePrev }) => (
@@ -92,7 +115,7 @@ function WeightLoss6({ scrollYProgress }) {
               color="black"
               size="lg"
               onClick={handlePrev}
-              className="!absolute top-2/4 left-4 -translate-y-2/4"
+              className="!absolute top-2/4 left-2 md:left-4 -translate-y-2/4"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +139,7 @@ function WeightLoss6({ scrollYProgress }) {
               color="black"
               size="lg"
               onClick={handleNext}
-              className="!absolute top-2/4 !right-4 -translate-y-2/4"
+              className="!absolute top-2/4 !right-2 md:!right-4 -translate-y-2/4"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +174,7 @@ function WeightLoss6({ scrollYProgress }) {
           {groupedCards.map((group, index) => (
             <div
               key={index}
-              className="flex justify-center gap-4 w-full"
+              className="flex justify-center gap-2 md:gap-4 w-full"
               style={{ flex: "0 0 100%" }}
             >
               {group.map((card) =>

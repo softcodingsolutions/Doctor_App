@@ -133,13 +133,13 @@ function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen font-sans">
-      <div className="border px-10 py-5 rounded-sm shadow-sm">
-        <Card className="w-96 h-fit py-2">
+    <div className="flex flex-col items-center justify-center h-screen font-sans px-4 sm:px-10">
+      <div className="border px-4 sm:px-10 py-5 rounded-sm shadow-sm w-full max-w-md">
+        <Card className="w-full h-fit py-2">
           <form onSubmit={handleSubmit(submittedData)} method="post">
             <CardBody className="flex flex-col gap-4">
               <div className="flex justify-center border rounded-md p-4 shadow-inner bg-green-100">
-                <img className="w-50 h-24" src={icons_slime} alt="" />
+                <img className="w-32 h-16" src={icons_slime} alt="" />
               </div>
               {wrongCreds && (
                 <span className="text-s text-red-500 -mt-4 text-center">
@@ -170,8 +170,8 @@ function LoginPage() {
               />
               <div
                 className={`absolute inset-y-0 right-8 ${
-                  wrongCreds ? "top-[5.5rem]" : "top-16"
-                }  flex items-center cursor-pointer`}
+                  wrongCreds ? "top-[5.5rem]" : "top-8"
+                } flex items-center cursor-pointer`}
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (

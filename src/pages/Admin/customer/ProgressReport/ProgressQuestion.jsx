@@ -52,7 +52,7 @@ export default function ProgressQuestion() {
   return (
     <div>
       {showQues && (
-        <div className="animate-fade-left animate-delay-75  w-[140vh]  rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
+        <div className="animate-fade-left animate-delay-75  lg:w-[140vh]  md:w-[100vh]  rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
           <table className="w-full">
             <thead className="uppercase ">
               <tr className="bg-[#1F2937] text-white rounded-md p-2">

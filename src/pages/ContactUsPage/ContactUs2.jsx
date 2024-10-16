@@ -63,35 +63,35 @@ function ContactUs2({ scrollYProgress }) {
       style={{ scale }}
       className="sticky top-0 h-[105vh] w-full bg-orange-50"
     >
-      <div className="px-20 py-10">
-        <div className="w-full flex flex-wrap justify-center px-14 gap-10 rounded-md">
+      <div className="px-4 md:px-20 py-10">
+        <div className="w-full grid grid-cols-2 lg:grid-cols-3 justify-center lg:gap-10 gap-2 rounded-md">
           {data.map((res) => (
             <div
-              className="flex flex-col items-center text-center border border-gray-300 bg-white shadow-lg rounded-lg px-5 py-3 hover:scale-105 cursor-default transition-transform gap-1.5 w-[22rem] h-[12rem]"
+              className="flex flex-col items-center text-center border border-gray-300 bg-white shadow-lg rounded-lg p-5 hover:scale-105 cursor-default transition-transform gap-1.5 w-full sm:w-[22rem] h-[12rem]"
               key={res.id}
             >
               <div>
                 <FaLocationDot size={25} />
               </div>
-              <div className="font-semibold pt-2 text-xl tracking-wide">
+              <div className="font-semibold lg:pt-2 pt-0 text-sm lg:text-xl tracking-wide">
                 {res.city}
               </div>
-              <div>{res.address}</div>
+              <div className="text-sm md:text-base">{res.address}</div>
             </div>
           ))}
           {data2.map((res) => (
             <div
-              className="flex flex-col items-center text-center border border-gray-300 bg-white shadow-lg rounded-lg p-5 hover:scale-105 cursor-pointer transition-transform gap-1.5 w-[22rem] h-[9rem]"
+              className="flex flex-col items-center text-center border border-gray-300 bg-white shadow-lg rounded-lg p-5 hover:scale-105 cursor-pointer transition-transform gap-1.5 w-full sm:w-[22rem] h-[9rem]"
               key={res.id}
               onClick={() => (window.location.href = res.action)}
             >
               <div>
                 <FaLocationDot size={25} />
               </div>
-              <div className="font-semibold pt-2 text-xl tracking-wide">
+              <div className="font-semibold pt-2 text-lg md:text-xl tracking-wide">
                 {res.type}
               </div>
-              <div>{res.contact}</div>
+              <div className="text-sm md:text-base">{res.contact}</div>
             </div>
           ))}
         </div>

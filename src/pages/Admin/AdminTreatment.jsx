@@ -77,17 +77,17 @@ function AdminTreatment() {
       </div>
       <div className=" h-screen flex-grow overflow-auto flex flex-col flex-wrap content-start">
         <div className="w-fit ">
-          <div className="flex gap-2 p-2 justify-center w-[181vh]">
+          <div className="flex flex-col md:flex-row gap-2 p-4 justify-center lg:w-[180vh] ">
             {weightReason ? (
-              <div className="flex justify-center text-lg font-semibold ">
-                <div className="">Selected Treatment: {weightReason} </div>
+              <div className="flex justify-center lg:ml-2 text-xl font-semibold">
+                <div>Selected Treatment: {weightReason}</div>
               </div>
             ) : (
               <Select
                 required
                 placeholder="Select a reason"
                 disabled={isDropdownDisabled}
-                className=" w-full "
+                className="lg:w-[100vh]"
               >
                 {getWeightReason.map((res) => {
                   return (
@@ -106,7 +106,7 @@ function AdminTreatment() {
               </Select>
             )}
             {seeRequired && (
-              <div className="text-red-500 text-sm">**Required</div>
+              <div className="text-red-500 text-md">**Required</div>
             )}
           </div>
 

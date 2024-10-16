@@ -14,8 +14,8 @@ function AboutSection2({ scrollYProgress }) {
       style={{ scale }}
       className="sticky top-0 h-[100vh] w-full bg-gray-200 flex flex-col items-center"
     >
-      <div className="flex w-full p-14 items-center gap-20 justify-evenly">
-        <div className="w-1/2 tracking-wide leading-relaxed">
+      <div className="flex flex-col md:flex-row w-full p-6 md:p-14 items-center gap-10 md:gap-20 justify-evenly">
+        <div className="w-full md:w-1/2 tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
           At <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
           Ayu Care, we specialize in providing 100% Ayurvedic medications that
           are also FDA-approved, ensuring that concerns about side effects are
@@ -32,6 +32,7 @@ function AboutSection2({ scrollYProgress }) {
           Care result in a substantially lower rate of weight recidivism among
           our patients.
         </div>
+
         <Carousel
           prevArrow={({ handlePrev }) => (
             <IconButton
@@ -39,7 +40,7 @@ function AboutSection2({ scrollYProgress }) {
               color="black"
               size="lg"
               onClick={handlePrev}
-              className="!absolute top-2/4 left-4 -translate-y-2/4"
+              className="!absolute top-2/4 left-2 md:left-4 -translate-y-2/4"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +64,7 @@ function AboutSection2({ scrollYProgress }) {
               color="black"
               size="lg"
               onClick={handleNext}
-              className="!absolute top-2/4 !right-4 -translate-y-2/4"
+              className="!absolute top-2/4 right-2 md:!right-4 -translate-y-2/4"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +97,7 @@ function AboutSection2({ scrollYProgress }) {
           )}
           autoplay={true}
           loop={true}
-          className="rounded-xl w-1/2"
+          className="rounded-xl w-full md:w-1/2"
         >
           <img
             src={img1}
@@ -125,15 +126,17 @@ function AboutSection2({ scrollYProgress }) {
           />
         </Carousel>
       </div>
-      <div className="flex flex-col gap-5 px-14 text-pretty items-center justify-center -mt-3">
-        <div className="tracking-wide leading-relaxed">
+
+      <div className="flex flex-col gap-5 p-6 md:px-14 text-pretty items-center justify-center mt-3">
+        <div className="tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
           Our primary focus is to normalize the weight loss process as much as
           possible, ensuring that patients experience it as a natural and
           seamless part of their daily lives. The goal is for the weight loss
           journey to feel like a regular, everyday experience, with the only
           noticeable difference being the successful reduction of excess weight.
         </div>
-        <div className="tracking-wide leading-relaxed">
+
+        <div className="tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
           Weight gain can stem from a wide range of factors, and it is a common
           misconception to attribute it solely to excessive food intake. Our
           approach recognizes that the underlying causes of weight gain are

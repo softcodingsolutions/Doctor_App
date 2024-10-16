@@ -114,7 +114,7 @@ function UserChooseDoctor() {
                 >
                   {val.first_name[0]?.toUpperCase() +
                     val.first_name?.slice(1) +
-                    +" " +
+                    " " +
                     val.last_name[0]?.toUpperCase() +
                     val.last_name?.slice(1)}
                 </Typography>

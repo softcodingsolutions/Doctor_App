@@ -184,22 +184,22 @@ function TreatmentQuestionPart1() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
-          <div className="flex gap-5 text-center items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between w-full p-4">
             {showCheckboxes && (
-              <div className="font-[550] text-lg">
+              <div className="font-[550] text-lg md:text-base">
                 No. of questions checked: {selectedCheckboxes.length}
               </div>
             )}
 
             {showCheckboxes && (
-              <div className="flex items-center gap-2 font-bold text-lg">
+              <div className="flex flex-col md:flex-row items-center gap-2 font-bold text-lg md:text-base">
                 <span>No. of questions to be answered:</span>
-                {defaultDropdownValue}
                 <Select
                   required
                   placeholder="Select"
                   value={defaultDropdownValue}
                   onChange={(e) => handleSendQuestionToBeAnswered(e)}
+                  className="w-full md:w-auto" 
                 >
                   {[...Array(selectedCheckboxes.length).keys()].map((index) => (
                     <MenuItem key={index} value={index + 1}>
@@ -209,13 +209,15 @@ function TreatmentQuestionPart1() {
                 </Select>
               </div>
             )}
+
             {showCheckboxes && (
-              <div className="font-[550] text-lg flex items-center">
+              <div className="font-[550] text-lg flex items-center md:text-base">
                 Checked Questions -{" "}
                 <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
               </div>
             )}
           </div>
+
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">

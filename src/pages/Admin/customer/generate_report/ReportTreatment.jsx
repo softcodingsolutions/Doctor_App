@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import InsideLoader from "../../../InsideLoader";
 
 function ReportTreatment() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const getCustomers = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
   const [getWeightReason, setGetWeightReason] = useState([]);
@@ -72,7 +72,7 @@ function ReportTreatment() {
               icon: "success",
             });
             getCustomers[2]();
-            navigate('/admin/patients/user-diagnosis/lab-tests')
+            navigate("/admin/patients/user-diagnosis/lab-tests");
           })
           .catch((err) => {
             console.log(err);
@@ -177,10 +177,11 @@ function ReportTreatment() {
           <div className="w-full sm:flex p-1 items-end">
             <div className="sm:flex-grow flex flex-col justify-between overflow-x-hidden">
               <div className="flex flex-wrap items-center gap-4 transition-transform pb-2">
-                <div className="flex  justify-center  w-[180vh]">
+                <div className="flex justify-center w-full md:w-[180vh]  px-4">
                   <Select
                     sx={{
-                      width: "400px",
+                      width: "100%", 
+                      maxWidth: "400px", 
                       border: "1px solid black",
                     }}
                     value={sendWeightReason ? sendWeightReason[0] : ""}
@@ -204,11 +205,12 @@ function ReportTreatment() {
                     })}
                   </Select>
                   {!sendWeightReason && (
-                    <span className="text-red-500 font-medium text-sm  mt-5">
+                    <span className="text-red-500 font-medium text-sm mt-2 md:mt-5">
                       *Required
                     </span>
                   )}
                 </div>
+
                 {sendWeightReason !== null && (
                   <div className={clsx(`flex flex-wrap space-x-3`)}>
                     {reportTreatmentButtons.map((res) => {

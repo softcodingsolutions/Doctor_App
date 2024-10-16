@@ -123,15 +123,15 @@ function RTreatmentExercise() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[80vh] bg-white">
+      <div className="rounded-lg bg-card h-[65vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
-          <div className="flex gap-5 text-center items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between">
             <div className="font-[550] text-lg">
               No. of exercises checked: {selectedCheckboxes.length}
             </div>
             <div className="font-[550] text-lg flex items-center">
               Mapped Exercise -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+              <div className="ml-2 bg-gray-400 border border-gray-200 w-5 h-5"></div>
             </div>
           </div>
 

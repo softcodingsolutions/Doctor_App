@@ -99,7 +99,7 @@ function RTreatmentMedicine() {
         icon: "error",
         confirmButtonText: "OK",
       });
- 
+
       setSelectedCheckboxes(
         selectedCheckboxes.filter(
           (id) => !invalidMedicines.some((med) => med.id === Number(id))
@@ -148,9 +148,9 @@ function RTreatmentMedicine() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[75vh] bg-white ">
+      <div className="rounded-lg bg-card h-[65vh] bg-white ">
         <div className="flex px-4 py-2 h-full flex-col space-y-4">
-          <div className="flex gap-5 text-center items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between">
             <div className="font-[550] text-lg">
               No. of medicines checked: {selectedCheckboxes.length}
             </div>
@@ -160,10 +160,10 @@ function RTreatmentMedicine() {
               value={searchTerm}
               onChange={(e) => handleSearchTerm(e.target.value)}
               placeholder="Search for Medicines"
-              className="py-2 px-4 rounded-md border border-gray-800 w-1/2 focus:outline-none focus:ring-1 focus:ring-black"
+              className="py-2 px-4 rounded-md border border-gray-800 w-full md:w-1/2 focus:outline-none focus:ring-1 focus:ring-black"
             />
 
-            <div className="font-[550] text-lg flex">
+            <div className="font-[550] text-lg flex items-center">
               Mapped Medicine -{" "}
               <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
             </div>
