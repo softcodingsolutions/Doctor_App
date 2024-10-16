@@ -43,15 +43,18 @@ function AddListFranchise(props) {
       >
         {props.name}
       </Button>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <ModalDialog>
+      <Modal  open={open} onClose={() => setOpen(false)}>
+        <ModalDialog   sx={{
+            maxWidth: { xs: "95%", sm: "600px" }, 
+            width: "100%", 
+          }}>
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
-          <form onSubmit={handleSubmit(submittedData)}>
+          <form onSubmit={handleSubmit(submittedData)} >
             <Stack spacing={3}>
               <Box className="flex space-x-4">
                 <FormControl>
-                  <FormLabel>{props.first_name} :-</FormLabel>
+                  <FormLabel>{props.first_name} </FormLabel>
                   <Input
                     placeholder="First Name..."
                     name="first_name"
@@ -67,7 +70,7 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
                 <FormControl>
-                  <FormLabel>{props.last_name} :-</FormLabel>
+                  <FormLabel>{props.last_name} </FormLabel>
                   <Input
                     placeholder="Last Name..."
                     name="last_name"
@@ -82,9 +85,9 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
               </Box>
-              <Box className="flex space-x-4">
+              <Box className="flex space-x-4 ">
                 <FormControl>
-                  <FormLabel>{props.email} :-</FormLabel>
+                  <FormLabel>{props.email} </FormLabel>
                   <Input
                     type="email"
                     placeholder="Email..."
@@ -98,7 +101,7 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
                 <FormControl>
-                  <FormLabel>{props.password} :-</FormLabel>
+                  <FormLabel>{props.password} </FormLabel>
                   <Input
                     type="password"
                     placeholder="Password..."
@@ -119,10 +122,10 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
               </Box>
-              <Box className="flex space-x-4">
+              <Box className="flex space-x-4 ">
                 {props.role === "super_admin" && (
                   <FormControl className="w-1/2">
-                    <FormLabel>Select Doctor :-</FormLabel>
+                    <FormLabel>Select Doctor </FormLabel>
                     <Select
                       required
                       placeholder="Select"
@@ -143,7 +146,7 @@ function AddListFranchise(props) {
                   </FormControl>
                 )}
                 <FormControl>
-                  <FormLabel>{props.mobile} :-</FormLabel>
+                  <FormLabel>{props.mobile} </FormLabel>
                   <Input
                     type="number"
                     placeholder="Mobile..."
@@ -165,7 +168,7 @@ function AddListFranchise(props) {
 
                 {props?.role === "doctor" && (
                   <FormControl>
-                    <FormLabel>{props.city} :-</FormLabel>
+                    <FormLabel>{props.city} </FormLabel>
                     <Input
                       placeholder="City..."
                       name="city"
@@ -179,10 +182,10 @@ function AddListFranchise(props) {
                   </FormControl>
                 )}
               </Box>
-              <Box className="flex space-x-4">
+              <Box className="flex space-x-4 ">
                 {props?.role === "super_admin" && (
                   <FormControl>
-                    <FormLabel>{props.city} :-</FormLabel>
+                    <FormLabel>{props.city} </FormLabel>
                     <Input
                       placeholder="City..."
                       name="city"
@@ -197,7 +200,7 @@ function AddListFranchise(props) {
                 )}
 
                 <FormControl>
-                  <FormLabel>{props.state} :-</FormLabel>
+                  <FormLabel>{props.state} </FormLabel>
                   <Input
                     placeholder="State..."
                     name="state"
@@ -212,7 +215,7 @@ function AddListFranchise(props) {
 
                 {props?.role === "doctor" && (
                   <FormControl>
-                    <FormLabel>{props.pincode} :-</FormLabel>
+                    <FormLabel>{props.pincode} </FormLabel>
                     <Input
                       type="number"
                       placeholder="Pincode..."
@@ -229,9 +232,9 @@ function AddListFranchise(props) {
                   </FormControl>
                 )}
               </Box>
-              <Box className="flex space-x-4">
+              <Box className="flex space-x-4 ">
                 <FormControl>
-                  <FormLabel>{props.amount} :-</FormLabel>
+                  <FormLabel>{props.amount} </FormLabel>
                   <Input
                     type="number"
                     placeholder="Amount..."
@@ -251,7 +254,7 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
                 <FormControl>
-                  <FormLabel>{props.commission} :-</FormLabel>
+                  <FormLabel>{props.commission} </FormLabel>
                   <Input
                     type="number"
                     placeholder="In %..."
@@ -277,7 +280,7 @@ function AddListFranchise(props) {
               </Box>
               <Box className="flex w-full space-x-4">
                 <FormControl className="w-1/2">
-                  <FormLabel>{props.type_of_admin} :-</FormLabel>
+                  <FormLabel>{props.type_of_admin} </FormLabel>
                   <Select
                     required
                     placeholder="Admin Type..."
@@ -295,7 +298,7 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
                 <FormControl className="w-1/2">
-                  <FormLabel>{props.possibility_group} :-</FormLabel>
+                  <FormLabel>{props.possibility_group} </FormLabel>
                   <Select
                     required
                     placeholder="Possibility Group..."

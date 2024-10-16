@@ -5,6 +5,7 @@ import InsideLoader from "../InsideLoader";
 import male from "../../assets/images/male.avif";
 import female from "../../assets/images/female.avif";
 import { BsFillTelephoneFill } from "react-icons/bs";
+import { HiClipboardDocumentList } from "react-icons/hi2";
 
 const Appointments = () => {
   const context = useOutletContext();
@@ -17,8 +18,6 @@ const Appointments = () => {
   const [consultingTime, setConsultingTime] = useState(
     new Date().toISOString().split("T")[0]
   );
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 6;
 
   const handleConsulting = (e) => {
     const selectedDate = e.target.value;
@@ -71,26 +70,6 @@ const Appointments = () => {
   //       });
   //   };
 
-  const paginateCustomers = () => {
-    const indexOfLastRow = currentPage * rowsPerPage;
-    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-    return getAppointments.slice(indexOfFirstRow, indexOfLastRow);
-  };
-
-  const totalPages = Math.ceil(getAppointments.length / rowsPerPage);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
   function convertToAmPm(time24) {
     // Split the input time into hours and minutes (e.g., "14:35" -> ["14", "35"])
     let [hour, minute] = time24.split(":");
@@ -109,7 +88,7 @@ const Appointments = () => {
     return new Date(date).toLocaleDateString(undefined, options);
   };
 
-  const handleDiagnosis = (id,caseNumber) => {
+  const handleDiagnosis = (id, caseNumber) => {
     localStorage.setItem("userId", id);
     localStorage.setItem("caseNumber", caseNumber);
     navigate(`../patients/user-diagnosis/treatment/medicine`);
@@ -146,19 +125,25 @@ const Appointments = () => {
           </div>
           <div className="  w-full h-full flex flex-col gap-3 bg-white rounded-lg px-4 py-3 ">
             <div className="grid gap-2 ">
-              {isToday ? (
-                <label className="flex justify-start text-lg font-bold  tracking-wide">
-                  Today's Appointments
-                </label>
-              ) : (
-                <label className="flex justify-start text-lg font-bold  tracking-wide">
-                  Appointments
-                </label>
-              )}
-              <label className="flex  justify-start text-md font-semibold tracking-wide">
+              <div className="flex">
+                <div>
+                  <HiClipboardDocumentList size={40}/>
+                </div>
+                {isToday ? (
+                  <label className="flex justify-start text-lg font-bold  tracking-wide">
+                    Today's Appointments
+                  </label>
+                ) : (
+                  <label className="flex justify-start text-lg font-bold  tracking-wide">
+                    Appointments
+                  </label>
+                )}
+              </div>
+              <label className="flex  justify-start text-md mt-2 Plfont-semibold tracking-wide">
                 {formatDate(consultingTime)}
               </label>
             </div>
+
             <div className="w-full flex justify-end  gap-2">
               <select
                 name="overweight"
@@ -176,18 +161,18 @@ const Appointments = () => {
                 type="date"
                 placeholder="select date"
                 className="py-1 px-1  rounded-md border  border-black w-[40vh]"
-                value={consultingTime} // This ensures today's date is set by default
+                value={consultingTime}
                 onChange={handleConsulting}
               />
             </div>
 
             <div className="bg-white h-[80vh] overflow-y-auto flex flex-col rounded-lg ">
-              {paginateCustomers().length === 0 ? (
+              {getAppointments.length === 0 ? (
                 <div className="flex w-full h-full items-center justify-center text-2xl">
                   No Appointments Today!
                 </div>
               ) : (
-                paginateCustomers().map((res) => (
+                getAppointments.map((res) => (
                   <div
                     key={res.id}
                     className="flex text-md hover:bg-gray-200 items-center gap-1 border border-gray-200 min-h-16 shadow-inner rounded-md p-2"
@@ -287,7 +272,9 @@ const Appointments = () => {
                     </div>
 
                     <button
-                      onClick={() => handleDiagnosis(res.user?.id,res.user?.case_number)}
+                      onClick={() =>
+                        handleDiagnosis(res.user?.id, res.user?.case_number)
+                      }
                       className="font-medium text-sm text-green-600 border border-gray-300 p-1 rounded-md hover:bg-green-600 hover:text-white"
                     >
                       Diagnosis
@@ -296,71 +283,6 @@ const Appointments = () => {
                 ))
               )}
             </div>
-
-            {/* Pagination Controls */}
-            {totalPages !== 0 && (
-              <div className="flex flex-wrap justify-center items-center gap-2 py-1">
-                <button
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
-                  className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                    ></path>
-                  </svg>
-                  Previous
-                </button>
-                <div className="flex gap-2">
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                      key={i + 1}
-                      onClick={() => setCurrentPage(i + 1)}
-                      className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${
-                        currentPage === i + 1
-                          ? "bg-gray-900 text-white"
-                          : "bg-gray-200 text-black"
-                      }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={handleNextPage}
-                  disabled={currentPage === totalPages}
-                  className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-full select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                >
-                  Next
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
