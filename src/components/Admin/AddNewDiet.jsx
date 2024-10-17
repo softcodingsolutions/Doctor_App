@@ -87,7 +87,13 @@ function AddNewMedicine(props) {
         {props.name}
       </Button>
       <Modal open={open} onClose={() => setOpen(false)}>
-        <ModalDialog sx={{ maxHeight: "90vh", overflow: "hidden" }}>
+        <ModalDialog
+          sx={{
+            maxWidth: {  sm: "69%" },
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <Box sx={{ overflowY: "auto", maxHeight: "70vh", paddingRight: 2 }}>
@@ -140,7 +146,6 @@ function AddNewMedicine(props) {
                 <FormControl>
                   <FormLabel>{props.diet_describe_english}</FormLabel>
                   <Box className="flex flex-col items-center w-full gap-3">
-                    
                     <JoditEditor
                       value={text.english}
                       config={editorConfig}

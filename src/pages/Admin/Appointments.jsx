@@ -94,6 +94,34 @@ const Appointments = () => {
     navigate(`../patients/user-diagnosis/treatment/medicine`);
   };
 
+  const handleType = (e) => {
+    const selectedType = e.target.value;
+
+    axios
+      .get(`api/v1/appointments?date=${consultingTime}&doctor_id=${main_id}`)
+      .then((res) => {
+        if (selectedType === "select") {
+          // Reset the appointments to the full list if "select" is chosen
+          setGetAppointments(res.data?.appointments);
+        } else {
+          // Convert the selectedType to boolean for filtering follow-up status
+          const isFollowUp = selectedType === "true";
+
+          // Filter the appointments based on follow-up status
+          const filteredAppointments = res?.data?.appointments?.filter(
+            (appointment) => {
+              return appointment.user.follow_up === isFollowUp;
+            }
+          );
+
+          setGetAppointments(filteredAppointments);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     handleGetAppointment(today);
@@ -127,7 +155,7 @@ const Appointments = () => {
             <div className="grid gap-2 ">
               <div className="flex">
                 <div>
-                  <HiClipboardDocumentList size={40}/>
+                  <HiClipboardDocumentList size={40} />
                 </div>
                 {isToday ? (
                   <label className="flex justify-start text-lg font-bold  tracking-wide">
@@ -148,15 +176,14 @@ const Appointments = () => {
               <select
                 name="overweight"
                 defaultValue="select"
-                placeholder="Type"
+                onChange={handleType}
                 className="py-2 text-sm px-3 rounded-md border border-black"
               >
-                <option value="select" disabled>
-                  Select Type
-                </option>
-                <option value="new case">New Case</option>
-                <option value="follow up">Follow Up</option>
+                <option value="select">Select Type</option>
+                <option value="false">New Case</option>
+                <option value="true">Follow Up</option>
               </select>
+
               <input
                 type="date"
                 placeholder="select date"

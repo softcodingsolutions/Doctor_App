@@ -26,23 +26,35 @@ function AddNewMedicine(props) {
   const [medicineContent, setMedicineContent] = useState("");
   const [update, setUpdate] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const submittedData = (data) => {
-    props.handleApi(medicineName, data.med_content, data.med_quantity, data.doctor_id, update);
+    props.handleApi(
+      medicineName,
+      data.med_content,
+      data.med_quantity,
+      data.doctor_id,
+      update
+    );
     reset();
   };
 
   const handleSearch = (value) => {
     setSearchTerm(value);
     if (value) {
-      axios.get(`/api/v1/medicines/search_medicine?medicine_name=${value}`)
+      axios
+        .get(`/api/v1/medicines/search_medicine?medicine_name=${value}`)
         .then((res) => {
           const medicines = res.data?.medicines || [];
           setParticularMedicine(medicines);
           if (medicines.length === 0) {
-            setMedicines(value);  // This is for new medicine
-            setUpdate(false);  // New entry
+            setMedicines(value); // This is for new medicine
+            setUpdate(false); // New entry
           }
         })
         .catch((err) => console.error(err));
@@ -57,12 +69,17 @@ function AddNewMedicine(props) {
     setMedicineContent(medicine.medicine_content);
     setMedicineQuantity(medicine.medicine_quantity);
     setParticularMedicine([]);
-    setUpdate(true);  // Existing entry
+    setUpdate(true); // Existing entry
   };
 
   return (
     <>
-      <Button variant="outlined" color="neutral" startDecorator={<Add />} onClick={() => setOpen(true)}>
+      <Button
+        variant="outlined"
+        color="neutral"
+        startDecorator={<Add />}
+        onClick={() => setOpen(true)}
+      >
         {props.name}
       </Button>
       <Modal
@@ -71,10 +88,16 @@ function AddNewMedicine(props) {
           setOpen(false);
           reset();
           setUpdate(false);
-          setSearchTerm('');
+          setSearchTerm("");
         }}
       >
-        <ModalDialog>
+        <ModalDialog
+          sx={{
+            maxWidth: { xs: "95%", sm: "600px" },
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -105,38 +128,65 @@ function AddNewMedicine(props) {
                       onClick={() => handleUserSelect(medicine)}
                     >
                       <div>
-                        <div className="font-semibold text-sm">{medicine.medicine_name}</div>
-                        <div className="text-gray-500 text-xs">Content: {medicine.medicine_content}</div>
+                        <div className="font-semibold text-sm">
+                          {medicine.medicine_name}
+                        </div>
+                        <div className="text-gray-500 text-xs">
+                          Content: {medicine.medicine_content}
+                        </div>
                       </div>
-                      <div className="text-gray-600 text-xs">Quantity: {medicine.medicine_quantity}</div>
+                      <div className="text-gray-600 text-xs">
+                        Quantity: {medicine.medicine_quantity}
+                      </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                searchTerm && <div className="text-gray-500 text-sm flex justify-center"></div>
+                searchTerm && (
+                  <div className="text-gray-500 text-sm flex justify-center"></div>
+                )
               )}
 
               {!update ? (
                 <>
                   <FormControl>
                     <FormLabel>{props.med_content}</FormLabel>
-                    <Input placeholder="Content..." name="med_content" {...register("med_content")} required />
+                    <Input
+                      placeholder="Content..."
+                      name="med_content"
+                      {...register("med_content")}
+                      required
+                    />
                   </FormControl>
 
                   <FormControl>
                     <FormLabel>{props.med_quantity}</FormLabel>
-                    <Input placeholder="Quantity..." name="med_quantity" {...register("med_quantity")} required />
+                    <Input
+                      placeholder="Quantity..."
+                      name="med_quantity"
+                      {...register("med_quantity")}
+                      required
+                    />
                   </FormControl>
                 </>
               ) : (
                 <div>
                   <div className="mb-5">
-                    <div className="flex text-md font-medium m-1">Medicine Content: {medicineContent}</div>
-                    <div className="flex text-md font-medium m-1">Medicine Quantity: {medicineQuantity}</div>
+                    <div className="flex text-md font-medium m-1">
+                      Medicine Content: {medicineContent}
+                    </div>
+                    <div className="flex text-md font-medium m-1">
+                      Medicine Quantity: {medicineQuantity}
+                    </div>
                   </div>
                   <FormControl>
                     <FormLabel>{props.med_quantity}</FormLabel>
-                    <Input placeholder="Add Medicine..." name="med_quantity" {...register("med_quantity")} required />
+                    <Input
+                      placeholder="Add Medicine..."
+                      name="med_quantity"
+                      {...register("med_quantity")}
+                      required
+                    />
                   </FormControl>
                 </div>
               )}
@@ -151,7 +201,11 @@ function AddNewMedicine(props) {
                       </Option>
                     ))}
                   </Select>
-                  {errors.doctor_id && <Typography level="body2" color="danger">{errors.doctor_id.message}</Typography>}
+                  {errors.doctor_id && (
+                    <Typography level="body2" color="danger">
+                      {errors.doctor_id.message}
+                    </Typography>
+                  )}
                 </FormControl>
               )}
 
@@ -165,4 +219,3 @@ function AddNewMedicine(props) {
 }
 
 export default AddNewMedicine;
-

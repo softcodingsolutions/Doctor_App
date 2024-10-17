@@ -95,7 +95,7 @@ const PatientAnalysis = () => {
 
   return (
     <div className="flex flex-col p-4">
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6 overflow-auto">
         {dates.length > 0 && weight.length > 0 ? (
           <LineChart
             xAxis={[{ data: dates, scaleType: "point", label: "Date" }]}

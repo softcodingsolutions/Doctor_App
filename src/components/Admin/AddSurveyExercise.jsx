@@ -69,7 +69,13 @@ const AddSurveyExercise = forwardRef((props) => {
           setOpen(false);
         }}
       >
-        <ModalDialog>
+        <ModalDialog
+          sx={{
+            maxWidth: { xs: "95%", sm: "600px" },
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -82,7 +88,7 @@ const AddSurveyExercise = forwardRef((props) => {
             <Stack spacing={3}>
               <FormControl>
                 <FormLabel>{props.details} </FormLabel>
-                <Box className="flex flex-col items-center w-full">
+                <Box className="flex flex-col w-full">
                   <input
                     name="name"
                     {...register("name")}
@@ -109,7 +115,7 @@ const AddSurveyExercise = forwardRef((props) => {
                         <textarea {...props} placeholder="In English..." />
                       );
                     }}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required
@@ -133,7 +139,7 @@ const AddSurveyExercise = forwardRef((props) => {
                         <textarea {...props} placeholder="In Gujarati..." />
                       );
                     }}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required

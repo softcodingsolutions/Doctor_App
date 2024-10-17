@@ -80,7 +80,7 @@ function EditExercise(props) {
               setOpen(false);
             }}
           >
-            <Stack spacing={3} width={900}>
+            <Stack spacing={3} >
               <FormControl>
                 <FormLabel>{props.exercise_name}</FormLabel>
                 <Input

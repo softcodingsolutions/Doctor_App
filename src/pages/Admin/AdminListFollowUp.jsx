@@ -128,9 +128,10 @@ function AdminListFollowUp() {
     }
   };
 
-  const handleInventory = (val) => {
+  const handleInventory = (val,caseNumber) => {
     localStorage.setItem("userId", val);
-    navigate(`/admin/patients/customer-detials`);
+    localStorage.setItem("caseNumber", caseNumber);
+    navigate(`/admin/patients/customer-details/progress-questions`);
   };
 
   return (
@@ -229,7 +230,7 @@ function AdminListFollowUp() {
                       <div className="mt-4 sm:mt-0">
                         <button
                           className="w-full sm:w-[9rem] p-2 text-white bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                          onClick={() => handleInventory(userDetails.id)}
+                          onClick={() => handleInventory(userDetails.id ,userDetails?.case_number)}
                         >
                           View Patient
                         </button>
@@ -237,7 +238,8 @@ function AdminListFollowUp() {
                     </div>
                   )}
                   {openconsulting && (
-                    <div className="w-full flex flex-col items-center">7
+                    <div className="w-full flex flex-col items-center">
+                      7
                       <div className="text-lg font-semibold tracking-wide mb-4">
                         Consulting Time Slot
                       </div>

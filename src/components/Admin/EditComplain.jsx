@@ -48,7 +48,13 @@ function EditComplain(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog>
+        <ModalDialog
+          sx={{
+            maxWidth: { xs: "95%", sm: "600px" },
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form

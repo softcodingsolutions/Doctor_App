@@ -43,18 +43,21 @@ function AddListFranchise(props) {
       >
         {props.name}
       </Button>
-      <Modal  open={open} onClose={() => setOpen(false)}>
-        <ModalDialog   sx={{
-            maxWidth: { xs: "95%", sm: "600px" }, 
-            width: "100%", 
-          }}>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <ModalDialog
+          sx={{
+            maxWidth: { xs: "95%", sm: "600px" },
+            width: "100%",
+            overflow: "auto"
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
-          <form onSubmit={handleSubmit(submittedData)} >
+          <form onSubmit={handleSubmit(submittedData)}>
             <Stack spacing={3}>
-              <Box className="flex space-x-4">
-                <FormControl>
-                  <FormLabel>{props.first_name} </FormLabel>
+              <Box className="flex flex-wrap space-y-4 md:space-y-0 md:space-x-4">
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.first_name}</FormLabel>
                   <Input
                     placeholder="First Name..."
                     name="first_name"
@@ -69,8 +72,8 @@ function AddListFranchise(props) {
                     </Typography>
                   )}
                 </FormControl>
-                <FormControl>
-                  <FormLabel>{props.last_name} </FormLabel>
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.last_name}</FormLabel>
                   <Input
                     placeholder="Last Name..."
                     name="last_name"
@@ -85,9 +88,10 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
               </Box>
-              <Box className="flex space-x-4 ">
-                <FormControl>
-                  <FormLabel>{props.email} </FormLabel>
+
+              <Box className="flex flex-wrap space-y-4 md:space-y-0 md:space-x-4">
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.email}</FormLabel>
                   <Input
                     type="email"
                     placeholder="Email..."
@@ -100,8 +104,8 @@ function AddListFranchise(props) {
                     </Typography>
                   )}
                 </FormControl>
-                <FormControl>
-                  <FormLabel>{props.password} </FormLabel>
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.password}</FormLabel>
                   <Input
                     type="password"
                     placeholder="Password..."
@@ -113,7 +117,6 @@ function AddListFranchise(props) {
                         message: "Password must be at least 6 characters",
                       },
                     })}
-                    autoFocus
                   />
                   {errors.password && (
                     <Typography level="body2" color="danger">
@@ -122,10 +125,11 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
               </Box>
-              <Box className="flex space-x-4 ">
+
+              <Box className="flex flex-wrap space-y-4 md:space-y-0 md:space-x-4">
                 {props.role === "super_admin" && (
-                  <FormControl className="w-1/2">
-                    <FormLabel>Select Doctor </FormLabel>
+                  <FormControl className="w-full lg:w-[260px]">
+                    <FormLabel>Select Doctor</FormLabel>
                     <Select
                       required
                       placeholder="Select"
@@ -145,8 +149,8 @@ function AddListFranchise(props) {
                     )}
                   </FormControl>
                 )}
-                <FormControl>
-                  <FormLabel>{props.mobile} </FormLabel>
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.mobile}</FormLabel>
                   <Input
                     type="number"
                     placeholder="Mobile..."
@@ -165,10 +169,9 @@ function AddListFranchise(props) {
                     </Typography>
                   )}
                 </FormControl>
-
                 {props?.role === "doctor" && (
-                  <FormControl>
-                    <FormLabel>{props.city} </FormLabel>
+                  <FormControl className="w-full lg:w-[260px]">
+                    <FormLabel>{props.city}</FormLabel>
                     <Input
                       placeholder="City..."
                       name="city"
@@ -182,10 +185,11 @@ function AddListFranchise(props) {
                   </FormControl>
                 )}
               </Box>
-              <Box className="flex space-x-4 ">
+
+              <Box className="flex flex-wrap space-y-4 md:space-y-0 md:space-x-4">
                 {props?.role === "super_admin" && (
-                  <FormControl>
-                    <FormLabel>{props.city} </FormLabel>
+                  <FormControl className="w-full lg:w-[260px]">
+                    <FormLabel>{props.city}</FormLabel>
                     <Input
                       placeholder="City..."
                       name="city"
@@ -198,9 +202,8 @@ function AddListFranchise(props) {
                     )}
                   </FormControl>
                 )}
-
-                <FormControl>
-                  <FormLabel>{props.state} </FormLabel>
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.state}</FormLabel>
                   <Input
                     placeholder="State..."
                     name="state"
@@ -212,10 +215,9 @@ function AddListFranchise(props) {
                     </Typography>
                   )}
                 </FormControl>
-
                 {props?.role === "doctor" && (
-                  <FormControl>
-                    <FormLabel>{props.pincode} </FormLabel>
+                  <FormControl className="w-full lg:w-[260px]">
+                    <FormLabel>{props.pincode}</FormLabel>
                     <Input
                       type="number"
                       placeholder="Pincode..."
@@ -232,9 +234,10 @@ function AddListFranchise(props) {
                   </FormControl>
                 )}
               </Box>
-              <Box className="flex space-x-4 ">
-                <FormControl>
-                  <FormLabel>{props.amount} </FormLabel>
+
+              <Box className="flex flex-wrap space-y-4 md:space-y-0 md:space-x-4">
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.amount}</FormLabel>
                   <Input
                     type="number"
                     placeholder="Amount..."
@@ -253,8 +256,8 @@ function AddListFranchise(props) {
                     </Typography>
                   )}
                 </FormControl>
-                <FormControl>
-                  <FormLabel>{props.commission} </FormLabel>
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.commission}</FormLabel>
                   <Input
                     type="number"
                     placeholder="In %..."
@@ -278,9 +281,10 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
               </Box>
-              <Box className="flex w-full space-x-4">
-                <FormControl className="w-1/2">
-                  <FormLabel>{props.type_of_admin} </FormLabel>
+
+              <Box className="flex flex-wrap space-y-4 md:space-y-0 md:space-x-4">
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.type_of_admin}</FormLabel>
                   <Select
                     required
                     placeholder="Admin Type..."
@@ -297,8 +301,8 @@ function AddListFranchise(props) {
                     </Typography>
                   )}
                 </FormControl>
-                <FormControl className="w-1/2">
-                  <FormLabel>{props.possibility_group} </FormLabel>
+                <FormControl className="w-full lg:w-[260px]">
+                  <FormLabel>{props.possibility_group}</FormLabel>
                   <Select
                     required
                     placeholder="Possibility Group..."
@@ -317,7 +321,10 @@ function AddListFranchise(props) {
                   )}
                 </FormControl>
               </Box>
-              <Button type="submit">Submit</Button>
+
+              <Button type="submit" className="flex justify-center w-full ">
+                Submit
+              </Button>
             </Stack>
           </form>
         </ModalDialog>
