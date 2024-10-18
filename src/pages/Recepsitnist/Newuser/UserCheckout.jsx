@@ -102,7 +102,6 @@ function UserCheckout({ setStoreData, onBack, handleCallUserApi }) {
                     fontSize: "1rem",
                     textAlign: "end",
                     marginBottom: 1,
-                    fontSize: "1rem",
                   }}
                 >
                   Package:
