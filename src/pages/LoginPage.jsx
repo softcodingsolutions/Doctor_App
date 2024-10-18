@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../schemas/LoginSchema";
 import axios from "axios";
 import Swal from "sweetalert2";
+import ChatComponent from "../components/Chat/ChatComponent";
 import icons_slime from "../assets/images/icons_slime.png";
 import {
   Card,

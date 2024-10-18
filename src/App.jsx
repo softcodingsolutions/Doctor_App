@@ -119,6 +119,7 @@ function App() {
   const role = localStorage.getItem("role");
   return (
     <>
+      {/* {role === "patient"  ? <ChatComponent /> : ""} */}
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -422,7 +423,6 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>
-      {/* {role === "patient" && <ChatComponent />} */}
     </>
   );
 }

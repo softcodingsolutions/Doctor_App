@@ -331,7 +331,7 @@ function AdminDashboard() {
                   </div>
                 </div>
                 <div className="bg-white w-[70%] border rounded-md p-4 shadow-lg h-full flex">
-                  {/* <div className="bg-white w-[30%] border p-4 rounded-md overflow-y-auto">
+                  <div className="bg-white w-[30%] border p-4 rounded-md overflow-y-auto">
                     <div className="text-lg font-bold border-b pb-2 mb-2">
                       Patient&apos;s List
                     </div>
@@ -358,58 +358,57 @@ function AdminDashboard() {
                         </div>
                       </div>
                     ))}
-                  </div> */}
+                  </div>
 
                   {/* Chat Section */}
-                  {/* <div className="bg-white w-[70%] border rounded-md p-4 h-full flex flex-col">
+                  <div className="bg-white w-[70%] border rounded-md p-4 h-full flex flex-col">
                     {selectedUser ? (
                       <>
                         <div className="text-lg font-bold border-b pb-2 mb-2">
-                          Chat with {selectedUser.first_name}{' '}
+                          Chat with {selectedUser.first_name}{" "}
                           {selectedUser.last_name}
                         </div>
-                        <div className="flex-1 overflow-y-auto p-2" ref={messageContainerRef}>
-                          {complaints?.map(message => (
+                        <div
+                          className="flex-1 overflow-y-auto p-2"
+                          ref={messageContainerRef}
+                        >
+                          {complaints?.map((message) => (
                             <div
                               key={message.id}
                               className={`mb-4 ${
-                                message.role === 'doctor'
-                                  ? 'text-right'
-                                  : 'text-left'
+                                message.role === "doctor"
+                                  ? "text-right"
+                                  : "text-left"
                               }`}
                             >
-                              
                               <div
                                 className={`text-xs font-semibold text-gray-700 mb-1 ${
-                                  message.role === 'doctor'
-                                    ? 'text-right'
-                                    : 'text-left'
+                                  message.role === "doctor"
+                                    ? "text-right"
+                                    : "text-left"
                                 }`}
                               >
-                                {message.role === 'doctor'
-                                  ? 'You'
+                                {message.role === "doctor"
+                                  ? "You"
                                   : `${selectedUser?.first_name} ${selectedUser?.last_name}`}
                               </div>
 
-                              
                               <div
                                 className={`inline-block p-3 rounded-lg relative max-w-[75%] ${
-                                  message.role === 'doctor'
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-200 text-black'
+                                  message.role === "doctor"
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-gray-200 text-black"
                                 }`}
-                                style={{ textAlign: 'left' }}
+                                style={{ textAlign: "left" }}
                               >
-                           
                                 <div>{message.body}</div>
                               </div>
 
-                            
                               <div
                                 className={`text-xs text-gray-700 mt-1 ${
-                                  message.role === 'doctor'
-                                    ? 'text-right'
-                                    : 'text-left'
+                                  message.role === "doctor"
+                                    ? "text-right"
+                                    : "text-left"
                                 }`}
                               >
                                 {formatTime(message.created_at)}
@@ -437,7 +436,7 @@ function AdminDashboard() {
                         No messages yet. Select a patient to start chatting.
                       </div>
                     )}
-                  </div> */}
+                  </div>
                 </div>
               </div>
             </div>

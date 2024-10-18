@@ -7,6 +7,7 @@ import InsideLoader from "../InsideLoader";
 import male from "../../assets/images/male.avif";
 import female from "../../assets/images/female.avif";
 import { BsFillTelephoneFill } from "react-icons/bs";
+import ChatComponent from "../../components/Chat/ChatComponent";
 import { MdEmail } from "react-icons/md";
 import { GiWeight } from "react-icons/gi";
 
@@ -18,6 +19,7 @@ function UserDiagnosis() {
   const location = useLocation();
   const [selectedId, setSelectedId] = useState("12");
   const pathname = location.pathname?.split("/user-diagnosis/")[1];
+  const role = localStorage.getItem("role");
   console.log(pathname);
 
   const handlegetUser = () => {
@@ -251,6 +253,7 @@ function UserDiagnosis() {
               {selectedId && (
                 <Outlet context={[id, getCustomer, handlegetUser]} />
               )}
+              {role === "patient" && <ChatComponent />}
             </div>
           </div>
         </>
