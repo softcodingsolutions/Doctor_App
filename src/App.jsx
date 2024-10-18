@@ -112,9 +112,13 @@ import UserComplains from "./components/User/UserComplains";
 import SendMeassage from "./pages/Recepsitnist/SendMeassage";
 import PatientAnalysis from "./pages/Admin/customer/ProgressReport/PatientAnalysis";
 import OverallAnalysis from "./pages/Admin/OverallAnalysis";
+import ChatComponent from "./components/Chat/ChatComponent";
 
 function App() {
+  const access_token = localStorage.getItem("access_token")
+  const role = localStorage.getItem("role")
   return (
+    <>
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -387,6 +391,8 @@ function App() {
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Router>
+    {(access_token && role === 'patient')  && <ChatComponent/> }
+    </>
   );
 }
 
