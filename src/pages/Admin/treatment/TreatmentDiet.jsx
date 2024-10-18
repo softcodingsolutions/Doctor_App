@@ -14,11 +14,11 @@ function TreatmentDiet() {
   const context = useOutletContext();
   const [getDiet, setGetDiet] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [showCheckboxes, setShowCheckboxes] = useState(true);
   const role = localStorage.getItem("role");
   const [loading, setLoading] = useState(true);
   const main_id = localStorage.getItem("main_id");
- 
+
   const handleGetDiet = () => {
     if (role === "doctor") {
       axios
@@ -47,10 +47,6 @@ function TreatmentDiet() {
           alert(err.response?.data?.message + "!");
         });
     }
-  };
-
-  const handleToggleCheckboxes = () => {
-    setShowCheckboxes(!showCheckboxes);
   };
 
   const handleCheckboxChange = (e) => {
@@ -107,7 +103,6 @@ function TreatmentDiet() {
       console.error(err);
     } finally {
       setSelectedCheckboxes([]);
-      setShowCheckboxes(false);
     }
   };
 
@@ -133,24 +128,17 @@ function TreatmentDiet() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
-          <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes && (
-              <SelectTreatmentButton
-                name="Select Diet"
-                function={handleToggleCheckboxes}
-              />
-            )}
-
+          <div className="flex flex-col md:flex-row gap-4 md:gap-5 text-center items-center justify-between p-4">
             {showCheckboxes && (
               <div className="font-[550] text-lg">
                 No. of diets checked: {selectedCheckboxes.length}
               </div>
             )}
 
-            {!showCheckboxes && (
+            {showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Diet -{" "}
-                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+                <div className="ml-2 bg-gray-400 border border-gray-200 h-5 w-5"></div>{" "}
               </div>
             )}
           </div>
@@ -159,17 +147,11 @@ function TreatmentDiet() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  {showCheckboxes ? (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="Select"
-                    />
-                  ) : (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
-                    />
-                  )}
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="Select"
+                  />
+
                   <ThComponent name="Diet Code" />
                   <ThComponent name="Diet Name" />
                   <ThComponent name="In English" />
@@ -205,30 +187,22 @@ function TreatmentDiet() {
                         } w-full`}
                         key={val.id}
                       >
-                        {showCheckboxes && (
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <input
-                              value={val.id}
-                              onChange={handleCheckboxChange}
-                              type="checkbox"
-                              className="size-5"
-                              defaultChecked={context[2]?.some(
-                                (packages) =>
-                                  context[0] === packages.weight_reason &&
-                                  packages.diet?.some(
-                                    (diet) => diet.id === val.id
-                                  )
-                              )}
-                            />
-                          </td>
-                        )}
-                        {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">
-                              {index + 1 }
-                            </div>{" "}
-                          </td>
-                        )}
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <input
+                            value={val.id}
+                            onChange={handleCheckboxChange}
+                            type="checkbox"
+                            className="size-5"
+                            defaultChecked={context[2]?.some(
+                              (packages) =>
+                                context[0] === packages.weight_reason &&
+                                packages.diet?.some(
+                                  (diet) => diet.id === val.id
+                                )
+                            )}
+                          />
+                        </td>
+
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.code} />
                         </td>
@@ -275,16 +249,16 @@ function TreatmentDiet() {
               </tbody>
             </table>
           </div>
-       
-          {!showCheckboxes && (
-            <div className="flex justify-between">
-              <PrevPageButton to="../medicines" />
-              <NextPageButton name="Exercise" to="../exercise" />
-            </div>
-          )}
+
           {showCheckboxes && (
-            <div className="flex justify-center">
-              <SaveTreatmentButtons function={handleSave} />{" "}
+            <div className="flex justify-between">
+              <div>
+                <PrevPageButton to="../medicines" />
+              </div>
+              <div>
+                <SaveTreatmentButtons function={handleSave} />{" "}
+                <NextPageButton name="Exercise" to="../exercise" />
+              </div>
             </div>
           )}
         </div>

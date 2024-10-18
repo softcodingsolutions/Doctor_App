@@ -26,6 +26,8 @@ function UserDiagnosis() {
       .then((res) => {
         console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
+        localStorage.setItem("caseNumber", res.data?.user?.case_number);
+
         setLoading(false);
       })
       .catch((err) => {
@@ -40,11 +42,10 @@ function UserDiagnosis() {
 
   const reportButtonsMain = packagesButton.filter((button) => {
     if (
-      button.id === "12" ||
-      button.id === "15" ||
-      button.id === "16" ||
-      button.id === "13" ||
-      button.id === "14"
+      button.id === "21" ||
+      button.id === "23" ||
+      button.id === "26" ||
+      button.id === "13"
     ) {
       return (
         getCustomer.role === "super_admin" ||
@@ -195,8 +196,7 @@ function UserDiagnosis() {
                   Package:
                 </div>
                 <div className="pl-1.5 text-sm md:text-md">
-                  {getCustomer?.user_packages?.package_name ??
-                    "Not Assigned"}
+                  {getCustomer?.user_packages?.package_name ?? "Not Assigned"}
                 </div>
               </div>
               <div className="flex">
@@ -226,8 +226,8 @@ function UserDiagnosis() {
             </div>
           </div>
 
-          <div className="flex w-full h-[80%]">
-            <div className=" flex flex-col items-start m-2 h-[97%] bg-white gap-1 ml-2 w-[20%] rounded-md">
+          <div className="flex flex-col lg:flex-row w-full h-[80%]">
+            <div className="flex flex-col items-start m-2 h-[97%] bg-white gap-1 rounded-md w-full lg:w-[20%]">
               {reportButtonsMain.map((res) => {
                 return (
                   <Link
@@ -235,7 +235,7 @@ function UserDiagnosis() {
                     onClick={() => setSelectedId(res.id)}
                     key={res.id}
                     className={clsx(
-                      "w-full flex items-center justify-start shadow-mdcursor-pointer hover:bg-[#1F2937] hover:text-white rounded-md p-3",
+                      "w-full flex items-center justify-start  cursor-pointer hover:bg-[#1F2937] hover:text-white rounded-md p-3",
                       pathname === res.to
                         ? "bg-[#1F2937] text-white"
                         : "bg-white"
@@ -247,7 +247,7 @@ function UserDiagnosis() {
                 );
               })}
             </div>
-            <div className="flex w-[80%] p-2 bg-white mt-2 mr-2 mb-2 rounded-md ">
+            <div className="flex w-full lg:w-[80%] p-2 bg-white mt-2 mr-2 mb-2 rounded-md">
               {selectedId && (
                 <Outlet context={[id, getCustomer, handlegetUser]} />
               )}

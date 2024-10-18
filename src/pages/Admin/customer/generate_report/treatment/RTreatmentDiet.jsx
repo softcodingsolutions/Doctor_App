@@ -78,7 +78,9 @@ function RTreatmentDiet() {
   const handleSelectAll = () => {
     if (!selectAll) {
       // When checked, select all predicted diets
-      const allMappedDietIds = getPredictionDiet.map((diet) => diet.id.toString());
+      const allMappedDietIds = getPredictionDiet.map((diet) =>
+        diet.id.toString()
+      );
       setSelectedCheckboxes(allMappedDietIds);
 
       const allMappedDiets = allMappedDietIds
@@ -116,15 +118,16 @@ function RTreatmentDiet() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[80vh] bg-white ">
+      <div className="rounded-lg bg-card h-[65vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
-          <div className="flex gap-5 text-center items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between">
             <div className="font-[550] text-lg">
-              No. of Diet checked: {selectedCheckboxes.length}
+              No. of Diets checked: {selectedCheckboxes.length}
             </div>
+
             <div className="font-[550] text-lg flex items-center">
               Mapped Diet -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+              <div className="ml-2 bg-gray-400 border border-gray-200 w-5 h-5"></div>
             </div>
           </div>
 
@@ -173,7 +176,9 @@ function RTreatmentDiet() {
                             onChange={handleCheckboxChange}
                             type="checkbox"
                             className="size-4"
-                            checked={selectedCheckboxes.includes(val.id.toString())}
+                            checked={selectedCheckboxes.includes(
+                              val.id.toString()
+                            )}
                           />
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">

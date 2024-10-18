@@ -9,9 +9,10 @@ function WeightLoss2({ scrollYProgress }) {
       style={{ scale }}
       className="sticky top-0 h-[100vh] w-full bg-gray-200 flex items-center"
     >
-      <div className="w-full flex px-5">
-        <div className="flex flex-col w-1/2  pl-11 items-center">
-          <div className="leading-relaxed text-lg">
+      <div className="w-full flex flex-col md:flex-row px-5">
+        {/* Text Section */}
+        <div className="flex flex-col w-full md:w-1/2 pl-4 md:pl-11 items-center">
+          <div className="leading-relaxed text-sm md:text-lg">
             Here at{" "}
             <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
             Ayu Care, we firmly believe that simply addressing excess weight is
@@ -21,12 +22,12 @@ function WeightLoss2({ scrollYProgress }) {
             approach minimizes the chances of regaining lost weight in the
             future.
           </div>
-          <div className="font-semibold pt-7">
+          <div className="font-semibold pt-5 md:pt-7">
             In this context, the steps we follow for treating weight loss are
             distinctly different and are outlined below:
           </div>
           <div className="flex justify-start w-full pt-4">
-            <ul className="space-y-2.5 leading-loose text-lg">
+            <ul className="space-y-2 leading-loose text-base md:text-lg">
               <li>
                 <span className="text-xl">&#11037;</span> Insulin Resistance
               </li>
@@ -50,8 +51,14 @@ function WeightLoss2({ scrollYProgress }) {
             </ul>
           </div>
         </div>
-        <div className="flex justify-center w-2/3">
-          <img src={img1} alt="image" />
+
+        {/* Image Section */}
+        <div className="flex justify-center w-full md:w-1/2 mt-8 md:mt-0">
+          <img
+            src={img1}
+            alt="image"
+            className="w-full h-auto max-w-xs md:max-w-md"
+          />
         </div>
       </div>
     </motion.div>

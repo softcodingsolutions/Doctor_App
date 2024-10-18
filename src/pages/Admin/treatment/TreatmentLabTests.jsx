@@ -5,10 +5,12 @@ import axios from "axios";
 import SaveTreatmentButtons from "../../../components/Admin/SaveTreatmentButtons";
 import Swal from "sweetalert2";
 import InsideLoader from "../../InsideLoader";
+import { useNavigate } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 
 function TreatmentLabTests() {
   const context = useOutletContext();
+  const navigate = useNavigate();
   const [getTests, setGetTests] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -108,6 +110,7 @@ function TreatmentLabTests() {
         context?.[2]();
         handleGetTests();
         handleGetUser();
+        navigate('/admin/patients/customer-details/progress-questions')
       }
     } catch (err) {
       console.error(err);

@@ -41,7 +41,9 @@ function RTreatmentNutrition() {
 
   useEffect(() => {
     if (storeData.nutrition) {
-      const selectedNutritionIds = storeData.nutrition.map((nut) => nut.id.toString());
+      const selectedNutritionIds = storeData.nutrition.map((nut) =>
+        nut.id.toString()
+      );
       setSelectedCheckboxes(selectedNutritionIds);
     }
   }, [storeData.nutrition]);
@@ -73,7 +75,9 @@ function RTreatmentNutrition() {
 
     if (isChecked) {
       // Select all mapped nutrition items
-      const allMappedIds = getPredictionNutrition.map((nut) => nut.id.toString());
+      const allMappedIds = getPredictionNutrition.map((nut) =>
+        nut.id.toString()
+      );
       setSelectedCheckboxes(allMappedIds);
 
       const selectedNutrition = getNutrition.filter((nut) =>
@@ -109,15 +113,16 @@ function RTreatmentNutrition() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[80vh] bg-white">
+      <div className="rounded-lg bg-card h-[65vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
-          <div className="flex gap-5 text-center items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between">
             <div className="font-[550] text-lg">
               No. of nutrition checked: {selectedCheckboxes.length}
             </div>
+
             <div className="font-[550] text-lg flex items-center">
               Mapped Nutrition -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+              <div className="ml-2 bg-gray-400 border border-gray-200 w-5 h-5"></div>
             </div>
           </div>
 
@@ -167,7 +172,9 @@ function RTreatmentNutrition() {
                           onChange={handleCheckboxChange}
                           type="checkbox"
                           className="size-4"
-                          checked={selectedCheckboxes.includes(val.id.toString())}
+                          checked={selectedCheckboxes.includes(
+                            val.id.toString()
+                          )}
                         />
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">

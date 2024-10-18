@@ -82,7 +82,7 @@ function EditDiet(props) {
               setOpen(false);
             }}
           >
-            <Stack spacing={2} width={500}>
+            <Stack spacing={2} >
               <FormControl>
                 <FormLabel>{props.diet_code} </FormLabel>
                 <Input

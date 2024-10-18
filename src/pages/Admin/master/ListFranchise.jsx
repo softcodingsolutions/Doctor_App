@@ -297,16 +297,17 @@ function ListFranchise() {
 
         <div className="rounded-lg bg-card h-[95vh] w-full bg-white">
           <div className="flex px-3 py-3 h-full flex-col space-y-4">
-            <div className="flex items-center">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
               <div className="font-semibold text-xl">Franchise List</div>
+
               <div className="flex-grow" />
-              <div className="flex items-center justify-end gap-2 mr-6">
-                <div className="w-4 h-4 bg-red-300 border border-gray-800">
-                  {" "}
-                </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-end gap-2 mr-6">
+                <div className="w-4 h-4 bg-red-300 border border-gray-800"></div>
                 <div>- Possibility Group</div>
               </div>
-              <div className="w-fit">
+
+              <div className="w-full sm:w-fit">
                 {role === "super_admin" && (
                   <Select
                     required
@@ -314,20 +315,20 @@ function ListFranchise() {
                     placeholder="Select"
                     value={getDoctorId}
                     onChange={(e, newValue) => setGetDoctorId(newValue)}
+                    className="w-full sm:w-auto"
                   >
                     <Option key={"all"} value="all">
                       All
                     </Option>
-                    {getDoctors?.map((res) => {
-                      return (
-                        <Option key={res.id} value={res.id}>
-                          {res.first_name + " " + res.last_name}
-                        </Option>
-                      );
-                    })}
+                    {getDoctors?.map((res) => (
+                      <Option key={res.id} value={res.id}>
+                        {res.first_name + " " + res.last_name}
+                      </Option>
+                    ))}
                   </Select>
                 )}
               </div>
+
               <div className="flex gap-3 px-3">
                 <AddListFranchise
                   handleApi={handleAddFranchise}
@@ -427,7 +428,11 @@ function ListFranchise() {
                           </td>
                           <td className="py-1 px-2 border-b border-b-gray-50">
                             <TdComponent
-                              things={val.initial_amount <= 0 ? "0" : val.initial_amount}
+                              things={
+                                val.initial_amount <= 0
+                                  ? "0"
+                                  : val.initial_amount
+                              }
                             />
                           </td>
                           <td className="py-1 px-2 border-b border-b-gray-50">

@@ -76,7 +76,13 @@ function EditDosDonts(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog>
+        <ModalDialog
+          sx={{
+            maxWidth: { xs: "95%", sm: "600px" },
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -139,7 +145,7 @@ function EditDosDonts(props) {
 
               <FormControl>
                 <FormLabel>{props.details} </FormLabel>
-                <Box className="flex flex-col items-center w-full">
+                <Box className="flex flex-col  w-full">
                   <ReactTransliterate
                     defaultValue={props.see[0]?.details_in_english}
                     name={`question_english`}
@@ -159,7 +165,7 @@ function EditDosDonts(props) {
                         <textarea {...props} placeholder="In English..." />
                       );
                     }}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required
@@ -182,7 +188,7 @@ function EditDosDonts(props) {
                     renderComponent={(props) => {
                       return <textarea {...props} placeholder="In Hindi..." />;
                     }}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required
@@ -207,7 +213,7 @@ function EditDosDonts(props) {
                         <textarea {...props} placeholder="In Gujarati..." />
                       );
                     }}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required

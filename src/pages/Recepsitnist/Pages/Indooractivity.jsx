@@ -61,86 +61,90 @@ const UserTable = ({
   return (
     <div className="m-1 w-full overflow-x-auto">
       <div className="flex flex-col h-full space-y-4">
-        <div className="text-md  font-semibold text-center mt-5">
+        <div className="text-md font-semibold text-center mt-5">
           Dr. {userName}
         </div>
-        <table className="min-w-80 divide-y divide-gray-200">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-5 sm:px-5 py-3 text-left text-xs sm:text-xs font-semibold text-gray-900 uppercase tracking-wider">
-                Time
-              </th>
-              {machines
-                .filter((machine) => machine?.user?.first_name === userName)
-                .map((machine) => (
-                  <th
-                    key={machine.id}
-                    className="px-5 sm:px-2 py-3 text-left text-xs sm:text-xs font-semibold text-gray-900 uppercase tracking-wider"
-                  >
-                    {machine.name}
-                  </th>
-                ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y text-xs divide-gray-200">
-            {timeSlots.map((time, index) => {
-              let bookedCount = 0;
-              const rowItems = machines
-                .filter((machine) => machine?.user?.first_name === userName)
-                .map((machine) => {
-                  const appointmentId = getCheckedCount(
-                    appointments,
-                    machine.id,
-                    time,
-                    machines
-                  );
-                  const isBooked = !!appointmentId;
-
-                  if (isBooked) {
-                    bookedCount++;
-                  }
-
-                  return (
-                    <td
+        <div className="overflow-x-auto">
+          {" "}
+          {/* Added overflow container */}
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-3 sm:px-5 py-3 text-left text-xs sm:text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                  Time
+                </th>
+                {machines
+                  .filter((machine) => machine?.user?.first_name === userName)
+                  .map((machine) => (
+                    <th
                       key={machine.id}
-                      className="px-5 sm:px-2 py-3 text-left text-xs sm:text-xs font-medium text-gray-900"
+                      className="px-3 sm:px-2 py-3 text-left text-xs sm:text-xs font-semibold text-gray-900 uppercase tracking-wider"
                     >
-                      <div className="flex items-center justify-center sm:justify-start">
-                        <div
-                          onClick={() =>
-                            handleButtonClick(
-                              machine.id,
-                              machine.doctor_id,
-                              time,
-                              appointments,
-                              machines
-                            )
-                          }
-                          className={`w-4 h-4 border ${
-                            isBooked ? "bg-green-500" : "bg-white"
-                          } border-gray-400 rounded cursor-pointer flex items-center justify-center`}
-                        ></div>
-                      </div>
-                    </td>
-                  );
-                });
+                      {machine.name}
+                    </th>
+                  ))}
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y text-xs divide-gray-200">
+              {timeSlots.map((time, index) => {
+                let bookedCount = 0;
+                const rowItems = machines
+                  .filter((machine) => machine?.user?.first_name === userName)
+                  .map((machine) => {
+                    const appointmentId = getCheckedCount(
+                      appointments,
+                      machine.id,
+                      time,
+                      machines
+                    );
+                    const isBooked = !!appointmentId;
 
-              return (
-                <tr
-                  key={index}
-                  className={`${
-                    bookedCount >= 7 ? "pointer-events-none opacity-50" : ""
-                  }`}
-                >
-                  <td className="px-2 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-900">
-                    {time}
-                  </td>
-                  {rowItems}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                    if (isBooked) {
+                      bookedCount++;
+                    }
+
+                    return (
+                      <td
+                        key={machine.id}
+                        className="px-3 sm:px-2 py-3 text-left text-xs sm:text-xs font-medium text-gray-900"
+                      >
+                        <div className="flex items-center justify-center sm:justify-start">
+                          <div
+                            onClick={() =>
+                              handleButtonClick(
+                                machine.id,
+                                machine.doctor_id,
+                                time,
+                                appointments,
+                                machines
+                              )
+                            }
+                            className={`w-4 h-4 border ${
+                              isBooked ? "bg-green-500" : "bg-white"
+                            } border-gray-400 rounded cursor-pointer flex items-center justify-center`}
+                          ></div>
+                        </div>
+                      </td>
+                    );
+                  });
+
+                return (
+                  <tr
+                    key={index}
+                    className={`${
+                      bookedCount >= 7 ? "pointer-events-none opacity-50" : ""
+                    }`}
+                  >
+                    <td className="px-2 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-900">
+                      {time}
+                    </td>
+                    {rowItems}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -438,37 +442,39 @@ export default function Indooractivity() {
     <div className="w-full  ">
       <div className="rounded-lg bg-card h-full bg-white">
         <div className="flex flex-col px-2 py-1 h-full space-y-2 ">
-          <div className="flex w-full justify-center">
-            <div className="text-right justify-end flex w-full ">
-              <h2 className="text-xl font-semibold  p-3">
+          <div className="flex flex-col w-full items-center">
+            <div className="flex justify-center  w-full p-3">
+              <h2 className="text-xl font-semibold text-center w-full md:w-auto">
                 Indoor Activity Time Slot
               </h2>
+              <div className="flex w-full ml-20 md:w-auto justify-end">
+                <button
+                  type="submit"
+                  className="text-black p-1 bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+                  onClick={handleSheet}
+                >
+                  Appointments
+                </button>
+              </div>
             </div>
-            <div className="text-right justify-end w-[65%] p-4">
-              <button
-                type="submit"
-                className=" text-black p-1 bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                onClick={handleSheet}
-              >
-                Appointments
-              </button>
-            </div>
-          </div>
-          <div className="flex justify-center mt-5 gap-5">
-            <div>
-              <input
-                type="date"
-                placeholder="select date"
-                className="py-1 px-2 rounded-md border border-black w-[40vh]"
-                onChange={handleConsulting}
-              />
-            </div>
-            <div>
-              <div className="text-md font-semibold ">
-                Date : {formatDate(consultingTime)}
+
+            <div className="flex flex-col md:flex-row justify-center mt-5 gap-5 w-full items-center">
+              <div className="w-full md:w-auto">
+                <input
+                  type="date"
+                  placeholder="select date"
+                  className="py-1 px-2 rounded-md border border-black w-full md:w-[40vh]"
+                  onChange={handleConsulting}
+                />
+              </div>
+              <div className="w-full md:w-auto">
+                <div className="text-md font-semibold">
+                  Date: {formatDate(consultingTime)}
+                </div>
               </div>
             </div>
           </div>
+
           <div className="flex justify-center">
             {["Bhavesh", "Rupali", "Nidhi"].map((userName) => (
               <UserTable

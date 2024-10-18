@@ -139,6 +139,35 @@ function RecepAllUsers() {
     return formattedDate;
   };
 
+  const handlePackageDetail = (e) => {
+    const selectedPackageStatus = e.target.value;
+
+    axios
+      .get(`/api/v1/users`)
+      .then((res) => {
+        if (selectedPackageStatus === "select") {
+          const patients = res.data?.users?.filter(
+            (user) => user.role === "patient"
+          );
+          console.log("Patients by Super Admin: ", patients);
+          setGetCustomers(patients);
+        } else {
+          const filteredUsers = res.data?.users.filter((user) => {
+            if (user.user_packages) {
+              return (
+                user.user_packages.package_status === selectedPackageStatus
+              );
+            }
+            return false;
+          });
+          setGetCustomers(filteredUsers);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching users: ", error);
+      });
+  };
+
   useEffect(() => {
     handleGetAllUsers();
     localStorage.removeItem("userId");
@@ -183,54 +212,55 @@ function RecepAllUsers() {
               New Patient
             </button>
           </div>
-          <div className="flex items-center justify-end gap-2">
-            <div className="flex flex-start gap-2 w-[67%]">
-              <div className="flex items-start ">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-2">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-[67%]">
+              <div className="flex items-start">
                 <select
                   name="overweight"
                   onChange={handleType}
                   placeholder="Type"
-                  className="py-2 text-sm px-3 rounded-md border border-black"
+                  className="py-2 text-sm px-3 rounded-md border border-black w-full sm:w-auto"
                 >
                   <option value="">Select Type</option>
-                  <option value="new_case">New Case / Unread </option>
+                  <option value="new_case">New Case / Unread</option>
                   <option value="old_case">Follow Up</option>
                 </select>
               </div>
-              <div className="flex items-start ">
+              <div className="flex items-start">
                 <input
                   type="date"
-                  placeholder="select date"
+                  placeholder="Select date"
                   onChange={handleDate}
-                  className="py-1 text-sm px-2 rounded-md border border-black"
+                  className="py-1 text-sm px-2 rounded-md border border-black w-full sm:w-auto"
                 />
               </div>
-              <div className="flex items-start ">
+              <div className="flex items-start">
                 <select
-                  name="overweight"
                   defaultValue="select"
                   placeholder="Type"
-                  className="py-2 text-sm px-3 rounded-md border border-black"
+                  onChange={handlePackageDetail}
+                  className="py-2 text-sm px-2 rounded-md border border-black w-full sm:w-auto"
                 >
-                  <option value="select" disabled>
-                    Package Details
-                  </option>
+                  <option value="select">Package Details</option>
                   <option value="activate">Activate</option>
                   <option value="expired">Expired</option>
                   <option value="deactivate">Deactivated</option>
                   <option value="renew">Renew</option>
-                  <option value="about_to_expired">About to Expried</option>
+                  <option value="about_to_expired">About to Expire</option>
                 </select>
               </div>
             </div>
-            <input
-              type="checkbox"
-              checked
-              className="w-4 h-4 border border-gray-800"
-            />
-            <div> - Indoor activity accessibility</div>
-            <div className="w-4 h-4 bg-blue-300 border border-gray-800"> </div>
-            <div>- New Patient</div>
+
+            <div className="flex items-center gap-1">
+              <input
+                type="checkbox"
+                checked
+                className="w-4 h-4 border border-gray-800"
+              />
+              <div>- Indoor activity accessibility</div>
+              <div className="w-4 h-4 bg-blue-300 border border-gray-800"></div>
+              <div>- New Patient</div>
+            </div>
           </div>
 
           <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out h-[75vh]">

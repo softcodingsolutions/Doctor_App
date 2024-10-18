@@ -89,18 +89,18 @@ export const masterButtons = [
 ];
 
 export const reportButtons = [
-  {
-    id: "2",
-    name: "Questions",
-    icons: <FaRegQuestionCircle size={18} />,
-    to: "questions",
-  },
-  {
-    id: "3",
-    name: "Past History",
-    icons: <GoHistory size={18} />,
-    to: "past-history",
-  },
+  // {
+  //   id: "2",
+  //   name: "Questions",
+  //   icons: <FaRegQuestionCircle size={18} />,
+  //   to: "questions",
+  // },
+  // {
+  //   id: "3",
+  //   name: "Past History",
+  //   icons: <GoHistory size={18} />,
+  //   to: "past-history",
+  // },
   {
     id: "4",
     name: "Treatment",
@@ -141,43 +141,43 @@ export const packagesButton = [
   //     to: "profile",
   //   },
   {
-    id: "12",
+    id: "21",
     name: "Questions",
     icons: <FaRegQuestionCircle size={18} />,
     to: "progress-questions",
   },
   {
-    id: "15",
+    id: "22",
     name: "Complains",
     icons: <MdError size={18} />,
     to: "progress-complains",
   },
   {
-    id: "16",
+    id: "23",
     name: "Package",
     icons: <LuPackagePlus size={18} />,
     to: "package",
   },
   {
-    id: "17",
+    id: "24",
     name: "Progress Report",
     icons: <TbReport size={18} />,
     to: "progress-report",
   },
   {
-    id: "14",
+    id: "25",
     name: "Assigned Medicines",
     icons: <LiaProceduresSolid size={18} />,
     to: "package-medicine",
   },
   {
-    id: "13",
+    id: "26",
     name: "Bill History",
     icons: <GoHistory size={18} />,
     to: "admin-bill-history",
   },
   {
-    id: "14",
+    id: "27",
     name: "Analysis",
     icons: <TbBrandGoogleAnalytics size={18} />,
     to: "patient-analysis",
@@ -189,7 +189,7 @@ export const packagesButton = [
   //   to: "user-complains",
   // }
   {
-    id: "8",
+    id: "28",
     name: "Generate Report",
     icons: <MdOutlinePictureAsPdf size={18} />,
     to: "generate-report",

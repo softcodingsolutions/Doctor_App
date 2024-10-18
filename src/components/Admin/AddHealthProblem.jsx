@@ -60,7 +60,13 @@ function AddHealthProblem(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog>
+        <ModalDialog
+          sx={{
+            maxWidth: { xs: "95%", sm: "600px" },
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -73,7 +79,7 @@ function AddHealthProblem(props) {
             <Stack spacing={3}>
               <FormControl>
                 <FormLabel>{props.details} </FormLabel>
-                <Box className="flex flex-col items-center w-full">
+                <Box className="flex flex-col  w-full">
                   <ReactTransliterate
                     name="question_english"
                     value={text.english}
@@ -87,7 +93,7 @@ function AddHealthProblem(props) {
                     renderComponent={(props) => (
                       <textarea {...props} placeholder="In English..." />
                     )}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required

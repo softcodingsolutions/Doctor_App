@@ -14,7 +14,7 @@ function SurveyTreatmentDont() {
   const context = useOutletContext();
   const [getDonts, setGetDonts] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [showCheckboxes, setShowCheckboxes] = useState(true);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 7;
@@ -116,7 +116,6 @@ function SurveyTreatmentDont() {
       console.error(err);
     } finally {
       setSelectedCheckboxes([]);
-      setShowCheckboxes(false);
     }
   };
 
@@ -143,20 +142,13 @@ function SurveyTreatmentDont() {
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
           <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes && (
-              <SelectTreatmentButton
-                name="Select Don'ts"
-                function={handleToggleCheckboxes}
-              />
-            )}
-
             {showCheckboxes && (
               <div className="font-[550] text-lg">
                 No. of don'ts checked: {selectedCheckboxes.length}
               </div>
             )}
 
-            {!showCheckboxes && (
+            {showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Don'ts -{" "}
                 <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
@@ -168,17 +160,11 @@ function SurveyTreatmentDont() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  {showCheckboxes ? (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="Select"
-                    />
-                  ) : (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
-                    />
-                  )}
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="Select"
+                  />
+
                   <ThComponent name="In English" />
                   <ThComponent
                     moreClasses={"rounded-tr-md rounded-br-md"}
@@ -213,30 +199,22 @@ function SurveyTreatmentDont() {
                         } w-full`}
                         key={val.id}
                       >
-                        {showCheckboxes && (
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <input
-                              value={val.id}
-                              onChange={handleCheckboxChange}
-                              type="checkbox"
-                              className="size-4"
-                              defaultChecked={context[2]?.some(
-                                (packages) =>
-                                  context[0] === packages.survey_weigh_reason &&
-                                  packages.dont?.some(
-                                    (donts) => donts.id === val.id
-                                  )
-                              )}
-                            />
-                          </td>
-                        )}
-                        {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">
-                              {index + 1 + (currentPage - 1) * rowsPerPage}
-                            </div>
-                          </td>
-                        )}
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <input
+                            value={val.id}
+                            onChange={handleCheckboxChange}
+                            type="checkbox"
+                            className="size-4"
+                            defaultChecked={context[2]?.some(
+                              (packages) =>
+                                context[0] === packages.survey_weigh_reason &&
+                                packages.dont?.some(
+                                  (donts) => donts.id === val.id
+                                )
+                            )}
+                          />
+                        </td>
+
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.in_english} />
                         </td>
@@ -314,19 +292,19 @@ function SurveyTreatmentDont() {
               </button>
             </div>
           )}
-          
-          {!showCheckboxes && (
-            <div className="flex justify-between">
-              <PrevPageButton to="../survey-treatment-dos" />
-              <NextPageButton
-                name="Exercise"
-                to="../survey-treatment-exercise"
-              />
-            </div>
-          )}
+
           {showCheckboxes && (
-            <div className="flex justify-center">
-              <SaveTreatmentButtons function={handleSave} />{" "}
+            <div className="flex justify-between">
+              <div>
+                <PrevPageButton to="../survey-treatment-dos" />
+              </div>
+              <div>
+                <SaveTreatmentButtons function={handleSave} />{" "}
+                <NextPageButton
+                  name="Exercise"
+                  to="../survey-treatment-exercise"
+                />
+              </div>
             </div>
           )}
         </div>

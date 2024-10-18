@@ -94,6 +94,7 @@ export default function GenerateBill() {
           alert("Bill created successfully");
           resetForm();
           setSearchTerm("");
+          navigate('')
         })
         .catch((err) => {
           console.log("Error creating bill", err);
@@ -141,7 +142,6 @@ export default function GenerateBill() {
           const userId = res?.data?.user?.id;
           setGetParticularCustomer(res.data.user);
           setError("");
-         
         })
         .catch((err) => {
           console.log(err);
@@ -205,7 +205,7 @@ export default function GenerateBill() {
             <div>
               {error && <div className="text-red-500">{error}</div>}
               {getParticularCustomer?.length > 0 ? (
-                <div className="space-y-1 ">
+                <div className="space-y-1">
                   {getParticularCustomer.map((user) => (
                     <div
                       key={user.id}
@@ -227,8 +227,8 @@ export default function GenerateBill() {
                   ))}
                 </div>
               ) : (
-                <div className="flex gap-48">
-                  <div className="text-md font-bold mb-4">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="text-md font-bold mb-4 flex-1">
                     <div>
                       Patient Name:{" "}
                       <span className="font-medium">
@@ -242,7 +242,7 @@ export default function GenerateBill() {
                       </span>
                     </div>
                   </div>
-                  <div className="text-md font-bold mb-4">
+                  <div className="text-md font-bold mb-4 flex-1">
                     <div>
                       Package Name:{" "}
                       <span className="font-medium">
@@ -262,75 +262,77 @@ export default function GenerateBill() {
             <div className="w-full">
               {medicines.length > 0 && (
                 <div className="bg-white shadow-md rounded-lg overflow-hidden">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                          Medicine Name
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                          Medicine Intake
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                          Assigned Medicine
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                          Total Quantity
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                          With Milk
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {medicines.length > 0 ? (
-                        medicines.map((med, index) => (
-                          <tr key={med.id}>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap  font-medium text-gray-900">
-                              {med.medicine_name}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap  ">
-                              {formatDosage(med?.dosage)}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap  ">
-                              {med.is_assigned ? "Yes" : "No"}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap  ">
-                              <input
-                                type="number"
-                                className={`border rounded-md p-2 ${
-                                  errors[`totalQuantities_${index}`]
-                                    ? "border-red-500"
-                                    : "border-blue-gray-400"
-                                }`}
-                                min={0}
-                                onChange={(e) =>
-                                  handleTotalMedicine(index, e.target.value)
-                                }
-                              />
-                              {errors[`totalQuantities_${index}`] && (
-                                <p className="text-red-500 text-sm">
-                                  {errors[`totalQuantities_${index}`]}
-                                </p>
-                              )}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap  ">
-                              {med.with_milk ? "Yes" : "No"}
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-100">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                            Medicine Name
+                          </th>
+                          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                            Medicine Intake
+                          </th>
+                          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                            Assigned Medicine
+                          </th>
+                          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                            Total Quantity
+                          </th>
+                          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                            With Milk
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {medicines.length > 0 ? (
+                          medicines.map((med, index) => (
+                            <tr key={med.id}>
+                              <td className="px-3 py-4 text-sm whitespace-nowrap font-medium text-gray-900">
+                                {med.medicine_name}
+                              </td>
+                              <td className="px-3 py-4 text-sm whitespace-nowrap">
+                                {formatDosage(med?.dosage)}
+                              </td>
+                              <td className="px-3 py-4 text-sm whitespace-nowrap">
+                                {med.is_assigned ? "Yes" : "No"}
+                              </td>
+                              <td className="px-3 py-4 text-sm whitespace-nowrap">
+                                <input
+                                  type="number"
+                                  className={`border rounded-md p-2 ${
+                                    errors[`totalQuantities_${index}`]
+                                      ? "border-red-500"
+                                      : "border-blue-gray-400"
+                                  }`}
+                                  min={0}
+                                  onChange={(e) =>
+                                    handleTotalMedicine(index, e.target.value)
+                                  }
+                                />
+                                {errors[`totalQuantities_${index}`] && (
+                                  <p className="text-red-500 text-sm">
+                                    {errors[`totalQuantities_${index}`]}
+                                  </p>
+                                )}
+                              </td>
+                              <td className="px-3 py-4 text-sm whitespace-nowrap">
+                                {med.with_milk ? "Yes" : "No"}
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan={5}
+                              className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
+                            >
+                              No medicines assigned.
                             </td>
                           </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan={5}
-                            className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
-                          >
-                            No medicines assigned.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>
@@ -345,7 +347,7 @@ export default function GenerateBill() {
                     value={price}
                     onChange={handlePrice}
                     className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                      errors.price ? "border-red-500" : "border-gray-300"
+                      errors.price ? "border-red-500" : "border-black"
                     } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
                   />
                   {errors.price && (
@@ -361,7 +363,7 @@ export default function GenerateBill() {
                     value={pay}
                     onChange={handlePay}
                     className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                      errors.pay ? "border-red-500" : "border-gray-300"
+                      errors.pay ? "border-red-500" : "border-black"
                     } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
                   />
                   {errors.pay && (

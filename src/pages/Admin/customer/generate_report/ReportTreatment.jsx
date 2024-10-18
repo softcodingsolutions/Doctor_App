@@ -6,9 +6,11 @@ import { Option, Select } from "@mui/joy";
 import axios from "axios";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import InsideLoader from "../../../InsideLoader";
 
 function ReportTreatment() {
+  const navigate = useNavigate();
   const getCustomers = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
   const [getWeightReason, setGetWeightReason] = useState([]);
@@ -70,6 +72,7 @@ function ReportTreatment() {
               icon: "success",
             });
             getCustomers[2]();
+            navigate("/admin/patients/user-diagnosis/lab-tests");
           })
           .catch((err) => {
             console.log(err);
@@ -131,18 +134,16 @@ function ReportTreatment() {
             (pack) => doctorWeightReasonsMap[pack.id] === pack.name // Match by both id and name
           );
 
-          // If no matches found, default to doctor's weight reasons (fallback)
           const finalWeightReasons = filteredWeightReasons.length
             ? filteredWeightReasons
             : doctorWeightReasons.map((reason) => ({
                 id: reason.id,
                 name: reason.name,
-                meets_requirements: false, // Default `meets_requirements` to false for fallback
+                meets_requirements: false,
               }));
 
           console.log(finalWeightReasons);
 
-          // Set the final filtered weight reasons in state
           setGetWeightReason(
             finalWeightReasons.map((reason) => [
               reason.name,
@@ -176,10 +177,11 @@ function ReportTreatment() {
           <div className="w-full sm:flex p-1 items-end">
             <div className="sm:flex-grow flex flex-col justify-between overflow-x-hidden">
               <div className="flex flex-wrap items-center gap-4 transition-transform pb-2">
-                <div className="flex flex-col">
+                <div className="flex justify-center w-full md:w-[180vh]  px-4">
                   <Select
                     sx={{
-                      width: "250px",
+                      width: "100%", 
+                      maxWidth: "400px", 
                       border: "1px solid black",
                     }}
                     value={sendWeightReason ? sendWeightReason[0] : ""}
@@ -202,60 +204,55 @@ function ReportTreatment() {
                       );
                     })}
                   </Select>
-                </div>
-                {!sendWeightReason && (
-                  <span className="text-red-500 font-medium text-sm -ml-4 mt-5">
-                    *Required
-                  </span>
-                )}
-                <div
-                  className={clsx(
-                    `flex flex-wrap space-x-3`,
-                    sendWeightReason === null &&
-                      "pointer-events-none opacity-50"
+                  {!sendWeightReason && (
+                    <span className="text-red-500 font-medium text-sm mt-2 md:mt-5">
+                      *Required
+                    </span>
                   )}
-                >
-                  {reportTreatmentButtons.map((res) => {
-                    return (
-                      <Link
-                        to={res.to}
-                        onClick={() => setSelectedId(res.id)}
-                        key={res.id}
-                        className={clsx(
-                          "min-w-fit flex flex-wrap items-center border shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white py-2 px-2.5 rounded-md",
-                          selectedId === res.id
-                            ? "bg-[#1F2937] text-white"
-                            : "bg-white"
-                        )}
-                      >
-                        {res.icons}
-                        <span className="ml-1.5">{res.name}</span>
-                      </Link>
-                    );
-                  })}
-                  <button
-                    onClick={submitDataToCreateTreatmentPackage}
-                    className="min-w-fit flex flex-wrap text-green-500 font-semibold items-center border shadow-md cursor-pointer hover:bg-[#17da21] hover:text-white py-2 px-3.5 rounded-md"
-                  >
-                    <IoIosCheckmarkCircle size={20} /> Submit
-                  </button>
                 </div>
-              </div>
-              <div
-                className={clsx(
-                  sendWeightReason === null && "pointer-events-none opacity-50"
+
+                {sendWeightReason !== null && (
+                  <div className={clsx(`flex flex-wrap space-x-3`)}>
+                    {reportTreatmentButtons.map((res) => {
+                      return (
+                        <Link
+                          to={res.to}
+                          onClick={() => setSelectedId(res.id)}
+                          key={res.id}
+                          className={clsx(
+                            "min-w-fit flex flex-wrap items-center border shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white py-2 px-2.5 rounded-md",
+                            selectedId === res.id
+                              ? "bg-[#1F2937] text-white"
+                              : "bg-white"
+                          )}
+                        >
+                          {res.icons}
+                          <span className="ml-1.5">{res.name}</span>
+                        </Link>
+                      );
+                    })}
+                    <button
+                      onClick={submitDataToCreateTreatmentPackage}
+                      className="min-w-fit flex flex-wrap text-green-500 font-semibold items-center border shadow-md cursor-pointer hover:bg-[#17da21] hover:text-white py-2 px-3.5 rounded-md"
+                    >
+                      <IoIosCheckmarkCircle size={20} /> Submit
+                    </button>
+                  </div>
                 )}
-              >
-                <Outlet
-                  context={{
-                    sendWeightReason,
-                    mappingPackages,
-                    handleGetWeightReason,
-                    setStoreData,
-                    storeData,
-                  }}
-                />
               </div>
+              {sendWeightReason !== null && (
+                <div className={clsx()}>
+                  <Outlet
+                    context={{
+                      sendWeightReason,
+                      mappingPackages,
+                      handleGetWeightReason,
+                      setStoreData,
+                      storeData,
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

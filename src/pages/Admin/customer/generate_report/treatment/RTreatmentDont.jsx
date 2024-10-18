@@ -27,22 +27,29 @@ function RTreatmentDont() {
 
   const handleGetDonts = () => {
     if (sendWeightReason) {
-      const data = mappingPackages.filter((pack) => sendWeightReason[0] === pack.package.weight_reason);
+      const data = mappingPackages.filter(
+        (pack) => sendWeightReason[0] === pack.package.weight_reason
+      );
       setGetPredictionDonts(data[0]?.package?.dont || []);
     }
 
     axios
-      .get(`/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`)
+      .get(
+        `/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
-        setGetDonts(res.data?.avoid_and_adds.filter((res) => res.category === "dont") || []);
+        setGetDonts(
+          res.data?.avoid_and_adds.filter((res) => res.category === "dont") ||
+            []
+        );
         setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: err.response?.data?.message || 'An error occurred!',
+          icon: "error",
+          title: "Oops...",
+          text: err.response?.data?.message || "An error occurred!",
         });
       });
   };
@@ -73,7 +80,9 @@ function RTreatmentDont() {
     setSelectAll(isChecked);
 
     if (isChecked) {
-      const allPredictionDontsIds = getPredictionDonts.map((dont) => dont.id.toString());
+      const allPredictionDontsIds = getPredictionDonts.map((dont) =>
+        dont.id.toString()
+      );
       setSelectedCheckboxes(allPredictionDontsIds);
 
       const selectedDonts = getPredictionDonts.map((dont) => ({
@@ -109,15 +118,15 @@ function RTreatmentDont() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[80vh] bg-white ">
+      <div className="rounded-lg bg-card h-[65vh] bg-white ">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
-          <div className="flex gap-5 text-center items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between">
             <div className="font-[550] text-lg">
               No. of don'ts checked: {selectedCheckboxes.length}
             </div>
             <div className="font-[550] text-lg flex items-center">
               Mapped Don'ts -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+              <div className="ml-2 bg-gray-400 border border-gray-200 w-5 h-5"></div>
             </div>
           </div>
 
@@ -134,7 +143,10 @@ function RTreatmentDont() {
                   </th>
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
-                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} name="In Gujarati" />
+                  <ThComponent
+                    moreClasses={"rounded-tr-md rounded-br-md"}
+                    name="In Gujarati"
+                  />
                 </tr>
               </thead>
               <tbody>
@@ -163,7 +175,9 @@ function RTreatmentDont() {
                           onChange={handleCheckboxChange}
                           type="checkbox"
                           className="size-4"
-                          checked={selectedCheckboxes.includes(val.id.toString())}
+                          checked={selectedCheckboxes.includes(
+                            val.id.toString()
+                          )}
                         />
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">

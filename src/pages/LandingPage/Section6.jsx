@@ -66,31 +66,35 @@ function Section6({ scrollYProgress }) {
   return (
     <motion.div
       style={{ scale }}
-      className="sticky top-0 h-screen bg-green-100 flex flex-col items-center"
+      className="sticky top-0 h-[150vh] bg-green-100 flex flex-col items-center"
     >
       <footer className="relative w-full h-full">
-        <div className="mx-auto w-full h-full max-w-7xl px-8 flex flex-col items-center justify-between">
+        <div className="mx-auto w-full h-full max-w-7xl px-4 sm:px-8 flex flex-col items-center justify-between">
           <Typography
             variant="h5"
-            className="flex w-full items-center justify-evenly gap-24 mt-10"
+            className="flex w-full items-center justify-evenly gap-6 sm:gap-24 mt-10 flex-col sm:flex-row"
           >
             <ScrollToTopLink to="/">
-              <img src={icons_slime} className="w-72" />
+              <img
+                src={icons_slime}
+                className="w-48 sm:w-72"
+                alt="Slim and Smile Logo"
+              />
             </ScrollToTopLink>
-            <div className="font-sans text-lg text-balance tracking-wide font-light w-1/2">
+            <div className="font-sans lg:text-lg text-sm text-balance tracking-wide font-light text-center sm:text-left w-full sm:w-1/2">
               <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
               Ayu Care offers unique weight loss solutions which are in turn
               backed 100% by age old, tried and tested Ayurvedic principles.
             </div>
           </Typography>
-          <div className="flex justify-evenly gap-10 w-full">
+          <div className="flex flex-col sm:flex-row justify-evenly gap-10 w-full lg:mt-6 mt-2">
             {LINKS.map(({ title, items }) =>
               title === "Our Speciality" ? (
                 <ul key={title} className="flex-1">
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="mb-3 font-semibold opacity-80 font-sans text-lg"
+                    className="lg:mb-3 font-semibold opacity-80 font-sans lg:text-lg text-sm"
                   >
                     {title}
                   </Typography>

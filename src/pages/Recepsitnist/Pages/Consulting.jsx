@@ -65,7 +65,6 @@ export default function Consulting(props) {
 
   function formatTime(time) {
     try {
-      
       const date = new Date(time);
 
       // Define formatting options
@@ -101,55 +100,62 @@ export default function Consulting(props) {
       <form>
         {props.name && (
           <div>
-            <div className="flex gap-5 m-2">
-              <label className="text-lg text-end w-1/3 mr-2">Name :</label>
+            <div className="flex flex-col sm:flex-row gap-5 m-2">
+              <label className="text-lg text-end w-full sm:w-1/3 mr-2">
+                Name :
+              </label>
               <input
                 type="text"
-                className="py-1 px-2  border-black w-[40vh]"
+                className="py-1 px-2 border w-full rounded sm:w-[40vh]"
                 value={`${props.name} ${props.lastName}`}
+                readOnly // Optional: Makes the field read-only if you don't want to edit
               />
             </div>
-            <div className="flex gap-5 m-2">
-              <label className="text-lg text-end w-1/3 mr-2">
+            <div className="flex flex-col sm:flex-row gap-5 m-2">
+              <label className="text-lg text-end w-full sm:w-1/3 mr-2">
                 Mobile Number:
               </label>
               <input
                 type="text"
-                className="py-1 px-2  border-black w-[40vh]"
+                className="py-1 px-2 border w-full rounded sm:w-[40vh]"
                 value={props.number}
+                readOnly // Optional: Makes the field read-only if you don't want to edit
               />
             </div>
-            <div className="flex gap-5 m-2">
-              <label className="text-lg text-end w-1/3 mr-2">Email :</label>
+            <div className="flex flex-col sm:flex-row gap-5 m-2">
+              <label className="text-lg text-end w-full sm:w-1/3 mr-2">
+                Email :
+              </label>
               <input
                 type="text"
-                className="py-1 px-2  border-black w-[40vh]"
+                className="py-1 px-2 border w-full rounded sm:w-[40vh]"
                 value={props.email}
+                readOnly // Optional: Makes the field read-only if you don't want to edit
               />
             </div>
           </div>
         )}
-        <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">
-            Select the Date:{" "}
+        <div className="flex flex-col sm:flex-row gap-5 m-2">
+          <label className="text-lg text-end w-full sm:w-1/3 mr-2">
+            Select the Date:
           </label>
           <input
             type="date"
             placeholder="select date"
-            className="py-1 px-2 rounded-md border border-black w-[40vh]"
+            className="py-1 px-2 rounded-md border border-black w-full sm:w-[40vh]"
             onChange={handleConsulting}
           />
         </div>
-        <div className="flex gap-5 m-2">
-          <label className="text-lg text-end w-1/3 mr-2">
-            Select the Slot:{" "}
+        <div className="flex flex-col sm:flex-row gap-5 m-2">
+          <label className="text-lg text-end w-full sm:w-1/3 mr-2">
+            Select the Slot:
           </label>
           <select
-            className="py-1 px-2 rounded-md border border-black w-[40vh]"
+            className="py-1 px-2 rounded-md border border-black w-full sm:w-[40vh]"
             onChange={handleSlot}
             value={slot}
           >
-            <option value="" selected>
+            <option value="" disabled>
               Select Consulting Time
             </option>
             {data.map((timeSlot) => (
@@ -162,8 +168,7 @@ export default function Consulting(props) {
         <div className="flex w-full justify-center mt-10">
           <button
             type="submit"
-            className="w-[20rem] text-white py-1 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-            name="Save & Continue"
+            className="w-full sm:w-[20rem] text-white py-1 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
             style={{ backgroundColor: "black" }}
             onClick={handleSubmit}
           >

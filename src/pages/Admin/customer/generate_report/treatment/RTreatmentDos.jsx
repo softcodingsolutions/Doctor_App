@@ -27,22 +27,28 @@ function RTreatmentDos() {
 
   const handleGetDos = () => {
     if (sendWeightReason) {
-      const data = mappingPackages.filter((pack) => sendWeightReason[0] === pack.package.weight_reason);
+      const data = mappingPackages.filter(
+        (pack) => sendWeightReason[0] === pack.package.weight_reason
+      );
       setGetPredictionDos(data[0]?.package?.dos || []);
     }
 
     axios
-      .get(`/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`)
+      .get(
+        `/api/v1/avoid_and_adds?user_id=${localStorage.getItem("doctor_id")}`
+      )
       .then((res) => {
-        setGetDos(res.data?.avoid_and_adds.filter((res) => res.category === "do") || []);
+        setGetDos(
+          res.data?.avoid_and_adds.filter((res) => res.category === "do") || []
+        );
         setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: err.response?.data?.message || 'An error occurred!',
+          icon: "error",
+          title: "Oops...",
+          text: err.response?.data?.message || "An error occurred!",
         });
       });
   };
@@ -124,15 +130,15 @@ function RTreatmentDos() {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg bg-card h-[80vh] bg-white">
+      <div className="rounded-lg bg-card h-[65vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
-          <div className="flex gap-5 text-center items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between">
             <div className="font-[550] text-lg">
               No. of dos checked: {selectedCheckboxes.length}
             </div>
             <div className="font-[550] text-lg flex items-center">
               Mapped Dos -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+              <div className="ml-2 bg-gray-400 border border-gray-200 w-5 h-5"></div>
             </div>
           </div>
 
@@ -150,7 +156,10 @@ function RTreatmentDos() {
                   </th>
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
-                  <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} name="In Gujarati" />
+                  <ThComponent
+                    moreClasses={"rounded-tr-md rounded-br-md"}
+                    name="In Gujarati"
+                  />
                 </tr>
               </thead>
               <tbody>
@@ -179,7 +188,9 @@ function RTreatmentDos() {
                           onChange={handleCheckboxChange}
                           type="checkbox"
                           className="size-4"
-                          checked={selectedCheckboxes.includes(val.id.toString())}
+                          checked={selectedCheckboxes.includes(
+                            val.id.toString()
+                          )}
                         />
                       </td>
                       <td className="py-3 px-4 border-b border-b-gray-50">

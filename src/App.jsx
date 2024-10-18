@@ -136,8 +136,14 @@ function App() {
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
             <Route path="generate-report" element={<ReportGenerate />} />
             <Route path="package-medicine" element={<ProgressMedicine />} />
+            <Route path="patient-analysis" element={<PatientAnalysis />} />
             <Route path="progress-report" element={<ReportProgress />} />
             <Route path="user-complains" element={<UserComplains />} />
+            <Route path="progress-questions" element={<ProgressQuestion />} />
+            <Route path="progress-complains" element={<ProgressComplains />} />
+            <Route path="admin-bill-history" element={<BillHistory />} />
+            <Route path="package" element={<ReportPackage />} />
+            <Route path="package-medicine" element={<ProgressMedicine />} />
           </Route>
         </Route>
 
@@ -186,7 +192,6 @@ function App() {
               <Route path="questions" element={<ReportQuestions />} />
               <Route path="past-history" element={<ReportPastHistory />} />
               <Route path="lab-tests" element={<TreatmentLabTests />} />
-          
 
               {/* customer treatment */}
               <Route path="treatment" element={<ReportTreatment />}>
@@ -307,11 +312,13 @@ function App() {
               <Route path="admin-bill-history" element={<BillHistory />} />
               <Route path="package" element={<ReportPackage />} />
               <Route path="package-medicine" element={<ProgressMedicine />} />
+              <Route path="patient-analysis" element={<PatientAnalysis />} />
               <Route
                 path="progress-complains"
                 element={<ProgressComplains />}
               />
               <Route path="progress-questions" element={<ProgressQuestion />} />
+              <Route path="generate-report" element={<ReportGenerate />} />
               <Route path="progress-report" element={<ReportProgress />} />
               {/* <Route path="package-details" element={<PackageDetails />} /> */}
             </Route>

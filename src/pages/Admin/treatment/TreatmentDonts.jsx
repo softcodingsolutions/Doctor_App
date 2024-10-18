@@ -16,7 +16,7 @@ function TreatmentDonts() {
   const context = useOutletContext();
   const [getDonts, setGetDonts] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [showCheckboxes, setShowCheckboxes] = useState(true);
   const role = localStorage.getItem("role");
   const [loading, setLoading] = useState(true);
   const main_id = localStorage.getItem("main_id");
@@ -65,10 +65,6 @@ function TreatmentDonts() {
           alert(err.response?.data?.message + "!");
         });
     }
-  };
-
-  const handleToggleCheckboxes = () => {
-    setShowCheckboxes(!showCheckboxes);
   };
 
   const handleCheckboxChange = (e) => {
@@ -121,17 +117,13 @@ function TreatmentDonts() {
       }
       handleGetDonts();
       context[1]();
+      navigate(`/admin/treatment/question-part1`);
+      window.location.reload();
     } catch (err) {
       console.error(err);
     } finally {
       setSelectedCheckboxes([]);
-      setShowCheckboxes(false);
     }
-  };
-
-  const handleRedirect = () => {
-    navigate(`/admin/treatment/question-part1`);
-    window.location.reload();
   };
 
   useEffect(() => {
@@ -156,24 +148,17 @@ function TreatmentDonts() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
-          <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes && (
-              <SelectTreatmentButton
-                name="Select Don'ts"
-                function={handleToggleCheckboxes}
-              />
-            )}
-
+          <div className="flex flex-col md:flex-row gap-4 md:gap-5 text-center items-center justify-between p-4">
             {showCheckboxes && (
               <div className="font-[550] text-lg">
                 No. of don'ts checked: {selectedCheckboxes.length}
               </div>
             )}
 
-            {!showCheckboxes && (
+            {showCheckboxes && (
               <div className="font-[550] text-lg flex items-center">
                 Checked Don'ts -{" "}
-                <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
+                <div className="ml-2 bg-gray-400 border border-gray-200 h-5 w-5"></div>{" "}
               </div>
             )}
           </div>
@@ -182,17 +167,11 @@ function TreatmentDonts() {
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  {showCheckboxes ? (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="Select"
-                    />
-                  ) : (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
-                    />
-                  )}
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="Select"
+                  />
+
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
                   <ThComponent
@@ -228,28 +207,22 @@ function TreatmentDonts() {
                         } w-full`}
                         key={val.id}
                       >
-                        {showCheckboxes && (
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <input
-                              value={val.id}
-                              onChange={handleCheckboxChange}
-                              type="checkbox"
-                              className="size-5"
-                              defaultChecked={context[2]?.some(
-                                (packages) =>
-                                  context[0] === packages.weight_reason &&
-                                  packages.dont?.some(
-                                    (donts) => donts.id === val.id
-                                  )
-                              )}
-                            />
-                          </td>
-                        )}
-                        {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">{index + 1}</div>{" "}
-                          </td>
-                        )}
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <input
+                            value={val.id}
+                            onChange={handleCheckboxChange}
+                            type="checkbox"
+                            className="size-5"
+                            defaultChecked={context[2]?.some(
+                              (packages) =>
+                                context[0] === packages.weight_reason &&
+                                packages.dont?.some(
+                                  (donts) => donts.id === val.id
+                                )
+                            )}
+                          />
+                        </td>
+
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.details_in_english} />
                         </td>
@@ -267,26 +240,18 @@ function TreatmentDonts() {
             </table>
           </div>
 
-          {!showCheckboxes && (
+          {showCheckboxes && (
             <>
               <div className="flex justify-between">
                 <PrevPageButton to="../dos" />
                 <div className="flex gap-2">
-                  <button
-                    className={`px-3 py-1.5 border-[1.5px] rounded-md text-white text-lg bg-gray-800 hover:scale-105 border-x-gray-300`}
-                    onClick={handleRedirect}
-                  >
-                    Save Treatment
-                  </button>
-                  <div className="font-bold text-lg m-2">for  "{weight_reason}"</div>
+                  <SaveTreatmentButtons function={handleSave} />{" "}
+                  <div className="font-bold text-lg m-2">
+                    for "{weight_reason}"
+                  </div>
                 </div>
               </div>
             </>
-          )}
-          {showCheckboxes && (
-            <div className="flex justify-center">
-              <SaveTreatmentButtons function={handleSave} />{" "}
-            </div>
           )}
         </div>
       </div>

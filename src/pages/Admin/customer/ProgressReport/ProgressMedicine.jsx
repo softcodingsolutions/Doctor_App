@@ -94,8 +94,8 @@ const ProgressMedicine = () => {
         <div className="text-lg font-semibold text-center ">Medicine</div>
         <div className="w-full mt-2">
           {medicines?.length > 0 ? (
-            <div className="  rounded-lg overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200">
+            <div className="  rounded-lg overflow-auto">
+              <table className="min-w-full  divide-gray-200">
                 <thead className="bg-gray-100">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">

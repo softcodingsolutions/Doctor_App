@@ -9,14 +9,15 @@ function AboutSection3({ scrollYProgress }) {
       className="sticky top-0 h-[100vh] w-full bg-orange-100 flex flex-col items-center"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-sans font-medium mt-8">
+        <div className="text-2xl md:text-4xl font-sans font-medium mt-6 md:mt-8 text-center">
           Some of the most common weight gaining reasons are:
         </div>
-        <div className="border-[2.5px] rounded-md border-orange-300 w-20 mt-3" />
+        <div className="border-[2.5px] rounded-md border-orange-300 w-16 md:w-20 mt-3" />
       </div>
-      <div className="flex w-full p-14 items-center gap-20 justify-evenly">
+
+      <div className="flex flex-col md:flex-row w-full px-6 py-8 md:p-14 items-center gap-10 md:gap-20 justify-evenly">
         <div>
-          <ul className="space-y-2 leading-loose text-lg">
+          <ul className="space-y-2 leading-loose text-base md:text-lg">
             <li>
               <span className="text-xl">&#11037;</span> Insulin Resistance
             </li>
@@ -39,8 +40,9 @@ function AboutSection3({ scrollYProgress }) {
             </li>
           </ul>
         </div>
+
         <div>
-          <ul className="space-y-2 leading-loose text-lg">
+          <ul className="space-y-2 leading-loose text-base md:text-lg">
             <li>
               <span className="text-xl">&#11037;</span> Toxic Colon
             </li>
@@ -62,8 +64,9 @@ function AboutSection3({ scrollYProgress }) {
           </ul>
         </div>
       </div>
-      <div className="flex flex-col gap-6 px-14 text- items-center justify-center mt-3">
-        <div className="tracking-wide leading-relaxed">
+
+      <div className="flex flex-col gap-6 p-6 md:px-14 text-center md:text-left items-center justify-center mt-3">
+        <div className="tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
           Our modern lifestyle introduces numerous factors that can contribute
           to weight gain, including a sedentary lifestyle, excessive consumption
           of fast food and aerated drinks, high levels of stress, and the use of
@@ -73,15 +76,17 @@ function AboutSection3({ scrollYProgress }) {
           thorough attention and care, ensuring that you achieve a reasonable
           and effective weight loss tailored to your needs.
         </div>
-        <div className="tracking-wide  leading-relaxed">
-          Under the expert guidance of Dr. Bhavesh Thakkar and Dr. Manish Patel,
+
+        <div className="tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
+          Under the expert guidance of Dr. Bhavesh Thakkar and Dr. Manish Patel,{" "}
           <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
           Care has been operating with excellence for many years. Throughout its
           journey, the center has continuously evolved and thrived, embodying
           its mission to bring joy to those striving for a slimmer and healthier
           life.
         </div>
-        <div className="tracking-wide  leading-relaxed">
+
+        <div className="tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
           Notably,{" "}
           <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
           Care has garnered significant recognition, including the prestigious

@@ -52,17 +52,15 @@ export default function ProgressQuestion() {
   return (
     <div>
       {showQues && (
-        <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
-          <table className="w-full  min-w-[460px] z-0">
+        <div className="animate-fade-left animate-delay-75  lg:w-[140vh]  md:w-[100vh]  rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
+          <table className="w-full">
             <thead className="uppercase ">
               <tr className="bg-[#1F2937] text-white rounded-md p-2">
                 <ThComponent
                   moreClasses={"rounded-tl-md rounded-bl-md"}
                   name="No."
                 />
-                <ThComponent name="In English" />
-                <ThComponent name="In Hindi" />
-                <ThComponent name="In Gujarati" />
+                <ThComponent name="Questions" />
                 <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
               </tr>
             </thead>
@@ -86,13 +84,7 @@ export default function ProgressQuestion() {
                         </div>
                       </td>
                       <td className="py-4 px-4 border-b border-b-gray-50">
-                        <TdComponent things={val.question_in_english} />
-                      </td>
-                      <td className="py-4 px-4 border-b border-b-gray-50">
-                        <TdComponent things={val.question_in_hindi} />
-                      </td>
-                      <td className="py-4 px-4 border-b border-b-gray-50">
-                        <TdComponent things={val.question_in_gujarati} />
+                        <TdComponent things={val} />
                       </td>
                       {val.progress_report === null && (
                         <td className="py-4 px-4 border-b border-b-gray-50 flex gap-5">

@@ -65,7 +65,15 @@ function AddNewExercise(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog className="max-h-[90vh] overflow-y-auto"> {/* Add styles here */}
+        <ModalDialog
+          sx={{
+            maxWidth: { sm: "69%" },
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
+          {" "}
+          {/* Add styles here */}
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -74,7 +82,7 @@ function AddNewExercise(props) {
               handleSubmit(submittedData)(event);
             }}
           >
-            <Stack spacing={3} width={900}>
+            <Stack spacing={3} >
               <FormControl>
                 <FormLabel>{props.exercise_name}</FormLabel>
                 <Input
@@ -117,14 +125,18 @@ function AddNewExercise(props) {
                     config={{
                       placeholder: "Describe in English...",
                       toolbar: [
-                        "bold", "italic", "underline",
-                        "link", "image",
-                        "ol", "ul",
+                        "bold",
+                        "italic",
+                        "underline",
+                        "link",
+                        "image",
+                        "ol",
+                        "ul",
                         "table",
                         "clean",
                       ],
                     }}
-                    onChange={setEnglishText} 
+                    onChange={setEnglishText}
                   />
 
                   <JoditEditor
@@ -132,14 +144,18 @@ function AddNewExercise(props) {
                     config={{
                       placeholder: "Describe in Hindi...",
                       toolbar: [
-                        "bold", "italic", "underline",
-                        "link", "image",
-                        "ol", "ul",
+                        "bold",
+                        "italic",
+                        "underline",
+                        "link",
+                        "image",
+                        "ol",
+                        "ul",
                         "table",
                         "clean",
                       ],
                     }}
-                    onChange={setHindiText} 
+                    onChange={setHindiText}
                   />
 
                   <JoditEditor
@@ -147,14 +163,18 @@ function AddNewExercise(props) {
                     config={{
                       placeholder: "Describe in Gujarati...",
                       toolbar: [
-                        "bold", "italic", "underline",
-                        "link", "image",
-                        "ol", "ul",
+                        "bold",
+                        "italic",
+                        "underline",
+                        "link",
+                        "image",
+                        "ol",
+                        "ul",
                         "table",
                         "clean",
                       ],
                     }}
-                    onChange={setGujaratiText} 
+                    onChange={setGujaratiText}
                   />
                 </Box>
               </FormControl>

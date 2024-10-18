@@ -13,13 +13,13 @@ import InsideLoader from "../../InsideLoader";
 function TreatmentQuestionPart1() {
   const context = useOutletContext();
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [showCheckboxes, setShowCheckboxes] = useState(true);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState();
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
   const [loading, setLoading] = useState(true);
- 
+
   const handleGetQuestionsPart1 = () => {
     if (role === "doctor") {
       axios
@@ -54,10 +54,6 @@ function TreatmentQuestionPart1() {
           alert(err.response?.data?.message + "!");
         });
     }
-  };
-
-  const handleToggleCheckboxes = () => {
-    setShowCheckboxes(!showCheckboxes);
   };
 
   const handleCheckboxChange = (e) => {
@@ -152,7 +148,6 @@ function TreatmentQuestionPart1() {
       console.error(err);
     } finally {
       setSelectedCheckboxes([]);
-      setShowCheckboxes(false);
     }
   };
 
@@ -189,28 +184,22 @@ function TreatmentQuestionPart1() {
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[85vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-3">
-          <div className="flex gap-5 text-center items-center justify-between">
-            {!showCheckboxes && (
-              <SelectTreatmentButton
-                name="Select Questions (Part-1)"
-                function={handleToggleCheckboxes}
-              />
-            )}
+          <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between w-full p-4">
             {showCheckboxes && (
-              <div className="font-[550] text-lg">
+              <div className="font-[550] text-lg md:text-base">
                 No. of questions checked: {selectedCheckboxes.length}
               </div>
             )}
 
-            {!showCheckboxes && (
-              <div className="flex items-center gap-2 font-bold text-lg">
+            {showCheckboxes && (
+              <div className="flex flex-col md:flex-row items-center gap-2 font-bold text-lg md:text-base">
                 <span>No. of questions to be answered:</span>
-                {defaultDropdownValue}
                 <Select
                   required
                   placeholder="Select"
                   value={defaultDropdownValue}
                   onChange={(e) => handleSendQuestionToBeAnswered(e)}
+                  className="w-full md:w-auto" 
                 >
                   {[...Array(selectedCheckboxes.length).keys()].map((index) => (
                     <MenuItem key={index} value={index + 1}>
@@ -220,28 +209,24 @@ function TreatmentQuestionPart1() {
                 </Select>
               </div>
             )}
-            {!showCheckboxes && (
-              <div className="font-[550] text-lg flex items-center">
+
+            {showCheckboxes && (
+              <div className="font-[550] text-lg flex items-center md:text-base">
                 Checked Questions -{" "}
                 <div className="ml-2 bg-gray-400 border border-gray-200 size-5"></div>
               </div>
             )}
           </div>
+
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
-                  {showCheckboxes ? (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="Select"
-                    />
-                  ) : (
-                    <ThComponent
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                      name="No."
-                    />
-                  )}
+                  <ThComponent
+                    moreClasses={"rounded-tl-md rounded-bl-md"}
+                    name="Select"
+                  />
+
                   <ThComponent name="In English" />
                   <ThComponent name="In Hindi" />
                   <ThComponent name="In Gujarati" />
@@ -278,30 +263,22 @@ function TreatmentQuestionPart1() {
                             : ""
                         } w-full`}
                       >
-                        {showCheckboxes && (
-                          <td className="py-3 px-4 border-b border-b-gray-50">
-                            <input
-                              value={val.id}
-                              onChange={handleCheckboxChange}
-                              type="checkbox"
-                              className="size-5"
-                              defaultChecked={context[2]?.some(
-                                (packages) =>
-                                  context[0] === packages.weight_reason &&
-                                  packages.questions_part_one?.some(
-                                    (question) => question.id === val.id
-                                  )
-                              )}
-                            />
-                          </td>
-                        )}
-                        {!showCheckboxes && (
-                          <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">
-                              {index +1}
-                            </div>{" "}
-                          </td>
-                        )}
+                        <td className="py-3 px-4 border-b border-b-gray-50">
+                          <input
+                            value={val.id}
+                            onChange={handleCheckboxChange}
+                            type="checkbox"
+                            className="size-5"
+                            defaultChecked={context[2]?.some(
+                              (packages) =>
+                                context[0] === packages.weight_reason &&
+                                packages.questions_part_one?.some(
+                                  (question) => question.id === val.id
+                                )
+                            )}
+                          />
+                        </td>
+
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.question_in_english} />
                         </td>
@@ -326,19 +303,13 @@ function TreatmentQuestionPart1() {
             </table>
           </div>
 
-          
-          {!showCheckboxes && (
+          {showCheckboxes && (
             <div className="flex justify-end">
+              <SaveTreatmentButtons function={handleSave} />{" "}
               <NextPageButton
                 name="Questions (Part-2)"
                 to="../question-part2"
               />
-            </div>
-          )}
-
-          {showCheckboxes && (
-            <div className="flex justify-center">
-              <SaveTreatmentButtons function={handleSave} />{" "}
             </div>
           )}
         </div>

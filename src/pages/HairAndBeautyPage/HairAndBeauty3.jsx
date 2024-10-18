@@ -9,18 +9,21 @@ function HairAndBeauty3({ scrollYProgress }) {
       className="sticky top-0 h-screen bg-teal-50 flex flex-col items-center py-2"
     >
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-sans font-medium mt-8">Hair Care</div>
+        <div className="text-4xl font-sans font-medium mt-8 md:text-5xl lg:text-6xl">
+          Hair Care
+        </div>
         <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />
       </div>
-      <div className="w-full pt-12 flex flex-col justify-center px-16 gap-10">
-        <div className="leading-relaxed text-lg">
+
+      <div className="w-full pt-12 flex flex-col justify-center px-5 md:px-16 gap-10">
+        <div className="leading-relaxed text-base md:text-lg lg:text-xl">
           Here’s a refined version of your message: Every day, we come across
           new tips, tricks, and product names promising the best results for
           hair health. However, it's important to remember that shampoo,
           conditioner, hair oil, and spa treatments alone do not necessarily
           improve hair health.
         </div>
-        <div className="leading-relaxed text-lg">
+        <div className="leading-relaxed text-base md:text-lg lg:text-xl">
           These products primarily cleanse and somewhat nourish your hair, but
           they do not address the underlying issues causing hair problems. At
           Slim and Smile Ayu Care, we offer hair treatment packages that involve
@@ -29,13 +32,14 @@ function HairAndBeauty3({ scrollYProgress }) {
           select the most effective treatments and products for optimal results.
         </div>
       </div>
-      <div className="w-full h-full flex justify-start px-5 text-pretty">
-        <div className="flex flex-col pt-8 pl-9 ">
-          <div className="font-semibold pt-7 pl-2 leading-relaxed text-xl">
+
+      <div className="w-full flex flex-col justify-start px-5 text-pretty">
+        <div className="flex flex-col lg:pt-8 pt-0">
+          <div className="font-semibold pt-7 leading-relaxed text-xl md:text-2xl">
             Treatments We Provide:
           </div>
-          <div className="flex justify-start w-full pt-4 pl-4">
-            <ul className="space-y-2.5 leading-loose text-lg">
+          <div className="flex justify-start w-full pt-4">
+            <ul className="space-y-2.5 leading-loose text-base md:text-lg lg:text-xl">
               <li>
                 <span className="text-xl">&#11037;</span> Treatments for Hair
                 Fall, Split Ends, Hair Greying or White Hair, Rough Hair,

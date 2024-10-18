@@ -148,7 +148,7 @@ function ReportPackage() {
 
   return (
     <div className="w-full p-2">
-      <div className="animate-fade-left animate-delay-75  shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
+      <div className="animate-fade-left animate-delay-75   rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">
         <table className="w-full min-w-[460px] z-0">
           <thead className="uppercase ">
             <tr className="bg-[#1F2937] text-white rounded-md">

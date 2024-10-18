@@ -67,7 +67,13 @@ function AddDosDonts(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog>
+        <ModalDialog
+          sx={{
+            maxWidth: { xs: "95%", sm: "600px" },
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -127,7 +133,7 @@ function AddDosDonts(props) {
 
               <FormControl>
                 <FormLabel>{props.details} </FormLabel>
-                <Box className="flex flex-col items-center w-full">
+                <Box className="flex flex-col  w-full">
                   <ReactTransliterate
                     name={`question_english`}
                     {...register(`question_english`)}
@@ -146,7 +152,7 @@ function AddDosDonts(props) {
                         <textarea {...props} placeholder="In English..." />
                       );
                     }}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required
@@ -168,7 +174,7 @@ function AddDosDonts(props) {
                     renderComponent={(props) => {
                       return <textarea {...props} placeholder="In Hindi..." />;
                     }}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required
@@ -192,7 +198,7 @@ function AddDosDonts(props) {
                         <textarea {...props} placeholder="In Gujarati..." />
                       );
                     }}
-                    className="p-1 border border-gray-400 rounded-sm"
+                    className="p-1 border border-gray-400 rounded-sm w-full"
                     rows={4}
                     cols={30}
                     required
