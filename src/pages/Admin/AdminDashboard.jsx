@@ -331,7 +331,7 @@ function AdminDashboard() {
                   </div>
                 </div>
                 <div className="bg-white w-[70%] border rounded-md p-4 shadow-lg h-full flex">
-                  <div className="bg-white w-[30%] border p-4 rounded-md overflow-y-auto">
+                  {/* <div className="bg-white w-[30%] border p-4 rounded-md overflow-y-auto">
                     <div className="text-lg font-bold border-b pb-2 mb-2">
                       Patient&apos;s List
                     </div>
@@ -358,7 +358,7 @@ function AdminDashboard() {
                         </div>
                       </div>
                     ))}
-                  </div>
+                  </div> */}
 
                   {/* Chat Section */}
                   {/* <div className="bg-white w-[70%] border rounded-md p-4 h-full flex flex-col">
