@@ -44,12 +44,11 @@ function ChatComponent() {
   const handleWebSocketMessage = useCallback(event => {
     const data = JSON.parse(event.data);
     if (['ping', 'welcome', 'confirm_subscription'].includes(data.type)) return;
-
     const { type, message } = data.message || {};
     if (type === 'message_created') {
       setMessages(prevMessages => [...prevMessages, message]);
       if (message.role === 'doctor') {
-        notificationSound.current.play();
+        // notificationSound.current.play();
         updateUnreadStatus(true);
       }
     }

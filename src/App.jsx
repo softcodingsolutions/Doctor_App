@@ -115,290 +115,314 @@ import OverallAnalysis from "./pages/Admin/OverallAnalysis";
 import ChatComponent from "./components/Chat/ChatComponent";
 
 function App() {
-  const access_token = localStorage.getItem("access_token")
-  const role = localStorage.getItem("role")
+  const access_token = localStorage.getItem("access_token");
+  const role = localStorage.getItem("role");
   return (
     <>
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="about-us" element={<AboutUs />} />
-        <Route path="contact-us" element={<ContactUs />} />
-        <Route path="weight-loss" element={<WeightLossPage />} />
-        <Route path="hair-and-beauty" element={<HairAndBeauty />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="forget-password" element={<ForgetPassword />} />
-        <Route path="change-password" element={<ChangePassword />} />
-        <Route path="signup" element={<UserChooseDoctor />} />
-        <Route path="generate-report" element={<ReportGenerate />} />
-        {/* User */}
-        <Route path="user" element={<UserMain />}>
-          <Route path="user-diagnosis" element={<UserDiagnosis />}>
-            <Route path="generate-report" element={<ReportGenerate />} />
-            <Route path="package-medicine" element={<ProgressMedicine />} />
-            <Route path="patient-analysis" element={<PatientAnalysis />} />
-            <Route path="progress-report" element={<ReportProgress />} />
-            <Route path="user-complains" element={<UserComplains />} />
-            <Route path="progress-questions" element={<ProgressQuestion />} />
-            <Route path="progress-complains" element={<ProgressComplains />} />
-            <Route path="admin-bill-history" element={<BillHistory />} />
-            <Route path="package" element={<ReportPackage />} />
-            <Route path="package-medicine" element={<ProgressMedicine />} />
-          </Route>
-        </Route>
-
-        {/* User created by itself questions */}
-        <Route path="questions" element={<UserQuestions />}>
-          <Route path="general-details" element={<QueGeneralDetails />} />
-        </Route>
-
-        {/* Admin */}
-        <Route path="admin" element={<AdminMain />}>
-          <Route path="analysis" element={<OverallAnalysis />} />
-          <Route path="appointments" element={<Appointments />} />
-          <Route
-            path="admin-medicine-inventory"
-            element={<MedicalInventory />}
-          />
-
-          <Route path="recpatients" element={<RecepsitnistCustomers />}>
-            <Route path="recall-users" element={<RecepAllUsers />} />
-
-            {/* user created by receptionist */}
-            <Route path="new-user" element={<NewUser />}>
-              <Route path="general-details" element={<UserGeneralDetails />} />
-            </Route>
-          </Route>
-
-          <Route path="dashboard" element={<AdminDashboard />} />
-
-          {/* user created by admin */}
-          <Route path="new-user" element={<NewCustomer />}>
-            <Route
-              path="general-details"
-              element={<CustomerGeneralDetails />}
-            />
-          </Route>
-
-          {/* create role */}
-          <Route path="create-role" element={<CreateRole />}>
-            <Route path="role-assign" element={<RoleAssign />} />
-          </Route>
-
-          {/* customers */}
-          <Route path="patients" element={<AdminCustomers />}>
-            <Route path="all-users" element={<CustomerAllUsers />} />
-            <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
-              <Route path="questions" element={<ReportQuestions />} />
-              <Route path="past-history" element={<ReportPastHistory />} />
-              <Route path="lab-tests" element={<TreatmentLabTests />} />
-
-              {/* customer treatment */}
-              <Route path="treatment" element={<ReportTreatment />}>
-                <Route path="medicine" element={<RTreatmentMedicine />} />
-                <Route path="diet" element={<RTreatmentDiet />} />
-                <Route path="nutrition" element={<RTreatmentNutrition />} />
-                <Route path="exercise" element={<RTreatmentExercise />} />
-                <Route path="dos" element={<RTreatmentDos />} />
-                <Route path="donts" element={<RTreatmentDont />} />
-              </Route>
-            </Route>
-            <Route path="customer-details" element={<CustomerDetails />}>
-              <Route path="admin-bill-history" element={<BillHistory />} />
-              <Route path="package" element={<ReportPackage />} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="about-us" element={<AboutUs />} />
+          <Route path="contact-us" element={<ContactUs />} />
+          <Route path="weight-loss" element={<WeightLossPage />} />
+          <Route path="hair-and-beauty" element={<HairAndBeauty />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="forget-password" element={<ForgetPassword />} />
+          <Route path="change-password" element={<ChangePassword />} />
+          <Route path="signup" element={<UserChooseDoctor />} />
+          <Route path="generate-report" element={<ReportGenerate />} />
+          {/* User */}
+          <Route path="user" element={<UserMain />}>
+            <Route path="user-diagnosis" element={<UserDiagnosis />}>
+              <Route path="generate-report" element={<ReportGenerate />} />
               <Route path="package-medicine" element={<ProgressMedicine />} />
+              <Route path="patient-analysis" element={<PatientAnalysis />} />
+              <Route path="progress-report" element={<ReportProgress />} />
+              <Route path="user-complains" element={<UserComplains />} />
+              <Route path="progress-questions" element={<ProgressQuestion />} />
               <Route
                 path="progress-complains"
                 element={<ProgressComplains />}
               />
-              <Route path="patient-analysis" element={<PatientAnalysis />} />
-              <Route path="progress-questions" element={<ProgressQuestion />} />
-              <Route path="progress-report" element={<ReportProgress />} />
-              <Route path="generate-report" element={<ReportGenerate />} />
-              {/* <Route path="package-details" element={<PackageDetails />} /> */}
-            </Route>
-          </Route>
-
-          {/* list-franchise */}
-          <Route path="list-franchise" element={<ListFranchise />} />
-          <Route
-            path="view-franchise-users"
-            element={<FranchiseUserDetails />}
-          />
-
-          {/* master */}
-          <Route path="master" element={<AdminMaster />}>
-            <Route path="questions" element={<Questions />} />
-            <Route path="medicine" element={<Medicine />} />
-            <Route path="diet" element={<DietMaster />} />
-            <Route path="dos-donts" element={<DosDonts />} />
-            <Route path="weight-reason" element={<WeightReason />} />
-            <Route path="complains" element={<Complain />} />
-            <Route path="family-reason" element={<FamilyReason />} />
-            <Route path="exercise-yoga" element={<ExerciseYoga />} />
-            <Route path="lab-tests" element={<LabTest />} />
-            <Route path="packages" element={<Packages />} />
-            <Route
-              path="nutrition-supplements"
-              element={<NutritionSupplements />}
-            />
-          </Route>
-
-          {/* treatment */}
-          <Route path="treatment" element={<AdminTreatment />}>
-            <Route path="question-part1" element={<TreatmentQuestionPart1 />} />
-            <Route path="question-part2" element={<TreatmentQuestionPart2 />} />
-            <Route path="medicines" element={<TreatmentMedicines />} />
-            <Route path="diet" element={<TreatmentDiet />} />
-            <Route path="exercise" element={<TreatmentExercise />} />
-            <Route path="nutrition" element={<TreatmentNutrition />} />
-            <Route path="dos" element={<TreatmentDos />} />
-            <Route path="donts" element={<TreatmentDonts />} />
-            <Route path="family-reason" element={<TreatmentFamilyReason />} />
-            <Route path="complains" element={<TreatmentComplains />} />
-          </Route>
-
-          {/* survey master */}
-          <Route path="survey-master" element={<SurveyMaster />}>
-            <Route path="health-problem" element={<Healthproblem />} />
-            <Route path="weight-gain-reason" element={<Weightgainreason />} />
-            <Route path="weight-gain-name" element={<WeightGainName />} />
-            <Route path="survey-dos" element={<SurveyDos />} />
-            <Route path="survey-donts" element={<SurveyDonts />} />
-            <Route path="survey-exercise" element={<SurveyExersice />} />
-          </Route>
-
-          {/* survey treatment */}
-          <Route path="suvrey-treatment" element={<Surveytreatment />}>
-            <Route
-              path="survey-weight-gain-questions"
-              element={<SurveyWeightGainQuestions />}
-            />
-            <Route
-              path="survey-treatment-dos"
-              element={<SurveyTreatmentDos />}
-            />
-            <Route
-              path="survey-treatment-donts"
-              element={<SurveyTreatmentDont />}
-            />
-            <Route
-              path="survey-treatment-exercise"
-              element={<SurveyTreatmentExercise />}
-            />
-          </Route>
-
-          {/* survey user data */}
-          <Route path="user-data" element={<Userdata />} />
-
-          {/* list follow up */}
-          <Route path="list-follow-up" element={<AdminListFollowUp />} />
-        </Route>
-        <Route path="appointment-sheet" element={<AppointmentSheet />} />
-
-        {/* Receptionist */}
-        <Route path="receptionist" element={<RecepsitnistMain />}>
-          {/* appointment */}
-          <Route path="appointment" element={<AdminAppointment />}>
-            <Route path="data-entry" element={<DataEntry />} />
-            <Route path="data-mapping" element={<FranchiseNewcustomer />} />
-          </Route>
-
-          {/* all users */}
-          <Route path="patients" element={<RecepsitnistCustomers />}>
-            <Route path="all-users" element={<RecepAllUsers />} />
-
-            <Route path="recp-customer-details" element={<CustomerDetails />}>
               <Route path="admin-bill-history" element={<BillHistory />} />
               <Route path="package" element={<ReportPackage />} />
               <Route path="package-medicine" element={<ProgressMedicine />} />
-              <Route path="patient-analysis" element={<PatientAnalysis />} />
+            </Route>
+          </Route>
+
+          {/* User created by itself questions */}
+          <Route path="questions" element={<UserQuestions />}>
+            <Route path="general-details" element={<QueGeneralDetails />} />
+          </Route>
+
+          {/* Admin */}
+          <Route path="admin" element={<AdminMain />}>
+            <Route path="analysis" element={<OverallAnalysis />} />
+            <Route path="appointments" element={<Appointments />} />
+            <Route
+              path="admin-medicine-inventory"
+              element={<MedicalInventory />}
+            />
+
+            <Route path="recpatients" element={<RecepsitnistCustomers />}>
+              <Route path="recall-users" element={<RecepAllUsers />} />
+
+              {/* user created by receptionist */}
+              <Route path="new-user" element={<NewUser />}>
+                <Route
+                  path="general-details"
+                  element={<UserGeneralDetails />}
+                />
+              </Route>
+            </Route>
+
+            <Route path="dashboard" element={<AdminDashboard />} />
+
+            {/* user created by admin */}
+            <Route path="new-user" element={<NewCustomer />}>
               <Route
-                path="progress-complains"
-                element={<ProgressComplains />}
+                path="general-details"
+                element={<CustomerGeneralDetails />}
               />
-              <Route path="progress-questions" element={<ProgressQuestion />} />
-              <Route path="generate-report" element={<ReportGenerate />} />
-              <Route path="progress-report" element={<ReportProgress />} />
-              {/* <Route path="package-details" element={<PackageDetails />} /> */}
             </Route>
 
-            {/* user created by receptionist */}
-            <Route path="new-user" element={<NewUser />}>
-              <Route path="general-details" element={<UserGeneralDetails />} />
+            {/* create role */}
+            <Route path="create-role" element={<CreateRole />}>
+              <Route path="role-assign" element={<RoleAssign />} />
             </Route>
-          </Route>
 
-          {/* appointment */}
-          <Route path="appointment" element={<Appointment />}>
-            <Route path="home" element={<Home />} />
-            <Route path="create-appointment" element={<CreateAppointment />} />
+            {/* customers */}
+            <Route path="patients" element={<AdminCustomers />}>
+              <Route path="all-users" element={<CustomerAllUsers />} />
+              <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
+                <Route path="questions" element={<ReportQuestions />} />
+                <Route path="past-history" element={<ReportPastHistory />} />
+                <Route path="lab-tests" element={<TreatmentLabTests />} />
 
+                {/* customer treatment */}
+                <Route path="treatment" element={<ReportTreatment />}>
+                  <Route path="medicine" element={<RTreatmentMedicine />} />
+                  <Route path="diet" element={<RTreatmentDiet />} />
+                  <Route path="nutrition" element={<RTreatmentNutrition />} />
+                  <Route path="exercise" element={<RTreatmentExercise />} />
+                  <Route path="dos" element={<RTreatmentDos />} />
+                  <Route path="donts" element={<RTreatmentDont />} />
+                </Route>
+              </Route>
+              <Route path="customer-details" element={<CustomerDetails />}>
+                <Route path="admin-bill-history" element={<BillHistory />} />
+                <Route path="package" element={<ReportPackage />} />
+                <Route path="package-medicine" element={<ProgressMedicine />} />
+                <Route
+                  path="progress-complains"
+                  element={<ProgressComplains />}
+                />
+                <Route path="patient-analysis" element={<PatientAnalysis />} />
+                <Route
+                  path="progress-questions"
+                  element={<ProgressQuestion />}
+                />
+                <Route path="progress-report" element={<ReportProgress />} />
+                <Route path="generate-report" element={<ReportGenerate />} />
+                {/* <Route path="package-details" element={<PackageDetails />} /> */}
+              </Route>
+            </Route>
+
+            {/* list-franchise */}
+            <Route path="list-franchise" element={<ListFranchise />} />
             <Route
-              path="create-machine-appointment"
-              element={<Indooractivity />}
+              path="view-franchise-users"
+              element={<FranchiseUserDetails />}
             />
+
+            {/* master */}
+            <Route path="master" element={<AdminMaster />}>
+              <Route path="questions" element={<Questions />} />
+              <Route path="medicine" element={<Medicine />} />
+              <Route path="diet" element={<DietMaster />} />
+              <Route path="dos-donts" element={<DosDonts />} />
+              <Route path="weight-reason" element={<WeightReason />} />
+              <Route path="complains" element={<Complain />} />
+              <Route path="family-reason" element={<FamilyReason />} />
+              <Route path="exercise-yoga" element={<ExerciseYoga />} />
+              <Route path="lab-tests" element={<LabTest />} />
+              <Route path="packages" element={<Packages />} />
+              <Route
+                path="nutrition-supplements"
+                element={<NutritionSupplements />}
+              />
+            </Route>
+
+            {/* treatment */}
+            <Route path="treatment" element={<AdminTreatment />}>
+              <Route
+                path="question-part1"
+                element={<TreatmentQuestionPart1 />}
+              />
+              <Route
+                path="question-part2"
+                element={<TreatmentQuestionPart2 />}
+              />
+              <Route path="medicines" element={<TreatmentMedicines />} />
+              <Route path="diet" element={<TreatmentDiet />} />
+              <Route path="exercise" element={<TreatmentExercise />} />
+              <Route path="nutrition" element={<TreatmentNutrition />} />
+              <Route path="dos" element={<TreatmentDos />} />
+              <Route path="donts" element={<TreatmentDonts />} />
+              <Route path="family-reason" element={<TreatmentFamilyReason />} />
+              <Route path="complains" element={<TreatmentComplains />} />
+            </Route>
+
+            {/* survey master */}
+            <Route path="survey-master" element={<SurveyMaster />}>
+              <Route path="health-problem" element={<Healthproblem />} />
+              <Route path="weight-gain-reason" element={<Weightgainreason />} />
+              <Route path="weight-gain-name" element={<WeightGainName />} />
+              <Route path="survey-dos" element={<SurveyDos />} />
+              <Route path="survey-donts" element={<SurveyDonts />} />
+              <Route path="survey-exercise" element={<SurveyExersice />} />
+            </Route>
+
+            {/* survey treatment */}
+            <Route path="suvrey-treatment" element={<Surveytreatment />}>
+              <Route
+                path="survey-weight-gain-questions"
+                element={<SurveyWeightGainQuestions />}
+              />
+              <Route
+                path="survey-treatment-dos"
+                element={<SurveyTreatmentDos />}
+              />
+              <Route
+                path="survey-treatment-donts"
+                element={<SurveyTreatmentDont />}
+              />
+              <Route
+                path="survey-treatment-exercise"
+                element={<SurveyTreatmentExercise />}
+              />
+            </Route>
+
+            {/* survey user data */}
+            <Route path="user-data" element={<Userdata />} />
+
+            {/* list follow up */}
+            <Route path="list-follow-up" element={<AdminListFollowUp />} />
+          </Route>
+          <Route path="appointment-sheet" element={<AppointmentSheet />} />
+
+          {/* Receptionist */}
+          <Route path="receptionist" element={<RecepsitnistMain />}>
+            {/* appointment */}
+            <Route path="appointment" element={<AdminAppointment />}>
+              <Route path="data-entry" element={<DataEntry />} />
+              <Route path="data-mapping" element={<FranchiseNewcustomer />} />
+            </Route>
+
+            {/* all users */}
+            <Route path="patients" element={<RecepsitnistCustomers />}>
+              <Route path="all-users" element={<RecepAllUsers />} />
+
+              <Route path="recp-customer-details" element={<CustomerDetails />}>
+                <Route path="admin-bill-history" element={<BillHistory />} />
+                <Route path="package" element={<ReportPackage />} />
+                <Route path="package-medicine" element={<ProgressMedicine />} />
+                <Route path="patient-analysis" element={<PatientAnalysis />} />
+                <Route
+                  path="progress-complains"
+                  element={<ProgressComplains />}
+                />
+                <Route
+                  path="progress-questions"
+                  element={<ProgressQuestion />}
+                />
+                <Route path="generate-report" element={<ReportGenerate />} />
+                <Route path="progress-report" element={<ReportProgress />} />
+                {/* <Route path="package-details" element={<PackageDetails />} /> */}
+              </Route>
+
+              {/* user created by receptionist */}
+              <Route path="new-user" element={<NewUser />}>
+                <Route
+                  path="general-details"
+                  element={<UserGeneralDetails />}
+                />
+              </Route>
+            </Route>
+
+            {/* appointment */}
+            <Route path="appointment" element={<Appointment />}>
+              <Route path="home" element={<Home />} />
+              <Route
+                path="create-appointment"
+                element={<CreateAppointment />}
+              />
+
+              <Route
+                path="create-machine-appointment"
+                element={<Indooractivity />}
+              />
+            </Route>
+
+            {/* generate bill */}
+            <Route path="generatebill" element={<GenerateBill />} />
+
+            {/* medical inventory */}
+            <Route path="medical-inventory" element={<MedicalInventory />} />
+            <Route path="send-message" element={<SendMeassage />} />
+            {/* bill history */}
+            <Route path="bill-history" element={<BillHistory />} />
           </Route>
 
-          {/* generate bill */}
-          <Route path="generatebill" element={<GenerateBill />} />
-
-          {/* medical inventory */}
-          <Route path="medical-inventory" element={<MedicalInventory />} />
-          <Route path="send-message" element={<SendMeassage />} />
-          {/* bill history */}
-          <Route path="bill-history" element={<BillHistory />} />
-        </Route>
-
-        {/* Survey */}
-        <Route path="survey" element={<SurveyReport />} />
-        <Route path="surveymain" element={<SurveyMain />}>
-          <Route path="surveyform" element={<SurveyForm />} />
-          <Route path="surveyform2" element={<SurveyForm2 />} />
-          <Route path="surveyform3" element={<SurveyForm3 />} />
-          <Route path="surveyOtp" element={<SurveyOtp />} />
-          <Route path="surveyresult" element={<SurveyResult />} />
-        </Route>
-
-        {/* Franchise */}
-        <Route path="franchise" element={<FranchiseMain />}>
-          {/* user created by franchise */}
-          <Route path="new-user" element={<FranchiseNewcustomer />}>
-            <Route
-              path="general-details"
-              element={<FranchiesGeneraldetails />}
-            />
+          {/* Survey */}
+          <Route path="survey" element={<SurveyReport />} />
+          <Route path="surveymain" element={<SurveyMain />}>
+            <Route path="surveyform" element={<SurveyForm />} />
+            <Route path="surveyform2" element={<SurveyForm2 />} />
+            <Route path="surveyform3" element={<SurveyForm3 />} />
+            <Route path="surveyOtp" element={<SurveyOtp />} />
+            <Route path="surveyresult" element={<SurveyResult />} />
           </Route>
 
-          {/* franchise Customers */}
-          <Route path="patients" element={<FranchiseCustomers />}>
-            <Route path="all-users" element={<FranchiseAllCustomers />} />
-            <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
-              <Route path="questions" element={<ReportQuestions />} />
-              <Route path="past-history" element={<ReportPastHistory />} />
-              <Route path="lab-tests" element={<TreatmentLabTests />} />
-              <Route path="progress-report" element={<ReportProgress />} />
-              <Route path="generate-report" element={<ReportGenerate />} />
-              <Route path="package" element={<ReportPackage />} />
+          {/* Franchise */}
+          <Route path="franchise" element={<FranchiseMain />}>
+            {/* user created by franchise */}
+            <Route path="new-user" element={<FranchiseNewcustomer />}>
+              <Route
+                path="general-details"
+                element={<FranchiesGeneraldetails />}
+              />
+            </Route>
 
-              {/* customer treatment */}
-              <Route path="treatment" element={<ReportTreatment />}>
-                <Route path="medicine" element={<RTreatmentMedicine />} />
-                <Route path="diet" element={<RTreatmentDiet />} />
-                <Route path="nutrition" element={<RTreatmentNutrition />} />
-                <Route path="exercise" element={<RTreatmentExercise />} />
-                <Route path="dos" element={<RTreatmentDos />} />
-                <Route path="donts" element={<RTreatmentDont />} />
+            {/* franchise Customers */}
+            <Route path="patients" element={<FranchiseCustomers />}>
+              <Route path="all-users" element={<FranchiseAllCustomers />} />
+              <Route path="user-diagnosis" element={<CustomerUserDiagnosis />}>
+                <Route path="questions" element={<ReportQuestions />} />
+                <Route path="past-history" element={<ReportPastHistory />} />
+                <Route path="lab-tests" element={<TreatmentLabTests />} />
+                <Route path="progress-report" element={<ReportProgress />} />
+                <Route path="generate-report" element={<ReportGenerate />} />
+                <Route path="package" element={<ReportPackage />} />
+
+                {/* customer treatment */}
+                <Route path="treatment" element={<ReportTreatment />}>
+                  <Route path="medicine" element={<RTreatmentMedicine />} />
+                  <Route path="diet" element={<RTreatmentDiet />} />
+                  <Route path="nutrition" element={<RTreatmentNutrition />} />
+                  <Route path="exercise" element={<RTreatmentExercise />} />
+                  <Route path="dos" element={<RTreatmentDos />} />
+                  <Route path="donts" element={<RTreatmentDont />} />
+                </Route>
               </Route>
             </Route>
           </Route>
-        </Route>
 
-        {/* Error */}
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </Router>
-    {(access_token && role === 'patient')  && <ChatComponent/> }
+          {/* Error */}
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </Router>
+      {role === "patient" && <ChatComponent />}
     </>
   );
 }

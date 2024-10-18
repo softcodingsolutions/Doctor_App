@@ -93,6 +93,12 @@ function LoginPage() {
               });
             } else {
               navigate("/user/user-diagnosis/progress-complains");
+              localStorage.setItem(
+                "doctor_fname",
+                res.data?.doctor?.first_name
+              );
+              localStorage.setItem("doctor_lname", res.data?.doctor?.last_name);
+              localStorage.setItem("doctor_id", res.data?.doctor?.id);
               Toast.fire({
                 icon: "success",
                 title: `Welcome ${res.data?.user?.email}!`,

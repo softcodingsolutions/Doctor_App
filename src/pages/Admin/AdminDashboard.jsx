@@ -58,6 +58,7 @@ function AdminDashboard() {
     };
 
     sendJsonMessage(subscriptionMessage);
+    console.log(subscriptionMessage);
     activeSubscriptions.current[channelKey] = true;
   };
 
@@ -65,7 +66,6 @@ function AdminDashboard() {
   const handleWebSocketMessage = event => {
     const data = JSON.parse(event.data);
     if (['ping', 'welcome', 'confirm_subscription'].includes(data.type)) return;
-
     if (data.message.type === 'message_created') {
       const newMessage = data.message.message;
 
@@ -101,7 +101,10 @@ function AdminDashboard() {
       .get(`api/v1/users?user_id=${main_id}`)
       .then(res => {
         setPatients(res.data.users);
-        res.data.users.forEach(user => subscribeToChannel(main_id, user.id));
+        res.data.users.forEach(user =>{
+          subscribeToChannel(main_id, user.id)
+          // console.log(user)
+        });
       })
       .catch(err => {
         console.log(err);
