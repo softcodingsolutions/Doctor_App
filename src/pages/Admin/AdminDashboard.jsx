@@ -1,46 +1,46 @@
-import { useEffect, useRef, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import axios from 'axios';
-import { FaUsersLine } from 'react-icons/fa6';
-import { FaUserPlus } from 'react-icons/fa';
-import { AiFillBulb } from 'react-icons/ai';
-import { GoNorthStar } from 'react-icons/go';
-import { FaClipboardList } from 'react-icons/fa';
-import useWebSocket from 'react-use-websocket';
-import { IoMdSend } from 'react-icons/io';
-import Avatar from '../../components/Chat/Avatar';
+import { useEffect, useRef, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import axios from "axios";
+import { FaUsersLine } from "react-icons/fa6";
+import { FaUserPlus } from "react-icons/fa";
+import { AiFillBulb } from "react-icons/ai";
+import { GoNorthStar } from "react-icons/go";
+import { FaClipboardList } from "react-icons/fa";
+import useWebSocket from "react-use-websocket";
+import { IoMdSend } from "react-icons/io";
+import Avatar from "../../components/Chat/Avatar";
 
 function AdminDashboard() {
   const context = useOutletContext();
-  const main_id = localStorage.getItem('main_id');
-  const [data, setData] = useState('');
-  const [activeTab, setActiveTab] = useState('inbox');
+  const main_id = localStorage.getItem("main_id");
+  const [data, setData] = useState("");
+  const [activeTab, setActiveTab] = useState("inbox");
   const [complaints, setComplaints] = useState([]);
   const [patients, setPatients] = useState([]);
-  const [avatarColor, setAvatarColor] = useState('');
+  const [avatarColor, setAvatarColor] = useState("");
   const [selectedUser, setSelectedUser] = useState(
-    JSON.parse(localStorage.getItem('selectedUser')) || null
+    JSON.parse(localStorage.getItem("selectedUser")) || null
   );
   const [unreadPatients, setUnreadPatients] = useState(
-    new Set(JSON.parse(localStorage.getItem('unreadPatients')) || [])
+    new Set(JSON.parse(localStorage.getItem("unreadPatients")) || [])
   );
   const messageContainerRef = useRef(null);
-  const notificationSound = useRef(new Audio('/Audio/notification.mp3'));
+  const notificationSound = useRef(new Audio("/Audio/notification.mp3"));
   const activeSubscriptions = useRef({});
 
   useEffect(() => {
     fetchPatients();
-    setSelectedUser(null)
+    setSelectedUser(null);
   }, []);
 
   useEffect(() => {
-    scrollToBottom()
-  },[complaints])
+    scrollToBottom();
+  }, [complaints]);
 
-  const { sendJsonMessage } = useWebSocket('ws://localhost:3000/cable', {
-    protocol: 'actioncable-v1-json',
-    onOpen: () => console.log('WebSocket connection established.'),
-    onMessage: event => handleWebSocketMessage(event),
+  const { sendJsonMessage } = useWebSocket("ws://localhost:3000/cable", {
+    protocol: "actioncable-v1-json",
+    onOpen: () => console.log("WebSocket connection established."),
+    onMessage: (event) => handleWebSocketMessage(event),
     share: true, // Share the WebSocket connection between components
   });
 
@@ -49,9 +49,9 @@ function AdminDashboard() {
     if (activeSubscriptions.current[channelKey]) return;
 
     const subscriptionMessage = {
-      command: 'subscribe',
+      command: "subscribe",
       identifier: JSON.stringify({
-        channel: 'MessagesChannel',
+        channel: "MessagesChannel",
         doctor_id: doctorId,
         patient_id: patientId,
       }),
@@ -62,16 +62,15 @@ function AdminDashboard() {
     activeSubscriptions.current[channelKey] = true;
   };
 
-
-  const handleWebSocketMessage = event => {
+  const handleWebSocketMessage = (event) => {
     const data = JSON.parse(event.data);
-    if (['ping', 'welcome', 'confirm_subscription'].includes(data.type)) return;
-    if (data.message.type === 'message_created') {
+    if (["ping", "welcome", "confirm_subscription"].includes(data.type)) return;
+    if (data.message.type === "message_created") {
       const newMessage = data.message.message;
 
       if (selectedUser && newMessage.patient_id === selectedUser.id) {
-        setComplaints(prev => [...prev, newMessage]);
-        if (newMessage.role !== 'doctor') notificationSound.current.play();
+        setComplaints((prev) => [...prev, newMessage]);
+        if (newMessage.role !== "doctor") notificationSound.current.play();
       } else {
         updateUnreadPatients(newMessage.patient_id);
         notificationSound.current.play();
@@ -79,73 +78,72 @@ function AdminDashboard() {
     }
   };
 
-  const updateUnreadPatients = patientId => {
-    setUnreadPatients(prev => {
+  const updateUnreadPatients = (patientId) => {
+    setUnreadPatients((prev) => {
       const updated = new Set(prev);
       updated.add(patientId);
-      localStorage.setItem('unreadPatients', JSON.stringify([...updated]));
+      localStorage.setItem("unreadPatients", JSON.stringify([...updated]));
       return updated;
     });
   };
 
-  const markAsRead = user => {
-    setUnreadPatients(prev => {
+  const markAsRead = (user) => {
+    setUnreadPatients((prev) => {
       const updated = new Set(prev);
       updated.delete(user.id);
-      localStorage.setItem('unreadPatients', JSON.stringify([...updated]));
+      localStorage.setItem("unreadPatients", JSON.stringify([...updated]));
       return updated;
     });
   };
   const fetchPatients = () => {
     axios
       .get(`api/v1/users?user_id=${main_id}`)
-      .then(res => {
+      .then((res) => {
         setPatients(res.data.users);
-        res.data.users.forEach(user =>{
-          subscribeToChannel(main_id, user.id)
+        res.data.users.forEach((user) => {
+          subscribeToChannel(main_id, user.id);
           // console.log(user)
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
-
-  const handleResponseSubmit = async event => {
+  const handleResponseSubmit = async (event) => {
     event.preventDefault();
-    const messageInput = event.target.elements['message_input'];
+    const messageInput = event.target.elements["message_input"];
     const body = messageInput.value.trim();
     if (!body) return;
 
     try {
-      await axios.post('/messages', {
+      await axios.post("/messages", {
         message: {
           body,
-          role: 'doctor',
+          role: "doctor",
           doctor_id: main_id,
           patient_id: selectedUser.id,
         },
       });
-      messageInput.value = '';
+      messageInput.value = "";
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
 
-  const handleData = today => {
+  const handleData = (today) => {
     axios
       .get(`/api/v2/dashboards?doctor_id=${main_id}&date=${today}`)
-      .then(res => {
+      .then((res) => {
         console.log(res);
         setData(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     handleData(today);
   }, []);
 
@@ -156,34 +154,32 @@ function AdminDashboard() {
   const generateRandomColor = () => {
     return `#${Math.floor(Math.random() * 16777215)
       .toString(16)
-      .padStart(6, '0')}`;
+      .padStart(6, "0")}`;
   };
 
-
-  
-
-  const handleUserSelect = user => {
+  const handleUserSelect = (user) => {
     setSelectedUser(user);
-    localStorage.setItem('selectedUser', JSON.stringify(user));
+    localStorage.setItem("selectedUser", JSON.stringify(user));
     markAsRead(user);
 
     axios
       .get(`/messages/between/${main_id}/${user.id}`)
-      .then(res => setComplaints(res.data))
-      .catch(err => console.error(err));
+      .then((res) => setComplaints(res.data))
+      .catch((err) => console.error(err));
   };
-  
 
-  const formatTime = timestamp => {
+  const formatTime = (timestamp) => {
     const date = new Date(timestamp || Date.now());
-  
+
     const day = date.toLocaleDateString(undefined, {
-      weekday: 'short', month: 'short', day: 'numeric'
+      weekday: "short",
+      month: "short",
+      day: "numeric",
     });
     const hours = date.getHours() % 12 || 12; // 12-hour format
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
-  
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = date.getHours() >= 12 ? "PM" : "AM";
+
     return `${day} ${hours}:${minutes} ${ampm}`;
   };
   const scrollToBottom = () => {
@@ -314,21 +310,21 @@ function AdminDashboard() {
                   <div className="flex pt-2 pl-4 gap-5 border-b text-sm">
                     <button
                       className={`${
-                        activeTab === 'inbox'
-                          ? 'text-black border-b-2 border-black'
-                          : 'text-gray-500 border-b-2 border-transparent'
+                        activeTab === "inbox"
+                          ? "text-black border-b-2 border-black"
+                          : "text-gray-500 border-b-2 border-transparent"
                       } pb-1`}
-                      onClick={() => setActiveTab('inbox')}
+                      onClick={() => setActiveTab("inbox")}
                     >
                       Inbox
                     </button>
                     <button
                       className={`${
-                        activeTab === 'unread'
-                          ? 'text-black border-b-2 border-black'
-                          : 'text-gray-500 border-b-2 border-transparent'
+                        activeTab === "unread"
+                          ? "text-black border-b-2 border-black"
+                          : "text-gray-500 border-b-2 border-transparent"
                       } pb-1`}
-                      onClick={() => setActiveTab('unread')}
+                      onClick={() => setActiveTab("unread")}
                     >
                       Unread
                     </button>
@@ -339,11 +335,11 @@ function AdminDashboard() {
                     <div className="text-lg font-bold border-b pb-2 mb-2">
                       Patient&apos;s List
                     </div>
-                    {patients.map(user => (
+                    {patients.map((user) => (
                       <div
                         key={user.id}
                         className={`p-2 cursor-pointer hover:bg-gray-100 flex items-center justify-start ${
-                          selectedUser?.id === user.id ? 'bg-gray-200' : ''
+                          selectedUser?.id === user.id ? "bg-gray-200" : ""
                         }`}
                         onClick={() => handleUserSelect(user)}
                       >
@@ -353,19 +349,19 @@ function AdminDashboard() {
                           avatarColor={avatarColor}
                         />
                         <div className="flex justify-between items-center">
-              <span className="ml-2 mr-2 font-semibold">
-                {user.first_name} {user.last_name}
-              </span>
-              {unreadPatients.has(user.id) && (
-                <span className="w-3 h-3 bg-red-500 rounded-full"></span>
-              )}
-            </div>
+                          <span className="ml-2 mr-2 font-semibold">
+                            {user.first_name} {user.last_name}
+                          </span>
+                          {unreadPatients.has(user.id) && (
+                            <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
 
                   {/* Chat Section */}
-                  <div className="bg-white w-[70%] border rounded-md p-4 h-full flex flex-col">
+                  {/* <div className="bg-white w-[70%] border rounded-md p-4 h-full flex flex-col">
                     {selectedUser ? (
                       <>
                         <div className="text-lg font-bold border-b pb-2 mb-2">
@@ -382,7 +378,7 @@ function AdminDashboard() {
                                   : 'text-left'
                               }`}
                             >
-                              {/* Label Above the Bubble */}
+                              
                               <div
                                 className={`text-xs font-semibold text-gray-700 mb-1 ${
                                   message.role === 'doctor'
@@ -395,7 +391,7 @@ function AdminDashboard() {
                                   : `${selectedUser?.first_name} ${selectedUser?.last_name}`}
                               </div>
 
-                              {/* Message Bubble */}
+                              
                               <div
                                 className={`inline-block p-3 rounded-lg relative max-w-[75%] ${
                                   message.role === 'doctor'
@@ -404,11 +400,11 @@ function AdminDashboard() {
                                 }`}
                                 style={{ textAlign: 'left' }}
                               >
-                                {/* Message Body */}
+                           
                                 <div>{message.body}</div>
                               </div>
 
-                              {/* Timestamp Below the Bubble */}
+                            
                               <div
                                 className={`text-xs text-gray-700 mt-1 ${
                                   message.role === 'doctor'
@@ -441,7 +437,7 @@ function AdminDashboard() {
                         No messages yet. Select a patient to start chatting.
                       </div>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

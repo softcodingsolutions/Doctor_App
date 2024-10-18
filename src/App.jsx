@@ -422,7 +422,7 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>
-      {role === "patient" && <ChatComponent />}
+      {/* {role === "patient" && <ChatComponent />} */}
     </>
   );
 }
