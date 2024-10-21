@@ -16,7 +16,7 @@ function RecepAllUsers() {
   const [type, setType] = useState("");
   const [created_at, setCreatedAt] = useState("");
   const role = localStorage.getItem("role");
-  const rowsPerPage = 6;
+  const rowsPerPage = 8;
 
   console.log(role);
   const handleGetAllUsers = () => {
@@ -242,9 +242,9 @@ function RecepAllUsers() {
                   className="py-2 text-sm px-2 rounded-md border border-black w-full sm:w-auto"
                 >
                   <option value="select">Package Details</option>
-                  <option value="activate">Activate</option>
+                  <option value="activate">Active</option>
                   <option value="expired">Expired</option>
-                  <option value="deactivate">Deactivated</option>
+                  <option value="deactivate">Deactive</option>
                   <option value="renew">Renew</option>
                   <option value="about_to_expired">About to Expire</option>
                 </select>
@@ -264,7 +264,7 @@ function RecepAllUsers() {
           </div>
 
           <div className="overflow-x-auto animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out h-[75vh]">
-            <table className="w-full min-w-[460px] z-0 min-h-96">
+            <table className="w-full min-w-[460px] ">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent moreClasses={"rounded-tl-md rounded-bl-md"} />
@@ -273,7 +273,6 @@ function RecepAllUsers() {
                   <ThComponent name="Age" />
                   <ThComponent name="Weight" />
                   <ThComponent name="Mobile Number" />
-                  {/* <ThComponent name="Type" /> */}
                   <ThComponent name="Created At" />
                   <ThComponent name="Doctor Name" />
                   <ThComponent moreClasses={"rounded-tr-md rounded-br-md"} />
@@ -347,13 +346,6 @@ function RecepAllUsers() {
                             </div>
                           </td>
                           <td className="py-2 px-2 flex gap-2 border-b border-b-gray-50">
-                            {/* <Button
-                              variant="outlined"
-                              color="neutral"
-                              onClick={() => handleInventory(val.case_number)}
-                            >
-                              Bill History
-                            </Button> */}
                             <button
                               variant="outlined"
                               color="neutral"

@@ -32,7 +32,7 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     },
     {
       id: "14",
-      title: "Appointment Details",
+      title: "Appointments",
       icons: <FaWpforms size={18} />,
       to: "appointments",
     },

@@ -5,6 +5,7 @@ import { Dialog } from "@headlessui/react";
 import InsideLoader from "../../InsideLoader";
 import { useNavigate } from "react-router-dom";
 import { GiCancel } from "react-icons/gi";
+import { GrVirtualMachine } from "react-icons/gr";
 
 const generateTimeSlots = () => {
   const slots = [];
@@ -443,17 +444,22 @@ export default function Indooractivity() {
       <div className="rounded-lg bg-card h-full bg-white">
         <div className="flex flex-col px-2 py-1 h-full space-y-2 ">
           <div className="flex flex-col w-full items-center">
-            <div className="flex justify-center  w-full p-3">
-              <h2 className="text-xl font-semibold text-center w-full md:w-auto">
-                Indoor Activity Time Slot
-              </h2>
-              <div className="flex w-full ml-20 md:w-auto justify-end">
+            <div className="flex justify-center m-5 w-[100%] ">
+              <div className="flex justify-center w-[70%] gap-2">
+                <div className="">
+                  <GrVirtualMachine size={30} />
+                </div>
+                <h2 className="text-xl font-semibold   md:w-auto">
+                  Indoor Activity Time Slot
+                </h2>
+              </div>
+              <div className="flex justify-end w-[35%]  md:w-auto bg-blue-gray-50  text-end">
                 <button
                   type="submit"
-                  className="text-black p-1 bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+                  className="text-black p-2 bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
                   onClick={handleSheet}
                 >
-                  Appointments
+                  Appointment Sheet
                 </button>
               </div>
             </div>

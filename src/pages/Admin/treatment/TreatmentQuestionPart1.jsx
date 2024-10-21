@@ -14,7 +14,9 @@ function TreatmentQuestionPart1() {
   const context = useOutletContext();
   const [getQuestionsPart1, setGetQuestionsPart1] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [number,setNumber] = useState(0);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState();
   const role = localStorage.getItem("role");
   const main_id = localStorage.getItem("main_id");
@@ -71,6 +73,7 @@ function TreatmentQuestionPart1() {
 
   const handleSendQuestionToBeAnswered = async (e) => {
     const selectedValue = e.target.value;
+    setNumber(selectedValue);
     console.log("min", selectedValue);
     const formData = new FormData();
     formData.append(
@@ -143,6 +146,7 @@ function TreatmentQuestionPart1() {
         });
       }
       handleGetQuestionsPart1();
+      setShowDropdown(true);
       context[1]();
     } catch (err) {
       console.error(err);
@@ -191,15 +195,15 @@ function TreatmentQuestionPart1() {
               </div>
             )}
 
-            {showCheckboxes && (
+            {showDropdown && (
               <div className="flex flex-col md:flex-row items-center gap-2 font-bold text-lg md:text-base">
-                <span>No. of questions to be answered:</span>
+                <span>No. of questions to be answered: {number}</span>
                 <Select
                   required
                   placeholder="Select"
-                  value={defaultDropdownValue}
+                  value={number}
                   onChange={(e) => handleSendQuestionToBeAnswered(e)}
-                  className="w-full md:w-auto" 
+                  className="w-full md:w-auto"
                 >
                   {[...Array(selectedCheckboxes.length).keys()].map((index) => (
                     <MenuItem key={index} value={index + 1}>

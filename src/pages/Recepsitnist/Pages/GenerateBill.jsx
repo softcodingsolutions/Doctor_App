@@ -4,6 +4,7 @@ import { useDebounce } from "use-debounce";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "@mui/joy/Button";
 import InsideLoader from "../../InsideLoader";
+import { LiaPagerSolid } from "react-icons/lia";
 
 export default function GenerateBill() {
   const context = useOutletContext();
@@ -94,7 +95,7 @@ export default function GenerateBill() {
           alert("Bill created successfully");
           resetForm();
           setSearchTerm("");
-          navigate('')
+          navigate("");
         })
         .catch((err) => {
           console.log("Error creating bill", err);
@@ -186,10 +187,15 @@ export default function GenerateBill() {
           </button>
         </div>
 
-        <div className="rounded-lg w-full bg-white shadow-lg overflow-hidden h-[95vh]">
+        <div className="rounded-lg w-full bg-white shadow-lg overflow-scroll h-[95vh]">
           <div className="flex flex-col px-4 py-6 space-y-2">
-            <div className="text-xl font-semibold text-center">
-              Generate Bill
+            <div className="flex w-full justify-center gap-1">
+              <div>
+                <LiaPagerSolid size={3} />
+              </div>
+              <div className="text-xl font-semibold text-center">
+                Generate Bill
+              </div>
             </div>
             <div className="flex gap-5 w-full py-3">
               <input
@@ -337,70 +343,77 @@ export default function GenerateBill() {
               )}
             </div>
             {medicines.length > 0 && (
-              <div className="flex gap-5 py-3">
-                <div className=" flex">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Total Price
+              <div className="flex flex-col gap-2 py-4">
+                <div className="flex flex-col md:flex-row gap-5">
+                  <div className="flex flex-col w-full">
+                    <label className="font-semibold mb-2" htmlFor="totalPrice">
+                      Total Price
+                    </label>
+                    <input
+                      type="number"
+                      id="totalPrice"
+                      value={price}
+                      onChange={handlePrice}
+                      placeholder="Total Price"
+                      className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <label className="font-semibold mb-2" htmlFor="paidAmount">
+                      Paid Amount
+                    </label>
+                    <input
+                      type="number"
+                      id="paidAmount"
+                      value={pay}
+                      onChange={handlePay}
+                      placeholder="Paid Amount"
+                      className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <label
+                      className="font-semibold mb-2"
+                      htmlFor="paymentMethod"
+                    >
+                      Payment Method
+                    </label>
+                    <select
+                      id="paymentMethod"
+                      value={method}
+                      onChange={handleMethod}
+                      className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Online">Online</option>
+                      <option value="Offline">Offline</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="flex flex-col w-full lg:w-[400px]">
+                  <label
+                    className="font-semibold mb-2"
+                    htmlFor="remainingAmount"
+                  >
+                    Remaining Amount
                   </label>
                   <input
                     type="number"
-                    value={price}
-                    onChange={handlePrice}
-                    className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                      errors.price ? "border-red-500" : "border-black"
-                    } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
+                    id="remainingAmount"
+                    value={remaining}
+                    readOnly
+                    className="py-2 px-4 rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                  {errors.price && (
-                    <p className="text-red-500 text-sm">{errors.price}</p>
-                  )}
-                </div>
-                <div className="flex">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Paid Amount
-                  </label>
-                  <input
-                    type="number"
-                    value={pay}
-                    onChange={handlePay}
-                    className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                      errors.pay ? "border-red-500" : "border-black"
-                    } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                  />
-                  {errors.pay && (
-                    <p className="text-red-500 text-sm">{errors.pay}</p>
-                  )}
                 </div>
               </div>
             )}
-            {medicines.length > 0 && (
-              <div className="flex justify-start ">
-                <label className="text-sm text-start mr-1">
-                  Payment Method:
-                </label>
-                <select
-                  placeholder="Select Method"
-                  onChange={handleMethod}
-                  required
-                  value={method}
-                  className={`mt-1 block w-full py-2 px-4 rounded-md shadow-sm ${
-                    errors.method ? "border-red-500" : "border-gray-300"
-                  } focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                >
-                  <option value="Online">Online</option>
-                  <option value="Cash">Cash</option>
-                </select>
-                {errors.method && (
-                  <p className="text-red-500 text-sm">{errors.method}</p>
-                )}
-              </div>
-            )}
+           
             <div className="w-full flex justify-center items-center mt-4">
               {medicines.length > 0 && (
                 <Button
                   onClick={handleBill}
                   variant="solid"
                   size="md"
-                  className="bg-blue-500 text-white hover:bg-blue-600"
+                  className="bg-blue-500 text-white hover:bg-blue-600 w-full"
                 >
                   Generate Bill
                 </Button>

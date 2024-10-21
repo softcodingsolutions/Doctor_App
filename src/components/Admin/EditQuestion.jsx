@@ -82,8 +82,8 @@ function EditQuestion(props) {
       >
         <ModalDialog
           sx={{
-            maxWidth: { xs: "95%", sm: "600px" },
-            width: "100%",
+           
+            width: "70%",
             overflow: "auto",
           }}
         >

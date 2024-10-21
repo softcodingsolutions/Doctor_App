@@ -9,6 +9,9 @@ import { MdApps } from "react-icons/md";
 import { FaLightbulb } from "react-icons/fa";
 import { IoCloseOutline, IoPersonSharp } from "react-icons/io5";
 import { IoIosSend } from "react-icons/io";
+import { GrVirtualMachine } from "react-icons/gr";
+
+import { SiPowerapps } from "react-icons/si";
 
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -34,13 +37,13 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       id: "2",
       title: "Consulting Appointment",
       to: "appointment/create-appointment",
-      icons: <IoIosPaper size={18} />,
+      icons: <SiPowerapps size={18} />,
     },
     {
       id: "7",
       title: "Indoor Activity",
       to: "appointment/create-machine-appointment",
-      icons: <IoIosPaper size={18} />,
+      icons: <GrVirtualMachine size={18} />,
     },
     {
       id: "6",
@@ -66,7 +69,6 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "send-message",
       icons: <IoIosSend size={18} />,
     },
-
   ];
 
   const handleLogoutClick = () => {

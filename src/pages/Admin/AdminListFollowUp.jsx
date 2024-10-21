@@ -14,36 +14,6 @@ function AdminListFollowUp() {
   const [packageDetail, setPackageDetail] = useState({});
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [message, setMessage] = useState("Search User's List Follow Up");
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
-
-  const paginateCustomers = () => {
-    if (openconsulting) {
-      const indexOfLastRow = currentPage * rowsPerPage;
-      const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-      return consultingData.slice(indexOfFirstRow, indexOfLastRow);
-    } else {
-      const indexOfLastRow = currentPage * rowsPerPage;
-      const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-      return machineConsultingData.slice(indexOfFirstRow, indexOfLastRow);
-    }
-  };
-
-  const totalPages = openconsulting
-    ? Math.ceil(consultingData.length / rowsPerPage)
-    : Math.ceil(machineConsultingData.length / rowsPerPage);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
 
   function convertToAmPm(time24) {
     // Split the input time into hours and minutes (e.g., "14:35" -> ["14", "35"])
@@ -93,7 +63,7 @@ function AdminListFollowUp() {
     setConsultingData(user?.consulting_appointments);
     setMachineConsultingData(user?.machine_appointments);
     setUserDetails(user?.user);
-    setPackageDetail(user?.user?.user_packages[0]);
+    setPackageDetail(user?.user?.user_packages);
   };
 
   const handleMachineData = () => {
@@ -128,7 +98,7 @@ function AdminListFollowUp() {
     }
   };
 
-  const handleInventory = (val,caseNumber) => {
+  const handleInventory = (val, caseNumber) => {
     localStorage.setItem("userId", val);
     localStorage.setItem("caseNumber", caseNumber);
     navigate(`/admin/patients/customer-details/progress-questions`);
@@ -158,7 +128,7 @@ function AdminListFollowUp() {
                     className="w-[10rem] text-white bg-[#1F2937] rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
                     onClick={handleButtonClick}
                   >
-                    Machine Data
+                    Machine Details
                   </button>
                 ) : (
                   <button
@@ -166,7 +136,7 @@ function AdminListFollowUp() {
                     className="w-[10rem] text-white rounded-md bg-[#1F2937] border border-gray-500 font-medium text-lg hover:scale-105"
                     onClick={handleConsultingData}
                   >
-                    Consulting Data
+                    Consulting Details
                   </button>
                 )}
               </div>
@@ -230,7 +200,12 @@ function AdminListFollowUp() {
                       <div className="mt-4 sm:mt-0">
                         <button
                           className="w-full sm:w-[9rem] p-2 text-white bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                          onClick={() => handleInventory(userDetails.id ,userDetails?.case_number)}
+                          onClick={() =>
+                            handleInventory(
+                              userDetails.id,
+                              userDetails?.case_number
+                            )
+                          }
                         >
                           View Patient
                         </button>
@@ -239,9 +214,8 @@ function AdminListFollowUp() {
                   )}
                   {openconsulting && (
                     <div className="w-full flex flex-col items-center">
-                      7
                       <div className="text-lg font-semibold tracking-wide mb-4">
-                        Consulting Time Slot
+                        Consulting Details
                       </div>
                       <div className="w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 overflow-auto h-[50vh]">
                         <table className="w-full min-w-[460px]">
@@ -259,8 +233,8 @@ function AdminListFollowUp() {
                             </tr>
                           </thead>
                           <tbody>
-                            {paginateCustomers().length > 0 ? (
-                              paginateCustomers().map((data, index) => (
+                            {consultingData.length > 0 ? (
+                              consultingData.map((data, index) => (
                                 <tr key={index}>
                                   <td className="py-3 px-4 border-b border-b-gray-50">
                                     <span className="text-black text-base font-medium">
@@ -293,46 +267,12 @@ function AdminListFollowUp() {
                           </tbody>
                         </table>
                       </div>
-                      {/* Pagination Controls */}
-                      {totalPages !== 0 && (
-                        <div className="flex flex-wrap justify-center items-center gap-2 py-2">
-                          <button
-                            onClick={handlePreviousPage}
-                            disabled={currentPage === 1}
-                            className="px-6 py-3 text-xs font-bold text-gray-900 uppercase rounded-full hover:bg-gray-900/10"
-                          >
-                            Previous
-                          </button>
-                          <div className="flex gap-2">
-                            {Array.from({ length: totalPages }, (_, i) => (
-                              <button
-                                key={i + 1}
-                                onClick={() => setCurrentPage(i + 1)}
-                                className={`h-10 w-10 rounded-full text-center font-medium text-xs transition-all ${
-                                  currentPage === i + 1
-                                    ? "bg-gray-900 text-white"
-                                    : "bg-gray-200 text-black"
-                                }`}
-                              >
-                                {i + 1}
-                              </button>
-                            ))}
-                          </div>
-                          <button
-                            onClick={handleNextPage}
-                            disabled={currentPage === totalPages}
-                            className="px-6 py-3 text-xs font-bold text-gray-900 uppercase rounded-full hover:bg-gray-900/10"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      )}
                     </div>
                   )}
                   {open && (
                     <div className="w-full flex flex-col items-center p-4 h-full">
                       <div className="text-lg font-semibold tracking-wide mb-4">
-                        Machine Time Slot
+                        Machine Time Details
                       </div>
                       <div className="bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 overflow-auto h-[50vh]">
                         <table className="w-full min-w-[460px]">
@@ -353,8 +293,8 @@ function AdminListFollowUp() {
                             </tr>
                           </thead>
                           <tbody>
-                            {paginateCustomers().length > 0 ? (
-                              paginateCustomers().map((data, index) => (
+                            {machineConsultingData.length > 0 ? (
+                              machineConsultingData.map((data, index) => (
                                 <tr key={index}>
                                   <td className="py-3 px-4 border-b border-b-gray-50">
                                     <span className="text-black text-base font-medium">
@@ -392,40 +332,6 @@ function AdminListFollowUp() {
                           </tbody>
                         </table>
                       </div>
-                      {/* Pagination Controls */}
-                      {totalPages !== 0 && (
-                        <div className="flex flex-wrap justify-center items-center gap-2 py-2">
-                          <button
-                            onClick={handlePreviousPage}
-                            disabled={currentPage === 1}
-                            className="px-6 py-3 text-xs font-bold text-gray-900 uppercase rounded-full hover:bg-gray-900/10"
-                          >
-                            Previous
-                          </button>
-                          <div className="flex gap-2">
-                            {Array.from({ length: totalPages }, (_, i) => (
-                              <button
-                                key={i + 1}
-                                onClick={() => setCurrentPage(i + 1)}
-                                className={`h-10 w-10 rounded-full text-center font-medium text-xs transition-all ${
-                                  currentPage === i + 1
-                                    ? "bg-gray-900 text-white"
-                                    : "bg-gray-200 text-black"
-                                }`}
-                              >
-                                {i + 1}
-                              </button>
-                            ))}
-                          </div>
-                          <button
-                            onClick={handleNextPage}
-                            disabled={currentPage === totalPages}
-                            className="px-6 py-3 text-xs font-bold text-gray-900 uppercase rounded-full hover:bg-gray-900/10"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      )}
                     </div>
                   )}
                 </div>

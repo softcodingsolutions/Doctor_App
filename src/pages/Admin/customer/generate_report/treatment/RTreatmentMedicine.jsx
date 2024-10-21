@@ -236,6 +236,7 @@ function RTreatmentMedicine() {
                                 type="checkbox"
                                 name={`dosage-${val.id}`}
                                 value="before-meal"
+                                className="m-2"
                                 onChange={(event) =>
                                   handleDropdownChange(
                                     val.id,
@@ -255,6 +256,7 @@ function RTreatmentMedicine() {
                                 type="checkbox"
                                 name={`dosage-${val.id}`}
                                 value="after-meal"
+                                className="m-2"
                                 onChange={(event) =>
                                   handleDropdownChange(
                                     val.id,
@@ -372,6 +374,7 @@ function RTreatmentMedicine() {
                                 type="radio"
                                 name={`with-milk-${val.id}`}
                                 value="yes"
+                                className="m-1"
                                 onChange={() =>
                                   handleDropdownChange(
                                     val.id,
@@ -390,6 +393,7 @@ function RTreatmentMedicine() {
                                 type="radio"
                                 name={`with-milk-${val.id}`}
                                 value="no"
+                                className="m-1"
                                 onChange={() =>
                                   handleDropdownChange(
                                     val.id,

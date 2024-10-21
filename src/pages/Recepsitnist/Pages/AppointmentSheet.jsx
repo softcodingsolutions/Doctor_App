@@ -108,16 +108,16 @@ export default function AppointmentSheet() {
               <IoMdArrowRoundBack size={20} />
             </button>
           </div>
-          <div className=" flex justify-start w-[110vh] ">
+          <div className=" flex justify-start gap-5  w-[110vh] ">
+            <div className="text-md font-semibold ml-10 ">
+              Date : {formatDate(consultingTime)}
+            </div>
             <input
               type="date"
               placeholder="select date"
               className="py-1 px-2 rounded-md border-2 lg:w-[30vh]"
               onChange={handleConsulting}
             />
-            <div className="text-md font-semibold ml-10 ">
-              Date : {formatDate(consultingTime)}
-            </div>
           </div>
         </div>
       </div>
@@ -131,7 +131,9 @@ export default function AppointmentSheet() {
                 key={doctorIndex}
                 className=" rounded-md overflow-auto mb-6 "
               >
-                <h3 className="text-lg font-medium mb-1 p-1 bg-green-500 justify-center flex">Dr. {doctor}</h3>
+                <h3 className="text-lg font-medium mb-1 p-1 bg-green-500 justify-center flex">
+                  Dr. {doctor}
+                </h3>
                 <div className="flex gap-1">
                   {machines.map((machine, machineIndex) => {
                     const timeSlots = Object.keys(
@@ -154,7 +156,7 @@ export default function AppointmentSheet() {
                             </thead>
                             <tbody>
                               {timeSlots.map((time, timeIndex) => (
-                                <tr key={timeIndex} className="border-b-2" >
+                                <tr key={timeIndex} className="border-b-2">
                                   <td className="px-4 py-7 text-xs font-semibold ">
                                     {time}
                                   </td>
@@ -170,7 +172,7 @@ export default function AppointmentSheet() {
                             </tbody>
                           </table>
                         ) : (
-                          <div>No Appointments</div>
+                          <div >No Appointments</div>
                         )}
                       </div>
                     );

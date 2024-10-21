@@ -21,12 +21,19 @@ const CustomerDetails = () => {
   const role = localStorage.getItem("role");
   const location = useLocation();
   const pathname =
-    role === "doctor" ||  "super_admin"
+    role === "doctor" || "super_admin"
       ? location.pathname.split("/customer-details/")[1]
-      : location.pathname.split("/recp-customer-details/")[1];
+      : location.pathname.split(
+          "/recp-customer-details/"
+        );
   const [loading, setLoading] = useState(true);
+  console.log(role);
+  console.log(
+    location.pathname.split("/recp-customer-details/")
+  );
   const handlegetUser = () => {
     axios
+
       .get(`/api/v2/users/search?id=${id}`)
       .then((res) => {
         setGetCustomer(res.data?.user);

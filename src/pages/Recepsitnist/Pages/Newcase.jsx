@@ -38,7 +38,6 @@ export default function Newcase(props) {
             alert("Successfully created Your Consulting Appointment!");
             setConsultingTime();
             setSlot("");
-            navigate("/receptionist/appointment/home");
           })
           .catch((err) => {
             console.log(err);
@@ -100,45 +99,8 @@ export default function Newcase(props) {
   }
 
   return (
-    <div>
-      <form className="text-lg">
-        {props.name && (
-          <div>
-            <div className="flex flex-col sm:flex-row gap-5 m-2">
-              <label className="text-lg text-end w-full sm:w-1/3 mr-2">
-                Name :
-              </label>
-              <input
-                type="text"
-                className="py-1 px-2 border rounded w-full sm:w-[40vh]"
-                value={`${props.name} ${props.lastName}`}
-                readOnly 
-              />
-            </div>
-            <div className="flex flex-col sm:flex-row gap-5 m-2">
-              <label className="text-lg text-end w-full sm:w-1/3 mr-2">
-                Mobile Number :
-              </label>
-              <input
-                type="text"
-                className="py-1 px-2 border rounded w-full sm:w-[40vh]"
-                value={props.number}
-                readOnly 
-              />
-            </div>
-            <div className="flex flex-col sm:flex-row gap-5 m-2">
-              <label className="text-lg text-end w-full sm:w-1/3 mr-2">
-                Email id :
-              </label>
-              <input
-                type="email"
-                className="py-1 px-2 border rounded w-full sm:w-[40vh]"
-                value={props.email}
-                readOnly 
-              />
-            </div>
-          </div>
-        )}
+    <div className="p-16 w-[100%] ml-16">
+      <form className="text-lg flex flex-col gap-1">
         <div className="flex flex-col sm:flex-row gap-5 m-2">
           <label className="text-lg text-end w-full sm:w-1/3 mr-2">
             Select the Date:
@@ -173,8 +135,8 @@ export default function Newcase(props) {
         <div className="flex w-full justify-center mt-10">
           <button
             type="submit"
-            className="w-full sm:w-[20rem] text-white py-1 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-            style={{ backgroundColor: "black" }}
+            className="w-[440px] text-white py-1 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
+            style={{ backgroundColor: "#1F2937" }}
             onClick={handleSubmit}
           >
             Create Appointment

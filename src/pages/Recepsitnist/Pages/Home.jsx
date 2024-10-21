@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import InsideLoader from "../../InsideLoader";
+import { HiClipboardDocumentList } from "react-icons/hi2";
 
 export default function Home() {
   const [filteredDoctors, setFilteredDoctors] = useState([]);
@@ -109,20 +110,24 @@ export default function Home() {
       <div className="rounded-lg bg-card h-[93vh] bg-white">
         <div className="flex flex-col px-2 py-1 h-full space-y-2.5 ">
           <div className="flex flex-col gap-2 p-2 w-full">
-            <div className="flex items-center justify-between flex-wrap">
-              {isToday && (
-                <label className="flex text-xl font-bold p-1 tracking-wide">
+            <div className="flex">
+              <div>
+                <HiClipboardDocumentList size={40} />
+              </div>
+              {isToday ? (
+                <label className="flex justify-start text-lg font-bold  tracking-wide">
                   Today's Appointments
                 </label>
+              ) : (
+                <label className="flex justify-start text-lg font-bold  tracking-wide">
+                  Appointments
+                </label>
               )}
-              <div className="flex justify-end text-right w-full sm:w-auto">
-                <div className="text-lg font-semibold">
-                  Date: {formatDate(consultingTime)}
-                </div>
-              </div>
             </div>
-
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <label className="flex  justify-start text-md mt-2 Plfont-semibold tracking-wide">
+              {formatDate(consultingTime)}
+            </label>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 p-2">
               <select
                 onChange={handleDoctorList}
                 defaultValue=""
@@ -153,8 +158,8 @@ export default function Home() {
                 className="min-w-fit border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
               >
                 {consultingOpen
-                  ? "Machine Consulting Appointment"
-                  : "Consulting Appointment"}
+                  ? "Machine Consulting Appointments"
+                  : "Consulting Time Appointments"}
               </button>
             </div>
           </div>
@@ -163,27 +168,27 @@ export default function Home() {
             {/* consulting time table */}
             {consultingOpen && (
               <div className="flex w-full flex-col items-center h-full">
-                <div className="text-lg font-semibold tracking-wide">
-                  Consulting Time Slot
+                <div className="text-xl font-semibold tracking-wide mb-2">
+                  Consulting Time Appointments
                 </div>
                 <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[90%]">
                   <table className="w-full min-w-[460px] z-0">
                     <thead className="uppercase">
                       <tr className="bg-[#1F2937] text-white rounded-md">
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Type
+                          Date
                         </th>
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Doctor Name
+                          Time
                         </th>
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Patient Name
                         </th>
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Date
+                          Type
                         </th>
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Time
+                          Doctor Name
                         </th>
                       </tr>
                     </thead>
@@ -192,6 +197,21 @@ export default function Home() {
                         consultingTimes.map((data, index) => {
                           return (
                             <tr key={index} className="map">
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {formatDate(data.date)}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {data.time}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {data.user?.first_name} {data.user?.last_name}
+                                </span>
+                              </td>
                               <td className="py-3 px-4 border-b border-b-gray-50">
                                 <span className="text-black text-base font-medium ml-1">
                                   {data.user?.follow_up
@@ -205,29 +225,14 @@ export default function Home() {
                                   {data.doctor?.last_name}
                                 </span>
                               </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.user?.first_name} {data.user?.last_name}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {formatDate(data.date)}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.time}
-                                </span>
-                              </td>
                             </tr>
                           );
                         })
                       ) : (
                         <tr>
                           <td
-                            colSpan="4"
-                            className="py-3 px-4 text-center justify-center"
+                            colSpan="5"
+                            className="py-28 text-center h-full w-full  justify-center"
                           >
                             No Appointment is created for Consulting Time
                           </td>
@@ -241,13 +246,22 @@ export default function Home() {
             {/* machine time table */}
             {machineOpen && (
               <div className="flex w-full flex-col items-center  h-full">
-                <div className="text-lg font-semibold tracking-wide">
-                  Machine Time Slot
+                <div className="text-xl font-semibold tracking-wide mb-2">
+                  Machine Consulting Appointments
                 </div>
                 <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[90%]">
                   <table className="w-full min-w-[460px] z-0">
                     <thead className="uppercase">
                       <tr className="bg-[#1F2937] text-white rounded-md">
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Date
+                        </th>
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Time
+                        </th>
+                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
+                          Patient Name
+                        </th>
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Type
                         </th>
@@ -255,16 +269,7 @@ export default function Home() {
                           Doctor Name
                         </th>
                         <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Patient Name
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
                           Machine Name
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Date
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Time
                         </th>
                       </tr>
                     </thead>
@@ -273,6 +278,21 @@ export default function Home() {
                         machineConsultingTimes.map((data, index) => {
                           return (
                             <tr key={index} className="map">
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {formatDate(data.date)}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {convertToAmPm(data.time)}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 border-b border-b-gray-50">
+                                <span className="text-black text-base font-medium ml-1">
+                                  {data.user.first_name} {data.user.last_name}
+                                </span>
+                              </td>
                               <td className="py-3 px-4 border-b border-b-gray-50">
                                 <span className="text-black text-base font-medium ml-1">
                                   {data.user?.follow_up
@@ -288,22 +308,7 @@ export default function Home() {
                               </td>
                               <td className="py-3 px-4 border-b border-b-gray-50">
                                 <span className="text-black text-base font-medium ml-1">
-                                  {data.user.first_name} {data.user.last_name}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
                                   {data.machine_detail.name}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {formatDate(data.date)}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {convertToAmPm(data.time)}
                                 </span>
                               </td>
                             </tr>
@@ -311,7 +316,7 @@ export default function Home() {
                         })
                       ) : (
                         <tr>
-                          <td colSpan="5" className="py-3 px-4 text-center">
+                          <td colSpan="6" className="py-28 justify-center text-center">
                             No Appointment is created for Machine Consulting
                             Time
                           </td>

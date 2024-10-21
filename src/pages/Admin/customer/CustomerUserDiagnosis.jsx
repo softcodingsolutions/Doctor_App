@@ -288,8 +288,8 @@ function CustomerUserDiagnosis() {
                   ) : (
                     showPart1.map((val, index) => (
                       <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-gray-50 text-center text-sm">
-                          {index + 1}
+                        <td className="py-2 px-4 border-b border-gray-50 text-center text-2xl">
+                          *
                         </td>
                         <td className="py-3 px-4 border-b border-gray-50 text-sm">
                           <TdComponent things={val} />
@@ -342,8 +342,8 @@ function CustomerUserDiagnosis() {
                   ) : (
                     pastHistory.map((val, index) => (
                       <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-gray-50 text-center">
-                          {index + 1}
+                        <td className="py-2 px-4 border-b border-gray-50 text-center text-2xl">
+                          *
                         </td>
                         <td className="py-3 px-4 border-b border-gray-50">
                           <TdComponent things={val} />
@@ -358,9 +358,9 @@ function CustomerUserDiagnosis() {
         </div>
       </div>
 
-      <div className="w-full sm:flex items-end ">
+      <div className="w-full grid grid-cols-1 items-end">
         <div className="sm:flex-grow flex justify-between overflow-x-hidden">
-          <div className="flex flex-wrap justify-center transition-transform gap-3  w-full">
+          <div className="grid grid-cols-3 gap-2 w-full">
             {reportButtonsMain.map((res) => {
               return (
                 <Link
@@ -368,7 +368,7 @@ function CustomerUserDiagnosis() {
                   onClick={() => setSelectedId(res.id)}
                   key={res.id}
                   className={clsx(
-                    "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
+                    "min-w-fit flex items-center justify-center shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
                     pathname === res.to ? "bg-[#1F2937] text-white" : "bg-white"
                   )}
                 >

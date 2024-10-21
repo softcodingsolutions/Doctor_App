@@ -18,6 +18,8 @@ function TreatmentQuestionPart2() {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [defaultDropdownValue, setDefaultDropdownValue] = useState(0);
   const role = localStorage.getItem("role");
+  const [number, setNumber] = useState(0);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(true);
   const main_id = localStorage.getItem("main_id");
 
@@ -76,6 +78,7 @@ function TreatmentQuestionPart2() {
 
   const handleSendQuestionToBeAnswered = async (e) => {
     const selectedValue = e.target.value;
+    setNumber(selectedValue);
     console.log("min", selectedValue);
     const formData = new FormData();
     formData.append(
@@ -147,6 +150,7 @@ function TreatmentQuestionPart2() {
         });
       }
       handleGetQuestionsPart2();
+      setShowDropdown(true);
       context[1]();
     } catch (err) {
       console.error(err);
@@ -194,21 +198,18 @@ function TreatmentQuestionPart2() {
               </div>
             )}
 
-            {showCheckboxes && (
+            {showDropdown && (
               <div className="flex flex-col md:flex-row items-center gap-2 font-bold text-lg md:text-base">
-                <span>No. of questions to be answered:</span>{" "}
-                <span>{defaultDropdownValue}</span>
+                <span>No. of questions to be answered: {number}</span>{" "}
                 <Select
                   required
                   placeholder="Select"
                   className="w-full md:w-auto"
+                  value={number}
+                  onChange={(e) => handleSendQuestionToBeAnswered(e)}
                 >
                   {[...Array(selectedCheckboxes.length).keys()].map((index) => (
-                    <MenuItem
-                      key={index}
-                      value={index + 1}
-                      onClick={() => handleSendQuestionToBeAnswered(index + 1)} // Ensure correct value is sent
-                    >
+                    <MenuItem key={index} value={index + 1}>
                       {index + 1}
                     </MenuItem>
                   ))}

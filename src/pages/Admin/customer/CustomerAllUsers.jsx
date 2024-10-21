@@ -227,9 +227,9 @@ function CustomerAllUsers() {
                   className="py-3 text-sm px-2 w-full md:w-auto rounded-md border border-black"
                 >
                   <option value="select">Package Details</option>
-                  <option value="activate">Activate</option>
+                  <option value="activate">Active</option>
                   <option value="expired">Expired</option>
-                  <option value="deactivate">Deactivated</option>
+                  <option value="deactivate">Deactive</option>
                   <option value="renew">Renew</option>
                   <option value="about_to_expired">About to Expire</option>
                 </select>
