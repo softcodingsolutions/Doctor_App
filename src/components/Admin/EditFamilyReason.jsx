@@ -73,8 +73,7 @@ function EditFamilyReason(props) {
       >
         <ModalDialog
           sx={{
-            maxWidth: { xs: "95%", sm: "600px" },
-            width: "100%",
+            width: "80%",
             overflow: "auto",
           }}
         >

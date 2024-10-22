@@ -124,14 +124,53 @@ function RTreatmentMedicine() {
     }));
   };
 
+
   const handleDropdownChange = (id, field, value) => {
-    setDropdownValues((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        [field]: value,
-      },
-    }));
+    setDropdownValues((prev) => {
+      const updatedValues = {
+        ...prev,
+        [id]: {
+          ...prev[id],
+          [field]: value,
+        },
+      };
+
+      const { dosage, frequency, quantity, with_milk } =
+        updatedValues[id] || {};
+
+      if (
+        dosage &&
+        frequency?.length > 0 &&
+        quantity?.length > 0 &&
+        with_milk
+      ) {
+        if (!selectedCheckboxes.includes(id.toString())) {
+          const updatedCheckboxes = [...selectedCheckboxes, id.toString()];
+          setSelectedCheckboxes(updatedCheckboxes);
+
+          const selectedMedicine = updatedCheckboxes
+            .map((checkboxId) =>
+              getMedicines.find((med) => med.id === Number(checkboxId))
+            )
+            .filter((med) => med);
+
+          const formattedData = selectedMedicine.map((med) => ({
+            medicine_name: med.medicine_name,
+            dosage: updatedValues[med.id]?.dosage || "",
+            frequency: updatedValues[med.id]?.frequency || [],
+            quantity: updatedValues[med.id]?.quantity || [],
+            with_milk: updatedValues[med.id]?.with_milk || "",
+          }));
+
+          setStoreData((prev) => ({
+            ...prev,
+            medicine: formattedData,
+          }));
+        }
+      }
+
+      return updatedValues;
+    });
   };
 
   useEffect(() => {

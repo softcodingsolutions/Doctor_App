@@ -324,7 +324,7 @@ function CustomerUserDiagnosis() {
         </div>
 
         {/* Family History Section */}
-        <div className="bg-white rounded-md p-4 w-full md:w-1/2 overflow-auto">
+        <div className="bg-white rounded-md p-5 w-full md:w-1/2 overflow-auto">
           <div className="font-semibold text-sm mb-2">Family History</div>
           <div className="animate-fade-left animate-delay-75 rounded-md animate-once animate-ease-out overflow-auto">
             <table className="w-full min-w-[460px] z-0">
@@ -358,9 +358,13 @@ function CustomerUserDiagnosis() {
         </div>
       </div>
 
-      <div className="w-full grid grid-cols-1 items-end">
+      <div className="w-full grid grid-cols-1 p-3 items-end">
         <div className="sm:flex-grow flex justify-between overflow-x-hidden">
-          <div className="grid grid-cols-3 gap-2 w-full">
+          <div
+            className={`grid grid-cols-3 gap-2 w-full ${
+              selectedId ? "merged-height" : ""
+            }`}
+          >
             {reportButtonsMain.map((res) => {
               return (
                 <Link
@@ -368,8 +372,10 @@ function CustomerUserDiagnosis() {
                   onClick={() => setSelectedId(res.id)}
                   key={res.id}
                   className={clsx(
-                    "min-w-fit flex items-center justify-center shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
-                    pathname === res.to ? "bg-[#1F2937] text-white" : "bg-white"
+                    "min-w-fit flex items-center justify-center shadow-md cursor-pointer p-2 rounded-md",
+                    pathname === res.to
+                      ? "bg-[#1F2937] text-white h-full rounded-b-none" 
+                      : "bg-white h-auto hover:bg-[#1F2937] hover:text-white"
                   )}
                 >
                   {res.icons}

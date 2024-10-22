@@ -119,7 +119,7 @@ function AddNewExercise(props) {
 
               <FormControl>
                 <FormLabel>{props.exercise_describe_english}</FormLabel>
-                <Box className="flex flex-col items-center w-full gap-2">
+                <Box className="flex flex-col items-center w-full gap-8">
                   <JoditEditor
                     value={englishText}
                     config={{

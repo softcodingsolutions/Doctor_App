@@ -1,13 +1,6 @@
-import { useTransform, motion } from "framer-motion";
-
-function WeightLoss3({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function WeightLoss3() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[100vh] w-full bg-orange-100 flex flex-col items-center"
-    >
+    <div className=" w-full bg-grey-50 flex flex-col items-center">
       <div className="w-full pt-14 flex flex-col justify-center px-6 md:px-16 gap-10">
         <div className="leading-relaxed text-base md:text-lg">
           It is also important to consider the role of the adrenal glands in
@@ -34,7 +27,7 @@ function WeightLoss3({ scrollYProgress }) {
             essentially stored energy and serves several important functions,
             including:
           </div>
-          <div className="flex justify-start w-full pt-4">
+          <div className="flex justify-start w-full gap-10 pt-4">
             <ul className="space-y-2.5 leading-loose text-base md:text-lg">
               <li>
                 <span className="text-xl">&#11037;</span> Absorbing essential
@@ -44,6 +37,8 @@ function WeightLoss3({ scrollYProgress }) {
                 <span className="text-xl">&#11037;</span> Boosting the immune
                 system
               </li>
+            </ul>
+            <ul className="space-y-2.5 leading-loose text-base md:text-lg">
               <li>
                 <span className="text-xl">&#11037;</span> Supporting fetal
                 development
@@ -62,7 +57,7 @@ function WeightLoss3({ scrollYProgress }) {
             However, some individuals end up with more body fat than others.
             Several factors can contribute to this:
           </div>
-          <div className="flex justify-start w-full pt-4">
+          <div className="flex gap-16 w-full pt-4">
             <ul className="space-y-2.5 leading-loose text-base md:text-lg">
               <li>
                 <span className="text-xl">&#11037;</span> Excessive stress
@@ -77,6 +72,8 @@ function WeightLoss3({ scrollYProgress }) {
               <li>
                 <span className="text-xl">&#11037;</span> Low metabolism
               </li>
+            </ul>
+            <ul className="space-y-2.5 leading-loose text-base md:text-lg">
               <li>
                 <span className="text-xl">&#11037;</span> Hormonal imbalances
               </li>
@@ -95,7 +92,7 @@ function WeightLoss3({ scrollYProgress }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

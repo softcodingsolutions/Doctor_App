@@ -1,17 +1,11 @@
-import { useTransform, motion } from "framer-motion";
 import img1 from "../../assets/images/fat-img-1.png";
 import img2 from "../../assets/images/fat-img-2.png";
 import img3 from "../../assets/images/fat-img-3.png";
 import img4 from "../../assets/images/fat-img-4.png";
 
-function WeightLoss5({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function WeightLoss5() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-screen bg-teal-50 flex flex-col items-center py-7"
-    >
+    <div className=" bg-gray-50 flex flex-col items-center py-7">
       <div className="w-full pt-14 flex flex-col justify-center px-6 md:px-16 gap-10">
         <div className="text-lg md:text-xl font-semibold">
           Certain parts of the body are more prone to excess fat accumulation
@@ -51,7 +45,7 @@ function WeightLoss5({ scrollYProgress }) {
         in each body part may need to be tailored differently to address these
         specific hormonal imbalances.
       </div>
-    </motion.div>
+    </div>
   );
 }
 

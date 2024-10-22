@@ -25,7 +25,7 @@ function EditDiet(props) {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  
+
   const [text, setText] = useState({
     hindi: props.see[0]?.chart_hindi || "",
     gujarati: props.see[0]?.chart_gujarati || "",
@@ -72,7 +72,12 @@ function EditDiet(props) {
           setOpen(false);
         }}
       >
-        <ModalDialog sx={{ overflowY: 'auto', maxHeight: '80vh' }}>
+        <ModalDialog
+          sx={{
+            overflowY: "auto",
+            maxHeight: "100vh",
+          }}
+        >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
           <form
@@ -82,7 +87,7 @@ function EditDiet(props) {
               setOpen(false);
             }}
           >
-            <Stack spacing={2} >
+            <Stack spacing={2} sx={{ width: "1000px" }}>
               <FormControl>
                 <FormLabel>{props.diet_code} </FormLabel>
                 <Input
@@ -131,11 +136,11 @@ function EditDiet(props) {
 
               <FormControl>
                 <FormLabel>{props.diet_describe_english} </FormLabel>
-                <Box className="flex flex-col items-center w-full gap-2">
+                <Box className="flex flex-col items-center w-full gap-8">
                   <JoditEditor
                     value={text.english}
                     config={{
-                      placeholder: 'Describe in English...',
+                      placeholder: "Describe in English...",
                     }}
                     onChange={(value) => {
                       setText((prev) => ({
@@ -148,7 +153,7 @@ function EditDiet(props) {
                   <JoditEditor
                     value={text.hindi}
                     config={{
-                      placeholder: 'Describe in Hindi...',
+                      placeholder: "Describe in Hindi...",
                     }}
                     onChange={(value) => {
                       setText((prev) => ({
@@ -161,7 +166,7 @@ function EditDiet(props) {
                   <JoditEditor
                     value={text.gujarati}
                     config={{
-                      placeholder: 'Describe in Gujarati...',
+                      placeholder: "Describe in Gujarati...",
                     }}
                     onChange={(value) => {
                       setText((prev) => ({

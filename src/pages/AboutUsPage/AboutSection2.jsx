@@ -1,19 +1,13 @@
 import { Carousel, IconButton } from "@material-tailwind/react";
-import { motion, useTransform } from "framer-motion";
 import img1 from "../../assets/images/about-01.jpg";
 import img2 from "../../assets/images/about-02.jpg";
 import img3 from "../../assets/images/about-03.jpg";
 import img4 from "../../assets/images/about-04.jpg";
 import img5 from "../../assets/images/about-05.jpg";
 
-function AboutSection2({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function AboutSection2() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[100vh] w-full bg-gray-200 flex flex-col items-center"
-    >
+    <div className="w-full bg-gray-200 flex flex-col items-center">
       <div className="flex flex-col md:flex-row w-full p-6 md:p-14 items-center gap-10 md:gap-20 justify-evenly">
         <div className="w-full md:w-1/2 tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
           At <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
@@ -143,7 +137,7 @@ function AboutSection2({ scrollYProgress }) {
           often multifaceted and not always related to diet alone.
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

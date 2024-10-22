@@ -1,14 +1,8 @@
-import { motion, useTransform } from "framer-motion";
 import img1 from "../../assets/images/treatments-chart.png";
 
-function WeightLoss2({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function WeightLoss2() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[100vh] w-full bg-gray-200 flex items-center"
-    >
+    <div className=" w-full bg-gray-200 flex items-center p-10">
       <div className="w-full flex flex-col md:flex-row px-5">
         {/* Text Section */}
         <div className="flex flex-col w-full md:w-1/2 pl-4 md:pl-11 items-center">
@@ -61,7 +55,7 @@ function WeightLoss2({ scrollYProgress }) {
           />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

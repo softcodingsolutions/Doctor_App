@@ -1,20 +1,10 @@
-import { motion, useTransform } from "framer-motion";
-
-function WeightLoss1({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.45]);
-
+function WeightLoss1() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[100vh] flex flex-col items-center py-5"
-    >
-      <div className="h-[50vh] md:h-2/3 flex justify-center items-center w-full bg-[url('https://plus.unsplash.com/premium_photo-1671028546491-f70b21a32cc2?h=405&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center">
+    <div className="flex flex-col  items-center ">
+      <div className="h-[60vh] flex justify-center items-center w-full bg-[url('https://plus.unsplash.com/premium_photo-1671028546491-f70b21a32cc2?h=405&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center">
         {/* Breadcrumb Navigation */}
         <div className="w-fit px-4 md:px-0">
-          <div
-            className="text-base md:text-xl flex items-center gap-1.5 font-sans
-       font-semibold text-green-500"
-          >
+          <div className="text-base md:text-xl flex items-center gap-1.5 font-sans font-semibold text-green-500">
             <a href="/" className="hover:underline">
               Home
             </a>{" "}
@@ -27,7 +17,7 @@ function WeightLoss1({ scrollYProgress }) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 bg-gray-100 py-8 md:py-12 flex flex-col items-center text-center">
+      <div className="relative z-10 bg-gray-50 py-8 md:py-12 flex flex-col items-center text-center">
         <div className="px-6 md:px-12">
           <div className="text-lg md:text-xl font-semibold tracking-wide mb-4">
             Ayurvedic principles remain at the core of all fat loss treatments
@@ -48,7 +38,7 @@ function WeightLoss1({ scrollYProgress }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

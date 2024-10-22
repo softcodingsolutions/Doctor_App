@@ -1,13 +1,6 @@
-import { useTransform, motion } from "framer-motion";
-
-function WeightLoss4({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function WeightLoss4() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[100vh] w-full bg-teal-100 flex flex-col items-center text-pretty"
-    >
+    <div className=" w-full bg-gray-200 flex flex-col items-center text-pretty">
       <div className="w-full pt-14 flex flex-col justify-center px-6 md:px-16 gap-10">
         <div className="leading-relaxed text-base md:text-lg">
           From an Ayurvedic standpoint, undue weight gain among a large populace
@@ -77,7 +70,7 @@ function WeightLoss4({ scrollYProgress }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

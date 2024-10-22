@@ -80,7 +80,7 @@ function EditExercise(props) {
               setOpen(false);
             }}
           >
-            <Stack spacing={3} >
+            <Stack spacing={3} sx={{ width: "1000px" }}>
               <FormControl>
                 <FormLabel>{props.exercise_name}</FormLabel>
                 <Input
@@ -118,7 +118,7 @@ function EditExercise(props) {
 
               <FormControl>
                 <FormLabel>{props.exercise_describe_english}</FormLabel>
-                <Box className="flex flex-col items-center w-full gap-3">
+                <Box className="flex flex-col items-center w-full gap-8">
                   <JoditEditor
                     value={text.english}
                     config={{ placeholder: "Describe in English..." }}

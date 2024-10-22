@@ -1,13 +1,6 @@
-import { motion, useTransform } from "framer-motion";
-
-function AboutSection3({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function AboutSection3() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[100vh] w-full bg-orange-100 flex flex-col items-center"
-    >
+    <div className=" w-full bg-gray-50 flex flex-col items-center">
       <div className="flex flex-col items-center">
         <div className="text-2xl md:text-4xl font-sans font-medium mt-6 md:mt-8 text-center">
           Some of the most common weight gaining reasons are:
@@ -15,7 +8,7 @@ function AboutSection3({ scrollYProgress }) {
         <div className="border-[2.5px] rounded-md border-orange-300 w-16 md:w-20 mt-3" />
       </div>
 
-      <div className="flex flex-col md:flex-row w-full px-6 py-8 md:p-14 items-center gap-10 md:gap-20 justify-evenly">
+      <div className="flex flex-col md:flex-row w-full p-10  items-center  justify-evenly">
         <div>
           <ul className="space-y-2 leading-loose text-base md:text-lg">
             <li>
@@ -27,6 +20,23 @@ function AboutSection3({ scrollYProgress }) {
             <li>
               <span className="text-xl">&#11037;</span> Food Allergies
             </li>
+          </ul>
+        </div>
+        <div>
+          <ul className="space-y-2 leading-loose text-base md:text-lg">
+            <li>
+              <span className="text-xl">&#11037;</span> Toxic Colon
+            </li>
+            <li>
+              <span className="text-xl">&#11037;</span> Toxic Liver
+            </li>
+            <li>
+              <span className="text-xl">&#11037;</span> Candidiasis
+            </li>
+          </ul>
+        </div>
+        <div>
+          <ul className="space-y-2 leading-loose text-base md:text-lg">
             <li>
               <span className="text-xl">&#11037;</span> Polycystic Ovary
               Syndrome (PCOS)
@@ -40,18 +50,8 @@ function AboutSection3({ scrollYProgress }) {
             </li>
           </ul>
         </div>
-
         <div>
           <ul className="space-y-2 leading-loose text-base md:text-lg">
-            <li>
-              <span className="text-xl">&#11037;</span> Toxic Colon
-            </li>
-            <li>
-              <span className="text-xl">&#11037;</span> Toxic Liver
-            </li>
-            <li>
-              <span className="text-xl">&#11037;</span> Candidiasis
-            </li>
             <li>
               <span className="text-xl">&#11037;</span> Nutrients Deficiency
             </li>
@@ -94,7 +94,7 @@ function AboutSection3({ scrollYProgress }) {
           Health Minister of Gujarat, Shri Ashokbhai Bhatt, in 2007.
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

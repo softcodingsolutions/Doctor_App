@@ -1,4 +1,4 @@
-import { Add } from "@mui/icons-material";
+import { Add, Height } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -17,6 +17,7 @@ import {
 import React, { useState, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import JoditEditor from "jodit-react";
+import { height } from "@mui/system";
 
 function AddNewMedicine(props) {
   const [open, setOpen] = useState(false);
@@ -96,7 +97,7 @@ function AddNewMedicine(props) {
         >
           <ModalClose />
           <DialogTitle>{props.title}</DialogTitle>
-          <Box sx={{ overflowY: "auto", maxHeight: "70vh", paddingRight: 2 }}>
+          <Box sx={{ overflowY: "auto", maxHeight: "100vh", paddingRight: 2 }}>
             <form onSubmit={handleSubmit(submittedData)}>
               <Stack spacing={2} sx={{ width: "1000px" }}>
                 <FormControl>
@@ -152,11 +153,13 @@ function AddNewMedicine(props) {
                       onChange={(value) =>
                         setText((prev) => ({ ...prev, english: value }))
                       }
+                      maxHeight={100}
                     />
 
                     <JoditEditor
                       value={text.hindi}
                       config={editorConfig}
+                      sx={{ height: "500px" }}
                       onChange={(value) =>
                         setText((prev) => ({ ...prev, hindi: value }))
                       }

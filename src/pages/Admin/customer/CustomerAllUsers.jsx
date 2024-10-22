@@ -56,8 +56,9 @@ function CustomerAllUsers() {
       });
   };
 
-  const handleDiagnosis = (val) => {
+  const handleDiagnosis = (val, caseNumber) => {
     localStorage.setItem("userId", val);
+    localStorage.setItem("caseNumber", caseNumber);
     navigate(`../user-diagnosis/treatment/medicine`);
   };
 
@@ -293,9 +294,11 @@ function CustomerAllUsers() {
                       <td className="py-3 px-2 border-b border-b-gray-50 text-sm text-left">
                         {convertDate(val.created_at)}
                       </td>
-                      <td className=" py-3 px-2 border-b  border-b-gray-50">
+                      <td className="flex gap-1 py-3 px-2 border-b  border-b-gray-50">
                         <button
-                          onClick={() => handleDiagnosis(val.id)}
+                          onClick={() =>
+                            handleDiagnosis(val.id, val.case_number)
+                          }
                           className="font-medium p-1 text-green-600 bg-white border text-sm ml-1 border-gray-300 rounded-md hover:bg-green-600 hover:text-white"
                         >
                           Diagnosis

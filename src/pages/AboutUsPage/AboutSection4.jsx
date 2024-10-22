@@ -1,13 +1,6 @@
-import { motion, useTransform } from "framer-motion";
-
-function AboutSection4({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function AboutSection4() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[100vh] w-full bg-teal-100 flex flex-col items-center text-pretty"
-    >
+    <div className="w-full bg-gray-200 flex flex-col items-center text-pretty ">
       <div className="flex flex-col items-center">
         <div className="text-2xl md:text-4xl font-sans font-medium mt-6 md:mt-8 text-center">
           Why Choose{" "}
@@ -26,12 +19,15 @@ function AboutSection4({ scrollYProgress }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 md:gap-12">
-          <div className="flex flex-col gap-1">
+        {/* Grid container for cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Card 1 */}
+          <div className="bg-white shadow-md rounded-lg p-8 flex flex-col mb-10">
             <div className="font-semibold text-lg md:text-xl">
               <span className="text-lg md:text-xl pr-1">&#11037;</span>20 Years
               of Experience
             </div>
+            <hr className="text-black  my-2" />
             <div className="pl-3 leading-relaxed text-sm md:text-base">
               Achieving two decades of exceptional success in Ayurvedic weight
               loss is a rarity, but{" "}
@@ -41,11 +37,13 @@ function AboutSection4({ scrollYProgress }) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
+          {/* Card 2 */}
+          <div className="bg-white shadow-md rounded-lg p-8 flex flex-col mb-10">
             <div className="font-semibold text-lg md:text-xl">
               <span className="text-lg md:text-xl pr-1">&#11037;</span>100%
               Dedicated Weight Loss Plan
             </div>
+            <hr className="text-black  my-2" />
             <div className="pl-3 leading-relaxed text-sm md:text-base">
               Our weight loss plans are entirely focused on helping you achieve
               your goal of becoming a slimmer version of yourself. While many
@@ -54,11 +52,13 @@ function AboutSection4({ scrollYProgress }) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
+          {/* Card 3 */}
+          <div className="bg-white shadow-md rounded-lg p-8 flex flex-col mb-10">
             <div className="font-semibold text-lg md:text-xl">
               <span className="text-lg md:text-xl pr-1">&#11037;</span>100%
               Ayurvedic
             </div>
+            <hr className="text-black  my-2" />
             <div className="pl-3 leading-relaxed text-sm md:text-base">
               Ayurvedic principles are the cornerstone of our approach at Slim
               and Smile Ayu Care. There are no deviations from this commitment;
@@ -75,7 +75,7 @@ function AboutSection4({ scrollYProgress }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

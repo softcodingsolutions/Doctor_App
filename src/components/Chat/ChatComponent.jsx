@@ -48,7 +48,7 @@ function ChatComponent() {
     if (type === 'message_created') {
       setMessages(prevMessages => [...prevMessages, message]);
       if (message.role === 'doctor') {
-        // notificationSound.current.play();
+        notificationSound.current.play();
         updateUnreadStatus(true);
       }
     }

@@ -11,7 +11,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,85 +42,38 @@ export function StickyNavbar() {
         >
           <Link
             to={path}
-            className={`flex hover:scale-105 border-black transition-transform font-sans font-medium border-x-0 border-y-0 p-1 items-center text-base ${
+            className={`flex font-sans font-medium p-1 items-center text-base ${
               location.pathname === path
                 ? "border-b-2 border-gray-900"
-                : "hover:border-b-2"
+                : "hover:border-b-2 border-transparent"
             }`}
           >
             {label}
           </Link>
         </Typography>
       ))}
-      <div
-        className="relative"
-        onMouseEnter={() => setOpenDropdown(true)}
-        onMouseLeave={() => setOpenDropdown(false)}
-      >
-        <Typography
-          as="li"
-          variant="small"
-          color="blue-gray"
-          className="p-1 font-normal"
-        >
-          <div className="flex hover:scale-105 border-black transition-transform font-sans font-medium border-x-0 border-y-0 p-1 items-center text-base hover:border-b-2 cursor-pointer">
-            Survey & Report
-          </div>
-        </Typography>
-        {openDropdown && (
-          <div
-            className="absolute left-0 w-48 rounded-md shadow-lg bg-white bg-opacity-95 ring-1 ring-black ring-opacity-5 z-10"
-            style={{ top: "100%" }}
-          >
-            <ul
-              className="py-1"
-              onMouseEnter={() => setOpenDropdown(true)}
-              onMouseLeave={() => setOpenDropdown(false)}
-            >
-              <li>
-                <Link
-                  to="/surveymain/surveyForm"
-                  className="block px-4 py-2 text-base text-gray-800 hover:bg-green-200 "
-                >
-                  Survey
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/survey"
-                  className="block px-4 py-2 text-base text-gray-800 hover:bg-green-200"
-                >
-                  Survey Report
-                </Link>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
     </ul>
   );
 
   return (
-    <Navbar className="absolute top-0 z-10 h-max max-w-full rounded-none px-2 py-1.5 lg:px-8 lg:py-2.5">
-      <div className="flex items-center justify-between  text-blue-gray-900">
-        <img src={icons_slime} />
+    <nav className="fixed top-0 z-10 h-max w-full rounded-none px-4 py-2 lg:px-8 lg:py-3 bg-white shadow-md">
+      <div className="flex items-center justify-between w-full">
+        <img src={icons_slime} alt="Logo" className="h-10" />
         <div className="flex items-center gap-4">
-          <div className="mr-4 hidden lg:block">{navList}</div>
-          <div className="flex items-center gap-x-1 font-sans">
-            <Button
-              onClick={() => {
-                navigate("/login");
-              }}
-              variant="gradient"
-              size="sm"
-              className="hidden lg:inline-block hover:scale-105"
-            >
-              <span className="text-sm">Sign in</span>
-            </Button>
-          </div>
+          <div className="hidden lg:block">{navList}</div>
+          <Button
+            onClick={() => {
+              navigate("/login");
+            }}
+            variant="gradient"
+            size="sm"
+            className="hidden lg:inline-block"
+          >
+            <span className="text-sm">Sign in</span>
+          </Button>
           <IconButton
             variant="text"
-            className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+            className="ml-auto h-6 w-6 lg:hidden"
             ripple={false}
             onClick={() => setOpenNav(!openNav)}
           >
@@ -173,6 +125,6 @@ export function StickyNavbar() {
           </Button>
         </div>
       </Collapse>
-    </Navbar>
+    </nav>
   );
 }

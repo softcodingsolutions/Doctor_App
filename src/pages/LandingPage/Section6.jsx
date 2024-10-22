@@ -1,4 +1,3 @@
-import { motion, useTransform } from "framer-motion";
 import { Typography } from "@material-tailwind/react";
 import icons_slime from "../../assets/images/icons_slime.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,8 +19,7 @@ const ScrollToTopLink = ({ to, children, ...props }) => {
   );
 };
 
-function Section6({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
+function Section6() {
   const currentYear = new Date().getFullYear();
   const LINKS = [
     {
@@ -49,12 +47,9 @@ function Section6({ scrollYProgress }) {
       items: [
         {
           text: "634/ Solaris Business Hub, Opp Parshwnath Jain Temple, Bhuyangdev Cross Road, Bhuyangdev, Ahmedabad-380052",
-          link: "https://www.google.com/maps/place/Solaris+Business+Hub/@23.0584752,72.5365274,17z/data=!3m1!4b1!4m6!3m5!1s0x395e855d754079cd:0x56eb1329773be8e8!8m2!3d23.0584752!4d72.5391023!16s%2Fg%2F11h7k78qh9?entry=ttu",
+          link: "https://www.google.com/maps/place/Solaris+Business+Hub",
         },
-        {
-          text: "+91 9925490091",
-          link: "tel:+919925490091",
-        },
+        { text: "+91 9925490091", link: "tel:+919925490091" },
         {
           text: "inquiry@slimandsmile.com",
           link: "mailto:inquiry@slimandsmile.com",
@@ -64,62 +59,48 @@ function Section6({ scrollYProgress }) {
   ];
 
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[150vh] bg-green-100 flex flex-col items-center"
-    >
+    <div className=" bg-gray-900 flex flex-col items-center text-white">
       <footer className="relative w-full h-full">
         <div className="mx-auto w-full h-full max-w-7xl px-4 sm:px-8 flex flex-col items-center justify-between">
           <Typography
             variant="h5"
-            className="flex w-full items-center justify-evenly gap-6 sm:gap-24 mt-10 flex-col sm:flex-row"
+            className="flex w-full items-center  sm:gap-24 mt-10 flex-col sm:flex-row"
           >
             <ScrollToTopLink to="/">
               <img
                 src={icons_slime}
-                className="w-48 sm:w-72"
+                className="w-48 sm:w-72 bg-white rounded-lg p-4"
                 alt="Slim and Smile Logo"
+
               />
             </ScrollToTopLink>
-            <div className="font-sans lg:text-lg text-sm text-balance tracking-wide font-light text-center sm:text-left w-full sm:w-1/2">
+            <div className="font-sans lg:text-lg text-sm tracking-wide font-light text-center sm:text-left w-full sm:w-1/2">
               <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
-              Ayu Care offers unique weight loss solutions which are in turn
-              backed 100% by age old, tried and tested Ayurvedic principles.
+              Ayu Care offers unique weight loss solutions backed by age-old,
+              tried, and tested Ayurvedic principles.
             </div>
           </Typography>
-          <div className="flex flex-col sm:flex-row justify-evenly gap-10 w-full lg:mt-6 mt-2">
-            {LINKS.map(({ title, items }) =>
-              title === "Our Speciality" ? (
-                <ul key={title} className="flex-1">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="lg:mb-3 font-semibold opacity-80 font-sans lg:text-lg text-sm"
-                  >
-                    {title}
-                  </Typography>
-                  {items.map((item, index) => (
+          <div className="flex flex-col sm:flex-row justify-evenly gap-10 w-full lg:mt-6 mt-2 text-white">
+            {LINKS.map(({ title, items }) => (
+              <ul key={title} className="flex-1" >
+                <Typography
+                  variant="small"
+                  className="lg:mb-3 font-semibold opacity-80 font-sans lg:text-lg text-sm text-green-600 "
+                >
+                  {title}
+                </Typography>
+                {items.map((item, index) =>
+                  title === "Our Speciality" ? (
                     <li key={index} className="break-words">
                       <Typography
                         as="a"
-                        color="gray"
-                        className="py-1.5 font-sans transition-colors hover:text-black cursor-default"
+                        color="white"
+                        className="py-1.5 font-sans transition-colors  cursor-default"
                       >
                         {item.text}
                       </Typography>
                     </li>
-                  ))}
-                </ul>
-              ) : (
-                <ul key={title} className="flex-1">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="mb-3 font-semibold opacity-80 font-sans text-lg"
-                  >
-                    {title}
-                  </Typography>
-                  {items.map((item, index) => (
+                  ) : (
                     <ScrollToTopLink
                       to={"/" + item.link}
                       key={index}
@@ -127,21 +108,21 @@ function Section6({ scrollYProgress }) {
                     >
                       <Typography
                         as="a"
-                        color="gray"
-                        className="py-1.5 font-sans transition-colors hover:text-black"
+                        color="white"
+                        className="py-1.5 font-sans transition-colors "
                       >
                         {item.text}
                       </Typography>
                     </ScrollToTopLink>
-                  ))}
-                </ul>
-              )
-            )}
+                  )
+                )}
+              </ul>
+            ))}
           </div>
           <div className="mt-12 flex w-full text-center items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
             <Typography
               variant="small"
-              className="mb-4 text-center w-full font-normal font-sans text-base text-blue-gray-900 md:mb-0 "
+              className="mb-4 text-center w-full font-normal font-sans text-base  md:mb-0"
             >
               &copy; {currentYear}{" "}
               <ScrollToTopLink to="/" className="font-semibold">
@@ -152,7 +133,7 @@ function Section6({ scrollYProgress }) {
           </div>
         </div>
       </footer>
-    </motion.div>
+    </div>
   );
 }
 

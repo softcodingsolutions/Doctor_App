@@ -155,16 +155,17 @@ export default function CreateAppointment() {
           )}
           {!loading && (
             <form className="text-lg w-full space-y-6">
-              <div className="flex w-[100%]">
-                <div className="w-[38%] p-6 border border-gray-300 rounded-lg ml-10 mt-5 shadow-md shadow-[#1F2937] bg-white h-auto">
+              <div className="flex flex-col sm:flex-row w-full">
+                {/* Patient Info Section */}
+                <div className="w-full sm:w-[38%] p-6 border border-gray-300 rounded-lg sm:ml-10 mt-5 shadow-md shadow-[#1F2937] bg-white h-auto">
                   <div className="flex flex-col gap-3">
                     {newCase && (
-                      <label className="text-xl rounded-md p-2 font-semibold text-left ">
+                      <label className="text-xl rounded-md p-2 font-semibold text-left">
                         New Case
                       </label>
                     )}
                     {oldCase && (
-                      <label className="text-xl rounded-md p-2 font-semibold text-left ">
+                      <label className="text-xl rounded-md p-2 font-semibold text-left">
                         Old Case
                       </label>
                     )}
@@ -177,7 +178,7 @@ export default function CreateAppointment() {
                       </label>
                       <input
                         type="text"
-                        className=" px-4  rounded-md w-full sm:w-[40vh] "
+                        className="px-4 rounded-md w-full sm:w-2/3"
                         value={`${name} ${lastName}`}
                         readOnly
                       />
@@ -189,7 +190,7 @@ export default function CreateAppointment() {
                       </label>
                       <input
                         type="text"
-                        className=" px-4  rounded-md w-full sm:w-[40vh] "
+                        className="px-4 rounded-md w-full sm:w-2/3"
                         value={mobileNumber}
                         readOnly
                       />
@@ -201,7 +202,7 @@ export default function CreateAppointment() {
                       </label>
                       <input
                         type="text"
-                        className=" px-4  rounded-md w-full sm:w-[40vh] "
+                        className="px-4 rounded-md w-full sm:w-2/3"
                         value={email}
                         readOnly
                       />
@@ -212,15 +213,17 @@ export default function CreateAppointment() {
                         Doctor Name:
                       </label>
                       {doctorName && (
-                        <div className=" px-4  rounded-md w-full sm:w-[40vh] ">
+                        <div className="px-4 rounded-md w-full sm:w-2/3">
                           {doctorName.first_name} {doctorName.last_name}
                         </div>
                       )}
                     </div>
                   </div>
                 </div>
+
+                {/* Doctor List / Case Components */}
                 {doctorList && (
-                  <div className="gap-5 justify-center">
+                  <div className="w-full sm:w-[60%] flex flex-col gap-5 justify-center mt-5 sm:mt-0 sm:ml-10">
                     {oldCase && userId && (
                       <Oldcase
                         doctor={doctorList}
