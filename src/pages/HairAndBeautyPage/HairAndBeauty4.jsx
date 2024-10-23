@@ -1,21 +1,14 @@
-import { useTransform, motion } from "framer-motion";
-
-function HairAndBeauty4({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function HairAndBeauty4() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-screen bg-orange-50 flex flex-col items-center py-2"
-    >
+    <div className=" bg-gray-200 flex flex-col items-center ">
       <div className="flex flex-col items-center">
-        <div className="text-4xl font-sans font-medium mt-8 md:text-5xl lg:text-6xl">
+        <div className="text-2xl font-sans font-medium mt-8 md:text-3xl lg:text-4xl">
           Skin Care
         </div>
-        <div className="border-[2.5px] rounded-md border-orange-200 w-20 mt-3" />
+        <div className="border-[2.5px] rounded-md border-orange-200 w-20 " />
       </div>
 
-      <div className="w-full pt-12 flex flex-col justify-center lg:px-5 px-2 md:px-16 lg:gap-10 gap-7">
+      <div className="w-full pt-8 flex flex-col justify-center lg:px-5 px-2 md:px-16 lg:gap-8 gap-7 mb-10">
         <div className="leading-relaxed text-sm md:text-lg lg:text-xl">
           As discussed earlier, an individual's skin health is influenced by
           their lifestyle, genetics, and the weather conditions of their
@@ -52,7 +45,7 @@ function HairAndBeauty4({ scrollYProgress }) {
           problems effectively.
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

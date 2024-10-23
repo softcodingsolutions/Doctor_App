@@ -1,14 +1,7 @@
-import { useTransform, motion } from "framer-motion";
-
-function ContactUs1({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.45]);
-
+function ContactUs1() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[100vh] flex flex-col items-center py-5"
-    >
-      <div className="h-2/3 flex justify-center items-center w-full bg-[url('https://images.unsplash.com/photo-1499159058454-75067059248a?h=1000&w=1571&auto=format&fit=cover&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
+    <div className=" flex flex-col items-center">
+      <div className="h-[60vh] flex justify-center items-center w-full bg-[url('https://images.unsplash.com/photo-1499159058454-75067059248a?h=1000&w=1571&auto=format&fit=cover&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
         {/* Breadcrumb Navigation */}
         <div className="w-fit">
           <div className="flex items-center gap-1.5 font-sans font-semibold text-green-500">
@@ -24,7 +17,7 @@ function ContactUs1({ scrollYProgress }) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 bg-gray-100 h-1/2 flex flex-col items-center justify-center">
+      <div className="relative z-10 bg-gray-100 h-1/2 flex flex-col items-center justify-center p-10">
         <div className="text-black font-sans tracking-wider leading-relaxed text-base md:text-lg lg:text-xl text-center px-4 md:px-11 rounded-lg">
           In today’s world, where attractive looks and charming personalities
           are showcased everywhere—from magazines and social media to TV and the
@@ -36,7 +29,7 @@ function ContactUs1({ scrollYProgress }) {
           glowing, healthy skin and hair.
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

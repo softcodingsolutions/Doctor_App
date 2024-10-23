@@ -1,6 +1,7 @@
 import { Typography } from "@material-tailwind/react";
 import icons_slime from "../../assets/images/icons_slime.png";
 import { Link, useNavigate } from "react-router-dom";
+import PatientRegistration from "./PatientRegistration";
 
 // Custom Link component to handle scroll-to-top behavior
 const ScrollToTopLink = ({ to, children, ...props }) => {
@@ -64,25 +65,29 @@ function Section6() {
         <div className="mx-auto w-full h-full max-w-7xl px-4 sm:px-8 flex flex-col items-center justify-between">
           <Typography
             variant="h5"
-            className="flex w-full items-center  sm:gap-24 mt-10 flex-col sm:flex-row"
+            className="flex  w-full items-center  sm:gap-24 mt-10 flex-col sm:flex-row"
           >
-            <ScrollToTopLink to="/">
-              <img
-                src={icons_slime}
-                className="w-48 sm:w-72 bg-white rounded-lg p-4"
-                alt="Slim and Smile Logo"
-
-              />
-            </ScrollToTopLink>
-            <div className="font-sans lg:text-lg text-sm tracking-wide font-light text-center sm:text-left w-full sm:w-1/2">
-              <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
-              Ayu Care offers unique weight loss solutions backed by age-old,
-              tried, and tested Ayurvedic principles.
+            <div className="flex flex-col ">
+              <ScrollToTopLink to="/">
+                <img
+                  src={icons_slime}
+                  className="w-48 sm:w-64 bg-white rounded-lg p-4"
+                  alt="Slim and Smile Logo"
+                />
+              </ScrollToTopLink>
+              <div className="text-[18px] font-light w-64 text-justify mt-3">
+                <span className="text-green-500 ">Slim and Smile</span> Ayu Care
+                offers unique weight loss solutions backed by age-old, tried,
+                and tested Ayurvedic principles.
+              </div>
+            </div>
+            <div className="w-full sm:w-1/2 ">
+              <PatientRegistration />
             </div>
           </Typography>
           <div className="flex flex-col sm:flex-row justify-evenly gap-10 w-full lg:mt-6 mt-2 text-white">
             {LINKS.map(({ title, items }) => (
-              <ul key={title} className="flex-1" >
+              <ul key={title} className="flex-1">
                 <Typography
                   variant="small"
                   className="lg:mb-3 font-semibold opacity-80 font-sans lg:text-lg text-sm text-green-600 "

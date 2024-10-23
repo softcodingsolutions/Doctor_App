@@ -1,15 +1,14 @@
-import { useTransform, motion } from "framer-motion";
 import { FaLocationDot } from "react-icons/fa6";
+import { IoCall } from "react-icons/io5";
+import { MdOutlineEmail } from "react-icons/md";
 
-function ContactUs2({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
-
+function ContactUs2() {
   const data = [
     {
       id: 1,
       city: "Ahmedabad",
       address:
-        "634/ Solaris Busness Hub, Opp Parshwnath Jain Temple, Bhuyangdev Cross Road, Bhuyangdev, Ahmedabad-380052",
+        "634/ Solaris Business Hub, Opp Parshwnath Jain Temple, Bhuyangdev Cross Road, Bhuyangdev, Ahmedabad-380052",
     },
     {
       id: 2,
@@ -27,7 +26,7 @@ function ContactUs2({ scrollYProgress }) {
       id: 4,
       city: "Anand",
       address:
-        "1 Floor, Municaipal Shoopting Center, Above Santram Medical, Mayfair Road, Anand-388001",
+        "1st Floor, Municipal Shopping Center, Above Santram Medical, Mayfair Road, Anand-388001",
     },
     {
       id: 5,
@@ -49,20 +48,19 @@ function ContactUs2({ scrollYProgress }) {
       type: "Call Us",
       contact: "+91 99 2549 0091",
       action: "tel:+919925490091",
+      icon : <IoCall size={25}/>,
     },
     {
       id: 2,
       type: "Email Us",
       contact: "inquiry@slimandsmile.com",
       action: "mailto:inquiry@slimandsmile.com",
+      icon : <MdOutlineEmail size={25}/>,
     },
   ];
 
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[105vh] w-full bg-orange-50"
-    >
+    <div className=" w-full bg-orange-50">
       <div className="px-4 md:px-20 py-10">
         <div className="w-full grid grid-cols-2 lg:grid-cols-3 justify-center lg:gap-10 gap-2 rounded-md">
           {data.map((res) => (
@@ -86,7 +84,7 @@ function ContactUs2({ scrollYProgress }) {
               onClick={() => (window.location.href = res.action)}
             >
               <div>
-                <FaLocationDot size={25} />
+                {res.icon}
               </div>
               <div className="font-semibold pt-2 text-lg md:text-xl tracking-wide">
                 {res.type}
@@ -96,7 +94,7 @@ function ContactUs2({ scrollYProgress }) {
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

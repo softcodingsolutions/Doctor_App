@@ -4,9 +4,9 @@ import AboutSection3 from "./AboutSection3";
 import AboutSection2 from "./AboutSection2";
 import AboutSection1 from "./AboutSection1";
 import AboutSection4 from "./AboutSection4";
+import PatientRegistration from "../LandingPage/PatientRegistration";
 
 function AboutUs() {
-
   return (
     <>
       <header>
