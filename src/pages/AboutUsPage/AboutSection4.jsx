@@ -23,9 +23,8 @@ function AboutSection4() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Card 1 */}
           <div className="bg-white shadow-md rounded-lg p-8 flex flex-col mb-10">
-            <div className="font-semibold text-lg md:text-xl">
-              <span className="text-lg md:text-xl pr-1">&#11037;</span>20 Years
-              of Experience
+            <div className="font-semibold text-lg md:text-xl text-green-500">
+              20 Years of Experience
             </div>
             <hr className="text-black  my-2" />
             <div className="pl-3 leading-relaxed text-sm md:text-base">
@@ -39,9 +38,8 @@ function AboutSection4() {
 
           {/* Card 2 */}
           <div className="bg-white shadow-md rounded-lg p-8 flex flex-col mb-10">
-            <div className="font-semibold text-lg md:text-xl">
-              <span className="text-lg md:text-xl pr-1">&#11037;</span>100%
-              Dedicated Weight Loss Plan
+            <div className="font-semibold text-lg md:text-xl text-green-500">
+              100% Dedicated Weight Loss Plan
             </div>
             <hr className="text-black  my-2" />
             <div className="pl-3 leading-relaxed text-sm md:text-base">
@@ -54,9 +52,8 @@ function AboutSection4() {
 
           {/* Card 3 */}
           <div className="bg-white shadow-md rounded-lg p-8 flex flex-col mb-10">
-            <div className="font-semibold text-lg md:text-xl">
-              <span className="text-lg md:text-xl pr-1">&#11037;</span>100%
-              Ayurvedic
+            <div className="font-semibold text-lg md:text-xl text-green-500">
+              100% Ayurvedic
             </div>
             <hr className="text-black  my-2" />
             <div className="pl-3 leading-relaxed text-sm md:text-base">

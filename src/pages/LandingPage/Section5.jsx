@@ -1,15 +1,13 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Carousel, IconButton } from "@material-tailwind/react";
-import { motion, useTransform } from "framer-motion";
 import review1 from "../../assets/videos/review1.mp4";
 import review2 from "../../assets/videos/review2.mp4";
 import review4 from "../../assets/videos/review4.mp4";
 import review5 from "../../assets/videos/review5.mp4";
 import review6 from "../../assets/videos/review6.mp4";
 
-function Section5({ scrollYProgress }) {
+function Section5() {
   const [cardsPerGroup, setCardsPerGroup] = useState(2);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
 
   const renderContent = (src, id) => (
     <video key={id} className="size-96 rounded-lg" controls>
@@ -31,7 +29,7 @@ function Section5({ scrollYProgress }) {
       if (window.innerWidth < 1024) {
         setCardsPerGroup(1);
       } else {
-        setCardsPerGroup(2); 
+        setCardsPerGroup(2);
       }
     };
 
@@ -47,20 +45,17 @@ function Section5({ scrollYProgress }) {
   }
 
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-screen bg-teal-50 flex flex-col items-center py-7"
-    >
+    <div className=" bg-gray-50 flex flex-col items-center py-7">
       <div className="flex flex-col items-center">
-        <div className="lg:text-4xl text-xl font-sans font-medium lg:mt-8 mt-0">
+        <div className="lg:text-4xl text-xl font-sans font-medium ">
           Special Treatments for Obesity
         </div>
         <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />
       </div>
 
-      <div className="flex items-center justify-center mt-8">
+      <div className="flex items-center justify-center">
         <Carousel
-          className="flex w-2/3 mt-14"
+          className="flex w-3/5 mt-14"
           loop={true}
           prevArrow={({ handlePrev }) => (
             <IconButton
@@ -127,7 +122,7 @@ function Section5({ scrollYProgress }) {
           {groupedCards.map((group, index) => (
             <div
               key={index}
-              className="flex justify-center gap-10 "
+              className="flex justify-center gap-10"
               style={{ flex: "0 0 100%" }}
             >
               {group.map((card) => renderContent(card.src, card.id))}
@@ -135,7 +130,7 @@ function Section5({ scrollYProgress }) {
           ))}
         </Carousel>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

@@ -1,163 +1,100 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Carousel,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
-import { motion, useTransform } from "framer-motion";
-import { useState, useEffect } from "react";
-import obesity1 from "../../assets/images/obesity1.jpg";
-import obesity2 from "../../assets/images/obesity2.jpg";
-import obesity3 from "../../assets/images/obesity3.jpg";
-import obesity4 from "../../assets/images/obesity4.jpg";
-import obesity5 from "../../assets/images/obesity5.jpg";
-import obesity6 from "../../assets/images/obesity6.jpg";
+import { useState } from "react";
 
-function Section3({ scrollYProgress }) {
-  const [cardsPerGroup, setCardsPerGroup] = useState(3);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.75]);
-
-  const renderContent = (id, title, src) => (
-    <Card key={id} className="lg:mt-8  w-full max-w-xs sm:max-w-sm lg:h-96 h-64  ml-5 md:ml-3 lg:ml-0 lg:max-w-md">
-      <CardHeader color="blue-gray" className="relative h-48 sm:h-56 lg:h-64">
-        <img
-          src={src}
-          alt="card-image"
-          className="w-full h-full object-cover hover:scale-105 transition-transform"
-        />
-      </CardHeader>
-      <CardBody>
-        <Typography variant="h5" color="blue-gray" className="mb-2">
-          {title}
-        </Typography>
-      </CardBody>
-    </Card>
-  );
-
-  useEffect(() => {
-    const updateCardsPerGroup = () => {
-      if (window.innerWidth < 1024) {
-        setCardsPerGroup(2);
-      } else {
-        setCardsPerGroup(3); 
-      }
-    };
-
-    updateCardsPerGroup();
-    window.addEventListener("resize", updateCardsPerGroup);
-
-    return () => window.removeEventListener("resize", updateCardsPerGroup);
-  }, []);
-  
+function Section3() {
   const cardContents = [
-    { id: 1, title: "Obesity & Stress", src: obesity1 },
-    { id: 2, title: "Obesity & PCOD", src: obesity2 },
-    { id: 3, title: "Obesity & Hypothyroidism", src: obesity3 },
-    { id: 4, title: "Obesity & Hypertension", src: obesity4 },
-    { id: 5, title: "Obesity & Diabetes Mellitus", src: obesity5 },
-    { id: 6, title: "Obesity & Menopause", src: obesity6 },
+    {
+      id: 1,
+      title: "Obesity & Stress",
+      content:
+        "Stress can play havoc with usual bodily metabolism, with weight gain often being the unfortunate result. Slim and Smile Ayu Care can help you combat this condition in a variety of different ways.",
+    },
+    {
+      id: 2,
+      title: "Obesity & PCOD",
+      content:
+        "Polycystic ovary disease (PCOD) is when female hormones end up being imbalanced. Typically seen in women of reproductive age, this frequently leads to disproportionate weight gain. We offer suitable treatment for this.",
+    },
+    {
+      id: 3,
+      title: "Obesity & Hypothyroidism",
+      content:
+        "Hypothyroidism is when the thyroid gland does not produce adequate thyroid hormone. While there are many different symptoms of hypothyroidism, weight gain is unfortunately one of them. We do help immensely on this front.",
+    },
+    {
+      id: 4,
+      title: "Obesity & Hypertension",
+      content:
+        "Excess body weight results in Hypertension in many cases; that eventually results in subsequent complications like heart disease and stroke. Slim and Smile Ayu Care helps on this front with customized weight loss treatments to help you reduce weight thus reducing possibilities of hypertension and its complications.",
+    },
+    {
+      id: 5,
+      title: "Obesity & Diabetes Mellitus",
+      content:
+        "Diabetes Mellitus (DM) is when the pancreas does not produce adequate insulin for the body to assimilate sugar suitably; with blood sugar going haywire. Weight gain and DM have a symptomatic relationship. The key is to maintain ideal body weight. We offer various treatment solutions on this front.",
+    },
+    {
+      id: 6,
+      title: "Obesity & Menopause",
+      content:
+        "The onset of menopause often leads to obesity in a lot of middle-aged women. Slim and Smile Ayu Care has suitable treatments for this condition.",
+    },
   ];
 
-  const groupedCards = [];
-  for (let i = 0; i < cardContents.length; i += cardsPerGroup) {
-    groupedCards.push(cardContents.slice(i, i + cardsPerGroup));
-  }
+  const [selectedCardId, setSelectedCardId] = useState(1);
+
+  const handleMouseEnter = (id) => {
+    setSelectedCardId(id);
+  };
+
+  const selectedCard = cardContents.find((card) => card.id === selectedCardId);
 
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-screen bg-teal-50 flex flex-col items-center py-7"
+    <div
+      className="flex flex-col items-center py-7"
+      // style={{
+      //   backgroundImage: `url(${image15})`,
+      //   backgroundSize: "cover",
+      //   backgroundPosition: "center",
+      // }}
     >
-      <div className="flex flex-col items-center text-center">
-        <div className="sm:text-xl lg:text-4xl font-sans font-medium sm:mt-5 lg:mt-8">
+      <div className="flex flex-col items-center text-center mb-6">
+        <div className="sm:text-lg lg:text-2xl font-sans font-medium">
           Special Treatments for Obesity
         </div>
         <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />
       </div>
 
-      <div className="flex items-center justify-center mt-12 lg:mt-8 w-full">
-        <Carousel
-          className="md:w-4/5 lg:w-2/3"
-          autoplay={true}
-          loop={true}
-          prevArrow={({ handlePrev }) => (
-            <IconButton
-              variant="black"
-              color="black"
-              size="lg"
-              onClick={handlePrev}
-              className="!absolute top-2/4 left-4 -translate-y-2/4"
+      <div className="flex flex-col lg:flex-row items-start justify-between w-full gap-5">
+        {/* Button Section */}
+        <div className="flex flex-col w-[40%] gap-4 p-2">
+          {cardContents.map((card) => (
+            <button
+              key={card.id}
+              onMouseEnter={() => handleMouseEnter(card.id)}
+              className={`font-semibold p-2 rounded transition ${
+                selectedCardId === card.id
+                  ? "bg-green-500 text-white"
+                  : "hover:bg-green-500"
+              }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                />
-              </svg>
-            </IconButton>
-          )}
-          nextArrow={({ handleNext }) => (
-            <IconButton
-              variant="black"
-              color="black"
-              size="lg"
-              onClick={handleNext}
-              className="!absolute top-2/4 !right-4 -translate-y-2/4"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                />
-              </svg>
-            </IconButton>
-          )}
-          navigation={({ setActiveIndex, activeIndex, length }) => (
-            <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
-              {new Array(length).fill("").map((_, i) => (
-                <span
-                  key={i}
-                  className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
-                    activeIndex === i ? "w-8 bg-black" : "w-4 bg-black/50"
-                  }`}
-                  onClick={() => setActiveIndex(i)}
-                />
-              ))}
-            </div>
-          )}
-        >
-          {groupedCards.map((group, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 justify-center gap-12 lg:gap-4 w-full"
-              style={{ flex: "0 0 100%" }}
-            >
-              {group.map((card) =>
-                renderContent(card.id, card.title, card.src)
-              )}
-            </div>
+              {card.title}
+            </button>
           ))}
-        </Carousel>
+        </div>
+
+        {/* Card Section */}
+        <div className="w-full mt-2  bg-white rounded h-80 m-4">
+          {selectedCard && (
+            <div className="w-full p-2">
+              <h3 className="font-semibold text-xl p-2 text-green-500">
+                {selectedCard.title}
+              </h3>
+              <p className="p-2">{selectedCard.content}</p>
+            </div>
+          )}
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

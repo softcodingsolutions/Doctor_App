@@ -1,15 +1,21 @@
+import image22 from "./../../assets/images/image22.jpeg";
 function WeightLoss1() {
   return (
     <div className="flex flex-col  items-center ">
-      <div className="h-[60vh] flex justify-center items-center w-full bg-[url('https://plus.unsplash.com/premium_photo-1671028546491-f70b21a32cc2?h=405&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center">
+      <div className="h-[60vh] flex justify-center items-center w-full  bg-cover bg-center opacity-90"
+         style={{
+          backgroundImage: `url(${image22})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}>
         {/* Breadcrumb Navigation */}
-        <div className="w-fit px-4 md:px-0">
-          <div className="text-base md:text-xl flex items-center gap-1.5 font-sans font-semibold text-green-500">
+        <div className="w-fit px-4 md:px-0 ml-28">
+          <div className="text-3xl flex items-center gap-1.5 font-sans font-semibold text-black">
             <a href="/" className="hover:underline">
               Home
             </a>{" "}
             &gt;{" "}
-            <span className="text-teal-600 text-lg md:text-2xl">
+            <span className="text-[#1e3854] text-2xl md:text-4xl">
               Weight Loss Treatment
             </span>
           </div>

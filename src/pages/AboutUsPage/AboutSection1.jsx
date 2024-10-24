@@ -1,15 +1,24 @@
+import image17 from "./../../assets/images/image17.jpg";
 function AboutSection1() {
   return (
     <div className=" h-auto pt-16 flex flex-col items-center ">
-      <div className="flex justify-center items-center w-full h-[50vh] bg-[url('https://images.unsplash.com/photo-1649134296132-56606326c566?h=810&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center">
+      <div
+        className="flex justify-center items-center w-full h-[50vh]  bg-cover bg-center opacity-95"
+        style={{
+          backgroundImage: `url(${image17})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          
+        }}
+      >
         {/* Breadcrumb Navigation */}
-        <div className="w-fit">
-          <div className="text-lg md:text-xl flex items-center gap-1.5 font-sans font-semibold text-green-500">
+        <div className="w-fit mt-20">
+          <div className="text-lg md:text-3xl flex items-center gap-1.5 font-sans font-semibold text-gray-900">
             <a href="/" className="hover:underline">
               Home
             </a>{" "}
             &gt;{" "}
-            <span className="text-teal-600 text-xl md:text-2xl">About Us</span>
+            <span className="text-green-800 text-2xl md:text-4xl">About Us</span>
           </div>
         </div>
       </div>

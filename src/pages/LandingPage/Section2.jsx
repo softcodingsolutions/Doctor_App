@@ -1,13 +1,6 @@
-import { motion, useTransform } from "framer-motion";
-
-function Section2({ scrollYProgress }) {
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
-
+function Section2() {
   return (
-    <motion.div
-      style={{ scale }}
-      className="sticky top-0 h-[75vh] bg-gray-300 flex flex-col items-center py-7"
-    >
+    <div className=" bg-gray-200 flex flex-col items-center py-7">
       <div className="flex flex-col items-center">
         <div className="text-2xl sm:text-3xl lg:text-4xl font-sans font-medium mt-4 sm:mt-8 text-center px-4">
           Weight Loss Treatments at{" "}
@@ -25,10 +18,10 @@ function Section2({ scrollYProgress }) {
         patients, which speaks volumes about our success in weight loss
         treatments.
       </div>
-      <button className="border border-gray-300 p-2 sm:p-3 lg:p-4 tracking-wide rounded-full text-base sm:text-lg lg:text-xl font-sans font-semibold bg-green-400 text-white hover:bg-white hover:text-green-500 transition-colors  sm:mt-8 lg:mt-8 mb-4 sm:mb-6 lg:mb-8">
+      <button className="border border-gray-300 p-2 sm:p-3 lg:p-4 tracking-wide rounded-full text-base sm:text-lg lg:text-xl font-sans font-semibold bg-green-400 text-white hover:bg-white hover:text-green-500 transition-colors sm:mt-8 lg:mt-8 mb-4 sm:mb-6 lg:mb-8">
         Book an Appointment Now
       </button>
-    </motion.div>
+    </div>
   );
 }
 
