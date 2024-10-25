@@ -164,7 +164,7 @@ function ChatComponent() {
               <Avatar
                 firstName={doctorDetails.fname}
                 lastName={doctorDetails.lname}
-                avatarColor={avatarColor}
+                avatarColor={avatarColor} 
               />
               <div className="ml-3 font-medium text-lg">
                 Dr. {doctorDetails.fname} {doctorDetails.lname}

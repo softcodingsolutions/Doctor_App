@@ -176,7 +176,7 @@ function AdminDashboard() {
       month: "short",
       day: "numeric",
     });
-    const hours = date.getHours() % 12 || 12; // 12-hour format
+    const hours = date.getHours() % 12 || 12; 
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const ampm = date.getHours() >= 12 ? "PM" : "AM";
 
