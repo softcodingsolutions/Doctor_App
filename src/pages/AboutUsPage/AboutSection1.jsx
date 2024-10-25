@@ -7,18 +7,17 @@ function AboutSection1() {
         style={{
           backgroundImage: `url(${image17})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
-          
+          backgroundPosition: "center",    
         }}
       >
         {/* Breadcrumb Navigation */}
         <div className="w-fit mt-20">
           <div className="text-lg md:text-3xl flex items-center gap-1.5 font-sans font-semibold text-gray-900">
-            <a href="/" className="hover:underline">
+            {/* <a href="/" className="hover:underline">
               Home
             </a>{" "}
-            &gt;{" "}
-            <span className="text-green-800 text-2xl md:text-4xl">About Us</span>
+            &gt;{" "} */}
+            <span className="text-green-800 text-2xl md:text-4xl font-architects">About Us</span>
           </div>
         </div>
       </div>

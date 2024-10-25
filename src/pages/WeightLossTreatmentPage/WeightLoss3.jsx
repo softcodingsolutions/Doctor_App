@@ -21,7 +21,7 @@ function WeightLoss3() {
       <div className="w-full flex flex-col md:flex-row justify-center px-4 md:px-7 gap-8">
         {/* Left Column */}
         <div className="flex flex-col w-full md:w-1/2 py-5 items-start">
-          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl">
+          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl text-green-500">
             When discussing body fat, it's important to recognize that viewing
             it solely as a negative or harmful element is incorrect. Body fat is
             essentially stored energy and serves several important functions,
@@ -53,7 +53,7 @@ function WeightLoss3() {
 
         {/* Right Column */}
         <div className="flex flex-col w-full md:w-1/2 py-5 items-start">
-          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl">
+          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl text-green-500">
             However, some individuals end up with more body fat than others.
             Several factors can contribute to this:
           </div>

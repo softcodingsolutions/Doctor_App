@@ -48,51 +48,52 @@ function ContactUs2() {
       type: "Call Us",
       contact: "+91 99 2549 0091",
       action: "tel:+919925490091",
-      icon : <IoCall size={25}/>,
+      icon: <IoCall size={25} />,
     },
     {
       id: 2,
       type: "Email Us",
       contact: "inquiry@slimandsmile.com",
       action: "mailto:inquiry@slimandsmile.com",
-      icon : <MdOutlineEmail size={25}/>,
+      icon: <MdOutlineEmail size={25} />,
     },
   ];
 
   return (
-    <div className=" w-full bg-orange-50">
-      <div className="px-4 md:px-20 py-10">
-        <div className="w-full grid grid-cols-2 lg:grid-cols-3 justify-center lg:gap-10 gap-2 rounded-md">
-          {data.map((res) => (
-            <div
-              className="flex flex-col items-center text-center border border-gray-300 bg-white shadow-lg rounded-lg p-5 hover:scale-105 cursor-default transition-transform gap-1.5 w-full sm:w-[22rem] h-[12rem]"
-              key={res.id}
-            >
-              <div>
-                <FaLocationDot size={25} />
-              </div>
-              <div className="font-semibold lg:pt-2 pt-0 text-sm lg:text-xl tracking-wide">
-                {res.city}
-              </div>
-              <div className="text-sm md:text-base">{res.address}</div>
-            </div>
-          ))}
-          {data2.map((res) => (
-            <div
-              className="flex flex-col items-center text-center border border-gray-300 bg-white shadow-lg rounded-lg p-5 hover:scale-105 cursor-pointer transition-transform gap-1.5 w-full sm:w-[22rem] h-[9rem]"
-              key={res.id}
-              onClick={() => (window.location.href = res.action)}
-            >
-              <div>
-                {res.icon}
-              </div>
-              <div className="font-semibold pt-2 text-lg md:text-xl tracking-wide">
+    <div className="w-full bg-gray-50 py-12 px-4 md:px-20">
+      {/* Location Section */}
+      <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-10">
+        {data.map((res) => (
+          <div
+            className="flex flex-col items-center text-center border border-gray-200 bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-transform duration-200 ease-out transform hover:scale-105"
+            key={res.id}
+          >
+            <FaLocationDot size={30} className="text-red-500" />
+            <h3 className="font-semibold text-lg lg:text-xl mt-3 text-gray-800">
+              {res.city}
+            </h3>
+            <p className="text-sm lg:text-base text-gray-600">{res.address}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Contact Section */}
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-10">
+        {data2.map((res) => (
+          <div
+            key={res.id}
+            onClick={() => (window.location.href = res.action)}
+            className="flex items-center gap-4 p-4 rounded-md transition-transform duration-150 ease-in-out transform hover:scale-105 hover:bg-gray-100 cursor-pointer shadow-sm hover:shadow-lg"
+          >
+            <div className="text-blue-500">{res.icon}</div>
+            <div>
+              <h3 className="font-semibold text-lg lg:text-xl text-gray-800">
                 {res.type}
-              </div>
-              <div className="text-sm md:text-base">{res.contact}</div>
+              </h3>
+              <p className="text-sm lg:text-base text-gray-600">{res.contact}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

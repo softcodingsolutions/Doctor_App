@@ -45,9 +45,9 @@ function Section5() {
   }
 
   return (
-    <div className=" bg-gray-50 flex flex-col items-center py-7">
+    <div className="bg-gray-50 flex flex-col items-center py-7">
       <div className="flex flex-col items-center">
-        <div className="lg:text-4xl text-xl font-sans font-medium ">
+        <div className="lg:text-4xl text-xl font-sans font-medium">
           Special Treatments for Obesity
         </div>
         <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />
@@ -55,7 +55,7 @@ function Section5() {
 
       <div className="flex items-center justify-center">
         <Carousel
-          className="flex w-3/5 mt-14"
+          className="flex w-4/5 mt-14" 
           loop={true}
           prevArrow={({ handlePrev }) => (
             <IconButton
@@ -105,19 +105,19 @@ function Section5() {
               </svg>
             </IconButton>
           )}
-          navigation={({ setActiveIndex, activeIndex, length }) => (
-            <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
-              {new Array(length).fill("").map((_, i) => (
-                <span
-                  key={i}
-                  className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
-                    activeIndex === i ? "w-8 bg-black" : "w-4 bg-black/50"
-                  }`}
-                  onClick={() => setActiveIndex(i)}
-                />
-              ))}
-            </div>
-          )}
+          // navigation={({ setActiveIndex, activeIndex, length }) => (
+          //   <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
+          //     {new Array(length).fill("").map((_, i) => (
+          //       <span
+          //         key={i}
+          //         className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
+          //           activeIndex === i ? "w-8 bg-black" : "w-4 bg-black/50"
+          //         }`}
+          //         onClick={() => setActiveIndex(i)}
+          //       />
+          //     ))}
+          //   </div>
+          // )}
         >
           {groupedCards.map((group, index) => (
             <div

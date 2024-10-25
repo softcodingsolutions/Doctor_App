@@ -1,5 +1,8 @@
 import { Card, CardBody, Typography } from "@material-tailwind/react";
-
+import { FaHandshakeSimple } from "react-icons/fa6";
+import { TbStarsFilled } from "react-icons/tb";
+import { IoSettingsSharp } from "react-icons/io5";
+import { GiStarsStack } from "react-icons/gi";
 function Section4() {
   return (
     <div className="cursor-default  bg-gray-200 flex flex-col items-center py-7">
@@ -13,13 +16,12 @@ function Section4() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  m-2 lg:gap-5">
         <Card className="  hover:scale-105 transition-transform ">
           <CardBody>
-           
             <Typography
               variant="h5"
               color="blue-gray"
-              className="mb-5 font-sans text-green-500"
+              className="flex gap-3 mb-5 font-sans text-green-500"
             >
-              Personalized Treatments
+              <FaHandshakeSimple size={30} /> Personalized Treatments
             </Typography>
             <Typography className="font-sans">
               We analyze your body to identify the reason for excess fat in your
@@ -31,13 +33,12 @@ function Section4() {
 
         <Card className="  hover:scale-105 transition-transform">
           <CardBody>
-           
             <Typography
               variant="h5"
               color="blue-gray"
-              className="mb-5 font-sans text-green-500"
+              className="flex mb-5 gap-3 font-sans text-green-500"
             >
-              Advanced Technology
+              <IoSettingsSharp size={30} /> Advanced Technology
             </Typography>
             <Typography className="font-sans">
               Our state-of-the-art equipment ensures you receive the highest
@@ -48,12 +49,12 @@ function Section4() {
 
         <Card className="  hover:scale-105 transition-transform">
           <CardBody>
-            
             <Typography
               variant="h5"
               color="blue-gray"
-              className="mb-5 font-sans text-green-500"
+              className="flex gap-3 mb-5 font-sans text-green-500"
             >
+              <GiStarsStack size={30} />
               Experienced Professionals
             </Typography>
             <Typography className="font-sans">

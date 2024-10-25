@@ -19,7 +19,7 @@ function WeightLoss4() {
       <div className="w-full h-full flex flex-col md:flex-row justify-center px-4 md:px-5 text-pretty gap-8">
         {/* Left Column: Fat Burning Hormones */}
         <div className="flex flex-col w-full md:w-1/2 py-5 md:pl-9 items-start">
-          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl">
+          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl text-green-500">
             Hormones, for instance, play a role in burning fat. Examples
             include:
           </div>
@@ -51,7 +51,7 @@ function WeightLoss4() {
 
         {/* Right Column: Fat Storing Hormones */}
         <div className="flex flex-col w-full md:w-1/2 py-5 md:pl-9 items-start">
-          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl">
+          <div className="font-semibold pt-7 leading-relaxed text-lg md:text-xl text-green-500">
             As a corollary, there are hormones that work toward storing fat as
             well. These include:
           </div>

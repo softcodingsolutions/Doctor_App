@@ -233,7 +233,7 @@ export default function CreateAppointment() {
                       />
                     )}
                     {newCase && userId && (
-                      <Newcase doctor={doctorList} name={name} />
+                      <Newcase doctor={doctorList} name={name} user={userId} />
                     )}
                   </div>
                 )}

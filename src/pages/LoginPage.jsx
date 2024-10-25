@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ChatComponent from "../components/Chat/ChatComponent";
 import icons_slime from "../assets/images/icons_slime.png";
+import backgroundlogin from "../assets/images/backgroundlogin.jpg";
 import {
   Card,
   CardBody,
@@ -140,9 +141,12 @@ function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen font-sans px-4 sm:px-10">
-      <div className="border px-4 sm:px-10 py-5 rounded-sm shadow-sm w-full max-w-md">
-        <Card className="w-full h-fit py-2">
+    <div
+      className="flex items-center justify-start h-screen font-sans px-4 sm:px-10 bg-cover bg-center"
+      style={{ backgroundImage: `url(${backgroundlogin})` }}
+    >
+      <div className="backdrop-blur-xl px-10 sm:px-10 py-10 rounded-sm shadow-sm w-full max-w-xl ml-52">
+        <Card className="w-full h-fit py-2 backdrop-blur-lg bg-white border-white/30 shadow-lg rounded-lg">
           <form onSubmit={handleSubmit(submittedData)} method="post">
             <CardBody className="flex flex-col gap-4">
               <div className="flex justify-center border rounded-md p-4 shadow-inner bg-green-100">
@@ -205,8 +209,7 @@ function LoginPage() {
               </div>
               <Button
                 type="submit"
-                className="font-sans text-sm"
-                variant="gradient"
+                className="font-sans text-sm bg-green-800 hover:bg-green-900 text-white"
                 fullWidth
               >
                 Sign In
@@ -224,7 +227,7 @@ function LoginPage() {
                 color="blue-gray"
                 className="ml-1 font-bold hover:scale-105"
               >
-                <Link to="/signup" className="text-base font-sans">
+                <Link to="/signup" className="text-base font-sans text-green-700">
                   Sign Up
                 </Link>
               </Typography>

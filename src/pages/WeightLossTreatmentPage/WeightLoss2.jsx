@@ -16,7 +16,7 @@ function WeightLoss2() {
             approach minimizes the chances of regaining lost weight in the
             future.
           </div>
-          <div className="font-semibold pt-5 md:pt-7">
+          <div className="font-semibold pt-5 md:pt-7 text-green-500">
             In this context, the steps we follow for treating weight loss are
             distinctly different and are outlined below:
           </div>

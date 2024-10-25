@@ -11,11 +11,11 @@ function WeightLoss1() {
         {/* Breadcrumb Navigation */}
         <div className="w-fit px-4 md:px-0 ml-28">
           <div className="text-3xl flex items-center gap-1.5 font-sans font-semibold text-black">
-            <a href="/" className="hover:underline">
+            {/* <a href="/" className="hover:underline">
               Home
             </a>{" "}
-            &gt;{" "}
-            <span className="text-[#1e3854] text-2xl md:text-4xl">
+            &gt;{" "} */}
+            <span className="text-[#1e3854] text-2xl md:text-4xl font-architects">
               Weight Loss Treatment
             </span>
           </div>

@@ -9,7 +9,6 @@ import WeightLoss3 from "./WeightLoss3";
 import WeightLoss4 from "./WeightLoss4";
 import WeightLoss5 from "./WeightLoss5";
 import WeightLoss6 from "./WeightLoss6";
-import PatientRegistration from "../LandingPage/PatientRegistration";
 
 function WeightLossPage() {
   const container = useRef();

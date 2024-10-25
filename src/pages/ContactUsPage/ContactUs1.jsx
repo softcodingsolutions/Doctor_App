@@ -1,15 +1,23 @@
+import image34 from "./../../assets/images/image34.jpg";
 function ContactUs1() {
   return (
     <div className=" flex flex-col items-center">
-      <div className="h-[60vh] flex justify-center items-center w-full bg-[url('https://images.unsplash.com/photo-1499159058454-75067059248a?h=1000&w=1571&auto=format&fit=cover&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
+      <div
+        className="h-[60vh] flex justify-center items-center w-full"
+        style={{
+          backgroundImage: `url(${image34})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         {/* Breadcrumb Navigation */}
         <div className="w-fit">
           <div className="flex items-center gap-1.5 font-sans font-semibold text-green-500">
-            <a href="/" className="text-xl md:text-2xl hover:underline">
+            {/* <a href="/" className="text-xl md:text-2xl hover:underline">
               Home
             </a>{" "}
-            &gt;{" "}
-            <span className="text-teal-600 text-2xl md:text-3xl">
+            &gt;{" "} */}
+            <span className="text-gray-900 text-2xl md:text-4xl font-architects">
               Contact Us
             </span>
           </div>

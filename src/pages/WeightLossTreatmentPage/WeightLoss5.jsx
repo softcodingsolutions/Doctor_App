@@ -1,7 +1,8 @@
-import img1 from "../../assets/images/fat-img-1.png";
+import abdominall from "../../assets/images/abdominall.png";
 import img2 from "../../assets/images/fat-img-2.png";
 import img3 from "../../assets/images/fat-img-3.png";
 import img4 from "../../assets/images/fat-img-4.png";
+import image35 from "../../assets/images/image35.png";
 
 function WeightLoss5() {
   return (
@@ -16,26 +17,26 @@ function WeightLoss5() {
       <div className="w-full flex flex-wrap gap-6 md:gap-8 justify-center px-4 md:px-5 text-pretty pt-8">
         {/* Abdominal Fat */}
         <div className="flex flex-col items-center gap-1.5 w-1/2 md:w-auto">
-          <img src={img1} alt="Abdominal Fat" className="w-24 md:w-32" />
-          <div className="text-base md:text-lg">Abdominal Fat</div>
+          <img src={abdominall} alt="Abdominal Fat" className="w-24 md:w-32" />
+          <div className="text-base md:text-lg text-green-500">Abdominal Fat</div>
         </div>
 
         {/* Love Handle Fat */}
         <div className="flex flex-col items-center gap-1.5 w-1/2 md:w-auto">
           <img src={img2} alt="Love Handle Fat" className="w-24 md:w-32" />
-          <div className="text-base md:text-lg">Love Handle Fat</div>
+          <div className="text-base md:text-lg text-green-500">Love Handle Fat</div>
         </div>
 
         {/* Hip/Thigh Fat */}
         <div className="flex flex-col items-center gap-1.5 w-1/2 md:w-auto">
           <img src={img3} alt="Hip/Thigh Fat" className="w-24 md:w-32" />
-          <div className="text-base md:text-lg">Hip/Thigh Fat</div>
+          <div className="text-base md:text-lg text-green-500">Hip/Thigh Fat</div>
         </div>
 
         {/* Full Body Fat */}
         <div className="flex flex-col items-center gap-1.5 w-1/2 md:w-auto">
-          <img src={img4} alt="Full Body Fat" className="w-24 md:w-32" />
-          <div className="text-base md:text-lg">Full Body Fat</div>
+          <img src={image35} alt="Full Body Fat" className="w-24 md:w-32 " />
+          <div className="text-base md:text-lg text-green-500">Full Body Fat</div>
         </div>
       </div>
 

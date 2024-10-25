@@ -11,13 +11,13 @@ function HairAndBeauty1() {
         }}
       >
         {/* Breadcrumb Navigation */}
-        <div className="w-fit">
+        <div className="w-fit ">
           <div className="text-3xl flex items-center gap-1.5 font-sans font-semibold text-black">
-            <a href="/" className="hover:underline">
+            {/* <a href="/" className="hover:underline">
               Home
             </a>{" "}
-            &gt;{" "}
-            <span className="text-teal-600  text-2xl md:text-4xl">
+            &gt;{" "} */}
+            <span className="text-teal-600  text-2xl md:text-4xl font-architects">
               Hair & Beauty Treatment
             </span>
           </div>

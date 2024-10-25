@@ -1,11 +1,11 @@
-import img1 from "../../assets/images/hair-care.jpg";
+import haircare from "../../assets/images/haircare.jpg";
 
 function HairAndBeauty2() {
   return (
-    <div className=" w-full bg-gray-200 flex items-center ">
+    <div className=" w-full bg-white flex items-center ">
       <div className="w-full flex flex-col md:flex-row px-5">
         <div className="flex flex-col w-full md:w-1/2 pl-0 md:pl-11">
-          <div className="font-semibold pt-10 text-sm md:text-md lg:text-lg mt-12 lg:mt-0">
+          <div className="font-semibold pt-10 text-sm md:text-md lg:text-lg mt-12 lg:mt-0 text-green-500">
             According to Ayurveda, dull, patchy skin or rough hair can result
             from the following factors:
           </div>
@@ -43,7 +43,7 @@ function HairAndBeauty2() {
           </div>
         </div>
         <div className="flex justify-center w-full md:w-2/3 lg:p-5 pt-0 md:pt-0">
-          <img src={img1} alt="image" className="max-w-full h-auto" />
+          <img src={haircare} alt="image" className="w-[100vh] h-[60vh]" />
         </div>
       </div>
     </div>

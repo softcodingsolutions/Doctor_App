@@ -8,7 +8,7 @@ function AboutSection3() {
         <div className="border-[2.5px] rounded-md border-orange-300 w-16 md:w-20 mt-3" />
       </div>
 
-      <div className="flex flex-col md:flex-row w-full p-10  items-center  justify-evenly">
+      <div className="flex flex-col md:flex-row w-full p-10  items-center  justify-evenly text-green-500">
         <div>
           <ul className="space-y-2 leading-loose text-base md:text-lg">
             <li>
@@ -23,7 +23,7 @@ function AboutSection3() {
           </ul>
         </div>
         <div>
-          <ul className="space-y-2 leading-loose text-base md:text-lg">
+          <ul className="space-y-2 leading-loose text-base md:text-lg ">
             <li>
               <span className="text-xl">&#11037;</span> Toxic Colon
             </li>
