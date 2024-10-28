@@ -13,6 +13,7 @@ import img from "../../assets/images/icons_slime.png";
 import { BsGraphDown } from "react-icons/bs";
 import { CiViewList } from "react-icons/ci";
 import { MdDashboard } from "react-icons/md";
+import { AiOutlineFileSearch } from "react-icons/ai";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -54,12 +55,18 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <CiViewList size={18} />,
       to: "list-franchise",
     },
-  
     {
       id: "15",
       title: "Analysis Reports",
       icons: <BsGraphDown size={18} />,
       to: "analysis",
+    },
+    
+    {
+      id: "25",
+      title: "User Inquiry",
+      icons: <AiOutlineFileSearch size={19} />,
+      to: "user-inqury",
     },
   ];
 

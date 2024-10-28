@@ -113,6 +113,7 @@ import SendMeassage from "./pages/Recepsitnist/SendMeassage";
 import PatientAnalysis from "./pages/Admin/customer/ProgressReport/PatientAnalysis";
 import OverallAnalysis from "./pages/Admin/OverallAnalysis";
 import ChatComponent from "./components/Chat/ChatComponent";
+import Userinqury from "./pages/Admin/Userinqury";
 
 function App() {
   const access_token = localStorage.getItem("access_token");
@@ -159,6 +160,7 @@ function App() {
           {/* Admin */}
           <Route path="admin" element={<AdminMain />}>
             <Route path="analysis" element={<OverallAnalysis />} />
+            <Route path="user-inqury" element={<Userinqury />} />
             <Route path="appointments" element={<Appointments />} />
             <Route
               path="admin-medicine-inventory"

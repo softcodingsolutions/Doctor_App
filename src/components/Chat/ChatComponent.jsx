@@ -1,78 +1,101 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { TiMessages } from 'react-icons/ti';
-import { IoMdCloseCircleOutline, IoMdSend } from 'react-icons/io';
-import Avatar from './Avatar';
-import './chat.css';
-import axios from 'axios';
-import useWebSocket from 'react-use-websocket';
+import { useEffect, useState, useRef, useCallback } from "react";
+import { TiMessages } from "react-icons/ti";
+import { IoMdCloseCircleOutline } from "react-icons/io";
+import Avatar from "./Avatar";
+import axios from "axios";
+import useWebSocket from "react-use-websocket";
+import "./chat.css";
 
 function ChatComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [avatarColor, setAvatarColor] = useState('');
+  const [avatarColor, setAvatarColor] = useState("");
   const messageContainerRef = useRef(null);
   const [hasUnread, setHasUnread] = useState(
-    JSON.parse(localStorage.getItem('hasUnread')) || false,
+    JSON.parse(localStorage.getItem("hasUnread")) || false
   );
+  const [loading, setLoading] = useState(false); // Loading state
   const notificationSound = useRef(null);
 
   const doctorDetails = {
-    id: localStorage.getItem('doctor_id'),
-    fname: localStorage.getItem('doctor_fname'),
-    lname: localStorage.getItem('doctor_lname'),
-    patientId: localStorage.getItem('main_id'),
+    id: localStorage.getItem("doctor_id"),
+    fname: localStorage.getItem("doctor_fname"),
+    lname: localStorage.getItem("doctor_lname"),
+    patientId: localStorage.getItem("main_id"),
   };
 
   useEffect(() => {
-    setAvatarColor(generateRandomColor());
-    notificationSound.current = new Audio('/Audio/notification.mp3');
+    const savedColor = localStorage.getItem(`color_${doctorDetails.patientId}`);
+    if (savedColor) {
+      setAvatarColor(savedColor);
+    } else {
+      const newColor = generateUniqueColor(doctorDetails.patientId);
+      setAvatarColor(newColor);
+      localStorage.setItem(`color_${doctorDetails.patientId}`, newColor);
+    }
+
+    notificationSound.current = new Audio("/Audio/notification.mp3");
     notificationSound.current.load();
-  }, []);
+  }, [doctorDetails.patientId]);
+
+  const generateUniqueColor = (id) => {
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const r = (hash >> 0) & 0xff;
+    const g = (hash >> 8) & 0xff;
+    const b = (hash >> 16) & 0xff;
+    return `rgb(${r},${g},${b})`;
+  };
 
   const subscribeToChannel = () => {
     sendMessage(
       JSON.stringify({
-        command: 'subscribe',
+        command: "subscribe",
         identifier: JSON.stringify({
-          channel: 'MessagesChannel',
+          channel: "MessagesChannel",
           doctor_id: doctorDetails.id,
           patient_id: doctorDetails.patientId,
         }),
-      }),
+      })
     );
   };
 
-  const handleWebSocketMessage = useCallback((event) => {
-    const data = JSON.parse(event.data);
-    if (['ping', 'welcome', 'confirm_subscription'].includes(data.type)) return;
-  
-    const { type, message } = data.message || {};
-    if (type === 'message_created') {
-      setMessages((prevMessages) => [...prevMessages, message]);
-  
-      if (message.role === 'doctor' && !isModalOpen) {
-        // Only play the sound and show unread if modal is closed
-        notificationSound.current.play().catch((error) =>
-          console.warn('Failed to play notification sound:', error)
-        );
-        updateUnreadStatus(true);
-      }
-    }
-  }, [isModalOpen]);
+  const handleWebSocketMessage = useCallback(
+    (event) => {
+      const data = JSON.parse(event.data);
+      if (["ping", "welcome", "confirm_subscription"].includes(data.type)) return;
 
-  const updateUnreadStatus = status => {
+      const { type, message } = data.message || {};
+      if (type === "message_created") {
+        setMessages((prevMessages) => [...prevMessages, message]);
+
+        if (message.role === "doctor" && !isModalOpen) {
+          notificationSound.current.play().catch((error) =>
+            console.warn("Failed to play notification sound:", error)
+          );
+          updateUnreadStatus(true);
+        }
+      }
+    },
+    [isModalOpen]
+  );
+
+  const updateUnreadStatus = (status) => {
     setHasUnread(status);
-    localStorage.setItem('hasUnread', JSON.stringify(status));
+    localStorage.setItem("hasUnread", JSON.stringify(status));
   };
 
   const handleIconClick = () => {
     setIsModalOpen(true);
-    fetchMessages(); // Fetch messages when chat opens
+    fetchMessages();
     scrollToBottom();
-    updateUnreadStatus(false); // Mark as read when chat is opened
+    updateUnreadStatus(false);
   };
 
-  const { sendMessage } = useWebSocket('ws://localhost:3000/cable', {
+  const { sendMessage } = useWebSocket("ws://localhost:3000/cable", {
     onOpen: subscribeToChannel,
     onMessage: handleWebSocketMessage,
   });
@@ -82,14 +105,17 @@ function ChatComponent() {
   }, [messages]);
 
   const fetchMessages = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
-        `/messages/between/${doctorDetails.id}/${doctorDetails.patientId}`,
+        `/messages/between/${doctorDetails.id}/${doctorDetails.patientId}`
       );
       setMessages(data);
       scrollToBottom();
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      console.error("Error fetching messages:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,44 +126,38 @@ function ChatComponent() {
     }
   };
 
-  const generateRandomColor = () => {
-    return `#${Math.floor(Math.random() * 16777215)
-      .toString(16)
-      .padStart(6, '0')}`;
-  };
-
-  const handleSendMessage = async event => {
+  const handleSendMessage = async (event) => {
     event.preventDefault();
-    const messageInput = event.target.elements['message-input'];
+    const messageInput = event.target.elements["message-input"];
     const body = messageInput.value.trim();
     if (!body) return;
 
-    messageInput.value = '';
+    messageInput.value = "";
 
     try {
       const formData = new FormData();
-      formData.append('message[body]', body);
-      formData.append('message[doctor_id]', doctorDetails.id);
-      formData.append('message[patient_id]', doctorDetails.patientId);
-      formData.append('message[role]', 'patient');
+      formData.append("message[body]", body);
+      formData.append("message[doctor_id]", doctorDetails.id);
+      formData.append("message[patient_id]", doctorDetails.patientId);
+      formData.append("message[role]", "patient");
 
-      await axios.post('/messages', formData);
+      await axios.post("/messages", formData);
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
 
-  const formatTime = timestamp => {
+  const formatTime = (timestamp) => {
     const date = new Date(timestamp || Date.now());
 
     const day = date.toLocaleDateString(undefined, {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
+      weekday: "short",
+      month: "short",
+      day: "numeric",
     });
-    const hours = date.getHours() % 12 || 12; // 12-hour format
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+    const hours = date.getHours() % 12 || 12;
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = date.getHours() >= 12 ? "PM" : "AM";
 
     return `${day} ${hours}:${minutes} ${ampm}`;
   };
@@ -164,13 +184,12 @@ function ChatComponent() {
           id="chat-modal"
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10"
         >
-          <div className="bg-white w-2/5 h-3/4 p-4 rounded-md shadow-lg flex flex-col absolute bottom-10 right-10">
-            {/* Header with Doctor Info */}
+          <div className="bg-white w-full md:w-2/3 lg:w-1/2 xl:w-1/3 max-h-full h-full md:h-3/4 p-4 rounded-md shadow-lg flex flex-col overflow-hidden">
             <div className="flex items-center border-b pb-2">
               <Avatar
                 firstName={doctorDetails.fname}
                 lastName={doctorDetails.lname}
-                avatarColor={avatarColor} 
+                avatarColor={avatarColor} // Pass the generated color here
               />
               <div className="ml-3 font-medium text-lg">
                 Dr. {doctorDetails.fname} {doctorDetails.lname}
@@ -182,38 +201,38 @@ function ChatComponent() {
               />
             </div>
 
-            {/* Chat Messages Container */}
             <div
               ref={messageContainerRef}
               id="messages"
               className="flex-grow overflow-y-auto p-2 space-y-4"
             >
-              {messages.map(message => (
+              {loading && <div>Loading messages...</div>} 
+              {messages.length === 0 && !loading && (
+                <div className="text-center text-gray-500">No messages yet</div>
+              )}
+              {messages.map((message) => (
                 <div
                   key={message.id}
                   className={`flex flex-col ${
-                    message.role === 'doctor' ? 'items-start' : 'items-end'
+                    message.role === "doctor" ? "items-start" : "items-end"
                   }`}
                 >
-                  {/* Label */}
                   <span className="text-xs font-semibold uppercase text-gray-600 mb-1">
-                    {message.role === 'doctor'
+                    {message.role === "doctor"
                       ? `Dr. ${doctorDetails.fname} ${doctorDetails.lname}`
-                      : 'You'}
+                      : "You"}
                   </span>
 
-                  {/* Message Bubble */}
                   <div
                     className={`p-3 rounded-lg shadow-md max-w-xs w-fit ${
-                      message.role === 'doctor'
-                        ? 'bg-gray-200 text-black'
-                        : 'bg-blue-500 text-white'
+                      message.role === "doctor"
+                        ? "bg-gray-200 text-black"
+                        : "bg-blue-500 text-white"
                     }`}
                   >
                     {message.body}
                   </div>
 
-                  {/* Timestamp */}
                   <span className="text-xs text-gray-500 mt-1">
                     {formatTime(message.created_at)}
                   </span>
@@ -221,20 +240,15 @@ function ChatComponent() {
               ))}
             </div>
 
-            {/* Input Form */}
-            <form
-              onSubmit={handleSendMessage}
-              className="flex items-center border-t pt-2 space-x-2"
-            >
+            <form onSubmit={handleSendMessage} className="flex">
               <input
-                type="text"
                 name="message-input"
+                type="text"
                 placeholder="Type a message..."
-                autoComplete="off"
-                className="flex-grow p-2 border rounded-md focus:outline-none"
+                className="flex-grow border p-2 rounded-l-md"
               />
-              <button type="submit" className="text-blue-500">
-                <IoMdSend size={25} />
+              <button type="submit" className="bg-blue-500 text-white p-2 rounded-r-md">
+                Send
               </button>
             </form>
           </div>
