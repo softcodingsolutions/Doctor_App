@@ -361,7 +361,7 @@ function AdminDashboard() {
                           avatarColor={avatarColor}
                         />
                         <div className="flex justify-between items-center">
-                          <span className="ml-2 mr-2 font-semibold">
+                          <span className="ml-2 mr-2 font-medium">
                             {user.first_name} {user.last_name}
                           </span>
                           {unreadPatients.has(user.id) && (
