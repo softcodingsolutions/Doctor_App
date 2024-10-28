@@ -14,7 +14,7 @@ function ChatComponent() {
   const [hasUnread, setHasUnread] = useState(
     JSON.parse(localStorage.getItem('hasUnread')) || false,
   );
-  const notificationSound = useRef(new Audio('/Audio/notification.mp3'));
+  const notificationSound = useRef(null);
 
   const doctorDetails = {
     id: localStorage.getItem('doctor_id'),
@@ -25,6 +25,7 @@ function ChatComponent() {
 
   useEffect(() => {
     setAvatarColor(generateRandomColor());
+    notificationSound.current = new Audio('/Audio/notification.mp3');
     notificationSound.current.load();
   }, []);
 
@@ -41,18 +42,23 @@ function ChatComponent() {
     );
   };
 
-  const handleWebSocketMessage = useCallback(event => {
+  const handleWebSocketMessage = useCallback((event) => {
     const data = JSON.parse(event.data);
     if (['ping', 'welcome', 'confirm_subscription'].includes(data.type)) return;
+  
     const { type, message } = data.message || {};
     if (type === 'message_created') {
-      setMessages(prevMessages => [...prevMessages, message]);
-      if (message.role === 'doctor') {
-        notificationSound.current.play();
+      setMessages((prevMessages) => [...prevMessages, message]);
+  
+      if (message.role === 'doctor' && !isModalOpen) {
+        // Only play the sound and show unread if modal is closed
+        notificationSound.current.play().catch((error) =>
+          console.warn('Failed to play notification sound:', error)
+        );
         updateUnreadStatus(true);
       }
     }
-  }, []);
+  }, [isModalOpen]);
 
   const updateUnreadStatus = status => {
     setHasUnread(status);
@@ -145,7 +151,7 @@ function ChatComponent() {
       <div
         id="chat-icon"
         onClick={handleIconClick}
-        className="bottom-5 right-5 w-14 h-14 bg-blue-500 rounded-full flex justify-center items-center cursor-pointer relative"
+        className="bottom-5 right-5 w-14 h-14 bg-[#1F2937] rounded-full flex justify-center items-center cursor-pointer relative"
       >
         <TiMessages size={40} className="text-white" />
         {hasUnread && (

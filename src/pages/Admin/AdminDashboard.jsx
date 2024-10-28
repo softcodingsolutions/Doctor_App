@@ -25,12 +25,24 @@ function AdminDashboard() {
     new Set(JSON.parse(localStorage.getItem("unreadPatients")) || [])
   );
   const messageContainerRef = useRef(null);
-  const notificationSound = useRef(new Audio("/Audio/notification.mp3"));
+  const notificationSound = useRef(null);
   const activeSubscriptions = useRef({});
 
   useEffect(() => {
-    fetchPatients();
+    axios
+    .get(`api/v1/users?user_id=${main_id}`)
+    .then((res) => {
+      setPatients(res.data.users);
+      res.data.users.forEach((user) => {
+        subscribeToChannel(main_id, user.id);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
     setSelectedUser(null);
+    notificationSound.current = new Audio('/Audio/notification.mp3');
+    notificationSound.current.load();
   }, []);
 
   useEffect(() => {
@@ -95,20 +107,20 @@ function AdminDashboard() {
       return updated;
     });
   };
-  const fetchPatients = () => {
-    axios
-      .get(`api/v1/users?user_id=${main_id}`)
-      .then((res) => {
-        setPatients(res.data.users);
-        res.data.users.forEach((user) => {
-          subscribeToChannel(main_id, user.id);
-          // console.log(user)
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const fetchPatients = () => {
+  //   axios
+  //     .get(`api/v1/users?user_id=${main_id}`)
+  //     .then((res) => {
+  //       setPatients(res.data.users);
+  //       res.data.users.forEach((user) => {
+  //         subscribeToChannel(main_id, user.id);
+  //         // console.log(user)
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const handleResponseSubmit = async (event) => {
     event.preventDefault();

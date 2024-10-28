@@ -5,6 +5,8 @@ import Section4 from "./Section4";
 import Section5 from "./Section5";
 import Section6 from "./Section6";
 import { StickyNavbar } from "./StickyNavbar";
+import ChatLeadForm from "../../components/Chat/ChatLeadForm";
+
 
 function LandingPage() {
   return (
@@ -19,6 +21,7 @@ function LandingPage() {
         <Section4 />
         <Section5 />
         <Section6 />
+        <ChatLeadForm/>
       </main>
     </>
   );
