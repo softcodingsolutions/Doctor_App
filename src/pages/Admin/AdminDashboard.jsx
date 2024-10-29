@@ -9,6 +9,7 @@ import { FaClipboardList } from "react-icons/fa";
 import useWebSocket from "react-use-websocket";
 import { IoMdSend } from "react-icons/io";
 import Avatar from "../../components/Chat/Avatar";
+import NotificationComponent from "../../NotificationComponent";
 
 function AdminDashboard() {
   const context = useOutletContext();
@@ -30,18 +31,18 @@ function AdminDashboard() {
 
   useEffect(() => {
     axios
-    .get(`api/v1/users?user_id=${main_id}`)
-    .then((res) => {
-      setPatients(res.data.users);
-      res.data.users.forEach((user) => {
-        subscribeToChannel(main_id, user.id);
+      .get(`api/v1/users?user_id=${main_id}`)
+      .then((res) => {
+        setPatients(res.data.users);
+        res.data.users.forEach((user) => {
+          subscribeToChannel(main_id, user.id);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
     setSelectedUser(null);
-    notificationSound.current = new Audio('/Audio/notification.mp3');
+    notificationSound.current = new Audio("/Audio/notification.mp3");
     notificationSound.current.load();
   }, []);
 
@@ -188,7 +189,7 @@ function AdminDashboard() {
       month: "short",
       day: "numeric",
     });
-    const hours = date.getHours() % 12 || 12; 
+    const hours = date.getHours() % 12 || 12;
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const ampm = date.getHours() >= 12 ? "PM" : "AM";
 
@@ -223,8 +224,9 @@ function AdminDashboard() {
 
           <div className="relative overflow-y-auto">
             <div className="px-4">
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-2">
-                <div className="bg-white shadow  rounded-lg p-2 border-b-[#fff0e1] hover:border-b-[#ff9f43] border-y-4 sm:p-5 xl:p-8 ">
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2">
+                {/* Cards Section */}
+                <div className="bg-white shadow rounded-lg p-2 border-b-[#fff0e1] hover:border-b-[#ff9f43] border-y-4 sm:p-5 xl:p-8 ">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       <div className="flex gap-2">
@@ -311,8 +313,10 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              <div className=" mt-2 w-full  h-[72vh] flex gap-2  rounded-lg ">
-                <div className="bg-white w-[30%] border p-4 rounded-md">
+              {/* Main Container */}
+              <div className="mt-2 w-full h-[72vh] flex flex-col xl:flex-row gap-2 rounded-lg">
+                {/* Notifications Panel */}
+                <div className="bg-white w-full xl:w-[30%] border p-4 rounded-md">
                   <div className="flex justify-between border-b pb-2 mb-2">
                     <div className="text-lg font-bold ">Notifications</div>
                     <button className="text-sm font-medium text-blue-500">
@@ -341,11 +345,15 @@ function AdminDashboard() {
                       Unread
                     </button>
                   </div>
+                  {/* <NotificationComponent /> */}
                 </div>
-                <div className="bg-white w-[70%] border rounded-md p-4 shadow-lg h-full flex">
-                  <div className="bg-white w-[30%] border p-4 rounded-md overflow-y-auto">
+
+                {/* Chat and Patient List Panel */}
+                <div className="bg-white w-full xl:w-[70%] border rounded-md p-4 shadow-lg h-full flex flex-col xl:flex-row">
+                  {/* Patient List */}
+                  <div className="bg-white w-full xl:w-[30%] border p-4 rounded-md overflow-y-auto">
                     <div className="text-lg font-bold border-b pb-2 mb-2">
-                      Patient&apos;s List
+                      Patient's List
                     </div>
                     {patients.map((user) => (
                       <div
@@ -373,7 +381,7 @@ function AdminDashboard() {
                   </div>
 
                   {/* Chat Section */}
-                  <div className="bg-white w-[70%] border rounded-md p-4 h-full flex flex-col">
+                  <div className="bg-white w-full xl:w-[70%] border rounded-md p-4 h-full flex flex-col">
                     {selectedUser ? (
                       <>
                         <div className="text-lg font-bold border-b pb-2 mb-2">
@@ -404,7 +412,6 @@ function AdminDashboard() {
                                   ? "You"
                                   : `${selectedUser?.first_name} ${selectedUser?.last_name}`}
                               </div>
-
                               <div
                                 className={`inline-block p-3 rounded-lg relative max-w-[75%] ${
                                   message.role === "doctor"
@@ -415,7 +422,6 @@ function AdminDashboard() {
                               >
                                 <div>{message.body}</div>
                               </div>
-
                               <div
                                 className={`text-xs text-gray-700 mt-1 ${
                                   message.role === "doctor"

@@ -114,6 +114,7 @@ import PatientAnalysis from "./pages/Admin/customer/ProgressReport/PatientAnalys
 import OverallAnalysis from "./pages/Admin/OverallAnalysis";
 import ChatComponent from "./components/Chat/ChatComponent";
 import Userinqury from "./pages/Admin/Userinqury";
+import NotificationComponent from "./NotificationComponent";
 
 function App() {
   const access_token = localStorage.getItem("access_token");

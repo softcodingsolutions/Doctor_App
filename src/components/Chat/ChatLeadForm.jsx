@@ -89,7 +89,7 @@ function ChatComponent() {
     const selectedDoctor = doctors.find((doc) => doc.id === parseInt(selectedDoctorId));
     addMessage({
       sender: 'system',
-      text: `You selected Dr. ${selectedDoctor.first_name} ${selectedDoctor.last_name}.`,
+      text: `You selected Dr.${selectedDoctor.first_name} ${selectedDoctor.last_name}.`,
     });
 
     handleNextStep();
@@ -137,6 +137,18 @@ function ChatComponent() {
     setShouldAskQuestions(true);
   };
 
+  const handleDoctor = (first_name , last_name) =>{
+    if(first_name === "Bhavesh" || last_name === "Thakker"){
+      return <div>Dr. Bhavesh Thakker(Weight Loss)</div>
+    }
+    else if(first_name === "Nidhi" || last_name === "Shah"){
+      return <div>Dr. Nidhi Shah (Beauty Care)</div>
+    }
+    else if(first_name === "Rupali" || last_name === "Pathak"){
+      return <div>Dr. Dipali Pathak (Skin Specialist)</div>
+    }
+  }
+
   return (
     <div id="chat-app">
       <div
@@ -183,13 +195,13 @@ function ChatComponent() {
               ))}
 
               {shouldAskQuestions && step < questions.length && questions[step].type === 'select' && (
-                <div className="p-3 rounded-lg shadow-md max-w-xs w-fit bg-gray-200 text-black">
+                <div className="p-4 rounded-lg shadow-md max-w-xs w-fit  text-black">
                   {questions[step].text}
-                  <select onChange={handleDoctorSelect} className="doctor-select">
+                  <select onChange={handleDoctorSelect} className="doctor-select border rounded p-2">
                     <option value="">Select a doctor</option>
                     {doctors.map((doctor) => (
                       <option key={doctor.id} value={doctor.id}>
-                        {doctor.first_name} {doctor.last_name}
+                        {handleDoctor(doctor.first_name,doctor.last_name)}
                       </option>
                     ))}
                   </select>
