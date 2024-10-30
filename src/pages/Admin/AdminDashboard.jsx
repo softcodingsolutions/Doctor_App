@@ -19,6 +19,7 @@ function AdminDashboard() {
   const [complaints, setComplaints] = useState([]);
   const [patients, setPatients] = useState([]);
   const [avatarColor, setAvatarColor] = useState("");
+  const [notifications, setNotifications] = useState([]);
   const [selectedUser, setSelectedUser] = useState(
     JSON.parse(localStorage.getItem("selectedUser")) || null
   );
@@ -44,6 +45,7 @@ function AdminDashboard() {
     setSelectedUser(null);
     notificationSound.current = new Audio("/Audio/notification.mp3");
     notificationSound.current.load();
+    subscribeToNotificationChannel();
   }, []);
 
   useEffect(() => {
@@ -54,7 +56,7 @@ function AdminDashboard() {
     protocol: "actioncable-v1-json",
     onOpen: () => console.log("WebSocket connection established."),
     onMessage: (event) => handleWebSocketMessage(event),
-    share: true, // Share the WebSocket connection between components
+    share: true,
   });
 
   const subscribeToChannel = (doctorId, patientId) => {
@@ -75,18 +77,38 @@ function AdminDashboard() {
     activeSubscriptions.current[channelKey] = true;
   };
 
+  const subscribeToNotificationChannel = () => {
+    const subscriptionMessage = {
+      command: "subscribe",
+      identifier: JSON.stringify({
+        channel: "NotificationChannel",
+        user_id: 2,
+      }),
+    };
+
+    sendJsonMessage(subscriptionMessage);
+    console.log("Subscribed to NotificationChannel:", subscriptionMessage);
+  };
+
   const handleWebSocketMessage = (event) => {
     const data = JSON.parse(event.data);
     if (["ping", "welcome", "confirm_subscription"].includes(data.type)) return;
-    if (data.message.type === "message_created") {
-      const newMessage = data.message.message;
 
-      if (selectedUser && newMessage.patient_id === selectedUser.id) {
-        setComplaints((prev) => [...prev, newMessage]);
-        if (newMessage.role !== "doctor") notificationSound.current.play();
-      } else {
-        updateUnreadPatients(newMessage.patient_id);
-        notificationSound.current.play();
+    if (data.message) {
+      if (data.message.type === "message_created") {
+        const newMessage = data.message.message;
+        if (selectedUser && newMessage.patient_id === selectedUser.id) {
+          setComplaints((prev) => [...prev, newMessage]);
+          if (newMessage.role !== "doctor") notificationSound.current.play();
+        } else {
+          updateUnreadPatients(newMessage.patient_id);
+          notificationSound.current.play();
+        }
+      } else if (data.message.type === "notification") {
+        const newNotification = data.message.notification;
+
+        setNotifications((prev) => [...prev, newNotification]);
+        console.log(newNotification, "Notification");
       }
     }
   };
@@ -155,6 +177,25 @@ function AdminDashboard() {
         console.log(err);
       });
   };
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+
+    // Format options
+    const options = {
+      year: "numeric",
+      month: "short", // "Oct" instead of "October"
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true, // 12-hour format with AM/PM
+    };
+
+    return date.toLocaleDateString("en-US", options);
+  }
+
+  // Usage
+  const updatedAt = "2024-10-29T15:40:20.805+05:30";
+  console.log(formatDate(updatedAt));
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     handleData(today);
@@ -162,6 +203,15 @@ function AdminDashboard() {
 
   useEffect(() => {
     setAvatarColor(generateRandomColor());
+    axios
+      .get(`/api/v1/notifications?user_id=${main_id}`)
+      .then((res) => {
+        console.log(res, "Notification Response");
+        setNotifications(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const generateRandomColor = () => {
@@ -316,20 +366,17 @@ function AdminDashboard() {
               {/* Main Container */}
               <div className="mt-2 w-full h-[72vh] flex flex-col xl:flex-row gap-2 rounded-lg">
                 {/* Notifications Panel */}
-                <div className="bg-white w-full xl:w-[30%] border p-4 rounded-md">
-                  <div className="flex justify-between border-b pb-2 mb-2">
-                    <div className="text-lg font-bold ">Notifications</div>
-                    <button className="text-sm font-medium text-blue-500">
-                      Mark all as read
-                    </button>
+                <div className="bg-white w-full xl:w-[30%] border p-4 rounded-md shadow-md transition-shadow duration-200 hover:shadow-lg overflow-auto">
+                  <div className="flex sticky justify-between border-b pb-2 mb-2">
+                    <div className="text-lg font-bold">Notifications</div>
                   </div>
                   <div className="flex pt-2 pl-4 gap-5 border-b text-sm">
                     <button
                       className={`${
                         activeTab === "inbox"
-                          ? "text-black border-b-2 border-black"
+                          ? "text-black border-b-2 border-black font-semibold"
                           : "text-gray-500 border-b-2 border-transparent"
-                      } pb-1`}
+                      } pb-1 transition-colors duration-200 hover:text-black`}
                       onClick={() => setActiveTab("inbox")}
                     >
                       Inbox
@@ -337,15 +384,42 @@ function AdminDashboard() {
                     <button
                       className={`${
                         activeTab === "unread"
-                          ? "text-black border-b-2 border-black"
+                          ? "text-black border-b-2 border-black font-semibold"
                           : "text-gray-500 border-b-2 border-transparent"
-                      } pb-1`}
+                      } pb-1 transition-colors duration-200 hover:text-black`}
                       onClick={() => setActiveTab("unread")}
                     >
                       Unread
                     </button>
                   </div>
-                  {/* <NotificationComponent /> */}
+                  <div className="mt-4">
+                    {notifications.length > 0 ? (
+                      notifications.map((notif) => (
+                        <div
+                          key={notif.id}
+                          className={`p-3 mb-2 rounded-md transition-colors duration-200 hover:bg-gray-200 ${
+                            notif.isUnread ? "bg-gray-100" : "bg-white"
+                          }`}
+                        >
+                          <div className="flex justify-between items-center">
+                            <div className="font-semibold text-black">
+                              {notif.title}
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              {formatDate(notif.updated_at)}
+                            </div>
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {notif.body}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center text-gray-500 py-4">
+                        No notifications to display
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Chat and Patient List Panel */}
