@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { TiMessages } from "react-icons/ti";
-import { IoMdCloseCircleOutline } from "react-icons/io";
+import { IoMdCloseCircleOutline, IoMdSend } from "react-icons/io";
 import Avatar from "./Avatar";
 import axios from "axios";
 import useWebSocket from "react-use-websocket";
@@ -9,7 +9,6 @@ import "./chat.css";
 function ChatComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [avatarColor, setAvatarColor] = useState("");
   const messageContainerRef = useRef(null);
   const [hasUnread, setHasUnread] = useState(
     JSON.parse(localStorage.getItem("hasUnread")) || false
@@ -25,30 +24,10 @@ function ChatComponent() {
   };
 
   useEffect(() => {
-    const savedColor = localStorage.getItem(`color_${doctorDetails.patientId}`);
-    if (savedColor) {
-      setAvatarColor(savedColor);
-    } else {
-      const newColor = generateUniqueColor(doctorDetails.patientId);
-      setAvatarColor(newColor);
-      localStorage.setItem(`color_${doctorDetails.patientId}`, newColor);
-    }
-
-    notificationSound.current = new Audio("/Audio/notification.mp3");
+    notificationSound.current = new Audio('/Audio/notification.mp3');
     notificationSound.current.load();
   }, [doctorDetails.patientId]);
 
-  const generateUniqueColor = (id) => {
-    let hash = 0;
-    for (let i = 0; i < id.length; i++) {
-      hash = id.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    const r = (hash >> 0) & 0xff;
-    const g = (hash >> 8) & 0xff;
-    const b = (hash >> 16) & 0xff;
-    return `rgb(${r},${g},${b})`;
-  };
 
   const subscribeToChannel = () => {
     sendMessage(
@@ -189,7 +168,6 @@ function ChatComponent() {
               <Avatar
                 firstName={doctorDetails.fname}
                 lastName={doctorDetails.lname}
-                avatarColor={avatarColor} // Pass the generated color here
               />
               <div className="ml-3 font-medium text-lg">
                 Dr. {doctorDetails.fname} {doctorDetails.lname}
@@ -240,15 +218,19 @@ function ChatComponent() {
               ))}
             </div>
 
-            <form onSubmit={handleSendMessage} className="flex">
+            <form
+              onSubmit={handleSendMessage}
+              className="flex items-center border-t pt-2 space-x-2"
+            >
               <input
                 name="message-input"
                 type="text"
                 placeholder="Type a message..."
-                className="flex-grow border p-2 rounded-l-md"
+                autoComplete="off"
+                className="flex-grow p-2 border rounded-md focus:outline-none"
               />
-              <button type="submit" className="bg-blue-500 text-white p-2 rounded-r-md">
-                Send
+              <button type="submit" className="text-blue-500">
+              <IoMdSend size={25} />
               </button>
             </form>
           </div>
