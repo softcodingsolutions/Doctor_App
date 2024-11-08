@@ -145,8 +145,8 @@ function LoginPage() {
       className="flex items-center justify-start h-screen font-sans px-4 sm:px-10 bg-cover bg-center"
       style={{ backgroundImage: `url(${backgroundlogin})` }}
     >
-      <div className="backdrop-blur-xl px-10 sm:px-10 py-10 rounded-sm shadow-sm w-full max-w-xl ml-52">
-        <Card className="w-full h-fit py-2 backdrop-blur-lg bg-white border-white/30 shadow-lg rounded-lg">
+      <div className="backdrop-blur-xl px-10 sm:px-10 py-10 rounded-sm shadow-sm w-full lg:max-w-xl lg:ml-52">
+        <Card className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-fit py-2 backdrop-blur-lg bg-white border-white/30 shadow-lg rounded-lg">
           <form onSubmit={handleSubmit(submittedData)} method="post">
             <CardBody className="flex flex-col gap-4">
               <div className="flex justify-center border rounded-md p-4 shadow-inner bg-green-100">
@@ -227,7 +227,10 @@ function LoginPage() {
                 color="blue-gray"
                 className="ml-1 font-bold hover:scale-105"
               >
-                <Link to="/signup" className="text-base font-sans text-green-700">
+                <Link
+                  to="/signup"
+                  className="text-base font-sans text-green-700"
+                >
                   Sign Up
                 </Link>
               </Typography>

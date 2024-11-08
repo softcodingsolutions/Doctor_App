@@ -17,10 +17,12 @@ import { FaAnglesDown } from "react-icons/fa6";
 import { FaRupeeSign } from "react-icons/fa";
 import { PiIntersectSquareFill } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa6";
+import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 
 const OverallAnalysis = () => {
   const main_id = localStorage.getItem("main_id");
+  const context = useOutletContext();
   const currentDate = new Date();
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
@@ -141,6 +143,18 @@ const OverallAnalysis = () => {
       </div>
       <div className=" flex-grow overflow-auto   flex flex-wrap content-start ">
         <div className="w-full p-2 flex flex-col gap-1 ">
+          <div className="w-fit mb-10">
+            <button
+              onClick={context[0]}
+              type="button"
+              className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
+            >
+              <img
+                src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+                alt=""
+              />
+            </button>
+          </div>
           <div className="flex justify-end gap-2 p-2">
             <select
               value={selectedYear}
