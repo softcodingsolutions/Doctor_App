@@ -104,7 +104,7 @@ import AppointmentSheet from "./pages/Recepsitnist/Pages/AppointmentSheet";
 import CustomerDetails from "./pages/Admin/customerdetails/CustomerDetails";
 // import PackageDetails from "./pages/Admin/customerdetails/PackageDetails";
 import ProgressQuestion from "./pages/Admin/customer/ProgressReport/ProgressQuestion";
-import ProgressComplains from "./pages/Admin/customer/ProgressReport/ProgressComplains";
+import ProgressComplain from "./pages/Admin/customer/ProgressReport/ProgressComplain";
 import ProgressMedicine from "./pages/Admin/customer/ProgressReport/ProgressMedicine";
 import Appointments from "./pages/Admin/Appointments";
 import FranchiseUserDetails from "./pages/Admin/FranchiseUserDetails";
@@ -145,7 +145,7 @@ function App() {
               <Route path="progress-questions" element={<ProgressQuestion />} />
               <Route
                 path="progress-complains"
-                element={<ProgressComplains />}
+                element={<ProgressComplain />}
               />
               <Route path="admin-bill-history" element={<BillHistory />} />
               <Route path="package" element={<ReportPackage />} />
@@ -219,7 +219,7 @@ function App() {
                 <Route path="package-medicine" element={<ProgressMedicine />} />
                 <Route
                   path="progress-complains"
-                  element={<ProgressComplains />}
+                  element={<ProgressComplain />}
                 />
                 <Route path="patient-analysis" element={<PatientAnalysis />} />
                 <Route
@@ -334,7 +334,7 @@ function App() {
                 <Route path="patient-analysis" element={<PatientAnalysis />} />
                 <Route
                   path="progress-complains"
-                  element={<ProgressComplains />}
+                  element={<ProgressComplain />}
                 />
                 <Route
                   path="progress-questions"

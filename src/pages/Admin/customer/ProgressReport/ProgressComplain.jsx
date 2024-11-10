@@ -10,7 +10,7 @@ import { FaRegThumbsDown } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import InsideLoader from "../../../InsideLoader";
 
-const ProgressComplains = () => {
+const ProgressComplain = () => {
   const [getComplains, setGetComplains] = useState([]);
   const [showComplain, setShowComplain] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -244,4 +244,4 @@ const ProgressComplains = () => {
   );
 };
 
-export default ProgressComplains;
+export default ProgressComplain;
