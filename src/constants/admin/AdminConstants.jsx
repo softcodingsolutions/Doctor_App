@@ -117,7 +117,7 @@ export const reportButtons = [
     id: "6",
     name: "View Patient",
     icons: <LuPackagePlus size={18} />,
-    to: "/admin/patients/customer-details/progress-questions",
+    to: "/franchise/patients/customer-details/progress-questions",
   },
   // {
   //   id: "7",

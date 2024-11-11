@@ -21,7 +21,7 @@ const CustomerDetails = () => {
   const role = localStorage.getItem("role");
   const location = useLocation();
   const pathname =
-    role === "doctor" || role === "super_admin"
+    role === "doctor" || role === "franchise" || role === "super_admin"
       ? location.pathname.split("/customer-details/")[1]
       : location.pathname.split("/recp-customer-details/")[1];
 

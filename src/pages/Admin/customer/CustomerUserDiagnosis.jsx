@@ -13,6 +13,7 @@ import { MdEmail } from "react-icons/md";
 import { GiWeight } from "react-icons/gi";
 
 function CustomerUserDiagnosis() {
+  localStorage.getItem("caseNumber")
   const [selectedId, setSelectedId] = useState("2");
   const [getCustomer, setGetCustomer] = useState([]);
   const [getAdmin, setGetAdmin] = useState([]);
@@ -31,6 +32,7 @@ function CustomerUserDiagnosis() {
       .then((res) => {
         console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
+        localStorage.setItem("caseNumber",res.data?.user?.case_number);
         setShowPart1(
           res.data?.user?.personal_detail?.user_selected_questions_one
         );

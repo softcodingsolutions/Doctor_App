@@ -419,6 +419,23 @@ function App() {
                   <Route path="donts" element={<RTreatmentDont />} />
                 </Route>
               </Route>
+              <Route path="customer-details" element={<CustomerDetails />}>
+                <Route path="admin-bill-history" element={<BillHistory />} />
+                <Route path="package" element={<ReportPackage />} />
+                <Route path="package-medicine" element={<ProgressMedicine />} />
+                <Route
+                  path="progress-complains"
+                  element={<ProgressComplains />}
+                />
+                <Route path="patient-analysis" element={<PatientAnalysis />} />
+                <Route
+                  path="progress-questions"
+                  element={<ProgressQuestion />}
+                />
+                <Route path="progress-report" element={<ReportProgress />} />
+                <Route path="generate-report" element={<ReportGenerate />} />
+                {/* <Route path="package-details" element={<PackageDetails />} /> */}
+              </Route>
             </Route>
           </Route>
 
