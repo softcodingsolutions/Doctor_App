@@ -5,7 +5,7 @@ import AboutSection2 from "./AboutSection2";
 import AboutSection1 from "./AboutSection1";
 import AboutSection4 from "./AboutSection4";
 import PatientRegistration from "../LandingPage/PatientRegistration";
-
+import ChatLeadForm from "../../components/Chat/ChatLeadForm";
 function AboutUs() {
   return (
     <>
@@ -18,6 +18,7 @@ function AboutUs() {
         <AboutSection3 />
         <AboutSection4 />
         <Section6 />
+        <ChatLeadForm />
       </main>
     </>
   );

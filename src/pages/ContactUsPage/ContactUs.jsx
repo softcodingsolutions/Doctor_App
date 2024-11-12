@@ -2,7 +2,7 @@ import { StickyNavbar } from "../LandingPage/StickyNavbar";
 import Section6 from "../LandingPage/Section6";
 import ContactUs1 from "./ContactUs1";
 import ContactUs2 from "./ContactUs2";
-
+import ChatLeadForm from "../../components/Chat/ChatLeadForm";
 function ContactUs() {
   return (
     <>
@@ -13,6 +13,7 @@ function ContactUs() {
         <ContactUs1 />
         <ContactUs2 />
         <Section6 />
+        <ChatLeadForm />
       </main>
     </>
   );

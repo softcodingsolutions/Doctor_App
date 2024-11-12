@@ -5,7 +5,7 @@ import HairAndBeauty2 from "./HairAndBeauty2";
 import HairAndBeauty3 from "./HairAndBeauty3";
 import HairAndBeauty4 from "./HairAndBeauty4";
 import PatientRegistration from "../LandingPage/PatientRegistration";
-
+import ChatLeadForm from "../../components/Chat/ChatLeadForm";
 function HairAndBeauty() {
   return (
     <>
@@ -18,6 +18,7 @@ function HairAndBeauty() {
         <HairAndBeauty3 />
         <HairAndBeauty4 />
         <Section6 />
+        <ChatLeadForm />
       </main>
     </>
   );
