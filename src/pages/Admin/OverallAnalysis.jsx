@@ -18,6 +18,7 @@ import { FaRupeeSign } from "react-icons/fa";
 import { PiIntersectSquareFill } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa6";
 import { useOutletContext } from "react-router-dom";
+import { BsGraphDown } from "react-icons/bs";
 import axios from "axios";
 
 const OverallAnalysis = () => {
@@ -143,43 +144,52 @@ const OverallAnalysis = () => {
       </div>
       <div className=" flex-grow overflow-auto   flex flex-wrap content-start ">
         <div className="w-full p-2 flex flex-col gap-1 ">
-          <div className="w-fit mb-10">
-            <button
-              onClick={context[0]}
-              type="button"
-              className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
-            >
-              <img
-                src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
-                alt=""
-              />
-            </button>
+          <div className="flex gap-96">
+            <div className="flex gap-2 m-2">
+              <div>
+                <BsGraphDown size={40} />
+              </div>
+              <label className="flex justify-start text-lg font-bold  tracking-wide">
+               Analysis Reports
+              </label>
+            </div>
+            <div className="w-fit mb-10">
+              <button
+                onClick={context[0]}
+                type="button"
+                className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
+              >
+                <img
+                  src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
+                  alt=""
+                />
+              </button>
+            </div>
+            <div className="flex justify-end gap-2 p-2">
+              <select
+                value={selectedYear}
+                onChange={handleYearChange}
+                className="p-2 border rounded"
+              >
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={selectedMonth}
+                onChange={handleMonthChange}
+                className="p-2 border rounded"
+              >
+                {months.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="flex justify-end gap-2 p-2">
-            <select
-              value={selectedYear}
-              onChange={handleYearChange}
-              className="p-2 border rounded"
-            >
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            <select
-              value={selectedMonth}
-              onChange={handleMonthChange}
-              className="p-2 border rounded"
-            >
-              {months.map((month) => (
-                <option key={month} value={month}>
-                  {month}
-                </option>
-              ))}
-            </select>
-          </div>
-
           <div className="flex flex-col ">
             <div className="flex flex-wrap w-full">
               <div className="flex items-center m-2 border rounded-md shadow-md p-3 w-full md:w-[30%]">

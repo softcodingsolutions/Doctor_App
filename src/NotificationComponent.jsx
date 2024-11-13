@@ -12,36 +12,39 @@ function NotificationComponent() {
   const notificationSound = useRef(null);
 
   const userId = localStorage.getItem("user_id");
-  const { sendMessage } = useWebSocket("ws://localhost:3000/cable", {
-    onOpen: JSON.stringify({
-      command: "subscribe",
-      identifier: JSON.stringify({
-        channel: "NotificationChannel",
-        user_id: userId,
+  const { sendMessage } = useWebSocket(
+    "ws:/https://7ba8-2401-4900-1f3f-4f0b-9413-9596-8f61-c0c4.ngrok-free.app/cable",
+    {
+      onOpen: JSON.stringify({
+        command: "subscribe",
+        identifier: JSON.stringify({
+          channel: "NotificationChannel",
+          user_id: userId,
+        }),
       }),
-    }),
-    onMessage: (event) => {
-      const data = JSON.parse(event.data);
-  
-      // Ignore certain message types
-      if (["ping", "welcome", "confirm_subscription"].includes(data.type)) return;
-  
-      if (data.message) {
-        const newNotification = data.message.notification;
-        setNotifications((prev) => [...prev, newNotification]);
-        setHasUnread(true);
-        localStorage.setItem("notificationHasUnread", JSON.stringify(true));
-  
-        // Play sound
-        notificationSound.current
-          .play()
-          .catch((error) =>
-            console.warn("Failed to play notification sound:", error)
-          );
-      }
-    },
-  });
+      onMessage: (event) => {
+        const data = JSON.parse(event.data);
 
+        // Ignore certain message types
+        if (["ping", "welcome", "confirm_subscription"].includes(data.type))
+          return;
+
+        if (data.message) {
+          const newNotification = data.message.notification;
+          setNotifications((prev) => [...prev, newNotification]);
+          setHasUnread(true);
+          localStorage.setItem("notificationHasUnread", JSON.stringify(true));
+
+          // Play sound
+          notificationSound.current
+            .play()
+            .catch((error) =>
+              console.warn("Failed to play notification sound:", error)
+            );
+        }
+      },
+    }
+  );
 
   const handleIconClick = () => {
     setIsModalOpen(true);

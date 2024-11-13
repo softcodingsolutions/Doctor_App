@@ -1,29 +1,29 @@
-import { useEffect, useRef, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import axios from 'axios';
-import { FaUsersLine } from 'react-icons/fa6';
-import { FaUserPlus } from 'react-icons/fa';
-import { AiFillBulb } from 'react-icons/ai';
-import { GoNorthStar } from 'react-icons/go';
-import { FaClipboardList } from 'react-icons/fa';
-import useWebSocket from 'react-use-websocket';
-import { IoMdSend } from 'react-icons/io';
-import Avatar from '../../components/Chat/Avatar';
+import { useEffect, useRef, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import axios from "axios";
+import { FaUsersLine } from "react-icons/fa6";
+import { FaUserPlus } from "react-icons/fa";
+import { AiFillBulb } from "react-icons/ai";
+import { GoNorthStar } from "react-icons/go";
+import { FaClipboardList } from "react-icons/fa";
+import useWebSocket from "react-use-websocket";
+import { IoMdSend } from "react-icons/io";
+import Avatar from "../../components/Chat/Avatar";
 
 function AdminDashboard() {
   const context = useOutletContext();
-  const main_id = localStorage.getItem('main_id');
-  const [data, setData] = useState('');
+  const main_id = localStorage.getItem("main_id");
+  const [data, setData] = useState("");
   // const [activeTab, setActiveTab] = useState('inbox');
   const [complaints, setComplaints] = useState([]);
   const [patients, setPatients] = useState([]);
-  const [avatarColor, setAvatarColor] = useState('');
+  const [avatarColor, setAvatarColor] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [selectedUser, setSelectedUser] = useState(
-    JSON.parse(localStorage.getItem('selectedUser')) || null,
+    JSON.parse(localStorage.getItem("selectedUser")) || null
   );
   const [unreadPatients, setUnreadPatients] = useState(
-    new Set(JSON.parse(localStorage.getItem('unreadPatients')) || []),
+    new Set(JSON.parse(localStorage.getItem("unreadPatients")) || [])
   );
   const messageContainerRef = useRef(null);
   const notificationSound = useRef(null);
@@ -32,17 +32,17 @@ function AdminDashboard() {
   useEffect(() => {
     axios
       .get(`api/v1/users?user_id=${main_id}`)
-      .then(res => {
+      .then((res) => {
         setPatients(res.data.users);
-        res.data.users.forEach(user => {
+        res.data.users.forEach((user) => {
           subscribeToChannel(main_id, user.id);
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
     setSelectedUser(null);
-    notificationSound.current = new Audio('/Audio/notification.mp3');
+    notificationSound.current = new Audio("/Audio/notification.mp3");
     notificationSound.current.load();
     subscribeToNotificationChannel();
   }, []);
@@ -51,21 +51,24 @@ function AdminDashboard() {
     scrollToBottom();
   }, [complaints]);
 
-  const { sendJsonMessage } = useWebSocket('ws://localhost:3000/cable', {
-    protocol: 'actioncable-v1-json',
-    onOpen: () => console.log('WebSocket connection established.'),
-    onMessage: event => handleWebSocketMessage(event),
-    share: true,
-  });
+  const { sendJsonMessage } = useWebSocket(
+    "wss://7ba8-2401-4900-1f3f-4f0b-9413-9596-8f61-c0c4.ngrok-free.app/cable",
+    {
+      protocol: "actioncable-v1-json",
+      onOpen: () => console.log("WebSocket connection established."),
+      onMessage: (event) => handleWebSocketMessage(event),
+      share: true,
+    }
+  );
 
   const subscribeToChannel = (doctorId, patientId) => {
     const channelKey = `${doctorId}-${patientId}`;
     if (activeSubscriptions.current[channelKey]) return;
-
+    console.log("Subscribing to");
     const subscriptionMessage = {
-      command: 'subscribe',
+      command: "subscribe",
       identifier: JSON.stringify({
-        channel: 'MessagesChannel',
+        channel: "MessagesChannel",
         doctor_id: doctorId,
         patient_id: patientId,
       }),
@@ -78,53 +81,53 @@ function AdminDashboard() {
 
   const subscribeToNotificationChannel = () => {
     const subscriptionMessage = {
-      command: 'subscribe',
+      command: "subscribe",
       identifier: JSON.stringify({
-        channel: 'NotificationChannel',
+        channel: "NotificationChannel",
         user_id: main_id,
       }),
     };
 
     sendJsonMessage(subscriptionMessage);
-    console.log('Subscribed to NotificationChannel:', subscriptionMessage);
+    console.log("Subscribed to NotificationChannel:", subscriptionMessage);
   };
 
-  const handleWebSocketMessage = event => {
+  const handleWebSocketMessage = (event) => {
     const data = JSON.parse(event.data);
-    if (['ping', 'welcome', 'confirm_subscription'].includes(data.type)) return;
+    if (["ping", "welcome", "confirm_subscription"].includes(data.type)) return;
 
     if (data.message) {
-      if (data.message.type === 'message_created') {
+      if (data.message.type === "message_created") {
         const newMessage = data.message.message;
         if (selectedUser && newMessage.patient_id === selectedUser.id) {
-          setComplaints(prev => [...prev, newMessage]);
-          if (newMessage.role !== 'doctor') notificationSound.current.play();
+          setComplaints((prev) => [...prev, newMessage]);
+          if (newMessage.role !== "doctor") notificationSound.current.play();
         } else {
           updateUnreadPatients(newMessage.patient_id);
           notificationSound.current.play();
         }
-      } else if (data.message.type === 'notification') {
+      } else if (data.message.type === "notification") {
         const newNotification = data.message.message;
 
-        setNotifications(prev => [...prev, newNotification]);
+        setNotifications((prev) => [...prev, newNotification]);
       }
     }
   };
 
-  const updateUnreadPatients = patientId => {
-    setUnreadPatients(prev => {
+  const updateUnreadPatients = (patientId) => {
+    setUnreadPatients((prev) => {
       const updated = new Set(prev);
       updated.add(patientId);
-      localStorage.setItem('unreadPatients', JSON.stringify([...updated]));
+      localStorage.setItem("unreadPatients", JSON.stringify([...updated]));
       return updated;
     });
   };
 
-  const markAsRead = user => {
-    setUnreadPatients(prev => {
+  const markAsRead = (user) => {
+    setUnreadPatients((prev) => {
       const updated = new Set(prev);
       updated.delete(user.id);
-      localStorage.setItem('unreadPatients', JSON.stringify([...updated]));
+      localStorage.setItem("unreadPatients", JSON.stringify([...updated]));
       return updated;
     });
   };
@@ -143,35 +146,35 @@ function AdminDashboard() {
   //     });
   // };
 
-  const handleResponseSubmit = async event => {
+  const handleResponseSubmit = async (event) => {
     event.preventDefault();
-    const messageInput = event.target.elements['message_input'];
+    const messageInput = event.target.elements["message_input"];
     const body = messageInput.value.trim();
     if (!body) return;
 
     try {
-      await axios.post('/messages', {
+      await axios.post("/messages", {
         message: {
           body,
-          role: 'doctor',
+          role: "doctor",
           doctor_id: main_id,
           patient_id: selectedUser.id,
         },
       });
-      messageInput.value = '';
+      messageInput.value = "";
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
 
-  const handleData = today => {
+  const handleData = (today) => {
     axios
       .get(`/api/v2/dashboards?doctor_id=${main_id}&date=${today}`)
-      .then(res => {
+      .then((res) => {
         console.log(res);
         setData(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -180,19 +183,19 @@ function AdminDashboard() {
 
     // Format options
     const options = {
-      year: 'numeric',
-      month: 'short', // "Oct" instead of "October"
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
+      year: "numeric",
+      month: "short", // "Oct" instead of "October"
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true, // 12-hour format with AM/PM
     };
 
-    return date.toLocaleDateString('en-US', options);
+    return date.toLocaleDateString("en-US", options);
   }
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     handleData(today);
   }, []);
 
@@ -200,11 +203,11 @@ function AdminDashboard() {
     setAvatarColor(generateRandomColor());
     axios
       .get(`/api/v1/notifications?user_id=${main_id}`)
-      .then(res => {
-        console.log(res, 'Notification Response');
+      .then((res) => {
+        console.log(res, "Notification Response");
         setNotifications(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
@@ -212,31 +215,31 @@ function AdminDashboard() {
   const generateRandomColor = () => {
     return `#${Math.floor(Math.random() * 16777215)
       .toString(16)
-      .padStart(6, '0')}`;
+      .padStart(6, "0")}`;
   };
 
-  const handleUserSelect = user => {
+  const handleUserSelect = (user) => {
     setSelectedUser(user);
-    localStorage.setItem('selectedUser', JSON.stringify(user));
+    localStorage.setItem("selectedUser", JSON.stringify(user));
     markAsRead(user);
 
     axios
       .get(`/messages/between/${main_id}/${user.id}`)
-      .then(res => setComplaints(res.data))
-      .catch(err => console.error(err));
+      .then((res) => setComplaints(res.data))
+      .catch((err) => console.error(err));
   };
 
-  const formatTime = timestamp => {
+  const formatTime = (timestamp) => {
     const date = new Date(timestamp || Date.now());
 
     const day = date.toLocaleDateString(undefined, {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
+      weekday: "short",
+      month: "short",
+      day: "numeric",
     });
     const hours = date.getHours() % 12 || 12;
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = date.getHours() >= 12 ? "PM" : "AM";
 
     return `${day} ${hours}:${minutes} ${ampm}`;
   };
@@ -392,16 +395,15 @@ function AdminDashboard() {
                       notifications
                         .sort(
                           (a, b) =>
-                            new Date(b.created_at) - new Date(a.created_at),
+                            new Date(b.created_at) - new Date(a.created_at)
                         )
-                        .map(notif => (
+                        .map((notif) => (
                           <div
                             key={notif.id}
                             className={`p-3 mb-2 rounded-md transition-colors duration-200 hover:bg-gray-200 ${
-                              notif.read ? 'bg-gray-100' : 'bg-white'
+                              notif.read ? "bg-gray-100" : "bg-white"
                             }`}
                           >
-                            {console.log(notif)}
                             <div className="flex justify-between items-center">
                               <div className="font-semibold text-black">
                                 {notif.title}
@@ -430,11 +432,11 @@ function AdminDashboard() {
                     <div className="text-lg font-bold border-b pb-2 mb-2">
                       Patient&apos;s List
                     </div>
-                    {patients.map(user => (
+                    {patients.map((user) => (
                       <div
                         key={user.id}
                         className={`p-2 cursor-pointer hover:bg-gray-100 flex items-center justify-start ${
-                          selectedUser?.id === user.id ? 'bg-gray-200' : ''
+                          selectedUser?.id === user.id ? "bg-gray-200" : ""
                         }`}
                         onClick={() => handleUserSelect(user)}
                       >
@@ -460,48 +462,48 @@ function AdminDashboard() {
                     {selectedUser ? (
                       <>
                         <div className="text-lg font-bold border-b pb-2 mb-2">
-                          Chat with {selectedUser.first_name}{' '}
+                          Chat with {selectedUser.first_name}{" "}
                           {selectedUser.last_name}
                         </div>
                         <div
                           className="flex-1 overflow-y-auto p-2"
                           ref={messageContainerRef}
                         >
-                          {complaints?.map(message => (
+                          {complaints?.map((message) => (
                             <div
                               key={message.id}
                               className={`mb-4 ${
-                                message.role === 'doctor'
-                                  ? 'text-right'
-                                  : 'text-left'
+                                message.role === "doctor"
+                                  ? "text-right"
+                                  : "text-left"
                               }`}
                             >
                               <div
                                 className={`text-xs font-semibold text-gray-700 mb-1 ${
-                                  message.role === 'doctor'
-                                    ? 'text-right'
-                                    : 'text-left'
+                                  message.role === "doctor"
+                                    ? "text-right"
+                                    : "text-left"
                                 }`}
                               >
-                                {message.role === 'doctor'
-                                  ? 'You'
+                                {message.role === "doctor"
+                                  ? "You"
                                   : `${selectedUser?.first_name} ${selectedUser?.last_name}`}
                               </div>
                               <div
                                 className={`inline-block p-3 rounded-lg relative max-w-[75%] ${
-                                  message.role === 'doctor'
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-200 text-black'
+                                  message.role === "doctor"
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-gray-200 text-black"
                                 }`}
-                                style={{ textAlign: 'left' }}
+                                style={{ textAlign: "left" }}
                               >
                                 <div>{message.body}</div>
                               </div>
                               <div
                                 className={`text-xs text-gray-700 mt-1 ${
-                                  message.role === 'doctor'
-                                    ? 'text-right'
-                                    : 'text-left'
+                                  message.role === "doctor"
+                                    ? "text-right"
+                                    : "text-left"
                                 }`}
                               >
                                 {formatTime(message.created_at)}

@@ -216,7 +216,7 @@ function ChatComponent() {
 
               {isReadyToSubmit && (
                 <div className="p-3 rounded-lg shadow-md max-w-xs w-fit bg-gray-200 text-black">
-                  <div>Are you sure you want to submit your information?</div>
+                  <div>Are you sure you want to submit your information? click here</div>
                   <button onClick={confirmSubmit} className="text-blue-500 mr-3">
                     Yes
                   </button>
