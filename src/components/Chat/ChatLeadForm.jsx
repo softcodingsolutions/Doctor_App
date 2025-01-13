@@ -1,45 +1,47 @@
-import { useEffect, useState, useRef } from 'react';
-import { TiMessages } from 'react-icons/ti';
-import { IoMdCloseCircleOutline, IoMdSend } from 'react-icons/io';
-import './Chat.css'; // Ensure you have your styles defined
-import axios from 'axios';
+import { useEffect, useState, useRef } from "react";
+import { TiMessages } from "react-icons/ti";
+import { IoMdCloseCircleOutline, IoMdSend } from "react-icons/io";
+import "../Chat/chat.css";
+import axios from "axios";
 
 function ChatComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [step, setStep] = useState(0);
   const messageContainerRef = useRef(null);
   const [doctors, setDoctors] = useState([]);
   const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    phone: '',
-    health_issue: '',
-    doctor_id: '',
+    name: "",
+    age: "",
+    phone: "",
+    health_issue: "",
+    doctor_id: "",
   });
   const [shouldAskQuestions, setShouldAskQuestions] = useState(true);
   const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
 
   const questions = [
     {
-      text: '👋 Hi! Which doctor would you like to contact?',
-      type: 'select',
+      text: "👋 Hi! Which doctor would you like to contact?",
+      type: "select",
     },
-    { text: 'What’s your name?', field: 'name' },
-    { text: 'How old are you?', field: 'age' },
-    { text: 'What’s your phone number?', field: 'phone' },
-    { text: 'What health issue are you facing?', field: 'health_issue' },
+    { text: "What’s your name?", field: "name" },
+    { text: "How old are you?", field: "age" },
+    { text: "What’s your phone number?", field: "phone" },
+    { text: "What health issue are you facing?", field: "health_issue" },
   ];
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('/api/v1/users');
-        const doctorList = response.data.users.filter(user => user.role === 'doctor');
+        const response = await axios.get("/api/v1/users");
+        const doctorList = response.data.users.filter(
+          (user) => user.role === "doctor"
+        );
         setDoctors(doctorList);
       } catch (error) {
-        console.error('Error fetching doctors:', error);
+        console.error("Error fetching doctors:", error);
       }
     };
 
@@ -53,7 +55,8 @@ function ChatComponent() {
 
   const scrollToBottom = () => {
     if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
     }
   };
 
@@ -75,20 +78,22 @@ function ChatComponent() {
       setFormData((prevData) => ({ ...prevData, [currentField]: input }));
     }
 
-    addMessage({ sender: 'user', text: input });
+    addMessage({ sender: "user", text: input });
 
     handleNextStep();
 
-    setInput('');
+    setInput("");
   };
 
   const handleDoctorSelect = (e) => {
     const selectedDoctorId = e.target.value;
     setFormData((prevData) => ({ ...prevData, doctor_id: selectedDoctorId }));
 
-    const selectedDoctor = doctors.find((doc) => doc.id === parseInt(selectedDoctorId));
+    const selectedDoctor = doctors.find(
+      (doc) => doc.id === parseInt(selectedDoctorId)
+    );
     addMessage({
-      sender: 'system',
+      sender: "system",
       text: `You selected Dr.${selectedDoctor.first_name} ${selectedDoctor.last_name}.`,
     });
 
@@ -97,30 +102,30 @@ function ChatComponent() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('/api/v1/leads', formData);
-      addMessage({ sender: 'system', text: response.data.message });
+      const response = await axios.post("/api/v1/leads", formData);
+      addMessage({ sender: "system", text: response.data.message });
 
       setFormData((prevData) => ({
         ...prevData,
-        name: '',
-        age: '',
-        phone: '',
-        doctor_id: '',
+        name: "",
+        age: "",
+        phone: "",
+        doctor_id: "",
       }));
       setStep(0);
       setShouldAskQuestions(false);
     } catch (error) {
-      console.error('Error submitting lead:', error);
+      console.error("Error submitting lead:", error);
       addMessage({
-        sender: 'system',
-        text: 'Something went wrong. Please try again.',
+        sender: "system",
+        text: "Something went wrong. Please try again.",
       });
     }
   };
 
   const confirmSubmit = () => {
-    setIsReadyToSubmit(false); 
-    handleSubmit(); 
+    setIsReadyToSubmit(false);
+    handleSubmit();
   };
 
   const closeModal = () => {
@@ -128,26 +133,24 @@ function ChatComponent() {
     setStep(0);
     setMessages([]);
     setFormData({
-      name: '',
-      age: '',
-      phone: '',
-      health_issue: '',
-      doctor_id: '',
+      name: "",
+      age: "",
+      phone: "",
+      health_issue: "",
+      doctor_id: "",
     });
     setShouldAskQuestions(true);
   };
 
-  const handleDoctor = (first_name , last_name) =>{
-    if(first_name === "Bhavesh" || last_name === "Thakker"){
-      return <div>Dr. Bhavesh Thakker(Weight Loss)</div>
+  const handleDoctor = (first_name, last_name) => {
+    if (first_name === "Bhavesh" || last_name === "Thakker") {
+      return <div>Dr. Bhavesh Thakker(Weight Loss)</div>;
+    } else if (first_name === "Nidhi" || last_name === "Shah") {
+      return <div>Dr. Nidhi Shah (Beauty Care)</div>;
+    } else if (first_name === "Rupali" || last_name === "Pathak") {
+      return <div>Dr. Dipali Pathak (Skin Specialist)</div>;
     }
-    else if(first_name === "Nidhi" || last_name === "Shah"){
-      return <div>Dr. Nidhi Shah (Beauty Care)</div>
-    }
-    else if(first_name === "Rupali" || last_name === "Pathak"){
-      return <div>Dr. Dipali Pathak (Skin Specialist)</div>
-    }
-  }
+  };
 
   return (
     <div id="chat-app">
@@ -182,11 +185,15 @@ function ChatComponent() {
               {messages.map((msg, index) => (
                 <div
                   key={index}
-                  className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
+                  className={`flex flex-col ${
+                    msg.sender === "user" ? "items-end" : "items-start"
+                  }`}
                 >
                   <div
                     className={`p-3 rounded-lg shadow-md max-w-xs w-fit ${
-                      msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'
+                      msg.sender === "user"
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-black"
                     }`}
                   >
                     {msg.text}
@@ -194,53 +201,77 @@ function ChatComponent() {
                 </div>
               ))}
 
-              {shouldAskQuestions && step < questions.length && questions[step].type === 'select' && (
-                <div className="p-4 rounded-lg shadow-md max-w-xs w-fit  text-black">
-                  {questions[step].text}
-                  <select onChange={handleDoctorSelect} className="doctor-select border rounded p-2">
-                    <option value="">Select a doctor</option>
-                    {doctors.map((doctor) => (
-                      <option key={doctor.id} value={doctor.id}>
-                        {handleDoctor(doctor.first_name,doctor.last_name)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+              {shouldAskQuestions &&
+                step < questions.length &&
+                questions[step].type === "select" && (
+                  <div className="p-4 rounded-lg shadow-md max-w-xs w-fit  text-black">
+                    {questions[step].text}
+                    <select
+                      onChange={handleDoctorSelect}
+                      className="doctor-select border rounded p-2"
+                    >
+                      <option value="">Select a doctor</option>
+                      {doctors.map((doctor) => (
+                        <option key={doctor.id} value={doctor.id}>
+                          {handleDoctor(doctor.first_name, doctor.last_name)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
 
-              {shouldAskQuestions && step < questions.length && questions[step].type !== 'select' && !isReadyToSubmit && (
-                <div className="p-3 rounded-lg shadow-md max-w-xs w-fit bg-gray-200 text-black">
-                  {questions[step].text}
-                </div>
-              )}
+              {shouldAskQuestions &&
+                step < questions.length &&
+                questions[step].type !== "select" &&
+                !isReadyToSubmit && (
+                  <div className="p-3 rounded-lg shadow-md max-w-xs w-fit bg-gray-200 text-black">
+                    {questions[step].text}
+                  </div>
+                )}
 
               {isReadyToSubmit && (
                 <div className="p-3 rounded-lg shadow-md max-w-xs w-fit bg-gray-200 text-black">
-                  <div>Are you sure you want to submit your information? click here</div>
-                  <button onClick={confirmSubmit} className="text-blue-500 mr-3">
+                  <div>
+                    Are you sure you want to submit your information? click here
+                  </div>
+                  <button
+                    onClick={confirmSubmit}
+                    className="text-blue-500 mr-3"
+                  >
                     Yes
                   </button>
-                  <button onClick={() => setIsReadyToSubmit(false)} className="text-red-500">
+                  <button
+                    onClick={() => setIsReadyToSubmit(false)}
+                    className="text-red-500"
+                  >
                     No
                   </button>
                 </div>
               )}
             </div>
 
-            {shouldAskQuestions && step < questions.length && questions[step].type !== 'select' && (
-              <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex items-center border-t pt-2 space-x-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={handleInputChange}
-                  placeholder="Type your response..."
-                  className="flex-grow p-2 border rounded-md focus:outline-none"
-                />
-                <button type="submit" className="text-blue-500">
-                  <IoMdSend size={25} />
-                </button>
-              </form>
-            )}
+            {shouldAskQuestions &&
+              step < questions.length &&
+              questions[step].type !== "select" && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSend();
+                  }}
+                  className="flex items-center border-t pt-2 space-x-2"
+                >
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={handleInputChange}
+                    placeholder="Type your response..."
+                    className="flex-grow p-2 border rounded-md focus:outline-none"
+                  />
+                  <button type="submit" className="text-blue-500">
+                    <IoMdSend size={25} />
+                  </button>
+                </form>
+              )}
           </div>
         </div>
       )}
