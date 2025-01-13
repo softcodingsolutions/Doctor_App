@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter, Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AdminMain from "./pages/Admin/AdminMain";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -120,7 +120,7 @@ function App() {
   const access_token = localStorage.getItem("access_token");
   const role = localStorage.getItem("role");
   return (
-    <>
+    <HashRouter>
       {/* {role === "patient"  ? <ChatComponent /> : ""} */}
       <Router>
         <Routes>
@@ -443,7 +443,7 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>
-    </>
+    </HashRouter>
   );
 }
 
