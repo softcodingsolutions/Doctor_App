@@ -122,7 +122,6 @@ function App() {
   return (
     <HashRouter>
       {/* {role === "patient"  ? <ChatComponent /> : ""} */}
-      <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="about-us" element={<AboutUs />} />
@@ -442,7 +441,6 @@ function App() {
           {/* Error */}
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-      </Router>
     </HashRouter>
   );
 }
