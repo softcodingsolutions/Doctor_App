@@ -4,7 +4,7 @@ import { IoMdCloseCircleOutline, IoMdSend } from "react-icons/io";
 import Avatar from "./Avatar";
 import axios from "axios";
 import useWebSocket from "react-use-websocket";
-import "./chat.css";
+// import "./chat.css";
 
 function ChatComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,10 +24,9 @@ function ChatComponent() {
   };
 
   useEffect(() => {
-    notificationSound.current = new Audio('/Audio/notification.mp3');
+    notificationSound.current = new Audio("/Audio/notification.mp3");
     notificationSound.current.load();
   }, [doctorDetails.patientId]);
-
 
   const subscribeToChannel = () => {
     sendMessage(
@@ -45,16 +44,19 @@ function ChatComponent() {
   const handleWebSocketMessage = useCallback(
     (event) => {
       const data = JSON.parse(event.data);
-      if (["ping", "welcome", "confirm_subscription"].includes(data.type)) return;
+      if (["ping", "welcome", "confirm_subscription"].includes(data.type))
+        return;
 
       const { type, message } = data.message || {};
       if (type === "message_created") {
         setMessages((prevMessages) => [...prevMessages, message]);
 
         if (message.role === "doctor" && !isModalOpen) {
-          notificationSound.current.play().catch((error) =>
-            console.warn("Failed to play notification sound:", error)
-          );
+          notificationSound.current
+            .play()
+            .catch((error) =>
+              console.warn("Failed to play notification sound:", error)
+            );
           updateUnreadStatus(true);
         }
       }
@@ -74,7 +76,7 @@ function ChatComponent() {
     updateUnreadStatus(false);
   };
 
-  const { sendMessage } = useWebSocket("wss://7ba8-2401-4900-1f3f-4f0b-9413-9596-8f61-c0c4.ngrok-free.app/cable", {
+  const { sendMessage } = useWebSocket("wss://localhost:3000/cable", {
     onOpen: subscribeToChannel,
     onMessage: handleWebSocketMessage,
   });
@@ -184,7 +186,7 @@ function ChatComponent() {
               id="messages"
               className="flex-grow overflow-y-auto p-2 space-y-4"
             >
-              {loading && <div>Loading messages...</div>} 
+              {loading && <div>Loading messages...</div>}
               {messages.length === 0 && !loading && (
                 <div className="text-center text-gray-500">No messages yet</div>
               )}
@@ -230,7 +232,7 @@ function ChatComponent() {
                 className="flex-grow p-2 border rounded-md focus:outline-none"
               />
               <button type="submit" className="text-blue-500">
-              <IoMdSend size={25} />
+                <IoMdSend size={25} />
               </button>
             </form>
           </div>

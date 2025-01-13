@@ -51,15 +51,12 @@ function AdminDashboard() {
     scrollToBottom();
   }, [complaints]);
 
-  const { sendJsonMessage } = useWebSocket(
-    "wss://7ba8-2401-4900-1f3f-4f0b-9413-9596-8f61-c0c4.ngrok-free.app/cable",
-    {
-      protocol: "actioncable-v1-json",
-      onOpen: () => console.log("WebSocket connection established."),
-      onMessage: (event) => handleWebSocketMessage(event),
-      share: true,
-    }
-  );
+  const { sendJsonMessage } = useWebSocket("wss://localhost:3000/cable", {
+    protocol: "actioncable-v1-json",
+    onOpen: () => console.log("WebSocket connection established."),
+    onMessage: (event) => handleWebSocketMessage(event),
+    share: true,
+  });
 
   const subscribeToChannel = (doctorId, patientId) => {
     const channelKey = `${doctorId}-${patientId}`;
