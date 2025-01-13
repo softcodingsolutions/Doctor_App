@@ -4,7 +4,7 @@ import { IoMdCloseCircleOutline, IoMdSend } from "react-icons/io";
 import Avatar from "./Avatar";
 import axios from "axios";
 import useWebSocket from "react-use-websocket";
-// import "./chat.css";
+import "../Chat/chat.css";
 
 function ChatComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
