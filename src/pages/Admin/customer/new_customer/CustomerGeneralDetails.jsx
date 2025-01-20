@@ -195,7 +195,7 @@ function CustomerGeneralDetails({
                         defaultValue="select"
                         placeholder="Select any language"
                         {...register("language")}
-                        className="py-1 px-2 rounded-md border border-black text-sm"
+                        className="py-1 px-2 w-[50wh] rounded-md border border-black text-sm"
                       >
                         <option value="select" disabled>
                           Select Any Language
@@ -292,7 +292,7 @@ function CustomerGeneralDetails({
                         defaultValue="select"
                         placeholder="Select one"
                         {...register("overweight")}
-                        className="py-1 px-2 rounded-md border border-black text-sm"
+                        className="rounded-md border border-black text-sm"
                       >
                         <option value="select" disabled>
                           Select One

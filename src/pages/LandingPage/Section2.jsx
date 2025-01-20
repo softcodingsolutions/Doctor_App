@@ -18,9 +18,9 @@ function Section2() {
         patients, which speaks volumes about our success in weight loss
         treatments.
       </div>
-      <button className="border border-gray-300 p-2 sm:p-3 lg:p-4 tracking-wide rounded-full text-base sm:text-lg lg:text-xl font-sans font-semibold bg-green-400 text-white hover:bg-white hover:text-green-500 transition-colors sm:mt-8 lg:mt-8 mb-4 sm:mb-6 lg:mb-8">
+      {/* <button className="border border-gray-300 p-2 sm:p-3 lg:p-4 tracking-wide rounded-full text-base sm:text-lg lg:text-xl font-sans font-semibold bg-green-400 text-white hover:bg-white hover:text-green-500 transition-colors sm:mt-8 lg:mt-8 mb-4 sm:mb-6 lg:mb-8">
         Book an Appointment Now
-      </button>
+      </button> */}
     </div>
   );
 }

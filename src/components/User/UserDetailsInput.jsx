@@ -28,7 +28,7 @@ function UserDetailsInput({
           placeholder={placeholder}
           autoComplete="off"
           id={name}
-          className="py-1 px-2 rounded-md border border-black lg:w-[40vh] w-[20vh] text-sm"
+          className="py-1 px-2 rounded-md border border-black lg:w-[40vh] w-[40vh] text-sm"
         />
         {errors && (
           <span className=" text-red-500 text-sm">{errors.message}</span>

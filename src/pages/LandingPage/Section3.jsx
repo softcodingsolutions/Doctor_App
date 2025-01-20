@@ -64,9 +64,9 @@ function Section3() {
         <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />
       </div>
 
-      <div className="flex flex-col lg:flex-row items-start justify-between w-full gap-5">
+      <div className="grid  lg:grid-cols-2 grid-cols-1 justify-center w-full">
         {/* Button Section */}
-        <div className="flex flex-col w-[40%] gap-4 p-2">
+        <div className="flex flex-col gap-4 p-2">
           {cardContents.map((card) => (
             <button
               key={card.id}

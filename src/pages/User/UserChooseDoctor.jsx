@@ -89,7 +89,7 @@ function UserChooseDoctor() {
   return (
     <>
       <button
-        className="absolute top-8 left-10"
+        className="absolute top-4 lg:left-10 md:left-2 sm:left-2"
         onClick={() => {
           navigate("/login");
         }}

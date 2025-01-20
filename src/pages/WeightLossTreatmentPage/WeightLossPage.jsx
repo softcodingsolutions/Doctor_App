@@ -36,7 +36,7 @@ function WeightLossPage() {
       <header>
         <StickyNavbar />
       </header>
-      <main ref={container} className="relative  bg-white font-sans">
+      <main ref={container} className="relative max-h-[500vh] overflow-x-clip bg-white font-sans">
         <WeightLoss1  />
         <WeightLoss2 />
         <WeightLoss3  />
