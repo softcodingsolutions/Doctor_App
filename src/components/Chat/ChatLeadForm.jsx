@@ -145,10 +145,10 @@ function ChatComponent() {
   const handleDoctor = (first_name, last_name) => {
     if (first_name === "Bhavesh" || last_name === "Thakker") {
       return <div>Dr. Bhavesh Thakker(Weight Loss)</div>;
-    } else if (first_name === "Nidhi" || last_name === "Shah") {
-      return <div>Dr. Nidhi Shah (Beauty Care)</div>;
-    } else if (first_name === "Rupali" || last_name === "Pathak") {
-      return <div>Dr. Dipali Pathak (Skin Specialist)</div>;
+    } else if (first_name === "Nidhi" || last_name === "Akhani") {
+      return <div>Dr. Nidhi Akhani (Beauty Care)</div>;
+    } else if (first_name === "Dipalee" || last_name === "Maliviya") {
+      return <div>Dr. Dipali Maliviya (Skin Specialist)</div>;
     }
   };
 
@@ -167,7 +167,7 @@ function ChatComponent() {
           id="chat-modal"
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10"
         >
-          <div className="bg-white w-2/5 h-3/4 p-4 rounded-md shadow-lg flex flex-col">
+          <div className="bg-white w-full max-w-2xl h-full sm:h-3/4 sm:w-2/5 p-4 rounded-md shadow-lg flex flex-col">
             <div className="flex items-center justify-between border-b pb-2 mb-2">
               <h2 className="font-bold text-lg">Chat with Doctor</h2>
               <IoMdCloseCircleOutline
@@ -204,11 +204,11 @@ function ChatComponent() {
               {shouldAskQuestions &&
                 step < questions.length &&
                 questions[step].type === "select" && (
-                  <div className="p-4 rounded-lg shadow-md max-w-xs w-fit  text-black">
+                  <div className="p-4 rounded-lg shadow-md max-w-xs w-fit text-black">
                     {questions[step].text}
                     <select
                       onChange={handleDoctorSelect}
-                      className="doctor-select border rounded p-2"
+                      className="doctor-select border rounded p-2 mt-2 w-full"
                     >
                       <option value="">Select a doctor</option>
                       {doctors.map((doctor) => (
@@ -232,7 +232,7 @@ function ChatComponent() {
               {isReadyToSubmit && (
                 <div className="p-3 rounded-lg shadow-md max-w-xs w-fit bg-gray-200 text-black">
                   <div>
-                    Are you sure you want to submit your information? click here
+                    Are you sure you want to submit your information? Click here
                   </div>
                   <button
                     onClick={confirmSubmit}

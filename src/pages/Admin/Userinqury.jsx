@@ -55,7 +55,7 @@ const UserInquiry = () => {
               />
             </button>
           </div>
-          <div className="animate-fade-left animate-delay-75 rounded-md animate-once animate-ease-out overflow-auto">
+          <div className="animate-fade-left animate-delay-75 rounded-md animate-once animate-ease-out overflow-auto mt-10">
             <div className="flex justify-between items-center">
               <div className="flex justify-start text-2xl font-bold tracking-wide">
                 <AiOutlineFileSearch size={30} /> Inquiry
