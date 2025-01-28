@@ -53,12 +53,25 @@ function Section1() {
   const contentData = [
     {
       image: isMobile ? mobileview : Banner1,
+      // text1: "Personalized",
+      // text2: "Diet",
+      // text3: "Just For You",
+      // text4: "Make your own password to lose weight because you are different!",
+      // key: "content1",
     },
-   
   ];
   return (
     <div className="">
-      {contentData.map((data) => renderContent(data.image))}
+      {contentData.map((data) =>
+        renderContent(
+          data.image,
+          // data.text1,
+          // data.text2,
+          // data.text3,
+          // data.text4,
+          // data.key
+        )
+      )}
       {/* {renderContent(
         image2,
         "Personalized ",

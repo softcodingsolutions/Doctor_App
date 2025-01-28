@@ -47,15 +47,16 @@ function Section5() {
   return (
     <div className="bg-gray-50 flex flex-col items-center py-7">
       <div className="flex flex-col items-center">
-        <div className="lg:text-4xl text-xl font-sans font-medium">
-          Special Treatments for Obesity
+        <div className="flex flex-col items-center text-center font-sans gap-2">
+          <div className="lg:text-4xl text-xl  font-medium">What our patients says</div>
+          <div>More then 10,000 happy patients</div>
         </div>
-        <div className="border-[2.5px] rounded-md border-teal-200 w-20 mt-3" />
+        <div className="border-[2.5px] rounded-md border-green-200 w-20 mt-3" />
       </div>
 
       <div className="flex items-center justify-center">
         <Carousel
-          className="flex w-4/5 mt-14" 
+          className="flex w-4/5 mt-14"
           loop={true}
           prevArrow={({ handlePrev }) => (
             <IconButton

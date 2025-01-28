@@ -45,7 +45,7 @@ export function StickyNavbar() {
             className={`flex font-sans font-medium p-1 items-center text-base ${
               location.pathname === path
                 ? "border-b-2 border-gray-900"
-                : "hover:border-b-2 border-transparent"
+                : "hover:border-b-2 border-transparent hover:text-green-500 hover:border-gray-700"
             }`}
           >
             {label}
@@ -58,7 +58,7 @@ export function StickyNavbar() {
   return (
     <nav className="fixed top-0 z-10 h-max w-full rounded-none px-4 py-2 lg:px-8 lg:py-3 bg-white shadow-md">
       <div className="flex items-center justify-between w-full">
-        <img src={icons_slime} alt="Logo" className="h-10" />
+        <img src={icons_slime} alt="Logo" className="h-[60px]" />
         <div className="flex items-center gap-4">
           <div className="hidden lg:block">{navList}</div>
           <Button
@@ -73,7 +73,7 @@ export function StickyNavbar() {
           </Button>
           <IconButton
             variant="text"
-            className="ml-auto h-6 w-6 lg:hidden"
+            className="ml-auto h-10 w-10 lg:hidden"
             ripple={false}
             onClick={() => setOpenNav(!openNav)}
           >
@@ -112,16 +112,28 @@ export function StickyNavbar() {
       </div>
       <Collapse open={openNav}>
         {navList}
+        {openNav && (
+          <div className="flex flex-col mt-2">
+            <div className=" text-gray-600">
+              <Typography variant="body2" color="blue-gray" className="mb-2">
+                📞 Phone: +919925490091
+              </Typography>
+              <Typography variant="body2" color="blue-gray" className="mb-2">
+                ✉️ Email: inquiry@slimandsmile.com
+              </Typography>
+            </div>
+          </div>
+        )}
         <div className="flex items-center gap-x-1">
           <Button
             fullWidth
             variant="gradient"
-            size="sm"
+            size="md"
             onClick={() => {
               navigate("/login");
             }}
           >
-            <span className="text-sm">Sign in</span>
+            <span className="text-md">Sign in</span>
           </Button>
         </div>
       </Collapse>

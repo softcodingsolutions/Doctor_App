@@ -8,10 +8,10 @@ function PatientRegistration() {
   return (
     <div className=" bg-gray-900 flex flex-col w-full items-center justify-evenly ">
       <div className="grid grid-col-2  justify-center ">
-        <h2 className="text-green-300 text-4xl font-poppins font-semibold pb-12 ">
+        <h2 className="text-green-300 text-2xl font-poppins font-semibold  ">
           Patient Registration
         </h2>
-        <p className="text-md  text-gray-400 w-[150%] text-xl font-medium pb-2">
+        <p className="text-sm  text-gray-400 w-[150%]  font-medium pb-2">
           Take benefit of our online consultation program across the world, 100%
           dedicated consulting and guidance provided by expert doctors
         </p>

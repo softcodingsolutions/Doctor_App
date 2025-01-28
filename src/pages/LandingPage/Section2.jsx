@@ -1,15 +1,15 @@
 function Section2() {
   return (
-    <div className=" bg-gray-200 flex flex-col items-center py-7">
+    <div className=" bg-white flex flex-col items-center py-7">
       <div className="flex flex-col items-center">
         <div className="text-2xl sm:text-3xl lg:text-4xl font-sans font-medium mt-4 sm:mt-8 text-center px-4">
           Weight Loss Treatments at{" "}
           <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
           Care
         </div>
-        <div className="border-[2.5px] rounded-md border-gray-500 w-12 sm:w-16 lg:w-20 mt-3" />
+        <div className="border-[2.5px] rounded-md border-green-500 w-12 sm:w-16 lg:w-20 mt-3" />
       </div>
-      <div className="font-sans text-base sm:text-lg lg:text-xl tracking-wider text-center mt-10 sm:mt-16 lg:mt-20 text-gray-700 w-11/12 sm:w-3/4 lg:w-2/3 px-4">
+      <div className="font-sans text-base sm:text-lg lg:text-xl tracking-wider  sm:mt-5 lg:mt-8 text-gray-700 w-11/12 sm:w-3/4 lg:w-2/3 px-4 text-justify">
         <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
         care is an Ayurvedic Weight Loss clinic located in 6 various cities of
         Gujarat providing natural, side effect-free medicines and Ayurvedic

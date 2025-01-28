@@ -12,7 +12,7 @@ function AboutUs() {
       <header>
         <StickyNavbar />
       </header>
-      <main className="bg-white font-sans">
+      <main className="relative max-h-[575vh] overflow-x-clip bg-white font-sans">
         <AboutSection1 />
         <AboutSection2 />
         <AboutSection3 />
