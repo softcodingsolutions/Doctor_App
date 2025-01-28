@@ -13,8 +13,9 @@ RUN npm ci --legacy-peer-deps
 # Copy the rest of the application source code
 COPY . .
 
-# Build the React app for production
-RUN NODE_OPTIONS="--max_old_space_size=4096" npm run build
+RUN --memory=4g node -v 
+
+RUN npm run build
 
 # Step 2: Use a lightweight Nginx image to serve the app
 FROM nginx:1.23-alpine
