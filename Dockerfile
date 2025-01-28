@@ -11,9 +11,7 @@ COPY package*.json ./
 RUN npm ci --legacy-peer-deps
 
 # Copy the rest of the application source code
-COPY . .
-
-RUN --memory=4g node -v 
+COPY . . 
 
 RUN npm run build
 
