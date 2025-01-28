@@ -20,7 +20,7 @@ RUN npm run build || { echo "Build failed"; cat npm-debug.log; exit 1; }
 FROM nginx:1.23-alpine
 
 # Copy the build output from the previous step to Nginx's HTML directory
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
