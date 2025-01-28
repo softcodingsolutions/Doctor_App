@@ -64,7 +64,7 @@ function Section1() {
     <div className="">
       {contentData.map((data) =>
         renderContent(
-          data.image,
+          data.image
           // data.text1,
           // data.text2,
           // data.text3,

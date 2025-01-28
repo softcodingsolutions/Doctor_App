@@ -2,20 +2,22 @@ import image22 from "./../../assets/images/image22.jpeg";
 function WeightLoss1() {
   return (
     <div className="flex flex-col  items-center ">
-      <div className="h-[60vh] flex justify-center items-center w-full  bg-cover bg-center opacity-90"
-         style={{
+      <div
+        className="h-[60vh] flex justify-center items-center w-full  bg-cover bg-center "
+        style={{
           backgroundImage: `url(${image22})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-        }}>
+        }}
+      >
         {/* Breadcrumb Navigation */}
         <div className="w-fit px-4 md:px-0 ml-28">
-          <div className="text-3xl flex items-center gap-1.5 font-sans font-semibold text-black">
+          <div className="text-3xl flex items-center mt-20 gap-1.5 font-sans font-semibold text-black">
             {/* <a href="/" className="hover:underline">
               Home
             </a>{" "}
             &gt;{" "} */}
-            <span className="text-[#1e3854] text-2xl md:text-4xl font-architects">
+            <span className="text-black text-2xl md:text-4xl font-architects">
               Weight Loss Treatment
             </span>
           </div>
@@ -23,7 +25,7 @@ function WeightLoss1() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 bg-gray-50 py-8 md:py-12 flex flex-col items-center text-center">
+      <div className="relative z-0 bg-gray-50 py-8 md:py-12 flex flex-col items-center text-center">
         <div className="px-6 md:px-12">
           <div className="text-lg md:text-xl font-semibold tracking-wide mb-4">
             Ayurvedic principles remain at the core of all fat loss treatments

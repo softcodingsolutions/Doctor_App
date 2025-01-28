@@ -64,9 +64,9 @@ function Section6() {
           text: "634/ Solaris Business Hub, Opp Parshwnath Jain Temple, Bhuyangdev Cross Road, Bhuyangdev, Ahmedabad-380052",
           link: "https://www.google.com/maps/place/Solaris+Business+Hub",
         },
-        { text: "+91 9925490091", link: "tel:+919925490091" },
+        { text: "📞 +91 9925490091", link: "tel:+919925490091" },
         {
-          text: "inquiry@slimandsmile.com",
+          text: "✉️ inquiry@slimandsmile.com",
           link: "mailto:inquiry@slimandsmile.com",
         },
       ],
@@ -86,7 +86,7 @@ function Section6() {
                 <PatientRegistration />
               </div>
               <div
-                className={`mt-5 flex ${
+                className={`mt-8 flex ${
                   isMobile ? "flex-col" : "flex-row"
                 } gap-5`}
               >
@@ -109,7 +109,7 @@ function Section6() {
               </div>
             </div>
           </Typography>
-          <div className="flex flex-col sm:flex-row justify-evenly gap-10 w-full lg:mt-6 mt-2 text-white">
+          <div className="flex flex-col sm:flex-row justify-evenly gap-10 w-full lg:mt-10 mt-10 text-white">
             {LINKS.map(({ title, items }) => (
               <ul key={title} className="flex-1">
                 <Typography

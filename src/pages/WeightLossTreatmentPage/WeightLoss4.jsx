@@ -1,3 +1,5 @@
+import weightlossbgimage from "./../../assets/images/weightlossbgimage.jpg";
+
 function WeightLoss4() {
   return (
     <div className=" w-full bg-gray-200 flex flex-col items-center text-pretty">

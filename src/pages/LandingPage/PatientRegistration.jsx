@@ -16,7 +16,7 @@ function PatientRegistration() {
           dedicated consulting and guidance provided by expert doctors
         </p>
         <button
-          className="bg-green-500 w-52 mt-5 rounded-xl text-white font-semibold font-teachers p-2 text-xl hover:bg-white hover:text-green-500"
+          className="bg-green-500 w-52 mt-2 rounded-xl text-white font-semibold font-teachers p-2 text-xl hover:bg-white hover:text-green-500"
           onClick={handleRedirect}
         >
           Register Now

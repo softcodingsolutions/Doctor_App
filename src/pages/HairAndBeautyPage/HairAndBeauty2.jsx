@@ -1,6 +1,19 @@
-import haircare from "../../assets/images/haircare.jpg";
-
+import haircare from "../../assets/images/hair-care.jpg";
+import mobilehaircare from "../../assets/images/mobilehaircare.jpg";
+import { useState, useEffect } from "react";
 function HairAndBeauty2() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div className=" w-full bg-white flex items-center ">
       <div className="w-full flex flex-col md:flex-row px-5">
@@ -42,8 +55,20 @@ function HairAndBeauty2() {
             caused by the factors listed above.
           </div>
         </div>
-        <div className="flex justify-center w-full md:w-2/3 lg:p-5 pt-0 md:pt-0">
-          <img src={haircare} alt="image" className="w-[100vh] h-[60vh]" />
+        <div className="flex justify-end w-full md:w-2/3 lg:p-5 pt-0 md:pt-0">
+          {isMobile ? (
+            <img
+              src={mobilehaircare}
+              alt="image"
+              className="w-[40vh] h-[30vh] rounded-lg"
+            />
+          ) : (
+            <img
+              src={haircare}
+              alt="image"
+              className="w-[100vh] h-[60vh] rounded-lg"
+            />
+          )}
         </div>
       </div>
     </div>

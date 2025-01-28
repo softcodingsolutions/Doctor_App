@@ -1,5 +1,18 @@
 import hairandbeauty from "./../../assets/images/hairandbeauty.jpg";
+import React, { useState, useEffect } from "react";
 function HairAndBeauty1() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div className=" flex flex-col items-center ">
       <div
@@ -11,13 +24,15 @@ function HairAndBeauty1() {
         }}
       >
         {/* Breadcrumb Navigation */}
-        <div className="w-fit ">
-          <div className="text-3xl flex items-center gap-1.5 font-sans font-semibold text-black">
+        <div className="w-full ">
+          <div
+            className={`text-3xl flex items-start ${isMobile ? 'p-3' : 'p-56'} gap-1.5 font-sans font-semibold text-black`}
+          >
             {/* <a href="/" className="hover:underline">
               Home
             </a>{" "}
             &gt;{" "} */}
-            <span className="text-teal-600  text-2xl md:text-4xl font-architects">
+            <span className="flex  text-teal-600  text-2xl md:text-4xl font-architects">
               Hair & Beauty Treatment
             </span>
           </div>
