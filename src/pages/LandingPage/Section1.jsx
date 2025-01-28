@@ -1,6 +1,20 @@
-import image14 from "./../../assets/images/image14.png";
-
+import Banner1 from "./../../assets/images/Banner1.png";
+import mobileview from "./../../assets/images/mobileview.png";
+import React, { useState, useEffect } from "react";
 function Section1() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const renderContent = (image, text1, text2, text3, text4, key) => (
     <div key={key} className="relative h-full w-full">
       <div className="relative h-full w-full aspect-w-16 aspect-h-9">
@@ -36,16 +50,15 @@ function Section1() {
       </div>
     </div>
   );
-
+  const contentData = [
+    {
+      image: isMobile ? mobileview : Banner1,
+    },
+   
+  ];
   return (
-    <div className="flex flex-col items-center justify-center  h-screen overflow-hidden">
-      {renderContent(
-        image14,
-        "Weight",
-        "Loss",
-        "Ayurvedic Treatments",
-        "We provide 100% Ayurvedic FDA Approved Medicines for Weight Loss."
-      )}
+    <div className="">
+      {contentData.map((data) => renderContent(data.image))}
       {/* {renderContent(
         image2,
         "Personalized ",
