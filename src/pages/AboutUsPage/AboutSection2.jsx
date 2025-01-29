@@ -10,21 +10,35 @@ function AboutSection2() {
     <div className="w-full bg-gray-200 flex flex-col items-center">
       <div className="flex flex-col md:flex-row w-full p-6 md:p-14 items-center gap-10 md:gap-20 justify-evenly">
         <div className="w-full md:w-1/2 tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
-          At <span className="text-green-600 font-medium">Slim and Smile</span>{" "}
-          Ayu Care, we specialize in providing 100% Ayurvedic medications that
-          are also FDA-approved, ensuring that concerns about side effects are
-          minimized. Our approach goes beyond merely addressing excess weight;
-          we focus on identifying and addressing the root causes of weight gain,
-          which is often a symptom of underlying issues rather than the problem
-          itself. By diagnosing the underlying causes, we create customized
-          plans that encompass diet, exercise, and medication tailored
-          specifically to each individual. This comprehensive approach
-          significantly reduces the likelihood of weight regain. While over 80%
-          of individuals typically experience weight regain after losing it, our
-          tailored treatments at{" "}
-          <span className="text-green-600 font-medium">Slim and Smile</span> Ayu
-          Care result in a substantially lower rate of weight recidivism among
-          our patients.
+          <h2 className="text-green-600 font-medium text-xl md:text-2xl lg:text-3xl mb-4 font-sans">
+            Key Features of Slim and Smile Ayu Care
+          </h2>
+          <ul className="list-decimal list-inside space-y-2">
+            <li>
+              <strong>Ayurvedic and FDA-Approved Medications:</strong> Offers
+              100% Ayurvedic, FDA-approved treatments with minimal side effects.
+            </li>
+            <li>
+              <strong>Root Cause Analysis:</strong> Focuses on identifying and
+              addressing the underlying causes of weight gain rather than
+              treating it as an isolated issue.
+            </li>
+            <li>
+              <strong>Customized Treatment Plans:</strong> Provides tailored
+              solutions, including diet, exercise, and medication, specific to
+              individual needs.
+            </li>
+            <li>
+              <strong>Comprehensive Approach:</strong> Aims to reduce the risk
+              of weight regain by addressing root causes and offering holistic
+              treatments.
+            </li>
+            <li>
+              <strong>Low Weight Recidivism:</strong> Achieves significantly
+              lower rates of weight regain compared to the typical 80%
+              experienced by others.
+            </li>
+          </ul>
         </div>
 
         <Carousel

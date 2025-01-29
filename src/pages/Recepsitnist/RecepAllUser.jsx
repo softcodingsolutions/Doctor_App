@@ -209,7 +209,7 @@ function RecepAllUsers() {
               onClick={handleAddUsers}
               className="border border-gray-300 w-full sm:w-[20%] text-lg p-1 rounded-md bg-green-600 text-white hover:scale-105"
             >
-              New Patient
+              New Patient 
             </button>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-2">

@@ -27,15 +27,15 @@ function ContactUs1() {
           backgroundPosition: "center",
         }}
       >
-        <div className="w-fit">
-          <div className="flex items-center gap-1.5 font-sans font-semibold text-green-500">
+        <div className="w-full">
+          <div className="flex  gap-1.5 font-sans font-semibold text-green-500">
             {/* <a href="/" className="text-xl md:text-2xl hover:underline">
               Home
             </a>{" "}
             &gt;{" "} */}
-            <span className="text-gray-900 text-4xl font-architects">
+            {/* <span className="text-gray-900 text-4xl font-architects">
               Contact Us
-            </span>
+            </span> */}
           </div>
         </div>
       </div>
