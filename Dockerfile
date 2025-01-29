@@ -14,7 +14,7 @@ RUN npm ci --legacy-peer-deps
 COPY . . 
 
 # Build the React app
-RUN npm run build || { echo "Build failed"; cat npm-debug.log; exit 1; }
+RUN NODE_OPTIONS="--max_old_space_size=4096" npm run build
 
 # Step 2: Use a lightweight Nginx image to serve the app
 FROM nginx:1.23-alpine
