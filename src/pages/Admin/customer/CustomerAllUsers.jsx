@@ -4,8 +4,7 @@ import axios from "axios";
 import InsideLoader from "../../InsideLoader";
 import { MaterialReactTable } from "material-react-table";
 import { Box, Button, IconButton, TextField } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-
+import { IoPersonSharp, IoCloseOutline } from "react-icons/io5";
 function CustomerAllUsers() {
   const navigate = useNavigate();
   const [getCustomers, setGetCustomers] = useState([]);
@@ -35,13 +34,15 @@ function CustomerAllUsers() {
   const formatType = (type) => {
     if (type === true) {
       return (
-        <div className="bg-[#f0d5bb] p-1 rounded  text-[#e78f3d]">
+        <div className=" rounded  text-[#e78f3d]">
           Follow Up
         </div>
       );
     } else if (type === false) {
       return (
-        <div className="bg-[#D6F4F8] p-1 rounded  text-[#00bad1]">New Case</div>
+        <div className=" rounded  text-[#00bad1]">
+          New Case
+        </div>
       );
     }
   };
@@ -87,7 +88,7 @@ function CustomerAllUsers() {
     { accessorKey: "first_name", header: "Patient Name" },
     { accessorKey: "personal_detail.age", header: "Age", size: 10 },
     { accessorKey: "personal_detail.weight", header: "Weight", size: 10 },
-    { accessorKey: "phone_number", header: "Mobile Number" },
+    { accessorKey: "phone_number", header: "Phone Number" },
     {
       accessorKey: "follow_up",
       header: "Type",
@@ -99,19 +100,19 @@ function CustomerAllUsers() {
     },
     {
       accessorKey: "created_at",
-      header: "Patient Created At",
+      header: " Created At",
       Cell: ({ row }) => {
         const date = row.original.created_at;
         return convertDate(date);
       },
-      size: 20,
+      size: 10,
     },
     {
       header: "Actions",
       Cell: ({ row }) => {
         const val = row.original;
         return (
-          <div className="flex gap-1">
+          <div className="flex flex-col gap-1">
             <button
               onClick={() => handleDiagnosis(val.id, val.case_number)}
               className="font-medium p-1 text-green-600 bg-white border text-sm ml-1 border-gray-300 rounded-md hover:bg-green-600 hover:text-white"
@@ -135,42 +136,46 @@ function CustomerAllUsers() {
       <Box
         display="flex"
         justifyContent="space-between"
-        mb={1}
+        mb={2}
         sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
       >
-        {/* <TextField
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearch}
-          InputProps={{
-            endAdornment: (
-              <IconButton>
-                <SearchIcon />
-              </IconButton>
-            ),
-          }}
-        /> */}
         <button
-          className="border border-gray-300 lg:w-[10%] bg-green-600 rounded-md text-lg text-white hover:scale-105"
+          className="border border-gray-300 lg:w-[15%] mt-10 bg-green-600 rounded-md text-lg text-white hover:scale-105"
           onClick={() => navigate("../../new-user/general-details")}
         >
-          New Patient
+          Create New Patient
         </button>
       </Box>
+
       <MaterialReactTable
         columns={columns}
         data={filteredData}
         initialState={{
           showColumnFilters: true,
           showGlobalFilter: true,
-          pagination: { pageSize: 100 },
           density: "compact",
+        }}
+        muiTableBodyCellProps={{
+          sx: { padding: "16px" }, 
         }}
         enablePagination={false}
         enableDensityToggle={false}
+        renderTopToolbarCustomActions={() => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "10px",
+            }}
+          >
+            <IoPersonSharp size={25} />
+            <label className="text-lg font-bold tracking-wide">
+              Patient List
+            </label>
+          </div>
+        )}
       />
-
     </Box>
   );
 }

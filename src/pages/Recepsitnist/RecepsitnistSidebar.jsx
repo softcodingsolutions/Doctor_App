@@ -136,41 +136,34 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       </div>
 
       <div className="flex-shrink-0 overflow-hidden p-2">
-        <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
-          <div
-            onClick={() =>
-              toggleLogoutMenu(setIsLogoutMenuOpen, isLogoutMenuOpen)
-            }
-            className={
-              "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
-            }
-          >
-            <div className="text-lg font-semibold">
-              {admin?.first_name?.toUpperCase()[0]}
-              {admin?.last_name?.toUpperCase()[0]}
-            </div>
-          </div>
-          <div className="block sm:hidden xl:block ml-2 font-bold ">
-            {admin?.first_name} {admin?.last_name}{" "}
-            <span className="font-normal text-[0.80rem]">(Receptionist)</span>
-          </div>
-          <div className="flex-grow block sm:hidden xl:block" />
-          <img
-            src={`https://assets.codepen.io/3685267/res-react-dash-options.svg`}
-            alt=""
-            onClick={() =>
-              toggleLogoutMenu(setIsLogoutMenuOpen, isLogoutMenuOpen)
-            }
-            className={"block sm:hidden xl:block size-3 cursor-pointer"}
-          />
-          {isLogoutMenuOpen && (
+        <div className="flex flex-col items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
+          <div className="flex flex-row">
             <div
-              onClick={() => handleLogoutClick()}
-              className="absolute rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer shadow-lg text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-gray-400 bg-white rounded-md sm:rounded-bl-none w-20 z-50 hover:bg-black hover:border-gray-900 hover:text-gray-100"
+              onClick={() =>
+                toggleLogoutMenu(setIsLogoutMenuOpen, isLogoutMenuOpen)
+              }
+              className={
+                "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
+              }
             >
-              Logout
+              <div className="text-lg font-semibold">
+                {admin?.first_name?.toUpperCase()[0]}
+                {admin?.last_name?.toUpperCase()[0]}
+              </div>
             </div>
-          )}
+            <div className="block sm:hidden xl:block ml-2 font-bold ">
+              {admin?.first_name} {admin?.last_name}{" "}
+              <span className="font-normal text-[0.80rem]">(Receptionist)</span>
+            </div>
+          </div>
+          {/* <div className="flex-grow block sm:hidden xl:block" /> */}
+
+          <div
+            onClick={() => handleLogoutClick()}
+            className="rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer shadow-lg text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-gray-400 bg-white rounded-md sm:rounded-bl-none w-full z-50 hover:bg-black hover:border-gray-900 hover:text-gray-100"
+          >
+            Logout
+          </div>
         </div>
       </div>
     </div>

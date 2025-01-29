@@ -4,39 +4,69 @@ import img2 from "../../assets/images/about-02.jpg";
 import img3 from "../../assets/images/about-03.jpg";
 import img4 from "../../assets/images/about-04.jpg";
 import img5 from "../../assets/images/about-05.jpg";
-
+import { RiMedicineBottleLine } from "react-icons/ri";
+import { GiWeightScale } from "react-icons/gi";
+import { PiChartLineUp } from "react-icons/pi";
+import { BsArrowRepeat } from "react-icons/bs";
+import { FaRegSmile } from "react-icons/fa";
 function AboutSection2() {
   return (
     <div className="w-full bg-gray-200 flex flex-col items-center">
       <div className="flex flex-col md:flex-row w-full p-6 md:p-14 items-center gap-10 md:gap-20 justify-evenly">
         <div className="w-full md:w-1/2 tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
-          <h2 className="text-green-600 font-medium text-xl md:text-2xl lg:text-3xl mb-4 font-sans">
+          {/* <h2 className="text-green-600 font-medium text-xl md:text-2xl lg:text-3xl mb-4 font-sans">
             Key Features of Slim and Smile Ayu Care
-          </h2>
-          <ul className="list-decimal list-inside space-y-2">
-            <li>
-              <strong>Ayurvedic and FDA-Approved Medications:</strong> Offers
-              100% Ayurvedic, FDA-approved treatments with minimal side effects.
+          </h2> */}
+          <ul className=" list-none space-y-4">
+            <li className="flex gap-2  ">
+              <div>
+                <RiMedicineBottleLine className="mt-1" size={25} />
+              </div>
+              <div>
+                <strong className="text-green-600">Ayurvedic and FDA-Approved Medications:</strong> Offers
+                100% Ayurvedic, FDA-approved treatments with minimal side
+                effects.
+              </div>
             </li>
-            <li>
-              <strong>Root Cause Analysis:</strong> Focuses on identifying and
-              addressing the underlying causes of weight gain rather than
-              treating it as an isolated issue.
+            <li className="flex gap-2 ">
+              <div>
+                <GiWeightScale className="mt-1" size={25} />
+              </div>
+              <div>
+                <strong className="text-green-600">Root Cause Analysis:</strong> Focuses on identifying and
+                addressing the underlying causes of weight gain rather than
+                treating it as an isolated issue.
+              </div>
             </li>
-            <li>
-              <strong>Customized Treatment Plans:</strong> Provides tailored
-              solutions, including diet, exercise, and medication, specific to
-              individual needs.
+            <li className="flex gap-2 ">
+              <div>
+                <PiChartLineUp className="mt-1" size={25} />
+              </div>
+              <div>
+                <strong className="text-green-600">Customized Treatment Plans:</strong> Provides tailored
+                solutions, including diet, exercise, and medication, specific to
+                individual needs.
+              </div>
             </li>
-            <li>
-              <strong>Comprehensive Approach:</strong> Aims to reduce the risk
-              of weight regain by addressing root causes and offering holistic
-              treatments.
+            <li className="flex gap-2 ">
+              <div>
+                <BsArrowRepeat className="mt-1" size={25} />
+              </div>
+              <div>
+                <strong className="text-green-600">Comprehensive Approach:</strong> Aims to reduce the risk
+                of weight regain by addressing root causes and offering holistic
+                treatments.
+              </div>
             </li>
-            <li>
-              <strong>Low Weight Recidivism:</strong> Achieves significantly
-              lower rates of weight regain compared to the typical 80%
-              experienced by others.
+            <li className="flex gap-2 ">
+              <div>
+                <FaRegSmile className="mt-1" size={25} />
+              </div>
+              <div>
+                <strong className="text-green-600">Low Weight Recidivism:</strong> Achieves significantly
+                lower rates of weight regain compared to the typical 80%
+                experienced by others.
+              </div>
             </li>
           </ul>
         </div>
@@ -135,7 +165,7 @@ function AboutSection2() {
         </Carousel>
       </div>
 
-      <div className="flex flex-col gap-5 p-6 md:px-14 text-pretty items-center justify-center mt-3">
+      <div className="flex flex-col gap-5 p-1 md:px-14 text-pretty items-center justify-center ">
         <div className="tracking-wide leading-relaxed text-base md:text-lg lg:text-xl">
           Our primary focus is to normalize the weight loss process as much as
           possible, ensuring that patients experience it as a natural and
