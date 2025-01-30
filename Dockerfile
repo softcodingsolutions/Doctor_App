@@ -11,7 +11,7 @@ RUN set -ex
 COPY package.json ./
 
 # Install dependencies
-RUN set -ex && npm ci --legacy-peer-deps --no-audit --no-fund
+RUN set -ex && npm i
 
 # Copy the rest of the application source code
 COPY . .
