@@ -17,7 +17,7 @@ RUN set -ex && npm ci --legacy-peer-deps --no-audit --no-fund
 COPY . .
 
 # Build the React app - Increase memory limit significantly
-RUN set -ex && npm run build
+RUN set -ex && NODE_OPTIONS="--max_old_space_size=4096" npm run build
 
 # If 8GB isn't enough, try 12GB or 16GB. But also consider optimizing your build.
 # RUN set -ex && NODE_OPTIONS="--max-old-space-size=12288" npm run build
