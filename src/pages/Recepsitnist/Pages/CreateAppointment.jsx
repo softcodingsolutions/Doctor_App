@@ -3,7 +3,7 @@ import Oldcase from "./Oldcase";
 import Newcase from "./Newcase";
 import axios from "axios";
 import InsideLoader from "../../InsideLoader";
-import { SiPowerapps } from "react-icons/si";
+// import { SiPowerapps } from "react-icons/si";
 
 export default function CreateAppointment() {
   const [doctorList, setDoctorList] = useState("");
@@ -98,7 +98,7 @@ export default function CreateAppointment() {
         <div className="flex flex-col px-2 py-1 h-full space-y-4">
           <div className="flex justify-center">
             <div className="mt-2">
-              <SiPowerapps size={25} />
+              {/* <SiPowerapps size={25} /> */}
             </div>
             {searchTerm ? (
               <div className="text-xl font-semibold text-center p-2">
