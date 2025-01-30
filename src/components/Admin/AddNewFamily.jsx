@@ -15,7 +15,6 @@ import {
 } from "@mui/joy";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ReactTransliterate } from "react-transliterate";
 
 function AddNewFamily(props) {
   const [open, setOpen] = useState(false);

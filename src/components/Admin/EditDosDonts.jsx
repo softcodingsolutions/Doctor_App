@@ -16,7 +16,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
-import { ReactTransliterate } from "react-transliterate";
 
 function EditDosDonts(props) {
   const [open, setOpen] = useState(false);
