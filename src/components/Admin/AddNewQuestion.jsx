@@ -10,6 +10,8 @@ import Option from "@mui/joy/Option";
 import Stack from "@mui/joy/Stack";
 import Add from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
+import "react-transliterate/dist/index.css";
+import { ReactTransliterate } from "react-transliterate";
 import { Box, ModalClose, Typography } from "@mui/joy";
 
 function AddNewQuestion(props) {

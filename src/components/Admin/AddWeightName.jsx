@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { ReactTransliterate } from "react-transliterate";
 
 function AddWeightName(props) {
   const [open, setOpen] = useState(false);

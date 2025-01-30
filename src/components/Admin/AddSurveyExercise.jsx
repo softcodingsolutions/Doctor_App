@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import React, { useState, forwardRef } from "react";
 import { useForm } from "react-hook-form";
+import { ReactTransliterate } from "react-transliterate";
 
 const AddSurveyExercise = forwardRef((props) => {
   const [open, setOpen] = useState(false);
