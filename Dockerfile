@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 RUN set -ex
 
 # Copy only package.json and package-lock.json to leverage Docker layer caching
-COPY package*.json ./
+COPY package.json ./
 
 # Install dependencies
 RUN set -ex && npm ci --legacy-peer-deps --no-audit --no-fund
