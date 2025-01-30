@@ -1,5 +1,5 @@
-import haircare from "../../assets/images/hair-care.jpg";
-import mobilehaircare from "../../assets/images/mobilehaircare.jpg";
+import haircare from "../../assets/images/hair-care_converted.webp";
+import mobilehaircare_converted from "../../assets/images/mobilehaircare_converted.webp";
 import { useState, useEffect } from "react";
 function HairAndBeauty2() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -58,7 +58,7 @@ function HairAndBeauty2() {
         <div className="flex justify-end w-full md:w-2/3 lg:p-5 pt-0 md:pt-0">
           {isMobile ? (
             <img
-              src={mobilehaircare}
+              src={mobilehaircare_converted}
               alt="image"
               className="w-[40vh] h-[30vh] rounded-lg"
             />

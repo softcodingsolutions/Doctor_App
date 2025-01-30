@@ -96,7 +96,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
           <div className="flex w-70 sm:hidden xl:flex p-5 items-center justify-center shadow-sm bg-white  rounded-md">
             <img
               className="h-16 sm:h-full"
-              src="https://slimandsmile.com/assets/admin/global/img/logo.jpg"
+              src="https://slimandsmile.com/assets/admin/global/img/logo.webp"
               alt="img"
             />
           </div>
@@ -160,7 +160,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
 
           <div
             onClick={() => handleLogoutClick()}
-            className="rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer shadow-lg text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-gray-400 bg-white rounded-md sm:rounded-bl-none w-full z-50 hover:bg-black hover:border-gray-900 hover:text-gray-100"
+            className="rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer shadow-lg text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-gray-400 bg-white rounded-md sm:rounded-bl-none w-full.avif z-50 hover:bg-black hover:border-gray-900 hover:text-gray-100"
           >
             Logout
           </div>

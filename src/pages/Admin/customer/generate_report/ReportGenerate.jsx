@@ -9,7 +9,7 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
-import iconsSlime from "../../../../assets/images/icons_slime.png";
+import iconsSlime from "../../../../assets/images/icons_slime_converted.webp";
 import { useOutletContext } from "react-router-dom";
 import NotoSansGujarati from "../../../../assets/fonts/NotoSansGujarati-Regular.ttf";
 import TiroDevanagariHindi from "../../../../assets/fonts/TiroDevanagariHindi-Regular.ttf";
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   body: { justifyContent: "center" },
   s: { marginBottom: 15, justifyContent: "center" },
   heading: { margin: 5, padding: 5, display: "grid" },
-  subtitle: { fontSize: 16, marginTop: 5 , fontWeight: "bold"  },
+  subtitle: { fontSize: 16, marginTop: 5, fontWeight: "bold" },
   Name: { fontSize: 14, fontFamily: "Tiro Devanagari Hindi" },
   table: { display: "table", width: "auto", margin: "5px 0" },
   tableRow: { flexDirection: "row" },
@@ -145,7 +145,9 @@ export const BillDocument = ({ data }) => (
                       <Text style={styles.tableCell}>{diet?.name}</Text>
                     </View>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet?.chart_english}</Text>
+                      <Text style={styles.tableCell}>
+                        {diet?.chart_english}
+                      </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>
@@ -219,7 +221,8 @@ export const BillDocument = ({ data }) => (
         )}
 
         {/* Dos */}
-        {data?.treatment_packages?.[0]?.treatment_package?.dos?.length !== 0 && (
+        {data?.treatment_packages?.[0]?.treatment_package?.dos?.length !==
+          0 && (
           <View style={styles.s}>
             <Text style={styles.subtitle}>Dos</Text>
             <View style={styles.table}>
@@ -304,7 +307,9 @@ export const BillDocument = ({ data }) => (
                 (diet, index) => (
                   <View style={styles.tableRow} key={index}>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet?.medicine_name}</Text>
+                      <Text style={styles.tableCell}>
+                        {diet?.medicine_name}
+                      </Text>
                     </View>
                     <View style={styles.tableCol}>
                       <Text style={styles.tableCell}>{diet?.dosage}</Text>
@@ -396,7 +401,9 @@ export const BillDocument = ({ data }) => (
                       <Text style={styles.tableCell}>{diet?.name}</Text>
                     </View>
                     <View style={styles.tableCol}>
-                      <Text style={styles.tableCell}>{diet?.weight_reason}</Text>
+                      <Text style={styles.tableCell}>
+                        {diet?.weight_reason}
+                      </Text>
                     </View>
                   </View>
                 )

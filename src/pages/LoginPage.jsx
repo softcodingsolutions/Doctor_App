@@ -5,8 +5,8 @@ import { schema } from "../schemas/LoginSchema";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ChatComponent from "../components/Chat/ChatComponent";
-import icons_slime from "../assets/images/icons_slime.png";
-import backgroundlogin from "../assets/images/backgroundlogin.jpg";
+import icons_slime from "../assets/images/icons_slime_converted.webp";
+import backgroundlogin_converted from "../assets/images/backgroundlogin_converted.webp";
 import {
   Card,
   CardBody,
@@ -143,7 +143,7 @@ function LoginPage() {
   return (
     <div
       className="flex items-center justify-start h-screen font-sans px-4 sm:px-10 bg-cover bg-center"
-      style={{ backgroundImage: `url(${backgroundlogin})` }}
+      style={{ backgroundImage: `url(${backgroundlogin_converted})` }}
     >
       <div className="backdrop-blur-xl px-10 sm:px-10 py-10 rounded-sm shadow-sm w-full lg:max-w-xl lg:ml-52">
         <Card className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-fit py-2 backdrop-blur-lg bg-white border-white/30 shadow-lg rounded-lg">

@@ -1,5 +1,5 @@
-import Banner1 from "./../../assets/images/Banner1.png";
-import mobileview from "./../../assets/images/mobileview.png";
+import Banner1 from "./../../assets/images/Banner1_converted.webp";
+import mobileview from "./../../assets/images/mobileview_converted.webp";
 import React, { useState, useEffect } from "react";
 function Section1() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);

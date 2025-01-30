@@ -1,5 +1,5 @@
-import image34 from "./../../assets/images/image34.jpg";
-import mobileviewcontact from "./../../assets/images/mobileviewcontact.jpg";
+import image34_converted from "./../../assets/images/image34_converted.webp";
+import mobileviewcontact_converted from "./../../assets/images/mobileviewcontact_converted.webp";
 import React, { useState, useEffect } from "react";
 
 function ContactUs1() {
@@ -22,7 +22,9 @@ function ContactUs1() {
       <div
         className="h-[60vh] flex justify-center items-center w-full"
         style={{
-          backgroundImage: `url(${isMobile ? mobileviewcontact : image34})`,
+          backgroundImage: `url(${
+            isMobile ? mobileviewcontact_converted : image34_converted
+          })`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

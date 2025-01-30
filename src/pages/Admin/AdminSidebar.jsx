@@ -9,7 +9,7 @@ import { MdOutlineGppGood } from "react-icons/md";
 import { Option, Select } from "@mui/joy";
 import { MdManageAccounts } from "react-icons/md";
 import { AiFillDatabase } from "react-icons/ai";
-import img from "../../assets/images/icons_slime.png";
+import img from "../../assets/images/icons_slime_converted.webp";
 import { BsGraphDown } from "react-icons/bs";
 import { CiViewList } from "react-icons/ci";
 import { MdDashboard } from "react-icons/md";

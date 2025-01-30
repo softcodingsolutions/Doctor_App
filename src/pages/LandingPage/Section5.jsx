@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 import { Carousel, IconButton } from "@material-tailwind/react";
-import review1 from "../../assets/videos/review1.mp4";
-import review2 from "../../assets/videos/review2.mp4";
-import review4 from "../../assets/videos/review4.mp4";
-import review5 from "../../assets/videos/review5.mp4";
-import review6 from "../../assets/videos/review6.mp4";
+import review1 from "../../assets/videos/review1.webm";
+import review2 from "../../assets/videos/review2.webm";
+import review4 from "../../assets/videos/review4.webm";
+import review5 from "../../assets/videos/review5.webm";
+import review6 from "../../assets/videos/review6.webm";
 
 function Section5() {
   const [cardsPerGroup, setCardsPerGroup] = useState(2);
 
   const renderContent = (src, id) => (
     <video key={id} className="size-96 rounded-lg" controls>
-      <source src={src} type="video/mp4" />
+      <source src={src} type="video/webm" />
       Your browser does not support the video tag.
     </video>
   );

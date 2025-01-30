@@ -1,4 +1,4 @@
-import hairandbeauty from "./../../assets/images/hairandbeauty.jpg";
+import hairandbeauty from "./../../assets/images/hairandbeauty_converted.webp";
 import React, { useState, useEffect } from "react";
 function HairAndBeauty1() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -26,7 +26,9 @@ function HairAndBeauty1() {
         {/* Breadcrumb Navigation */}
         <div className="w-full ">
           <div
-            className={`text-3xl flex items-start ${isMobile ? 'p-3' : 'p-56'} gap-1.5 font-sans font-semibold text-black`}
+            className={`text-3xl flex items-start ${
+              isMobile ? "p-3" : "p-56"
+            } gap-1.5 font-sans font-semibold text-black`}
           >
             {/* <a href="/" className="hover:underline">
               Home

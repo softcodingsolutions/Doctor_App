@@ -1,4 +1,4 @@
-import weightlossbgimage from "./../../assets/images/weightlossbgimage.jpg";
+import weightlossbgimage from "./../../assets/images/weightlossbgimage_converted.webp";
 
 function WeightLoss4() {
   return (

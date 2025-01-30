@@ -4,8 +4,8 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { reportButtons } from "../../../constants/admin/AdminConstants";
 import InsideLoader from "../../InsideLoader";
-import male from "../../../assets/images/male.avif";
-import female from "../../../assets/images/female.avif";
+import male from "../../../assets/images/male_converted.webp";
+import female from "../../../assets/images/female_converted.webp";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
@@ -13,7 +13,7 @@ import { MdEmail } from "react-icons/md";
 import { GiWeight } from "react-icons/gi";
 
 function CustomerUserDiagnosis() {
-  localStorage.getItem("caseNumber")
+  localStorage.getItem("caseNumber");
   const [selectedId, setSelectedId] = useState("2");
   const [getCustomer, setGetCustomer] = useState([]);
   const [getAdmin, setGetAdmin] = useState([]);
@@ -32,7 +32,7 @@ function CustomerUserDiagnosis() {
       .then((res) => {
         console.log("User to diagnos: ", res.data?.user);
         setGetCustomer(res.data?.user);
-        localStorage.setItem("caseNumber",res.data?.user?.case_number);
+        localStorage.setItem("caseNumber", res.data?.user?.case_number);
         setShowPart1(
           res.data?.user?.personal_detail?.user_selected_questions_one
         );
@@ -376,7 +376,7 @@ function CustomerUserDiagnosis() {
                   className={clsx(
                     "min-w-fit flex items-center justify-center shadow-md cursor-pointer p-2 rounded-md",
                     pathname === res.to
-                      ? "bg-[#1F2937] text-white h-full rounded-b-none" 
+                      ? "bg-[#1F2937] text-white h-full rounded-b-none"
                       : "bg-white h-auto hover:bg-[#1F2937] hover:text-white"
                   )}
                 >

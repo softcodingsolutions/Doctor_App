@@ -1,9 +1,9 @@
 import { Carousel, IconButton } from "@material-tailwind/react";
-import img1 from "../../assets/images/about-01.jpg";
-import img2 from "../../assets/images/about-02.jpg";
-import img3 from "../../assets/images/about-03.jpg";
-import img4 from "../../assets/images/about-04.jpg";
-import img5 from "../../assets/images/about-05.jpg";
+import img1 from "../../assets/images/about-01_converted.webp";
+import img2 from "../../assets/images/about-02_converted.webp";
+import img3 from "../../assets/images/about-03_converted.webp";
+import img4 from "../../assets/images/about-04_converted.webp";
+import img5 from "../../assets/images/about-05_converted.webp";
 import { RiMedicineBottleLine } from "react-icons/ri";
 import { GiWeightScale } from "react-icons/gi";
 import { PiChartLineUp } from "react-icons/pi";
@@ -23,8 +23,10 @@ function AboutSection2() {
                 <RiMedicineBottleLine className="mt-1" size={25} />
               </div>
               <div>
-                <strong className="text-green-600">Ayurvedic and FDA-Approved Medications:</strong> Offers
-                100% Ayurvedic, FDA-approved treatments with minimal side
+                <strong className="text-green-600">
+                  Ayurvedic and FDA-Approved Medications:
+                </strong>{" "}
+                Offers 100% Ayurvedic, FDA-approved treatments with minimal side
                 effects.
               </div>
             </li>
@@ -33,9 +35,9 @@ function AboutSection2() {
                 <GiWeightScale className="mt-1" size={25} />
               </div>
               <div>
-                <strong className="text-green-600">Root Cause Analysis:</strong> Focuses on identifying and
-                addressing the underlying causes of weight gain rather than
-                treating it as an isolated issue.
+                <strong className="text-green-600">Root Cause Analysis:</strong>{" "}
+                Focuses on identifying and addressing the underlying causes of
+                weight gain rather than treating it as an isolated issue.
               </div>
             </li>
             <li className="flex gap-2 ">
@@ -43,9 +45,11 @@ function AboutSection2() {
                 <PiChartLineUp className="mt-1" size={25} />
               </div>
               <div>
-                <strong className="text-green-600">Customized Treatment Plans:</strong> Provides tailored
-                solutions, including diet, exercise, and medication, specific to
-                individual needs.
+                <strong className="text-green-600">
+                  Customized Treatment Plans:
+                </strong>{" "}
+                Provides tailored solutions, including diet, exercise, and
+                medication, specific to individual needs.
               </div>
             </li>
             <li className="flex gap-2 ">
@@ -53,9 +57,11 @@ function AboutSection2() {
                 <BsArrowRepeat className="mt-1" size={25} />
               </div>
               <div>
-                <strong className="text-green-600">Comprehensive Approach:</strong> Aims to reduce the risk
-                of weight regain by addressing root causes and offering holistic
-                treatments.
+                <strong className="text-green-600">
+                  Comprehensive Approach:
+                </strong>{" "}
+                Aims to reduce the risk of weight regain by addressing root
+                causes and offering holistic treatments.
               </div>
             </li>
             <li className="flex gap-2 ">
@@ -63,9 +69,11 @@ function AboutSection2() {
                 <FaRegSmile className="mt-1" size={25} />
               </div>
               <div>
-                <strong className="text-green-600">Low Weight Recidivism:</strong> Achieves significantly
-                lower rates of weight regain compared to the typical 80%
-                experienced by others.
+                <strong className="text-green-600">
+                  Low Weight Recidivism:
+                </strong>{" "}
+                Achieves significantly lower rates of weight regain compared to
+                the typical 80% experienced by others.
               </div>
             </li>
           </ul>

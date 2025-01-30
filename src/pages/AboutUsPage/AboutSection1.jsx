@@ -1,4 +1,4 @@
-import image17 from "./../../assets/images/image17.jpg";
+import image17 from "./../../assets/images/image17_converted.webp";
 function AboutSection1() {
   return (
     <div className=" h-auto pt-16 flex flex-col items-center ">
@@ -7,7 +7,7 @@ function AboutSection1() {
         style={{
           backgroundImage: `url(${image17})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",    
+          backgroundPosition: "center",
         }}
       >
         {/* Breadcrumb Navigation */}
@@ -17,7 +17,9 @@ function AboutSection1() {
               Home
             </a>{" "}
             &gt;{" "} */}
-            <span className="text-green-800 text-2xl md:text-4xl font-architects">About Us</span>
+            <span className="text-green-800 text-2xl md:text-4xl font-architects">
+              About Us
+            </span>
           </div>
         </div>
       </div>

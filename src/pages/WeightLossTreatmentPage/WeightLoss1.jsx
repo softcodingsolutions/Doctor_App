@@ -1,4 +1,4 @@
-import image22 from "./../../assets/images/image22.jpeg";
+import image22 from "./../../assets/images/image22_converted.webp";
 function WeightLoss1() {
   return (
     <div className="flex flex-col  items-center ">

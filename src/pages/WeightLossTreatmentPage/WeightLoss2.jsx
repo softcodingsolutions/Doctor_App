@@ -1,4 +1,4 @@
-import img1 from "../../assets/images/treatments-chart.png";
+import img1 from "../../assets/images/treatments-chart_converted.webp";
 
 function WeightLoss2() {
   return (

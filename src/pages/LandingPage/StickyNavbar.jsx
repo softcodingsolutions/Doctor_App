@@ -6,7 +6,7 @@ import {
   IconButton,
   Collapse,
 } from "@material-tailwind/react";
-import icons_slime from "../../assets/images/icons_slime.png";
+import icons_slime from "../../assets/images/icons_slime_converted.webp";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export function StickyNavbar() {

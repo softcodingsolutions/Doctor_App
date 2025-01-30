@@ -40,7 +40,7 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
           <div className="flex w-70 sm:hidden xl:flex p-5 items-center justify-center shadow-sm bg-white  rounded-md">
             <img
               className="h-16 sm:h-full"
-              src="https://slimandsmile.com/assets/admin/global/img/logo.jpg"
+              src="https://slimandsmile.com/assets/admin/global/img/logo.webp"
               alt="img"
             />
           </div>

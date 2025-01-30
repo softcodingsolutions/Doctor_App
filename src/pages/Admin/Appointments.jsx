@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
 import InsideLoader from "../InsideLoader";
-import male from "../../assets/images/male.avif";
-import female from "../../assets/images/female.avif";
+import male from "../../assets/images/male_converted.webp";
+import female from "../../assets/images/female_converted.webp";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { HiClipboardDocumentList } from "react-icons/hi2";
 

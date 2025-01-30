@@ -1,5 +1,5 @@
 import { Typography } from "@material-tailwind/react";
-import icons_slime from "../../assets/images/icons_slime.png";
+import icons_slime from "../../assets/images/icons_slime_converted.webp";
 import { Link, useNavigate } from "react-router-dom";
 import PatientRegistration from "./PatientRegistration";
 import React, { useState, useEffect } from "react";

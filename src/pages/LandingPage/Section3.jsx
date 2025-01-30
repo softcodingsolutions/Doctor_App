@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import fitness from "./../../assets/images/fitness.jpg";
+import fitness from "./../../assets/images/fitness.webp";
 
 function Section3() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);

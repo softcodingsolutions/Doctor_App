@@ -25,7 +25,6 @@ function AddNewProgresReport(props) {
   const progressWeight = watch("progress_weight", 0);
 
   const submittedData = (data) => {
-    
     props.handleApi(
       data.progress_date,
       data.progress_weight,
@@ -35,8 +34,8 @@ function AddNewProgresReport(props) {
       file
     );
 
-    reset(); 
-    setFile(null); 
+    reset();
+    setFile(null);
   };
 
   const getWeightInputClass = () => {
@@ -125,7 +124,7 @@ function AddNewProgresReport(props) {
                   <FormLabel>Upload Blood Report(PDF or JPG)</FormLabel>
                   <Input
                     type="file"
-                    accept=".pdf,.jpg,.jpeg"
+                    accept=".pdf,.webp,.jpeg"
                     onChange={(e) => setFile(e.target.files[0])}
                   />
                 </FormControl>

@@ -7,8 +7,8 @@ import {
   reportButtons,
 } from "../../../constants/admin/AdminConstants";
 import InsideLoader from "../../InsideLoader";
-import male from "../../../assets/images/male.avif";
-import female from "../../../assets/images/female.avif";
+import male from "../../../assets/images/male_converted.webp";
+import female from "../../../assets/images/female_converted.webp";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import { GiWeight } from "react-icons/gi";

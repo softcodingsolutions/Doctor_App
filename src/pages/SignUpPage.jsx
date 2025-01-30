@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { schema } from "../schemas/SignUpSchema";
-import img from "../assets/images/icons_slime.png";
+import img from "../assets/images/icons_slime_converted.webp";
 import axios from "axios";
 import {
   Card,

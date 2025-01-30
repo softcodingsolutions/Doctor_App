@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import icons_slime from "../assets/images/icons_slime.png";
+import icons_slime from "../assets/images/icons_slime_converted.webp";
 import { useNavigate } from "react-router-dom";
 import {
   Card,

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import img1 from "../../assets/images/result01.jpg";
-import img2 from "../../assets/images/result02.jpg";
-import img3 from "../../assets/images/result03.jpg";
-import img4 from "../../assets/images/result04.jpg";
+import img1 from "../../assets/images/result01_converted.webp";
+import img2 from "../../assets/images/result02_converted.webp";
+import img3 from "../../assets/images/result03_converted.webp";
+import img4 from "../../assets/images/result04_converted.webp";
 
 const cardContents = [
   {
@@ -37,7 +37,9 @@ function WeightLoss6() {
   // Use useEffect for automatic looping
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex === cardContents.length - 1 ? 0 : prevIndex + 1));
+      setActiveIndex((prevIndex) =>
+        prevIndex === cardContents.length - 1 ? 0 : prevIndex + 1
+      );
     }, 5000); // Change the interval as needed (in milliseconds)
 
     return () => clearInterval(intervalId); // Cleanup function to prevent memory leaks
@@ -56,8 +58,12 @@ function WeightLoss6() {
               className="w-1/3 h-auto rounded-lg mr-4 co"
             />
             <div className="w-2/3">
-              <p className="text-gray-700 italic">"{cardContents[activeIndex].details}"</p>
-              <p className="text-gray-900 font-semibold mt-2">Success Story {cardContents[activeIndex].id}</p>
+              <p className="text-gray-700 italic">
+                "{cardContents[activeIndex].details}"
+              </p>
+              <p className="text-gray-900 font-semibold mt-2">
+                Success Story {cardContents[activeIndex].id}
+              </p>
             </div>
           </div>
         </div>
