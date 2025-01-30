@@ -1,6 +1,9 @@
 # Step 1: Use a lightweight Node.js image for building the React app
 FROM node:20-alpine AS build
-ENV NODE_OPTIONS="--max-old-space-size=2048" 
+
+# Environment variables should be set *before* any commands that use them
+ENV NODE_OPTIONS="--max_old-space-size=2048"
+
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
@@ -8,13 +11,18 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --legacy-peer-deps --no-audit --no-fund 
+RUN npm ci --legacy-peer-deps --no-audit --no-fund
 
 # Copy the rest of the application source code
-COPY . . 
+COPY . .
 
-# Build the React app
-RUN NODE_OPTIONS="--max_old_space_size=4096" npm run build
+# Build the React app - Increase memory limit significantly
+RUN NODE_OPTIONS="--max_old-space-size=8192" npm run build 
+
+# If 8GB isn't enough, try 12GB or 16GB.  But also consider optimizing your build.
+# RUN NODE_OPTIONS="--max-old-space-size=12288" npm run build
+# RUN NODE_OPTIONS="--max-old-space-size=16384" npm run build
+
 
 # Step 2: Use a lightweight Nginx image to serve the app
 FROM nginx:1.23-alpine
