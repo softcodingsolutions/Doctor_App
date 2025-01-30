@@ -4,21 +4,24 @@ FROM node:20-alpine AS build
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
+# Enable debug mode to trace each command
+RUN set -ex
+
 # Copy only package.json and package-lock.json to leverage Docker layer caching
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --legacy-peer-deps --no-audit --no-fund
+RUN set -ex && npm ci --legacy-peer-deps --no-audit --no-fund
 
 # Copy the rest of the application source code
 COPY . .
 
 # Build the React app - Increase memory limit significantly
-RUN npm run build 
+RUN set -ex && npm run build
 
-# If 8GB isn't enough, try 12GB or 16GB.  But also consider optimizing your build.
-# RUN NODE_OPTIONS="--max-old-space-size=12288" npm run build
-# RUN NODE_OPTIONS="--max-old-space-size=16384" npm run build
+# If 8GB isn't enough, try 12GB or 16GB. But also consider optimizing your build.
+# RUN set -ex && NODE_OPTIONS="--max-old-space-size=12288" npm run build
+# RUN set -ex && NODE_OPTIONS="--max-old-space-size=16384" npm run build
 
 
 # Step 2: Use a lightweight Nginx image to serve the app
