@@ -16,6 +16,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
 
+
 const steps = [
   "General Details",
   "Current Diet",
@@ -26,6 +27,7 @@ const steps = [
 ];
 
 function UserQuestions() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [isGeneralDetailsValid, setIsGeneralDetailsValid] = useState(false);
@@ -124,36 +126,51 @@ function UserQuestions() {
     return <Loader />;
   }
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div className="flex w-full px-3 py-2 items-center font-sans">
       <div className=" h-full flex-grow overflow-auto flex flex-wrap content-start">
-        <Stepper sx={{ width: "100%", height: "7%" }}>
-          {steps.map((step, index) => (
-            <Step
-              key={step}
-              className="font-sans"
-              orientation="vertical"
-              indicator={
-                <StepIndicator
-                  variant={currentStep <= index ? "outlined" : "solid"}
-                  color={currentStep < index ? "success" : "success"}
-                >
-                  {currentStep <= index ? index + 1 : <Check />}
-                </StepIndicator>
-              }
-              sx={{
-                "&::after": {
-                  ...(currentStep > index &&
-                    index !== steps.length - 1 && {
+
+        {!isMobile ? (
+          <Stepper sx={{ width: "100%", height: "7%" }}>
+            {steps.map((step, index) => (
+              <Step
+                key={step}
+                className="font-sans"
+                orientation="vertical"
+                indicator={
+                  <StepIndicator
+                    variant={currentStep <= index ? "outlined" : "solid"}
+                    color={currentStep < index ? "success" : "success"}
+                  >
+                    {currentStep <= index ? index + 1 : <Check />}
+                  </StepIndicator>
+                }
+                sx={{
+                  "&::after": {
+                    ...(currentStep > index && index !== steps.length - 1 && {
                       bgcolor: "success.solidBg",
                     }),
-                },
-              }}
-            >
-              <StepButton>{step}</StepButton>
-            </Step>
-          ))}
-        </Stepper>
+                  },
+                }}
+              >
+                <StepButton>{step}</StepButton>
+              </Step>
+            ))}
+          </Stepper>
+        ) : <div className="text-2xl  p-2 font-bold text-[#1F2937]">Registration Page</div>}
+
         {currentStep === 0 && (
           <QueGeneralDetails
             setStoreData={setStoreData}

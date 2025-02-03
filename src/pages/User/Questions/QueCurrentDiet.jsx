@@ -4,7 +4,7 @@ import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import Swal from "sweetalert2";
 
 function QueCurrentDiet({
@@ -14,6 +14,7 @@ function QueCurrentDiet({
   storedData,
   setStoreData,
 }) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const {
     register,
     handleSubmit,
@@ -40,7 +41,17 @@ function QueCurrentDiet({
     onNext();
     reset();
   };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   useEffect(() => {
     if (storedData) {
       reset({
@@ -62,21 +73,21 @@ function QueCurrentDiet({
   return (
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-4">
-          <div className="text-xl font-semibold">Current Diet</div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[91%]">
+        <div className="flex p-2 px-4 h-full flex-col space-y-4">
+          <div className="text-xl font-semibold text-[#1F2937] p-2">Current Diet</div>
+          <div className="w-full flex justify-center p-4 border rounded-md animate-once animate-ease-out overflow-auto h-[91%]">
             <form
               onSubmit={handleSubmit(submittedData)}
-              className="w-[80%] h-full flex flex-col items-center justify-between"
+              className="w-[80%] h-full flex flex-col items-center gap-10"
               method="post"
             >
               <div className="text-lg">
                 Enter all your meal details from Breakfast to Dinner <br />
                 સવારથી સાંજની બધી ખાવા-પીવાની આદત ભરો
               </div>
-              <div className="flex flex-col gap-10 justify-between w-full text-lg">
+              <div className="flex flex-col justify-center  gap-5 w-full text-lg">
                 <h2 className="text-[red]">YOUR LAST WEEK DIET....</h2>
-                <div className="md:flex w-full justify-between">
+                <div className="md:flex w-full gap-10">
                   <UserDetailsInput
                     errors={errors.Morning}
                     name="Morning"
@@ -97,7 +108,7 @@ function QueCurrentDiet({
                     })}
                   />
                 </div>
-                <div className="md:flex w-full justify-between">
+                <div className="md:flex w-full gap-10">
                   <UserDetailsInput
                     errors={errors.Lunch}
                     name="Lunch"
@@ -118,7 +129,7 @@ function QueCurrentDiet({
                     })}
                   />
                 </div>
-                <div className="md:flex w-full justify-between">
+                <div className="md:flex w-full gap-10">
                   <UserDetailsInput
                     errors={errors.Dinner}
                     name="Dinner"

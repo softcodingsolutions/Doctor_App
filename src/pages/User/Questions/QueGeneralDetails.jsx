@@ -3,10 +3,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
-import { useEffect } from "react";
+import { useState,useEffect } from "react";
 import Swal from "sweetalert2";
+import { Textarea } from "@headlessui/react";
 
 function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const {
     register,
     handleSubmit,
@@ -65,8 +67,19 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
     onValidate(isValid);
   }, [isValid, onValidate]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
-    <div className="flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2">
+    <div className="flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start ">
       <div className="w-full sm:flex items-end">
         <div className="sm:flex-grow flex justify-end">
           <button type="button" className="block sm:hidden hover:scale-110">
@@ -78,12 +91,12 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
           </button>
         </div>
         <div className="w-full flex-grow gap-1 overflow-auto flex rounded-lg bg-card h-[88vh] bg-white flex-wrap content-start p-2 px-4">
-          <div className="text-xl font-semibold">General Details </div>
-          <div className="w-full flex justify-center lg:p-4 p-1 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[92%]">
-            <form onSubmit={handleSubmit(submittedData)} method="post">
-              <div className="flex flex-col text-lg">
-                <div className="flex gap-2">
-                  <div className="flex flex-col">
+          <div className="text-xl font-semibold p-2 text-[#1F2937]">General Details </div>
+          <div className="w-full flex justify-center border rounded-md animate-once animate-ease-out overflow-auto p-4">
+            <form onSubmit={handleSubmit(submittedData)} method="post" className="w-full flex justify-center flex-col ">
+              <div className={`flex'flex-col text-lg`}>
+                <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-2`}>
+                  <div className="flex flex-col w-full">
                     {/* first name */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
@@ -110,7 +123,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     </div>
                   </div>
 
-                  <div className="flex flex-col">
+                  <div className="flex flex-col w-full">
                     {/* last name */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
@@ -125,64 +138,77 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                       />
                     </div>
                     {/* language */}
-                    <div className="flex  flex-col mt-2 ">
-                      <div className="flex flex-col">
-                        <label className="text-sm  mr-2">Language:</label>
-                        <select
-                          name="language"
-                          defaultValue="select"
-                          placeholder="Select any language"
-                          {...register("language")}
-                          className="py-1 px-2 rounded-md border  lg:w-[40vh] w-[40vh] text-sm"
-                        >
-                          <option value="select" disabled>
-                            Select Any Language
-                          </option>
-                          <option value="english">English</option>
-                          <option value="hindi">Hindi</option>
-                          <option value="gujarati">Gujarati</option>
-                        </select>
-                      </div>
-                      <div>
+                    <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'}  gap-16`}>
+                      <div className="flex flex-col m-2">
+                        <label className="text-sm text-[#1F2937] font-semibold mr-2">Language:</label>
+                        <div className="flex gap-2 mt-2">
+                          <label className="flex items-center text-sm">
+                            <input
+                              type="radio"
+                              value="english"
+                              {...register("language", { required: "Please select a language" })}
+                              className="mr-2 "
+                            />
+                            English
+                          </label>
+                          <label className="flex items-center text-sm">
+                            <input
+                              type="radio"
+                              value="hindi"
+                              {...register("language")}
+                              className="mr-2"
+                            />
+                            Hindi
+                          </label>
+                          <label className="flex items-center text-sm">
+                            <input
+                              type="radio"
+                              value="gujarati"
+                              {...register("language")}
+                              className="mr-2"
+                            />
+                            Gujarati
+                          </label>
+                        </div>
                         {errors.language && (
-                          <span className=" text-red-500  text-sm">
-                            {errors.language?.message}
-                          </span>
+                          <span className="text-red-500 text-sm">{errors.language?.message}</span>
                         )}
+                      </div>
+                      {/* gender */}
+                      <div className="flex flex-col m-2">
+                        {/* gender */}
+                        <label className="text-sm text-[#1F2937] font-semibold mr-2">Gender:</label>
+                        <div className="flex gap-2 mt-2">
+                          <label className="flex items-center text-sm">
+                            <input
+                              type="radio"
+                              value="male"
+                              {...register("gender")}
+                              className="mr-2 text-sm"
+                            />
+                            Male
+                          </label>
+                          <label className="flex items-center   text-sm">
+                            <input
+                              type="radio"
+                              value="female"
+                              {...register("gender")}
+                              className="mr-2 text-sm"
+                            />
+                            Female
+                          </label>
+                          {errors.gender && (
+                            <span className="text-base text-red-500 -mt-1.5">
+                              {errors.gender?.message}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
+            
                 </div>
-                {/* gender */}
-                <div className="flex flex-col m-2">
-                  {/* gender */}
-                  <label className="text-sm  mr-2">Gender:</label>
-                  <div className="flex gap-2 ">
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="radio"
-                        value="male"
-                        {...register("gender")}
-                        className="mr-2 text-sm"
-                      />
-                      Male
-                    </label>
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="radio"
-                        value="female"
-                        {...register("gender")}
-                        className="mr-2 text-sm"
-                      />
-                      Female
-                    </label>
-                    {errors.gender && (
-                      <span className="text-base text-red-500 -mt-1.5">
-                        {errors.gender?.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                
                 {/* address */}
                 <div className="flex flex-col  m-2">
                   {/* <UserDetailsInput
@@ -192,18 +218,20 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     placeholder="address"
                     hook={register("address")}
                   /> */}
-                  <label className="text-sm  mr-2">Address:</label>
-                  <input
+                  <label className="text-sm text-[#1F2937] font-semibold mr-2">Address:</label>
+                  <Textarea
                     hook={register("address")}
-                    type="text"
+                    type="textarea"
                     name="address"
                     placeholder="Address "
                     autoComplete="off"
+                    rows={3}
                     className="py-1 px-2 rounded-md border  w-full text-sm"
-                  />
+                  >
+                    </Textarea>
                 </div>
-                <div className="flex gap-2">
-                  <div className="flex flex-col">
+                <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-2`}>
+                  <div className="flex flex-col w-full">
                     {/* city */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
@@ -240,7 +268,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     </div>
                   </div>
 
-                  <div className="flex flex-col">
+                  <div className="flex flex-col w-full">
                     {/* mobile */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
@@ -282,7 +310,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                 {/* overweight */}
                 {doctorName?.toLowerCase() === "bhavesh" && (
                   <div className="flex flex-col ">
-                    <label className="text-sm  mr-2">
+                    <label className="text-sm text-[#1F2937] font-semibold mr-2">
                       Overweight Since:
                     </label>
                     <select
@@ -290,7 +318,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                       defaultValue="select"
                       placeholder="Select one"
                       {...register("overweight")}
-                      className="py-1 px-2 rounded-md text-sm border border-black "
+                      className="py-1 px-2 rounded-md text-sm border  "
                     >
                       <option value="select" disabled>
                         Select One
@@ -304,7 +332,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                 )}
               </div>
 
-              <div className="flex w-full justify-center mt-8">
+              <div className="flex w-full justify-center mt-3">
                 <SaveUserDetailsButton name="Save & Continue" />
               </div>
             </form>

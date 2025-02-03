@@ -84,12 +84,12 @@ function QueComplains({
   return (
     <div className="w-full p-4">
       <div className="rounded-lg bg-card h-[84vh] bg-white">
-        <div className="flex p-4 h-full flex-col space-y-4">
-          <div className="text-xl font-semibold">Complains</div>
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[88%]">
+        <div className="flex  p-2 px-4 h-full flex-col space-y-4">
+          <div className="text-xl font-semibold text-[#1F2937] p-2">Complains</div>
+          <div className="w-full flex justify-center p-4  border rounded-md  animate-once animate-ease-out overflow-auto h-[88%]">
             <form
               onSubmit={handleSubmit(submittedData)}
-              className="w-[80%] h-full flex flex-col items-center justify-between text-lg"
+              className="w-[80%] h-full flex flex-col items-center gap-10 text-lg"
               method="post"
             >
               <div className="flex flex-col gap-2 justify-between w-full">
