@@ -81,16 +81,8 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
   return (
     <div className="flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start ">
       <div className="w-full sm:flex items-end">
-        <div className="sm:flex-grow flex justify-end">
-          <button type="button" className="block sm:hidden hover:scale-110">
-            <img
-              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
-              alt=""
-              className="w-full h-full"
-            />
-          </button>
-        </div>
-        <div className="w-full flex-grow gap-1 overflow-auto flex rounded-lg bg-card h-[88vh] bg-white flex-wrap content-start p-2 px-4">
+       
+        <div className="w-full flex-grow gap-1 overflow-auto flex rounded-lg bg-card h-[88vh]   flex-wrap content-start p-2 px-4">
           <div className="text-xl font-semibold p-2 text-[#1F2937]">General Details </div>
           <div className="w-full flex justify-center border rounded-md animate-once animate-ease-out overflow-auto p-4">
             <form onSubmit={handleSubmit(submittedData)} method="post" className="w-full flex justify-center flex-col ">
@@ -104,7 +96,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         name="firstname"
                         type="text"
                         label="First Name"
-                        placeholder="firstname"
+                        placeholder=""
                         hook={register("firstname", {
                           required: true,
                         })}
@@ -117,7 +109,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         name="age"
                         type="number"
                         label="Age"
-                        placeholder="age"
+                        placeholder=""
                         hook={register("age")}
                       />
                     </div>
@@ -131,7 +123,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         name="lastname"
                         type="text"
                         label="Last Name"
-                        placeholder="lastname"
+                        placeholder=""
                         hook={register("lastname", {
                           required: true,
                         })}
@@ -223,7 +215,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     hook={register("address")}
                     type="textarea"
                     name="address"
-                    placeholder="Address "
+                    placeholder=""
                     autoComplete="off"
                     rows={3}
                     className="py-1 px-2 rounded-md border  w-full text-sm"
@@ -239,7 +231,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         name="city"
                         type="text"
                         label="City"
-                        placeholder="city"
+                        placeholder=""
                         hook={register("city")}
                       />
                     </div>
@@ -262,7 +254,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         name="refferedBy"
                         type="text"
                         label="Reffered By"
-                        placeholder="reffered by"
+                        placeholder=""
                         hook={register("refferedBy")}
                       />
                     </div>
@@ -275,8 +267,8 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         errors={errors.mobile}
                         name="mobile"
                         type="number"
-                        label="Number"
-                        placeholder="phone number"
+                        label="Phone Number"
+                        placeholder="00 000 000 00"
                         hook={register("mobile", {
                           required: true,
                         })}
@@ -290,7 +282,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         name="height"
                         type="number"
                         label="Height(cm)"
-                        placeholder="height"
+                        placeholder=""
                         hook={register("height")}
                       />
                     </div>
@@ -301,7 +293,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         name="weight"
                         type="number"
                         label="Weight(Kg)"
-                        placeholder="weight"
+                        placeholder=""
                         hook={register("weight")}
                       />
                     </div>

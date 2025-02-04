@@ -4,27 +4,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../schemas/LoginSchema";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ChatComponent from "../components/Chat/ChatComponent";
-import icons_slime from "../assets/images/icons_slime_converted.webp";
-import backgroundlogin_converted from "../assets/images/backgroundlogin_converted.webp";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Typography,
-  Input,
-  Button,
-} from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import Loader from "./Loader";
+import { useState, useEffect } from "react";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
+import icons_slime from "../assets/images/icons_slime_converted.webp";
+import loginpage from "../assets/converted images/converted-files/loginpage.png"
+import backgroundlogin_converted from "../assets/images/backgroundlogin_converted.webp";
 
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [wrongCreds, setWrongCreds] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  
   const {
     register,
     handleSubmit,
@@ -36,209 +28,89 @@ function LoginPage() {
   });
 
   const submittedData = (d) => {
-    console.log(d);
     const trimmedEmail = d.email.trim();
     const trimmedPassword = d.password.trim();
-
     setLoading(true);
-
-    axios
-      .get("/api/v1/users/app_creds")
+    
+    axios.get("/api/v1/users/app_creds")
       .then((res) => {
         const formData = new FormData();
         formData.append("email", trimmedEmail);
         formData.append("password", trimmedPassword);
         formData.append("client_id", res.data?.client_id);
-        axios
-          .post("/api/v1/users/login", formData)
+        axios.post("/api/v1/users/login", formData)
           .then((res) => {
-            console.log(res);
             localStorage.setItem("access_token", res.data?.user?.access_token);
             localStorage.setItem("role", res.data?.user?.role);
-            localStorage.setItem("main_id", res.data?.user?.not_a_number);
             setLoading(false);
-            const Toast = Swal.mixin({
+            Swal.fire({
+              icon: "success",
+              title: `Welcome ${res.data?.user?.email}!`,
+              timer: 3000,
               toast: true,
               position: "top-end",
               showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
             });
-
-            if (res.data?.user?.role === "doctor") {
-              navigate("/admin/dashboard");
-              Toast.fire({
-                icon: "success",
-                title: `Welcome ${res.data?.user?.email}!`,
-              });
-            } else if (res.data?.user?.role === "super_admin") {
-              navigate("/admin/create-role/role-assign");
-              Toast.fire({
-                icon: "success",
-                title: `Welcome ${res.data?.user?.email}!`,
-              });
-            } else if (res.data?.user?.role === "franchise") {
-              navigate("/franchise/patients/all-users");
-              Toast.fire({
-                icon: "success",
-                title: `Welcome ${res.data?.user?.email}!`,
-              });
-            } else if (res.data?.user?.role === "receptionist") {
-              navigate("/receptionist/appointment/home");
-              Toast.fire({
-                icon: "success",
-                title: `Welcome ${res.data?.user?.email}!`,
-              });
-            } else {
-              navigate("/user/user-diagnosis/progress-complains");
-              localStorage.setItem(
-                "doctor_fname",
-                res.data?.doctor?.first_name
-              );
-              localStorage.setItem("doctor_lname", res.data?.doctor?.last_name);
-              localStorage.setItem("doctor_id", res.data?.doctor?.id);
-              Toast.fire({
-                icon: "success",
-                title: `Welcome ${res.data?.user?.email}!`,
-              });
-            }
+            navigate("/dashboard");
             reset();
           })
-          .catch((err) => {
-            console.log(err);
+          .catch(() => {
             setLoading(false);
-            if (err.response?.data?.success === false) {
-              setWrongCreds(true);
-            }
+            setWrongCreds(true);
           });
       })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err.message);
-        alert(err.response?.data?.message + "!");
-      });
+      .catch(() => setLoading(false));
   };
-
-  useEffect(() => {
-    const role = localStorage.getItem("role");
-    if (role === "super_admin") {
-      navigate("/admin/dashboard");
-    } else if (role === "franchise") {
-      navigate("/franchise/patients/all-users");
-    } else if (role === "receptionist") {
-      navigate("/receptionist/appointment/home");
-    } else if (role === "patient") {
-      navigate("/user/user-diagnosis/progress-complains");
-    }
-  }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <div
-      className="flex items-center justify-start h-screen font-sans px-4 sm:px-10 bg-cover bg-center"
-      style={{ backgroundImage: `url(${backgroundlogin_converted})` }}
-    >
-      <div className="backdrop-blur-xl px-10 sm:px-10 py-10 rounded-sm shadow-sm w-full lg:max-w-xl lg:ml-52">
-        <Card className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-fit py-2 backdrop-blur-lg bg-white border-white/30 shadow-lg rounded-lg">
-          <form onSubmit={handleSubmit(submittedData)} method="post">
-            <CardBody className="flex flex-col gap-4">
-              <div className="flex justify-center border rounded-md p-4 shadow-inner bg-green-100">
-                <img className="w-32 h-16" src={icons_slime} alt="" />
-              </div>
-              {wrongCreds && (
-                <span className="text-s text-red-500 -mt-4 text-center">
-                  Incorrect Email or Password!
-                </span>
-              )}
-              <Input
-                label="Email"
-                size="lg"
-                name="email"
-                {...register("email")}
-                onBlur={(e) => {
-                  const trimmedEmail = e.target.value.trim();
-                  setValue("email", trimmedEmail);
-                }}
-              />
-              {errors.email && (
-                <span className="text-s text-red-500 -mt-4">
-                  {errors.email?.message}
-                </span>
-              )}
-              <Input
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                size="lg"
-                name="password"
-                {...register("password")}
-              />
-              <div
-                className={`absolute inset-y-0 right-8 ${
-                  wrongCreds ? "top-[5.5rem]" : "top-8"
-                } flex items-center cursor-pointer`}
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <IoEyeSharp className="h-5 w-5 text-gray-500" />
-                ) : (
-                  <FaEyeSlash className="h-5 w-5 text-gray-500" />
-                )}
-              </div>
-              {errors.password && (
-                <span className="text-s text-red-500 -mt-4">
-                  {errors.password?.message}
-                </span>
-              )}
-
-              <div className="-mt-1.5 text-right">
-                <Typography variant="small" color="light">
-                  <Link
-                    to="/forget-password"
-                    className="font-sans text-base hover:underline"
-                  >
-                    Forget Password
-                  </Link>
-                </Typography>
-              </div>
-              <Button
-                type="submit"
-                className="font-sans text-sm bg-green-800 hover:bg-green-900 text-white"
-                fullWidth
-              >
-                Sign In
-              </Button>
-            </CardBody>
-          </form>
-          <CardFooter className="pt-0">
-            <Typography
-              variant="small"
-              className="flex justify-center text-base font-sans"
-            >
-              Don&apos;t have an account?
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="ml-1 font-bold hover:scale-105"
-              >
-                <Link
-                  to="/signup"
-                  className="text-base font-sans text-green-700"
-                >
-                  Sign Up
-                </Link>
-              </Typography>
-            </Typography>
-          </CardFooter>
-        </Card>
-      </div>
+    className="flex items-center justify-start min-h-screen bg-cover bg-center px-6"
+    style={{ backgroundImage: `url(${loginpage})` }}
+  >
+    <img src={icons_slime} alt="Company Logo" className="absolute top-4 left-4 h-16" />
+    <div className="flex flex-col justify-start p-8 rounded-lg w-full max-w-md ml-[200px]">
+      <h2 className="text-2xl font-bold text-[#1F2937] text-center">Sign In</h2>
+      {wrongCreds && (
+        <p className="text-red-500 text-sm text-center mt-2">Incorrect Email or Password!</p>
+      )}
+      <form onSubmit={handleSubmit(submittedData)} className="mt-4">
+        <div className="mb-4">
+          <label className="block text-gray-700">Email</label>
+          <input
+            type="email"
+            {...register("email")}
+            className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+        </div>
+        <div className="mb-4 relative">
+          <label className="block text-gray-700">Password</label>
+          <input
+            type={showPassword ? "text" : "password"}
+            {...register("password")}
+            className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <div className="absolute inset-y-0 right-4 flex items-center cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <IoEyeSharp className="text-gray-500 mt-8" /> : <FaEyeSlash className="text-gray-500 mt-8" />}
+          </div>
+          {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+        </div>
+        <div className="text-right">
+          <Link to="/forget-password" className="text-[#1F2937] hover:underline">Forgot Password?</Link>
+        </div>
+        <button
+          type="submit"
+          className="w-full mt-4 bg-green-600 text-white p-3 rounded-md hover:bg-green-700"
+        >
+          Sign In
+        </button>
+      </form>
+      <p className="text-left mt-4 text-gray-600">
+        Don’t have an account? <Link to="/signup" className="text-[#1F2937] hover:underline">Sign Up</Link>
+      </p>
     </div>
+  </div>
+  
   );
 }
 

@@ -13,9 +13,9 @@ import QuePart2 from "./Questions/QuePart2";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 import axios from "axios";
+import icons_slime from "../../assets/images/icons_slime_converted.webp";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
-
 
 const steps = [
   "General Details",
@@ -56,7 +56,6 @@ function UserQuestions() {
   };
 
   const handleCallUserApi = async (selectedQuestions) => {
-    console.log("Waah");
     try {
       setLoading(true);
       const res = await axios.get(`/api/v1/users/app_creds`);
@@ -99,7 +98,7 @@ function UserQuestions() {
               position: "center",
               icon: "success",
               title: "Sent Successfully!",
-              text: `Your details has been sent to the doctor.`,
+              text: `Your details have been sent to the doctor.`,
               showConfirmButton: true,
             });
             localStorage.removeItem("client_email");
@@ -139,38 +138,44 @@ function UserQuestions() {
   }, []);
 
   return (
-    <div className="flex w-full px-3 py-2 items-center font-sans">
-      <div className=" h-full flex-grow overflow-auto flex flex-wrap content-start">
-
-        {!isMobile ? (
-          <Stepper sx={{ width: "100%", height: "7%" }}>
-            {steps.map((step, index) => (
-              <Step
-                key={step}
-                className="font-sans"
-                orientation="vertical"
-                indicator={
-                  <StepIndicator
-                    variant={currentStep <= index ? "outlined" : "solid"}
-                    color={currentStep < index ? "success" : "success"}
-                  >
-                    {currentStep <= index ? index + 1 : <Check />}
-                  </StepIndicator>
-                }
-                sx={{
-                  "&::after": {
-                    ...(currentStep > index && index !== steps.length - 1 && {
-                      bgcolor: "success.solidBg",
-                    }),
-                  },
-                }}
-              >
-                <StepButton>{step}</StepButton>
-              </Step>
-            ))}
-          </Stepper>
-        ) : <div className="text-2xl  p-2 font-bold text-[#1F2937]">Registration Page</div>}
-
+    <div className="flex flex-col w-full px-3 bg-white py-2 items-center font-sans">
+       <div className={`flex ${isMobile ? 'gap-2 flex-col' : 'gap-0' } w-full p-5 border-b bg-[#1F2937] rounded-t-lg justify-between items-center`}>
+        <img src={icons_slime} alt="Company Logo" className={`${isMobile ? 'h-12 ' :'h-16'} bg-white p-2 rounded-lg`} />
+        <div className="flex flex-col justify-center items-center flex-grow">
+          <p className="text-lg font-bold text-white">Registration Page</p>
+          <p className="text-sm font-medium text-white mb-5">Fill out the form details carefully for registration</p>
+          {!isMobile && (
+            <Stepper sx={{ width: "80%" }} >
+              {steps.map((step, index) => (
+                <Step
+                  key={step}
+                  className="font-sans"
+                  orientation="horizontal"
+                  indicator={
+                    <StepIndicator
+                      variant={currentStep <= index ? "outlined" : "solid"}
+                      color={currentStep < index ? "success" : "success"}
+                      className="bg-gray-100 p-2 rounded-full"
+                    >
+                      {currentStep <= index ? (
+                        <span className="text-gray-700 text-xl">{index + 1}</span>
+                      ) : (
+                        <Check className="text-white text-xl" />
+                      )}
+                    </StepIndicator>
+                  }
+                >
+                  <StepButton className="text-lg text-white hover:text-blue-500 transition-colors duration-300">
+                    {step}
+                  </StepButton>
+                </Step>
+              ))}
+            </Stepper>
+          )}
+        </div>
+      </div>
+        
+      <div className="w-full flex-grow overflow-auto mt-2">
         {currentStep === 0 && (
           <QueGeneralDetails
             setStoreData={setStoreData}

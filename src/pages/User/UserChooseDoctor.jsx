@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loader from "../Loader";
 import Weightlosscover from "./../../assets/converted images/converted-files/weightlosscover.jpg";
+// import icons_slime from "../assets/images/icons_slime_converted.webp";
 import { IoArrowBackCircle } from "react-icons/io5";
 
 const staticDoctors = [
@@ -22,6 +23,7 @@ const staticDoctors = [
 ];
 
 function UserChooseDoctor() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
   const [getDoctors, setGetDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,9 +35,7 @@ function UserChooseDoctor() {
     axios
       .get(`/api/v1/users`)
       .then((res) => {
-        setGetDoctors(
-          res.data?.users?.filter((user) => user.role === "doctor")
-        );
+        setGetDoctors(res.data?.users?.filter((user) => user.role === "doctor"));
         setLoading(false);
       })
       .catch((err) => {
@@ -43,6 +43,18 @@ function UserChooseDoctor() {
         setLoading(false);
         alert(err.response?.data?.message + "!");
       });
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+  
+    window.addEventListener("resize", handleResize);
+  
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const handleGetDoctorId = (val, first_name) => {
@@ -65,52 +77,57 @@ function UserChooseDoctor() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
+      {/* Back Button - Always Visible on Mobile */}
       <button
-        className="absolute top-5 lg:left-10 md:left-2 sm:left-2"
+        className="absolute top-5 left-5 z-20 text-white hover:opacity-80 md:hidden"
         onClick={() => navigate("/login")}
       >
-        <IoArrowBackCircle size={45} className="text-[#1F2937]" />
+        <IoArrowBackCircle size={45} />
       </button>
 
-      {/* Header Section */}
-      <div className="text-center p-6  text-[#1F2937] rounded-lg mx-4 mt-4">
-        <h1 className="text-3xl font-bold font-architects">Welcome to Our Slime and Smile Portal! </h1>
-        <p className="mt-2 text-lg ">
-          Choose a doctor that best fits your needs. 
-        </p>
-      </div>
-
-      {/* Doctors List */}
-      <div className="grid grid-cols-3  p-4">
-        {getDoctors.map((doctor, index) => (
+      {/* Doctor Sections */}
+      <div className={`flex ${isMobile ? "flex-col" : "flex-row"} w-full h-auto md:h-screen`}>
+        {getDoctors.slice(0, 3).map((doctor, index) => (
           <section
             key={doctor.id}
-            className="flex flex-col items-center justify-center bg-[#1F2937] border gap-1 p-5  rounded-lg "
+            className={`relative ${isMobile ? "w-full min-h-[50vh]" : "w-1/3 h-full"} flex flex-col items-center justify-end text-white border-b last:border-b-0 md:border-r md:last:border-r-0 bg-cover bg-center`}
+            style={{
+              backgroundImage: `url(${staticDoctors[index]?.img || "https://via.placeholder.com/300"})`,
+            }}
           >
-            <img
-              src={
-                staticDoctors[index]?.img || "https://via.placeholder.com/300"
-              }
-              alt="doctor"
-              className="w-64 h-64 rounded-full object-cover mb-4"
-            />
-            <h2 className="text-2xl font-bold text-[#C8E6C9]">
-              {doctor.first_name[0]?.toUpperCase() +
-                doctor.first_name?.slice(1) +
-                " " +
-                doctor.last_name[0]?.toUpperCase() +
-                doctor.last_name?.slice(1)}
-            </h2>
-            <p className="text-lg text-gray-600 mb-4">
-              {staticDoctors[index]?.specialist || "General Practitioner"}
-            </p>
-            <button
-              onClick={() => handleGetDoctorId(doctor.id, doctor.first_name)}
-              className="px-6 py-2 bg-[#C8E6C9] font-semibold rounded-lg "
-            >
-              Select
-            </button>
+            {/* Overlay for better text readability */}
+            <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+
+            {/* Show Back Button on First Section for Desktop */}
+            {!isMobile && index === 0 && (
+              <button
+                className="absolute top-5 left-5 z-20 text-white hover:opacity-80"
+                onClick={() => navigate("/login")}
+              >
+                <IoArrowBackCircle size={45} />
+              </button>
+            )}
+
+            {/* Doctor Details with Glass Effect */}
+            <div className="relative z-10 w-full backdrop-blur-md bg-white/30 border border-white/50 p-6 flex flex-col items-center md:flex-row md:justify-between">
+              <div className="text-center md:text-left">
+                <h2 className="text-xl font-bold text-white">
+                  {doctor.first_name[0]?.toUpperCase() +
+                    doctor.first_name?.slice(1) +
+                    " " +
+                    doctor.last_name[0]?.toUpperCase() +
+                    doctor.last_name?.slice(1)}
+                </h2>
+                <p className="text-lg">{staticDoctors[index]?.specialist || "General Practitioner"}</p>
+              </div>
+              <button
+                onClick={() => handleGetDoctorId(doctor.id, doctor.first_name)}
+                className="mt-4 md:mt-0 px-4 py-2 border-2 border-white hover:bg-white hover:text-[#1F2937] text-white font-semibold rounded-lg transition duration-300"
+              >
+                Select
+              </button>
+            </div>
           </section>
         ))}
       </div>
