@@ -18,7 +18,7 @@ RUN set -ex && npm i --legacy-peer-deps
 COPY . .
 
 # Build the React app - Increase memory limit
-RUN set -ex && NODE_OPTIONS="--max-old-space-size=4096" npm run build
+RUN set -ex && npm run build
 
 # Step 2: Use a lightweight Nginx image to serve the app
 FROM nginx:1.23-alpine
