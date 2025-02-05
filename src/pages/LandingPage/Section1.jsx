@@ -1,4 +1,5 @@
 import Banner1 from "./../../assets/images/Banner1_converted.webp";
+import Frame from "../../assets/converted images/converted-files/Frame.png"
 import mobileview from "./../../assets/images/mobileview_converted.webp";
 import React, { useState, useEffect } from "react";
 function Section1() {
@@ -17,7 +18,7 @@ function Section1() {
 
   const renderContent = (image, text1, text2, text3, text4, key) => (
     <div key={key} className="relative h-full w-full">
-      <div className="relative h-full w-full aspect-w-16 aspect-h-9">
+      <div className="relative h-full w-full aspect-w-16 mt-16 aspect-h-9">
         <img
           src={image}
           alt={key}
@@ -52,7 +53,7 @@ function Section1() {
   );
   const contentData = [
     {
-      image: isMobile ? mobileview : Banner1,
+      image: isMobile ? Frame : Frame,
       // text1: "Personalized",
       // text2: "Diet",
       // text3: "Just For You",

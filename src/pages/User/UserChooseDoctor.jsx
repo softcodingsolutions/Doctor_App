@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loader from "../Loader";
 import Weightlosscover from "./../../assets/converted images/converted-files/weightlosscover.jpg";
-// import icons_slime from "../assets/images/icons_slime_converted.webp";
+import icons_slime from "../../assets/images/icons_slime_converted.webp";
 import { IoArrowBackCircle } from "react-icons/io5";
 
 const staticDoctors = [
@@ -78,14 +78,19 @@ function UserChooseDoctor() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Back Button - Always Visible on Mobile */}
-      <button
-        className="absolute top-5 left-5 z-20 text-white hover:opacity-80 md:hidden"
-        onClick={() => navigate("/login")}
-      >
-        <IoArrowBackCircle size={45} />
-      </button>
-
+        {/* Back Button - Always Visible on Mobile */}
+          <button
+            className="absolute top-5 left-5 z-20 text-white hover:opacity-80 md:hidden"
+            onClick={() => navigate('/login')}
+          >
+            <IoArrowBackCircle size={45} />
+          </button>
+          <img
+            src={icons_slime}
+            alt="Company Logo"
+            className={`absolute  bg-white z-20 p-2 rounded-md top-4 right-4 ${isMobile ? 'h-12 ' : 'h-16 '}`}
+          />
+  
       {/* Doctor Sections */}
       <div className={`flex ${isMobile ? "flex-col" : "flex-row"} w-full h-auto md:h-screen`}>
         {getDoctors.slice(0, 3).map((doctor, index) => (

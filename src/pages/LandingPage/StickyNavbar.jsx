@@ -75,9 +75,9 @@ export function StickyNavbar() {
               }}
               variant="gradient"
               size="sm"
-              className="hidden lg:inline-block"
+              className="hidden lg:inline-block "
             >
-              <span className="text-sm">Sign in</span>
+              <span className="text-sm bg-[#1F2937]">Sign in</span>
             </Button>
             <IconButton
               variant="text"
