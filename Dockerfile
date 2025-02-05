@@ -1,14 +1,15 @@
 # Step 1: Use a lightweight Node.js image for building the React app
-FROM node:22-alpine AS build
+FROM node:22-slim AS build
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
+ENV GENERATE_SOURCEMAP=false
 # Enable debug mode to trace each command
 RUN set -ex
 
 # Copy only package.json and package-lock.json to leverage Docker layer caching
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN set -ex && npm i --legacy-peer-deps
@@ -16,13 +17,8 @@ RUN set -ex && npm i --legacy-peer-deps
 # Copy the rest of the application source code
 COPY . .
 
-# Build the React app - Increase memory limit significantly
-RUN set -ex && npm run build
-
-# If 8GB isn't enough, try 12GB or 16GB. But also consider optimizing your build.
-# RUN set -ex && NODE_OPTIONS="--max-old-space-size=12288" npm run build
-# RUN set -ex && NODE_OPTIONS="--max-old-space-size=16384" npm run build
-
+# Build the React app - Increase memory limit
+RUN set -ex && NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
 # Step 2: Use a lightweight Nginx image to serve the app
 FROM nginx:1.23-alpine
