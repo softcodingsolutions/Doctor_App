@@ -12,7 +12,7 @@ function NotificationComponent() {
   const notificationSound = useRef(null);
 
   const userId = localStorage.getItem("user_id");
-  const { sendMessage } = useWebSocket("ws:/http://localhost:3000/cable", {
+  const { sendMessage } = useWebSocket("wss://docapi.softcodingsolutions.com/cable", {
     onOpen: JSON.stringify({
       command: "subscribe",
       identifier: JSON.stringify({

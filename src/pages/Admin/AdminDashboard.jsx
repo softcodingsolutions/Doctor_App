@@ -51,7 +51,7 @@ function AdminDashboard() {
     scrollToBottom();
   }, [complaints]);
 
-  const { sendJsonMessage } = useWebSocket("wss://localhost:3000/cable", {
+  const { sendJsonMessage } = useWebSocket("wss://docapi.softcodingsolutions.com/cable", {
     protocol: "actioncable-v1-json",
     onOpen: () => console.log("WebSocket connection established."),
     onMessage: (event) => handleWebSocketMessage(event),

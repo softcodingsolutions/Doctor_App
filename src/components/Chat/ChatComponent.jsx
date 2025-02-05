@@ -76,7 +76,7 @@ function ChatComponent() {
     updateUnreadStatus(false);
   };
 
-  const { sendMessage } = useWebSocket("wss://localhost:3000/cable", {
+  const { sendMessage } = useWebSocket("wss://docapi.softcodingsolutions.com/cable", {
     onOpen: subscribeToChannel,
     onMessage: handleWebSocketMessage,
   });
