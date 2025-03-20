@@ -155,6 +155,7 @@ export default function Indooractivity() {
   const navigate = useNavigate();
   const [machines, setMachines] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [userId,setUserId] = useState('');
   const [assignedData, setAssignedData] = useState(false);
   const [dialogData, setDialogData] = useState({
     name: "",
@@ -303,6 +304,7 @@ export default function Indooractivity() {
     const timeIn24HourFormat = `${hours}:${minutes}`;
 
     const formdata = new FormData();
+    formdata.append("appointment[user_id]", dialogData.userId);
     formdata.append("appointment[date]", consultingTime);
     formdata.append("appointment[time]", timeIn24HourFormat);
     formdata.append("appointment[machine_detail_id]", dialogData.machineId);
@@ -596,6 +598,7 @@ export default function Indooractivity() {
                                 number: user?.phone_number,
                                 caseNumber: user?.case_number,
                               });
+                              setUserId(user?.id)
                               setGetParticularCustomer([]);
                               setSearchTerm(user.first_name);
                             }}
