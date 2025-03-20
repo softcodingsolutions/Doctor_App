@@ -11,7 +11,7 @@ import { IoCloseOutline, IoPersonSharp } from "react-icons/io5";
 import { IoIosSend } from "react-icons/io";
 import { GrVirtualMachine } from "react-icons/gr";
 import icons_slime from "../../assets/images/icons_slime_converted.webp";
-import { SiPowerapps } from "react-icons/si";
+import { FaFilePen } from "react-icons/fa6";
 
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       id: "2",
       title: "Consulting Appointment",
       to: "appointment/create-appointment",
-      icons: <SiPowerapps size={18} />,
+      icons: <FaFilePen size={18} />,
     },
     {
       id: "7",
