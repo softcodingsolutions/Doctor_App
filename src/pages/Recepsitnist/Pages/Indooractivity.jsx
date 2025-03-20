@@ -234,6 +234,7 @@ export default function Indooractivity() {
       );
 
       if (existingAppointment) {
+        console.log(existingAppointment, "Patient Data");
         setDialogData({
           name: existingAppointment.user?.first_name || "",
           last_name: existingAppointment.user?.last_name || "",
@@ -264,7 +265,6 @@ export default function Indooractivity() {
           doctorId: actualDoctorId,
           doctorName,
           time: timeSlot,
-          caseNumber: "",
           machineId: machineId,
         });
         setAssignedData(false);
@@ -591,10 +591,10 @@ export default function Indooractivity() {
                             onClick={() => {
                               setDialogData({
                                 ...dialogData,
-                                name: user.first_name,
-                                last_name: user.last_name,
-                                number: user.phone_number,
-                                caseNumber: user.case_number,
+                                name: user?.first_name,
+                                last_name: user?.last_name,
+                                number: user?.phone_number,
+                                caseNumber: user?.case_number,
                               });
                               setGetParticularCustomer([]);
                               setSearchTerm(user.first_name);
