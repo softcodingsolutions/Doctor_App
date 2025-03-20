@@ -10,8 +10,8 @@ import { FaLightbulb } from "react-icons/fa";
 import { IoCloseOutline, IoPersonSharp } from "react-icons/io5";
 import { IoIosSend } from "react-icons/io";
 import { GrVirtualMachine } from "react-icons/gr";
-
-// import { SiPowerapps } from "react-icons/si";
+import icons_slime from "../../assets/images/icons_slime_converted.webp";
+import { SiPowerapps } from "react-icons/si";
 
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       id: "2",
       title: "Consulting Appointment",
       to: "appointment/create-appointment",
-      // icons: <SiPowerapps size={18} />,
+      icons: <SiPowerapps size={18} />,
     },
     {
       id: "7",
@@ -94,11 +94,7 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       <div className="flex-shrink-0 overflow-hidden p-2">
         <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
           <div className="flex w-70 sm:hidden xl:flex p-5 items-center justify-center shadow-sm bg-white  rounded-md">
-            <img
-              className="h-16 sm:h-full"
-              src="https://slimandsmile.com/assets/admin/global/img/logo.webp"
-              alt="img"
-            />
+            <img src={icons_slime} alt="Logo" className="h-[60px]" />
           </div>
           <div className="hidden sm:flex xl:hidden items-center justify-center shadow-sm bg-white p-3 rounded-md">
             <FaPlus size={30} className="text-black" />

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { useState } from "react";
 import { MdOutlineMedicalInformation } from "react-icons/md";
+import icons_slime from "../../assets/images/icons_slime_converted.webp";
 
 function UserSidebar({ onSidebarHide, showSidebar, user }) {
   const navigate = useNavigate();
@@ -38,11 +39,7 @@ function UserSidebar({ onSidebarHide, showSidebar, user }) {
       <div className="flex-shrink-0 overflow-hidden p-2">
         <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
           <div className="flex w-70 sm:hidden xl:flex p-5 items-center justify-center shadow-sm bg-white  rounded-md">
-            <img
-              className="h-16 sm:h-full"
-              src="https://slimandsmile.com/assets/admin/global/img/logo.webp"
-              alt="img"
-            />
+            <img src={icons_slime} alt="Logo" className="h-[60px]" />
           </div>
           <div className="hidden sm:flex xl:hidden items-center justify-center shadow-sm bg-white p-3 rounded-md">
             <FaPlus size={30} className="text-black" />
