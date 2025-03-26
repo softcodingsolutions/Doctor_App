@@ -5,6 +5,7 @@ import axios from "axios";
 import Loader from "../Loader";
 
 function RecepsitnistMain() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   const [admin, setAdmin] = useState();
   const [showSidebar, onSetShowSidebar] = useState(false);
@@ -62,8 +63,10 @@ function RecepsitnistMain() {
           onSetShowSidebar(false);
         }}
         showSidebar={showSidebar}
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
       />
-      <Outlet context={[onSidebarHide, admin]} />
+      <Outlet context={{ isCollapsed, admin }} />
     </div>
   );
 }

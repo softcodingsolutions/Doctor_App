@@ -155,7 +155,7 @@ export default function Indooractivity() {
   const navigate = useNavigate();
   const [machines, setMachines] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [userId,setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   const [assignedData, setAssignedData] = useState(false);
   const [dialogData, setDialogData] = useState({
     name: "",
@@ -191,7 +191,6 @@ export default function Indooractivity() {
       .catch((err) => {
         console.error(err);
         setLoader(false);
-        alert(err.response?.data?.message + "!");
       });
   };
 
@@ -318,7 +317,6 @@ export default function Indooractivity() {
       .then((res) => {
         console.log(res);
         setIsDialogOpen(false);
-        alert("Successfully created your Machine Consulting Appointment!");
         setLoader(false);
         resetDialog();
         handleDisplay(consultingTime);
@@ -327,7 +325,7 @@ export default function Indooractivity() {
       })
       .catch((err) => {
         console.error(err.response?.data?.message || "An error occurred!");
-        alert(err.response?.data?.message || "An error occurred!");
+
         setIsDialogOpen(false);
         setLoader(false);
       });
@@ -395,7 +393,7 @@ export default function Indooractivity() {
   };
 
   const handleSheet = () => {
-    navigate("/appointment-sheet");
+    window.open("/appointment-sheet", "_blank");
   };
 
   const handleSearchTerm = (value) => {
@@ -433,7 +431,6 @@ export default function Indooractivity() {
       })
       .catch((err) => {
         console.error(err);
-        alert(err.response?.data?.message || "An error occurred!");
       });
   }, [consultingTime]);
 
@@ -484,7 +481,7 @@ export default function Indooractivity() {
           </div>
 
           <div className="flex justify-center">
-            {["Bhavesh", "Rupali", "Nidhi"].map((userName) => (
+            {["Bhavesh", "Dipalee", "Nidhi"].map((userName) => (
               <UserTable
                 key={userName}
                 userName={userName}
@@ -598,7 +595,7 @@ export default function Indooractivity() {
                                 number: user?.phone_number,
                                 caseNumber: user?.case_number,
                               });
-                              setUserId(user?.id)
+                              setUserId(user?.id);
                               setGetParticularCustomer([]);
                               setSearchTerm(user.first_name);
                             }}

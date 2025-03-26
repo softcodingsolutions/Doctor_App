@@ -23,21 +23,9 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   const sidebarItems = [
     {
       id: "1",
-      title: "Home",
-      to: "appointment/home",
-      icons: <MdApps size={19} />,
-    },
-    {
-      id: "5",
-      title: "Patient List",
-      to: "/receptionist/patients/all-users",
-      icons: <IoPersonSharp size={18} />,
-    },
-    {
-      id: "2",
       title: "Consulting Appointment",
-      to: "appointment/create-appointment",
-      icons: <FaFilePen size={18} />,
+      to: "appointment/home",
+      icons: <FaFilePen size={19} />,
     },
     {
       id: "7",
@@ -45,6 +33,19 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       to: "appointment/create-machine-appointment",
       icons: <GrVirtualMachine size={18} />,
     },
+    {
+      id: "5",
+      title: "Patient List",
+      to: "/receptionist/patients/all-users",
+      icons: <IoPersonSharp size={18} />,
+    },
+    // {
+    //   id: "2",
+    //   title: "Consulting Appointment",
+    //   to: "appointment/create-appointment",
+    //   icons: <FaFilePen size={18} />,
+    // },
+
     {
       id: "6",
       title: "Consulting / Machine Details",

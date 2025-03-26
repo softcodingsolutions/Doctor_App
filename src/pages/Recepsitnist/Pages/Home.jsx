@@ -1,9 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import InsideLoader from "../../InsideLoader";
 import { HiClipboardDocumentList } from "react-icons/hi2";
+import { IoIosRemoveCircleOutline } from "react-icons/io";
+import { FaCirclePlus } from "react-icons/fa6";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [doctorList, setDoctorList] = useState("");
   const [consultingTime, setConsultingTime] = useState(
@@ -13,12 +17,8 @@ export default function Home() {
   const [machineConsultingTimes, setMachineConsultingTimes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [machineOpen, setMachineOpen] = useState(false);
-  const [consultingOpen, setConsultingOpen] = useState(true);
   const [isToday, setIsToday] = useState(true);
-
-  const handleDoctorList = (e) => {
-    setDoctorList(e.target.value);
-  };
+  const [visitorData, setVisitorData] = useState([]);
 
   const handleConsulting = (e) => {
     const selectedDate = e.target.value;
@@ -74,14 +74,17 @@ export default function Home() {
     return new Date(date).toLocaleDateString(undefined, options);
   };
 
-  const handleOpen = () => {
-    setMachineOpen(true);
-    setConsultingOpen(false);
-  };
-
-  const handleClose = () => {
-    setMachineOpen(false);
-    setConsultingOpen(true);
+  const allAppointments = () => {
+    axios
+      .get(`/api/v1/appointments/show_all_appointments?date=${consultingTime}`)
+      .then((res) => {
+        console.log(res, "All Appointments");
+        setVisitorData(res.data.visitor_list);
+        setConsultingTimes(res.data?.cosulting_times);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -98,6 +101,99 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    allAppointments();
+  }, [consultingTime]);
+
+  const transformDataForDoctors = (data) => {
+    const transformed = {};
+
+    data.forEach((item) => {
+      const doctor =
+        item?.doctor?.first_name && item?.doctor?.last_name
+          ? `${item.doctor.first_name} ${item.doctor.last_name}`
+          : "Unknown Doctor";
+
+      const time = item.time ? item.time : "Unknown Time";
+
+      let patient = "Unknown Patient";
+
+      // If it's a regular appointment
+      if (item?.user) {
+        const firstName = item?.user?.first_name || "Unknown";
+        const lastName = item?.user?.last_name || "";
+        const phone = item?.user?.phone_number || "No Phone";
+        patient = `${firstName} ${lastName} (${phone})`;
+      }
+
+      // If it's from visitor data
+      if (item?.name && item?.phone) {
+        patient = `${item.name} (${item.phone})`;
+      }
+
+      if (!transformed[doctor]) {
+        transformed[doctor] = {};
+      }
+
+      if (!transformed[doctor][time]) {
+        transformed[doctor][time] = [];
+      }
+
+      transformed[doctor][time].push(patient);
+    });
+
+    return transformed;
+  };
+
+  const handleDelete = (patient, time, doctor) => {
+    const visitorRecord = visitorData.find(
+      (v) => `${v.name} (${v.phone})` === patient
+    );
+
+    let apiUrl = "";
+    let appointmentId = null;
+
+    if (visitorRecord) {
+      appointmentId = visitorRecord.id;
+      apiUrl = `/api/v1/visitorappointments/${appointmentId}`;
+    } else {
+      const appointmentRecord = consultingTimes.find(
+        (a) =>
+          a.time === time &&
+          `${a.user.first_name} ${a.user.last_name} (${a.user.phone_number})` ===
+            patient
+      );
+
+      if (appointmentRecord) {
+        appointmentId = appointmentRecord.id;
+        apiUrl = `/api/v1/appointments/${appointmentId}`;
+      }
+    }
+
+    if (!appointmentId) {
+      alert("Appointment not found.");
+      return;
+    }
+
+    axios
+      .delete(apiUrl)
+      .then((res) => {
+        alert("Appointment deleted successfully!");
+        allAppointments();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Error deleting appointment.");
+      });
+  };
+
+  const combinedData = [...consultingTimes, ...visitorData];
+  const transformedDoctorData = transformDataForDoctors(combinedData);
+
+  const handleRedirect = () => {
+    navigate(`/receptionist/appointment/create-appointment`);
+  };
+
+  useEffect(() => {
     handleAppointment();
   }, [consultingTime, doctorList]);
 
@@ -106,227 +202,127 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full ">
-      <div className="rounded-lg bg-card h-[93vh] bg-white">
-        <div className="flex flex-col px-2 py-1 h-full space-y-2.5 ">
-          <div className="flex flex-col gap-2 p-2 w-full">
-            <div className="flex">
-              <div>
-                <HiClipboardDocumentList size={40} />
-              </div>
-              {isToday ? (
-                <label className="flex justify-start text-lg font-bold  tracking-wide">
-                  Today's Appointments
-                </label>
-              ) : (
-                <label className="flex justify-start text-lg font-bold  tracking-wide">
-                  Appointments
-                </label>
-              )}
+    <div className="w-full bg-white h-full">
+      <div className="flex flex-col px-2 py-1 h-full">
+        <div className="flex flex-col gap-2 p-2 w-full">
+          <div className="flex w-full justify-center items-center mb-5">
+            <div>
+              <HiClipboardDocumentList size={40} />
             </div>
-            <label className="flex  justify-start text-md mt-2 Plfont-semibold tracking-wide">
-              {formatDate(consultingTime)}
+            <label className="flex justify-center text-lg font-bold  tracking-wide">
+              Consulting Appointment Lists
             </label>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 p-2">
-              <select
-                onChange={handleDoctorList}
-                defaultValue=""
-                value={doctorList}
-                className="p-2 rounded-md border border-black w-full sm:w-[40vh]"
-              >
-                <option value="" selected>
-                  Select Doctor
-                </option>
-                {filteredDoctors
-                  .filter((doctor) => doctor.role === "doctor")
-                  .map((name) => (
-                    <option key={name.id} value={name.id}>
-                      {name.first_name} {name.last_name}
-                    </option>
-                  ))}
-              </select>
-
-              <input
-                type="date"
-                placeholder="Select date"
-                className="py-1 px-2 rounded-md border border-black w-full sm:w-[40vh]"
-                onChange={handleConsulting}
-              />
-
-              <button
-                onClick={consultingOpen ? handleOpen : handleClose}
-                className="min-w-fit border cursor-pointer bg-[#1F2937] text-white p-2 rounded-md"
-              >
-                {consultingOpen
-                  ? "Machine Consulting Appointments"
-                  : "Consulting Time Appointments"}
-              </button>
+          </div>
+          <div className="flex justify-between ">
+            <div className="flex flex-col gap-2">
+              <div className="">
+                <input
+                  type="date"
+                  placeholder="Select date"
+                  className="py-1 px-2 rounded-md border border-black w-full "
+                  onChange={handleConsulting}
+                />
+              </div>
+              <label className="flex  justify-start text-md font-semibold tracking-wide">
+                {formatDate(consultingTime)}
+              </label>
+            </div>
+            <div className="flex flex-col">
+              <div className="flex gap-1">
+                <button
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700"
+                  onClick={() =>
+                    navigate(`/receptionist/appointment/create-appointment`)
+                  }
+                >
+                  <FaCirclePlus size={20} /> Create Appointment
+                </button>
+              </div>
+              <div className="flex gap-1 mt-2">
+                <div className="w-4 h-4 bg-[#F1F1E8] border mt-1 border-gray-800"></div>
+                <div className="font-medium">- Visitor</div>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className="flex w-full h-full items-center justify-center gap-1">
-            {/* consulting time table */}
-            {consultingOpen && (
-              <div className="flex w-full flex-col items-center h-full">
-                <div className="text-xl font-semibold tracking-wide mb-2">
-                  Consulting Time Appointments
-                </div>
-                <div className="animate-fade-left animate-delay-75 w-full bg-white shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[90%]">
-                  <table className="w-full min-w-[460px] z-0">
-                    <thead className="uppercase">
-                      <tr className="bg-[#1F2937] text-white rounded-md">
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Date
+        <div className="flex w-full h-full mt-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-full">
+            {Object.keys(transformedDoctorData).map((doctor, doctorIndex) => (
+              <div
+                key={doctorIndex}
+                className="p-2  rounded-lg  border-gray-200"
+              >
+                <h3
+                  className={`text-md text-center font-semibold border-b pb-2  bg-green-500 p-2 rounded-md`}
+                >
+                  {doctor}
+                </h3>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full mt-2 rounded-lg">
+                    <thead className="bg-[#F8FAFC] text-sm ">
+                      <tr>
+                        <th className="px-4 py-2 border-b text-left ">Time</th>
+                        <th className="px-4 py-2 border-b text-left">
+                          Patient
                         </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Time
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Patient Name
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Type
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Doctor Name
-                        </th>
+                        <th className="px-4 py-2 border-b text-left">Phone</th>
+                        <th className="px-4 py-2 border-b text-left "></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {consultingTimes.length > 0 ? (
-                        consultingTimes.map((data, index) => {
-                          return (
-                            <tr key={index} className="map">
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {formatDate(data.date)}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.time}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.user?.first_name} {data.user?.last_name}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.user?.follow_up
-                                    ? "Follow Up"
-                                    : "New Case"}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.doctor?.first_name}{" "}
-                                  {data.doctor?.last_name}
-                                </span>
-                              </td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan="5"
-                            className="py-28 text-center h-full w-full  justify-center"
-                          >
-                            No Appointment is created for Consulting Time
-                          </td>
-                        </tr>
+                      {Object.keys(transformedDoctorData[doctor]).map(
+                        (time, timeIndex) =>
+                          transformedDoctorData[doctor][time].map(
+                            (patient, patientIndex) => {
+                              const visitorRecord = visitorData.find(
+                                (v) => `${v.name} (${v.phone})` === patient
+                              );
+
+                              // Extract name and phone separately
+                              const [name, phone] = patient.split(" (");
+                              const formattedPhone = phone
+                                ? phone.replace(")", "")
+                                : "";
+
+                              return (
+                                <tr
+                                  key={`${timeIndex}-${patientIndex}`}
+                                  className={`border-b  transition duration-200   ${
+                                    visitorRecord ? "bg-[#F1F1E8]" : ""
+                                  }`}
+                                >
+                                  <td className="px-2 py-2 text-sm text-gray-800 ">
+                                    {time}
+                                  </td>
+                                  <td className="px-2 py-2 text-sm text-gray-700 ">
+                                    {name}
+                                  </td>
+                                  <td className="px-2 py-2 text-sm text-gray-700 ">
+                                    {formattedPhone}
+                                  </td>
+                                  <td>
+                                    <button
+                                      tooltip="Cancel Appointment"
+                                      className="inline-flex items-center px-2 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-700  hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                      onClick={() =>
+                                        handleDelete(patient, time, doctor)
+                                      }
+                                    >
+                                      <IoIosRemoveCircleOutline />
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            }
+                          )
                       )}
                     </tbody>
                   </table>
                 </div>
               </div>
-            )}
-            {/* machine time table */}
-            {machineOpen && (
-              <div className="flex w-full flex-col items-center  h-full">
-                <div className="text-xl font-semibold tracking-wide mb-2">
-                  Machine Consulting Appointments
-                </div>
-                <div className="animate-fade-left animate-delay-75 bg-white w-full shadow-gray-400 shadow-inner border rounded-md border-gray-400 animate-once animate-ease-out overflow-auto h-[90%]">
-                  <table className="w-full min-w-[460px] z-0">
-                    <thead className="uppercase">
-                      <tr className="bg-[#1F2937] text-white rounded-md">
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Date
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Time
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Patient Name
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Type
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Doctor Name
-                        </th>
-                        <th className="text-sm uppercase tracking-wide font-medium py-3 px-4 text-left">
-                          Machine Name
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {machineConsultingTimes.length > 0 ? (
-                        machineConsultingTimes.map((data, index) => {
-                          return (
-                            <tr key={index} className="map">
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {formatDate(data.date)}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {convertToAmPm(data.time)}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.user.first_name} {data.user.last_name}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.user?.follow_up
-                                    ? "Follow Up"
-                                    : "New Case"}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.doctor.first_name}{" "}
-                                  {data.doctor.last_name}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 border-b border-b-gray-50">
-                                <span className="text-black text-base font-medium ml-1">
-                                  {data.machine_detail.name}
-                                </span>
-                              </td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <tr>
-                          <td colSpan="6" className="py-28 justify-center text-center">
-                            No Appointment is created for Machine Consulting
-                            Time
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
+            ))}
           </div>
         </div>
       </div>
