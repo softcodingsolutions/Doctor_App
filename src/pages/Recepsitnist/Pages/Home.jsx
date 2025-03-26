@@ -240,7 +240,7 @@ export default function Home() {
               </div>
               <div className="flex gap-1 mt-2">
                 <div className="w-4 h-4 bg-[#F1F1E8] border mt-1 border-gray-800"></div>
-                <div className="font-medium">- Visitor</div>
+                <div className="font-medium">- Visitor Patient</div>
               </div>
             </div>
           </div>
