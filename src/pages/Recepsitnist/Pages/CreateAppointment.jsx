@@ -27,6 +27,7 @@ export default function CreateAppointment() {
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("Create Consulting Appointment");
+  const [bookedAppointments, setBookedAppointments] = useState([]);
   const [visitorData, setVisitorData] = useState({
     name: "",
     phone: "",
@@ -34,15 +35,13 @@ export default function CreateAppointment() {
     time: "",
     doctor_id: "",
   });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setVisitorData((prev) => {
       const updatedData = { ...prev, [name]: value };
 
-      if (name === "doctor_id") {
-        handleTime(value); // Ensure consulting times load
+      if (name === "doctor_id" || name === "date") {
+        fetchAppointmentsAndSelectSlot();
       }
 
       return updatedData;
@@ -188,6 +187,41 @@ export default function CreateAppointment() {
     }
   }
 
+  const fetchAppointmentsAndSelectSlot = async () => {
+    if (!visitorData.date || !visitorData.doctor_id) return;
+
+    try {
+      const response = await axios.get(
+        `/api/v1/appointments/show_all_appointments?date=${visitorData.date}&doctor_id=${visitorData.doctor_id}`
+      );
+      console.log(response, "Appointmnets");
+      const bookedTimes = response.data.visitor_list.map(
+        (appointment) => appointment.time
+      );
+
+      setBookedAppointments(bookedTimes);
+
+      console.log(bookedTimes, "Booked Slots");
+    } catch (err) {
+      console.error("Error fetching booked appointments:", err);
+    }
+  };
+
+  function formatTimeSlot(isoTime) {
+    const date = new Date(isoTime);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  useEffect(() => {
+    if (visitorData.doctor_id && visitorData.date) {
+      fetchAppointmentsAndSelectSlot();
+    }
+  }, [visitorData.doctor_id, visitorData.date]);
+
   useEffect(() => {
     doctorNameList();
   }, []);
@@ -309,7 +343,7 @@ export default function CreateAppointment() {
                               }
                               onChange={(e) => {
                                 handleChange(e);
-                                handleTime(e.target.value); // Load new doctor times on selection
+                                handleTime(e.target.value);
                               }}
                               className="text-blue-500 focus:ring-blue-500"
                             />
@@ -317,7 +351,7 @@ export default function CreateAppointment() {
                               className="text-gray-800 font-medium"
                               onChange={(e) => {
                                 handleChange(e);
-                                handleTime(e.target.value); 
+                                handleTime(e.target.value);
                               }}
                             >
                               {doctor.first_name} {doctor.last_name}
@@ -356,27 +390,43 @@ export default function CreateAppointment() {
                       <div className="grid grid-cols-10  gap-3">
                         {times
                           .filter((timeSlot) => timeSlot.slot === "morning")
-                          .map((timeSlot) => (
-                            <label
-                              key={timeSlot.id}
-                              className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
-                              ${
-                                visitorData.time === timeSlot.time
-                                  ? "bg-blue-500 text-white border-blue-600 shadow-md"
-                                  : "bg-white text-gray-800 border-gray-300 hover:bg-blue-100 hover:border-blue-500"
-                              }`}
-                            >
-                              <input
-                                type="radio"
-                                name="time"
-                                value={timeSlot.time}
-                                checked={visitorData.time === timeSlot.time}
-                                onChange={handleChange}
-                                className="hidden"
-                              />
-                              {formatTime(timeSlot.time)}
-                            </label>
-                          ))}
+                          .sort(
+                            (a, b) =>
+                              new Date(`1970-01-01T${a.time}`) -
+                              new Date(`1970-01-01T${b.time}`)
+                          ) // Sorting time slots in ascending order
+                          .map((timeSlot) => {
+                            const formattedSlotTime = formatTimeSlot(
+                              timeSlot.time
+                            );
+                            const isBooked =
+                              bookedAppointments.includes(formattedSlotTime);
+
+                            return (
+                              <label
+                                key={timeSlot.id}
+                                className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
+                                ${
+                                  isBooked
+                                    ? "bg-gray-400 text-gray-700 cursor-not-allowed" // Style booked slots differently
+                                    : visitorData.time === timeSlot.time
+                                    ? "bg-blue-500 text-white border-blue-600 shadow-md"
+                                    : "bg-white text-gray-800 border-gray-300 hover:bg-blue-100 hover:border-blue-500"
+                                }`} // Style the slot based on selection
+                              >
+                                <input
+                                  type="radio"
+                                  name="time"
+                                  value={timeSlot.time}
+                                  checked={visitorData.time === timeSlot.time}
+                                  onChange={handleChange}
+                                  className="hidden"
+                                  disabled={isBooked}
+                                />
+                                {formatTime(timeSlot.time)}
+                              </label>
+                            );
+                          })}
                       </div>
                     </div>
 
@@ -388,27 +438,43 @@ export default function CreateAppointment() {
                       <div className="grid grid-cols-10  gap-3">
                         {times
                           .filter((timeSlot) => timeSlot.slot === "afternoon")
-                          .map((timeSlot) => (
-                            <label
-                              key={timeSlot.id}
-                              className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
-                              ${
-                                visitorData.time === timeSlot.time
-                                  ? "bg-orange-500 text-white border-orange-600 shadow-md"
-                                  : "bg-white text-gray-800 border-gray-300 hover:bg-orange-100 hover:border-orange-500"
-                              }`}
-                            >
-                              <input
-                                type="radio"
-                                name="time"
-                                value={timeSlot.time}
-                                checked={visitorData.time === timeSlot.time}
-                                onChange={handleChange}
-                                className="hidden"
-                              />
-                              {formatTime(timeSlot.time)}
-                            </label>
-                          ))}
+                          .sort(
+                            (a, b) =>
+                              new Date(`1970-01-01T${a.time}`) -
+                              new Date(`1970-01-01T${b.time}`)
+                          ) // Sorting time slots in ascending order
+                          .map((timeSlot) => {
+                            const formattedSlotTime = formatTimeSlot(
+                              timeSlot.time
+                            );
+                            const isBooked =
+                              bookedAppointments.includes(formattedSlotTime);
+
+                            return (
+                              <label
+                                key={timeSlot.id}
+                                className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
+                                ${
+                                  isBooked
+                                    ? "bg-gray-400 text-gray-700 cursor-not-allowed" // Style booked slots differently
+                                    : visitorData.time === timeSlot.time
+                                    ? "bg-orange-500 text-white border-orange-600 shadow-md"
+                                    : "bg-white text-gray-800 border-gray-300 hover:bg-orange-100 hover:border-orange-500"
+                                }`} // Style the slot based on selection
+                              >
+                                <input
+                                  type="radio"
+                                  name="time"
+                                  value={timeSlot.time}
+                                  checked={visitorData.time === timeSlot.time}
+                                  onChange={handleChange}
+                                  className="hidden"
+                                  disabled={isBooked} // Disable the slot if it's booked
+                                />
+                                {formatTime(timeSlot.time)}
+                              </label>
+                            );
+                          })}
                       </div>
                     </div>
 
@@ -420,27 +486,43 @@ export default function CreateAppointment() {
                       <div className="grid grid-cols-10  gap-3">
                         {times
                           .filter((timeSlot) => timeSlot.slot === "evening")
-                          .map((timeSlot) => (
-                            <label
-                              key={timeSlot.id}
-                              className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
+                          .sort(
+                            (a, b) =>
+                              new Date(`1970-01-01T${a.time}`) -
+                              new Date(`1970-01-01T${b.time}`)
+                          ) // Sorting time slots in ascending order
+                          .map((timeSlot) => {
+                            const formattedSlotTime = formatTimeSlot(
+                              timeSlot.time
+                            );
+                            const isBooked =
+                              bookedAppointments.includes(formattedSlotTime);
+
+                            return (
+                              <label
+                                key={timeSlot.id}
+                                className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
                               ${
-                                visitorData.time === timeSlot.time
+                                isBooked
+                                  ? "bg-gray-400 text-gray-700 cursor-not-allowed" // Style booked slots differently
+                                  : visitorData.time === timeSlot.time
                                   ? "bg-purple-500 text-white border-purple-600 shadow-md"
                                   : "bg-white text-gray-800 border-gray-300 hover:bg-purple-100 hover:border-purple-500"
-                              }`}
-                            >
-                              <input
-                                type="radio"
-                                name="time"
-                                value={timeSlot.time}
-                                checked={visitorData.time === timeSlot.time}
-                                onChange={handleChange}
-                                className="hidden"
-                              />
-                              {formatTime(timeSlot.time)}
-                            </label>
-                          ))}
+                              }`} // Style the slot based on selection
+                              >
+                                <input
+                                  type="radio"
+                                  name="time"
+                                  value={timeSlot.time}
+                                  checked={visitorData.time === timeSlot.time}
+                                  onChange={handleChange}
+                                  className="hidden"
+                                  disabled={isBooked} // Disable the slot if it's booked
+                                />
+                                {formatTime(timeSlot.time)}
+                              </label>
+                            );
+                          })}
                       </div>
                     </div>
                   </div>

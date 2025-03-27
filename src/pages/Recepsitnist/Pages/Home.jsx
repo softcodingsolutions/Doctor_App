@@ -272,10 +272,20 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody>
-                      {Object.keys(transformedDoctorData[doctor]).map(
-                        (time, timeIndex) =>
-                          transformedDoctorData[doctor][time].map(
-                            (patient, patientIndex) => {
+                      {Object.keys(transformedDoctorData[doctor])
+                        .sort(
+                          (a, b) =>
+                            new Date(`1970-01-01T${a}`) -
+                            new Date(`1970-01-01T${b}`)
+                        ) // Sorting time in ascending order
+                        .map((time, timeIndex) =>
+                          transformedDoctorData[doctor][time]
+                            .sort((p1, p2) => {
+                              const nameA = p1.toLowerCase();
+                              const nameB = p2.toLowerCase();
+                              return nameA.localeCompare(nameB); // Sorting by name within each time slot
+                            })
+                            .map((patient, patientIndex) => {
                               const visitorRecord = visitorData.find(
                                 (v) => `${v.name} (${v.phone})` === patient
                               );
@@ -289,23 +299,23 @@ export default function Home() {
                               return (
                                 <tr
                                   key={`${timeIndex}-${patientIndex}`}
-                                  className={`border-b  transition duration-200   ${
+                                  className={`border-b transition duration-200 ${
                                     visitorRecord ? "bg-[#F1F1E8]" : ""
                                   }`}
                                 >
-                                  <td className="px-2 py-2 text-sm text-gray-800 ">
+                                  <td className="px-2 py-2 text-sm text-gray-800">
                                     {time}
                                   </td>
-                                  <td className="px-2 py-2 text-sm text-gray-700 ">
+                                  <td className="px-2 py-2 text-sm text-gray-700">
                                     {name}
                                   </td>
-                                  <td className="px-2 py-2 text-sm text-gray-700 ">
+                                  <td className="px-2 py-2 text-sm text-gray-700">
                                     {formattedPhone}
                                   </td>
                                   <td>
                                     <button
                                       tooltip="Cancel Appointment"
-                                      className="inline-flex items-center px-2 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-700  hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                      className="inline-flex items-center px-2 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-red-700 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                       onClick={() =>
                                         handleDelete(patient, time, doctor)
                                       }
@@ -315,9 +325,8 @@ export default function Home() {
                                   </td>
                                 </tr>
                               );
-                            }
-                          )
-                      )}
+                            })
+                        )}
                     </tbody>
                   </table>
                 </div>
