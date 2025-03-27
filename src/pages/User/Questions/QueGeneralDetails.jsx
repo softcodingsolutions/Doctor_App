@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSchema } from "../../../schemas/UserDetailsSchema";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { Textarea } from "@headlessui/react";
 
@@ -81,18 +81,25 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
   return (
     <div className="flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start ">
       <div className="w-full sm:flex items-end">
-       
         <div className="w-full flex-grow gap-1 overflow-auto flex rounded-lg bg-card h-[88vh]   flex-wrap content-start p-2 px-4">
-          <div className="text-xl font-semibold p-2 text-[#1F2937]">General Details </div>
+          <div className="text-xl font-semibold p-2 text-[#1F2937]">
+            General Details{" "}
+          </div>
           <div className="w-full flex justify-center border rounded-md animate-once animate-ease-out overflow-auto p-4">
-            <form onSubmit={handleSubmit(submittedData)} method="post" className="w-full flex justify-center flex-col ">
+            <form
+              onSubmit={handleSubmit(submittedData)}
+              method="post"
+              className="w-full flex justify-center flex-col "
+            >
               <div className={`flex'flex-col text-lg`}>
-                <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-2`}>
+                <div
+                  className={`flex ${isMobile ? "flex-col" : "flex-row"} gap-2`}
+                >
                   <div className="flex flex-col w-full">
                     {/* first name */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
-                        errors={errors.firstname}
+                        // errors={errors.firstname}
                         name="firstname"
                         type="text"
                         label="First Name"
@@ -102,24 +109,10 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         })}
                       />
                     </div>
-                    {/* age */}
-                    <div className="flex flex-col  m-2">
-                      <UserDetailsInput
-                        errors={errors.age}
-                        name="age"
-                        type="number"
-                        label="Age"
-                        placeholder=""
-                        hook={register("age")}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col w-full">
                     {/* last name */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
-                        errors={errors.lastname}
+                        // errors={errors.lastname}
                         name="lastname"
                         type="text"
                         label="Last Name"
@@ -129,16 +122,39 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                         })}
                       />
                     </div>
+                  </div>
+
+                  <div className="flex flex-col w-full">
+                    {/* age */}
+                    <div className="flex flex-col  m-2">
+                      <UserDetailsInput
+                        // errors={errors.age}
+                        name="age"
+                        type="number"
+                        label="Age"
+                        placeholder=""
+                        hook={register("age")}
+                      />
+                    </div>
                     {/* language */}
-                    <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'}  gap-16`}>
+                    <div
+                      className={`flex ${
+                        isMobile ? "flex-col" : "flex-row"
+                      }  gap-16`}
+                    >
                       <div className="flex flex-col m-2">
-                        <label className="text-sm text-[#1F2937] font-semibold mr-2">Language:</label>
+                        <label className="text-sm text-[#1F2937] font-semibold mr-2">
+                          Language:{" "}
+                          <span className="text-red-600 font-bold text-lg">*</span>
+                        </label>
                         <div className="flex gap-2 mt-2">
                           <label className="flex items-center text-sm">
                             <input
                               type="radio"
                               value="english"
-                              {...register("language", { required: "Please select a language" })}
+                              {...register("language", {
+                                required: "Please select a language",
+                              })}
                               className="mr-2 "
                             />
                             English
@@ -162,14 +178,17 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                             Gujarati
                           </label>
                         </div>
-                        {errors.language && (
+                        {/* {errors.language && (
                           <span className="text-red-500 text-sm">{errors.language?.message}</span>
-                        )}
+                        )} */}
                       </div>
                       {/* gender */}
                       <div className="flex flex-col m-2">
                         {/* gender */}
-                        <label className="text-sm text-[#1F2937] font-semibold mr-2">Gender:</label>
+                        <label className="text-sm text-[#1F2937] font-semibold mr-2">
+                          Gender:{" "}
+                          <span className="text-red-600 font-bold text-lg">*</span>
+                        </label>
                         <div className="flex gap-2 mt-2">
                           <label className="flex items-center text-sm">
                             <input
@@ -189,18 +208,17 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                             />
                             Female
                           </label>
-                          {errors.gender && (
+                          {/* {errors.gender && (
                             <span className="text-base text-red-500 -mt-1.5">
                               {errors.gender?.message}
                             </span>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
                   </div>
-            
                 </div>
-                
+
                 {/* address */}
                 <div className="flex flex-col  m-2">
                   {/* <UserDetailsInput
@@ -210,7 +228,9 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     placeholder="address"
                     hook={register("address")}
                   /> */}
-                  <label className="text-sm text-[#1F2937] font-semibold mr-2">Address:</label>
+                  <label className="text-sm text-[#1F2937] font-semibold mr-2">
+                    Address:
+                  </label>
                   <Textarea
                     hook={register("address")}
                     type="textarea"
@@ -219,15 +239,16 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     autoComplete="off"
                     rows={3}
                     className="py-1 px-2 rounded-md border  w-full text-sm"
-                  >
-                    </Textarea>
+                  ></Textarea>
                 </div>
-                <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-2`}>
+                <div
+                  className={`flex ${isMobile ? "flex-col" : "flex-row"} gap-2`}
+                >
                   <div className="flex flex-col w-full">
                     {/* city */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
-                        errors={errors.city}
+                        // errors={errors.city}
                         name="city"
                         type="text"
                         label="City"
@@ -238,7 +259,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     {/* email */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
-                        errors={errors.email}
+                        // errors={errors.email}
                         name="email"
                         type="email"
                         label="Email"
@@ -264,7 +285,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     {/* mobile */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
-                        errors={errors.mobile}
+                        // errors={errors.mobile}
                         name="mobile"
                         type="number"
                         label="Phone Number"
@@ -278,7 +299,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     {/* height */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
-                        errors={errors.height}
+                        // errors={errors.height}
                         name="height"
                         type="number"
                         label="Height(cm)"
@@ -289,7 +310,7 @@ function QueGeneralDetails({ onNext, onValidate, setStoreData, storedData }) {
                     {/* weight */}
                     <div className="flex flex-col  m-2">
                       <UserDetailsInput
-                        errors={errors.weight}
+                        // errors={errors.weight}
                         name="weight"
                         type="number"
                         label="Weight(Kg)"

@@ -4,7 +4,7 @@ import { CurrentDietSchema } from "../../../schemas/UserDetailsSchema";
 import UserDetailsInput from "../../../components/User/UserDetailsInput";
 import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButton";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 function QueCurrentDiet({
@@ -74,7 +74,9 @@ function QueCurrentDiet({
     <div className="w-full p-2">
       <div className="rounded-lg bg-card h-[87vh] bg-white">
         <div className="flex p-2 px-4 h-full flex-col space-y-4">
-          <div className="text-xl font-semibold text-[#1F2937] p-2">Current Diet</div>
+          <div className="text-xl font-semibold text-[#1F2937] p-2">
+            Current Diet
+          </div>
           <div className="w-full flex justify-center p-4 border rounded-md animate-once animate-ease-out overflow-auto h-[91%]">
             <form
               onSubmit={handleSubmit(submittedData)}
@@ -92,7 +94,7 @@ function QueCurrentDiet({
                     errors={errors.Morning}
                     name="Morning"
                     type="text"
-                    label="Morning** "
+                    label="Morning"
                     hook={register("Morning", {
                       required: true,
                       minLength: 2,
@@ -113,7 +115,7 @@ function QueCurrentDiet({
                     errors={errors.Lunch}
                     name="Lunch"
                     type="text"
-                    label="Lunch** "
+                    label="Lunch"
                     hook={register("Lunch", {
                       required: true,
                       minLength: 2,
@@ -134,7 +136,7 @@ function QueCurrentDiet({
                     errors={errors.Dinner}
                     name="Dinner"
                     type="text"
-                    label="Dinner** "
+                    label="Dinner"
                     hook={register("Dinner", {
                       required: true,
                       minLength: 2,

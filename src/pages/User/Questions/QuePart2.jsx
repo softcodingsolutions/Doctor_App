@@ -6,7 +6,7 @@ import SaveUserDetailsButton from "../../../components/User/SaveUserDetailsButto
 import axios from "axios";
 import PrevPageButton from "../../../components/Admin/PrevPageButton";
 
-function QuePart2({ setStoreData, onBack, handleCallUserApi, storedData }) {
+function QuePart2({ setStoreData, onBack, handleCallUserApi, storedData , setLoading}) {
   const [getQuestionsPart2, setGetQuestionsPart2] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const language = localStorage.getItem("user_selected_language");
@@ -65,6 +65,9 @@ function QuePart2({ setStoreData, onBack, handleCallUserApi, storedData }) {
       diagnosis: selectedQuestions,
     }));
 
+    // Show loader
+    setLoading(true);
+
     Swal.fire({
       position: "top-end",
       icon: "success",
@@ -74,7 +77,11 @@ function QuePart2({ setStoreData, onBack, handleCallUserApi, storedData }) {
       timer: 1500,
     });
 
-    handleCallUserApi(selectedQuestions);
+    // Call API
+    await handleCallUserApi(selectedQuestions);
+
+    // Hide loader after API call completes
+    setLoading(false);
   };
 
   const getQuestionText = (val) => {
@@ -99,7 +106,9 @@ function QuePart2({ setStoreData, onBack, handleCallUserApi, storedData }) {
 
   return (
     <div className="w-full mx-5 my-2.5 gap-2 flex rounded-lg bg-card h-[87%] bg-white flex-wrap content-start p-2 px-4">
-      <div className="text-xl font-semibold text-[#1F2937] p-2">User Diagnosis</div>
+      <div className="text-xl font-semibold text-[#1F2937] p-2">
+        User Diagnosis
+      </div>
       <div className="flex flex-col rounded-lg bg-card h-[78vh] w-full">
         <div className="flex w-full h-full flex-col gap-1.5 ">
           <div className="animate-fade-left w-full min-h-[450px] animate-delay-75  border rounded-md animate-once animate-ease-out overflow-auto">
