@@ -46,8 +46,8 @@ function CustomerGeneralDetails({
       generalDetails: d,
       doctorId: getDoctorId,
     }));
-    localStorage.setItem('user_selected_language',d.language)
-    localStorage.setItem('user_selected_gender',d.gender)
+    localStorage.setItem("user_selected_language", d.language);
+    localStorage.setItem("user_selected_gender", d.gender);
     if (role === "doctor") {
       localStorage.setItem("doctor_id", getAdmin.id);
     } else if (role === "super_admin") {
@@ -97,13 +97,13 @@ function CustomerGeneralDetails({
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[87vh] bg-white">
+      <div className="rounded-lg bg-card h-[77vh] bg-white">
         <div className="flex flex-col px-4 py-3 h-full space-y-4">
           <div className="flex justify-between items-center">
             <div className="text-xl font-semibold">General Details</div>
           </div>
 
-          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[92%]">
+          <div className="w-full flex justify-center p-4 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto ">
             <form onSubmit={handleSubmit(submittedData)} method="post">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 text-lg">
                 <div className="flex flex-col">

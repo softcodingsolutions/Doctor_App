@@ -237,7 +237,7 @@ function FamilyReason() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
+      <div className="rounded-lg bg-card h-[75vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Family History List</div>
@@ -275,7 +275,7 @@ function FamilyReason() {
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase ">
+              <thead className="uppercase sticky top-0 z-10">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent
                     moreClasses={"rounded-tl-md rounded-bl-md"}

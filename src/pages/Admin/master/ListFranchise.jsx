@@ -14,6 +14,7 @@ import { CiViewList } from "react-icons/ci";
 import { Option, Select } from "@mui/joy";
 
 function ListFranchise() {
+  const [toggleSidebar, admin, showSidebar] = useOutletContext();
   const context = useOutletContext();
   const [getFranchise, setGetFranchise] = useState([]);
   const [getDoctors, setGetDoctors] = useState([]);
@@ -392,244 +393,171 @@ function ListFranchise() {
   }
 
   return (
-    <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </div>
-      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-2">
-        <div className="w-fit p-1">
-          <button
-            onClick={context[0]}
-            type="button"
-            className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
-          >
-            <img
-              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
-              alt=""
-            />
-          </button>
-        </div>
+    // <div className="rounded-lg bg-card   bg-white">
+    //   <div className="flex px-3 py-3 h-full flex-col w-full space-y-4">
+    //     <div className="flex  items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
+    //       {/* <div className="flex flex-col sm:flex-row items-center justify-end gap-2 mr-6">
+    //             <div className="w-4 h-4 bg-red-300 border border-gray-800"></div>
+    //             <div>- Possibility Group</div>
+    //           </div> */}
 
-        <div className="rounded-lg bg-card h-[95vh] w-full bg-white">
-          <div className="flex px-3 py-3 h-full flex-col space-y-4">
-            <div className="flex  items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
-              {/* <div className="flex flex-col sm:flex-row items-center justify-end gap-2 mr-6">
-                <div className="w-4 h-4 bg-red-300 border border-gray-800"></div>
-                <div>- Possibility Group</div>
-              </div> */}
-
-              <div className="flex  ">
-                <AddListFranchise
-                  handleApi={handleAddFranchise}
-                  name="Add Franchise"
-                  role={role}
-                  title="Add New Franchise"
-                  first_name="First Name"
-                  last_name="Last Name"
-                  email="Email"
-                  mobile="Mobile"
-                  city="City"
-                  state="State"
-                  doctors={getDoctors}
-                  pincode="Pincode"
-                  language="Language"
-                  password="Password"
-                  amount="Amount"
-                  commission="Commission"
-                  type_of_admin="Admin Type"
-                  possibility_group="Possibility Group"
-                />
-              </div>
-              <div className="w-full sm:w-fit">
-                {role === "super_admin" && (
-                  <Select
-                    required
-                    defaultValue={"all"}
-                    placeholder="Select"
-                    value={getDoctorId}
-                    onChange={(e, newValue) => setGetDoctorId(newValue)}
-                    className="w-full sm:w-auto"
-                  >
-                    <Option key={"all"} value="all">
-                      All
-                    </Option>
-                    {getDoctors?.map((res) => (
-                      <Option key={res.id} value={res.id}>
-                        {res.first_name + " " + res.last_name}
-                      </Option>
-                    ))}
-                  </Select>
-                )}
-              </div>
-            </div>
-
-            {/* <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[85%]">
-              <table className="w-full  z-0">
-                <thead className="uppercase ">
-                  <tr className="bg-[#1F2937] text-white rounded-md">
-                    <ThComponent
-                      name="Franchise Name"
-                      moreClasses={"rounded-tl-md rounded-bl-md"}
-                    />
-                    <ThComponent name="Email" />
-                    <ThComponent name="Password" />
-                    <ThComponent name="Mobile No." />
-                    <ThComponent name="City" />
-                    <ThComponent name="Recharged Amount" />
-                    <ThComponent name="Balance" />
-                    <ThComponent name="%" />
-                    <th
-                      className={` uppercase tracking-wide text-sm font-medium  w-25 text-left`}
-                      colSpan={2}
-                    />
-                    <th
-                      className={` uppercase rounded-tr-md rounded-br-md tracking-wide text-sm font-medium py-3 px-2 text-left`}
-                    />
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginateCustomers().length === 0 ? (
-                    <tr>
-                      <th
-                        className="uppercase tracking-wide font-medium pt-[13rem] text-lg"
-                        colSpan={10}
-                      >
-                        No Franchise Found!
-                      </th>
-                    </tr>
-                  ) : (
-                    paginateCustomers().map((val, index) => {
-                      return (
-                        <tr
-                          className={`${
-                            val.possibility_group
-                              ? "border-l-4 border-red-300  hover:bg-gray-200"
-                              : "hover:bg-gray-200"
-                          }`}
-                          key={val.id}
-                        >
-                          <td className="py-1 px-2 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                val.first_name[0]?.toUpperCase() +
-                                val.first_name?.slice(1) +
-                                " " +
-                                val.last_name[0]?.toUpperCase() +
-                                val.last_name?.slice(1)
-                              }
-                            />
-                          </td>
-                          <td className="py-1 px-2 border-b border-b-gray-50">
-                            <TdComponent things={val.email} />
-                          </td>
-                          <td className="py-1 px-2 border-b border-b-gray-50">
-                            <TdComponent things={val.show_password} />
-                          </td>
-                          <td className="py-1 px-2 border-b border-b-gray-50">
-                            <TdComponent things={val.phone_number} />
-                          </td>
-                          <td className="py-1 px-2 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                val.personal_detail?.city[0]?.toUpperCase() +
-                                val.personal_detail?.city?.slice(1)
-                              }
-                            />
-                          </td>
-                          <td className="py-1 px-2 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                val.initial_amount <= 0
-                                  ? "0"
-                                  : val.initial_amount
-                              }
-                            />
-                          </td>
-                          <td className="py-1 px-2 border-b border-b-gray-50">
-                            <TdComponent
-                              things={val.amount <= 0 ? "0" : val.amount}
-                            />
-                          </td>
-                          <td className="py-1 px-2 border-b border-b-gray-50">
-                            <TdComponent things={val.commission + "%"} />
-                          </td>
-                          <td className="py-2 px-2 border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                <button
-                                  onClick={() =>
-                                    handleAddAmount(
-                                      val.id,
-                                      val.possibility_group
-                                    )
-                                  }
-                                  className="font-semibold text-green-600 border text-sm border-gray-300 py-2 px-3 rounded-md hover:bg-[#33a92b] hover:text-white"
-                                >
-                                  Recharge
-                                </button>
-                              }
-                            />
-                          </td>
-                          <td className="py-3 px-2 border-b border-b-gray-50">
-                            <button
-                              onClick={() => handleViewDetails(val.id)}
-                              className="font-semibold text-green-600 border text-sm border-gray-300 py-2 px-3 rounded-md hover:bg-[#33a92b] hover:text-white"
-                            >
-                              Patient Lists
-                            </button>
-                          </td>
-                          <td className="py-3  border-b border-b-gray-50">
-                            <TdComponent
-                              things={
-                                <button
-                                  onClick={() => handleFranchiseDelete(val.id)}
-                                  className="font-semibold text-red-600 border border-gray-300 p-2 rounded-md hover:bg-[#c43e19] hover:text-white"
-                                >
-                                  <MdDelete size={20} />
-                                </button>
-                              }
-                            />
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
-            </div> */}
-            <MaterialReactTable
-              columns={columns}
-              data={getFranchise}
-              state={{ isLoading: loading }}
-              enableColumnResizing
-              enableSorting
-              initialState={{
-                showColumnFilters: true,
-                showGlobalFilter: true,
-                density: "compact",
-              }}
-              muiTableBodyCellProps={{
-                sx: { padding: "16px" },
-              }}
-              enablePagination={false}
-              enableDensityToggle={false}
-              renderTopToolbarCustomActions={() => (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    padding: "10px",
-                  }}
-                >
-                  <CiViewList size={25} />
-                  <label className="text-lg font-bold tracking-wide">
-                    Franchise List
-                  </label>
-                </div>
-              )}
+    //       <div className="flex  ">
+    //         <AddListFranchise
+    //           handleApi={handleAddFranchise}
+    //           name="Add Franchise"
+    //           role={role}
+    //           title="Add New Franchise"
+    //           first_name="First Name"
+    //           last_name="Last Name"
+    //           email="Email"
+    //           mobile="Mobile"
+    //           city="City"
+    //           state="State"
+    //           doctors={getDoctors}
+    //           pincode="Pincode"
+    //           language="Language"
+    //           password="Password"
+    //           amount="Amount"
+    //           commission="Commission"
+    //           type_of_admin="Admin Type"
+    //           possibility_group="Possibility Group"
+    //         />
+    //       </div>
+    //       <div className="w-full sm:w-fit">
+    //         {role === "super_admin" && (
+    //           <Select
+    //             required
+    //             defaultValue={"all"}
+    //             placeholder="Select"
+    //             value={getDoctorId}
+    //             onChange={(e, newValue) => setGetDoctorId(newValue)}
+    //             className="w-full sm:w-auto"
+    //           >
+    //             <Option key={"all"} value="all">
+    //               All
+    //             </Option>
+    //             {getDoctors?.map((res) => (
+    //               <Option key={res.id} value={res.id}>
+    //                 {res.first_name + " " + res.last_name}
+    //               </Option>
+    //             ))}
+    //           </Select>
+    //         )}
+    //       </div>
+    //     </div>
+    //     <MaterialReactTable
+    //       columns={columns}
+    //       data={getFranchise}
+    //       state={{ isLoading: loading }}
+    //       enableColumnResizing
+    //       enableSorting
+    //       initialState={{
+    //         showColumnFilters: true,
+    //         showGlobalFilter: true,
+    //         density: "compact",
+    //       }}
+    //       muiTableBodyCellProps={{
+    //         sx: { padding: "16px" },
+    //       }}
+    //       enablePagination={false}
+    //       enableDensityToggle={false}
+    //       renderTopToolbarCustomActions={() => (
+    //         <div
+    //           style={{
+    //             display: "flex",
+    //             alignItems: "center",
+    //             gap: "10px",
+    //             padding: "10px",
+    //           }}
+    //         >
+    //           <CiViewList size={25} />
+    //           <label className="text-lg font-bold tracking-wide">
+    //             Franchise List
+    //           </label>
+    //         </div>
+    //       )}
+    //     />
+    //   </div>
+    // </div>
+    <div className="rounded-lg bg-card bg-white">
+      <div className="flex px-3 py-3 h-full flex-col w-full space-y-4">
+        <div className="flex items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
+          <div className="flex">
+            <AddListFranchise
+              handleApi={handleAddFranchise}
+              name="Add Franchise"
+              role={role}
+              title="Add New Franchise"
+              first_name="First Name"
+              last_name="Last Name"
+              email="Email"
+              mobile="Mobile"
+              city="City"
+              state="State"
+              doctors={getDoctors}
+              pincode="Pincode"
+              language="Language"
+              password="Password"
+              amount="Amount"
+              commission="Commission"
+              type_of_admin="Admin Type"
+              possibility_group="Possibility Group"
             />
           </div>
+          <div className="w-full sm:w-fit">
+            {role === "super_admin" && (
+              <Select
+                required
+                defaultValue={"all"}
+                placeholder="Select"
+                value={getDoctorId}
+                onChange={(e, newValue) => setGetDoctorId(newValue)}
+                className="w-full sm:w-auto"
+              >
+                <Option key={"all"} value="all">
+                  All
+                </Option>
+                {getDoctors?.map((res) => (
+                  <Option key={res.id} value={res.id}>
+                    {res.first_name + " " + res.last_name}
+                  </Option>
+                ))}
+              </Select>
+            )}
+          </div>
+        </div>
+
+        {/* Scrollable Table Container */}
+        <div
+          className={`${
+            showSidebar ? "max-w-[1100px]" : "max-w-[1200px]"
+          } overflow-y-auto`}
+        >
+          <MaterialReactTable
+            columns={columns}
+            data={getFranchise}
+            state={{ isLoading: loading }}
+            enableColumnResizing
+            enableSorting
+            initialState={{
+              showColumnFilters: true,
+              showGlobalFilter: true,
+              density: "compact",
+            }}
+            muiTableBodyCellProps={{
+              sx: { padding: "16px" },
+            }}
+            enablePagination={false}
+            enableDensityToggle={false}
+            renderTopToolbarCustomActions={() => (
+              <div className="flex items-center gap-2 p-2">
+                <CiViewList size={25} />
+                <label className="text-lg font-bold tracking-wide">
+                  Franchise List
+                </label>
+              </div>
+            )}
+          />
         </div>
       </div>
     </div>

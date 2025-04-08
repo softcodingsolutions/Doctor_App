@@ -4,6 +4,12 @@ import Newcase from "./Newcase";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import InsideLoader from "../../InsideLoader";
+import { MdOutlinePersonOutline } from "react-icons/md";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { CiCalendar } from "react-icons/ci";
+import { IoSearchOutline } from "react-icons/io5";
+
 import { time } from "framer-motion";
 
 export default function CreateAppointment() {
@@ -35,8 +41,31 @@ export default function CreateAppointment() {
     time: "",
     doctor_id: "",
   });
+  // const handleChange = (e) => {
+  //   const { name, value } = e.toISOString().split("T")[0];
+  //   setVisitorData((prev) => {
+  //     const updatedData = { ...prev, [name]: value };
+
+  //     if (name === "doctor_id" || name === "date") {
+  //       fetchAppointmentsAndSelectSlot();
+  //     }
+
+  //     return updatedData;
+  //   });
+  // };
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let name, value;
+
+    if (e instanceof Date) {
+      name = "date"; // Assign the correct name for the date field
+      value = e.toLocaleDateString("en-CA"); // Format the date correctly
+    } else {
+      // For all other inputs, handle as usual
+      name = e.target.name;
+      value = e.target.value;
+    }
+
     setVisitorData((prev) => {
       const updatedData = { ...prev, [name]: value };
 
@@ -195,7 +224,7 @@ export default function CreateAppointment() {
         `/api/v1/appointments/show_all_appointments?date=${visitorData.date}&doctor_id=${visitorData.doctor_id}`
       );
       console.log(response, "Appointmnets");
-      const bookedTimes = response.data.visitor_list.map(
+      const bookedTimes = response.data.appointments.map(
         (appointment) => appointment.time
       );
 
@@ -248,164 +277,185 @@ export default function CreateAppointment() {
   }, [visitorData.doctor_id]);
 
   return (
-    <div className="w-full ">
-      <div className="rounded-lg bg-card h-[95vh] bg-white overflow-scroll">
-        <div className="flex flex-col p-3 h-full space-y-4">
-          <div className="flex flex-col p-2">
-            <div className="text-lg font-semibold justify-center flex">
-              Create Consulting Appointment
-            </div>
-            <h2 className="text-lg font-bold mt-2 mb-2 text-gray-800 relative flex items-center gap-2">
-              <span className="">Select Patient Type</span>
-              <span className="text-[#1F2937]">👨‍⚕️</span>
-            </h2>
-
-            <div className="flex gap-2">
-              <button
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ease-in-out transform ${
-                  selectedOption === "first-time"
-                    ? "bg-[#1F2937] text-white scale-105 shadow-lg"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-                onClick={() => setSelectedOption("first-time")}
-              >
-                First-Time Visitor
-              </button>
-              <button
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ease-in-out transform ${
-                  selectedOption === "old-case"
-                    ? "bg-[#1F2937] text-white scale-105 shadow-lg"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-                onClick={() => setSelectedOption("old-case")}
-              >
-                Old Case
-              </button>
-            </div>
-          </div>
-          <hr className="border-2-black" />
+    <div className=" flex flex-col w-full h-full bg-white justidy-center items-center">
+      <div className="flex  flex-col justify-start items-start w-full mb-4">
+        <label className="flex justify-start text-xl font-bold ">
+          Create Consulting Appointment
+        </label>
+        <span className="text-md text-gray-600 ">
+          Book a new appointment for a patient
+        </span>
+      </div>
+      <div className="flex flex-col  w-full justify-start">
+        <h2 className="flex gap-2  font-[18px] text-lg mb-3">
+          <span>
+            <MdOutlinePersonOutline className="mt-1" size={25} />
+          </span>
+          <span className="">Select Patient Type</span>
+        </h2>
+        <div className="flex rounded-md bg-[#f4f4f5] w-[450px] p-[4px] justify-center ">
+          <button
+            className={`px-[10px] py-[6px] w-[216px]  text-sm font-medium rounded-md transition-all duration-300 ease-in-out transform ${
+              selectedOption === "first-time"
+                ? " bg-green-600 text-white scale-105 "
+                : "text-[#71717A] "
+            }`}
+            onClick={() => setSelectedOption("first-time")}
+          >
+            First-Time Visitor
+          </button>
+          <button
+            className={`px-[12px] py-[6px] w-[216px]  text-sm font-medium rounded-md transition-all duration-300 ease-in-out transform ${
+              selectedOption === "old-case"
+                ? "bg-green-600 text-white scale-105 "
+                : "text-[#71717A]"
+            }`}
+            onClick={() => setSelectedOption("old-case")}
+          >
+            Register Patient
+          </button>
+        </div>
+      </div>
+      <div className="border rounded-lg shadow-sm mt-3  w-full overflow-y-auto p-4 bg-card">
+        <div className=" w-full mt-2">
           {selectedOption === "first-time" && (
-            <div className="px-5 ">
-              <form onSubmit={handleVisitorSubmit} className="space-y-5">
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-gray-700 text-sm font-semibold mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={visitorData.name}
-                      onChange={handleChange}
-                      placeholder="Full Name"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-700 text-sm font-semibold mb-2">
-                      Phone Number (WhatsApp)
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={visitorData.phone}
-                      onChange={handleChange}
-                      placeholder="+91 000 000 0000"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-gray-700 text-sm font-semibold mb-2">
-                      Select Doctor:
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {Object.values(doctorList)
-                        .filter((doctor) => doctor.role === "doctor")
-                        .map((doctor, index) => (
-                          <div
-                            key={doctor.id}
-                            className="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition"
-                          >
-                            <input
-                              type="radio"
-                              name="doctor_id"
-                              value={doctor.id}
-                              checked={
-                                String(visitorData.doctor_id) ===
-                                  String(doctor.id) ||
-                                (index === 0 && !visitorData.doctor_id)
-                              }
-                              onChange={(e) => {
-                                handleChange(e);
-                                handleTime(e.target.value);
-                              }}
-                              className="text-blue-500 focus:ring-blue-500"
-                            />
-                            <span
-                              className="text-gray-800 font-medium"
-                              onChange={(e) => {
-                                handleChange(e);
-                                handleTime(e.target.value);
-                              }}
-                            >
-                              {doctor.first_name} {doctor.last_name}
-                            </span>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-700 text-sm font-semibold mb-2">
-                      Date
-                    </label>
-                    <input
-                      type="date"
-                      name="date"
-                      value={visitorData.date}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                      required
-                    />
-                  </div>
+            <form onSubmit={handleVisitorSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={visitorData.name}
+                    onChange={handleChange}
+                    placeholder="Full Name"
+                    className="w-full p-2  pr-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    required
+                  />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-3">
-                    Select Time Slot
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    Phone Number (WhatsApp)
                   </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={visitorData.phone}
+                    onChange={handleChange}
+                    placeholder="+91 000 000 0000"
+                    className="w-full p-2  pr-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    required
+                  />
+                </div>
+              </div>
 
-                  <div className="space-y-4">
-                    {/* Morning Slot */}
-                    <div>
-                      <h3 className=" text-sm font-semibold text-blue-600 mb-1">
-                        Morning
-                      </h3>
-                      <div className="grid grid-cols-10  gap-3">
-                        {times
-                          .filter((timeSlot) => timeSlot.slot === "morning")
-                          .sort(
-                            (a, b) =>
-                              new Date(`1970-01-01T${a.time}`) -
-                              new Date(`1970-01-01T${b.time}`)
-                          ) // Sorting time slots in ascending order
-                          .map((timeSlot) => {
-                            const formattedSlotTime = formatTimeSlot(
-                              timeSlot.time
-                            );
-                            const isBooked =
-                              bookedAppointments.includes(formattedSlotTime);
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    Select Doctor:
+                  </label>
+                  <div className="flex flex-col gap-2">
+                    {Object.values(doctorList)
+                      .filter((doctor) => doctor.role === "doctor")
+                      .map((doctor, index) => (
+                        <div
+                          key={doctor.id}
+                          className="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition"
+                        >
+                          <input
+                            type="radio"
+                            name="doctor_id"
+                            value={doctor.id}
+                            checked={
+                              String(visitorData.doctor_id) ===
+                                String(doctor.id) ||
+                              (index === 0 && !visitorData.doctor_id)
+                            }
+                            onChange={(e) => {
+                              handleChange(e);
+                              handleTime(e.target.value);
+                            }}
+                            className="text-blue-500 text-sm focus:ring-blue-500"
+                          />
+                          <span
+                            className="text-gray-800 font-medium text-sm"
+                            onChange={(e) => {
+                              handleChange(e);
+                              handleTime(e.target.value);
+                            }}
+                          >
+                            {doctor.first_name} {doctor.last_name}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
 
-                            return (
-                              <label
-                                key={timeSlot.id}
-                                className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
+                {/* <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={visitorData.date}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    required
+                  />
+                </div> */}
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    Date
+                  </label>
+                  <div className="relative flex w-full items-center border border-gray-300 rounded-md">
+                    <CiCalendar className="absolute left-3 z-10" />
+                    <DatePicker
+                      selected={
+                        visitorData.date ? new Date(visitorData.date) : null
+                      } // Convert string to Date
+                      onChange={(date) => handleChange(date)} // Pass the Date object
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="Select date"
+                      className="w-full p-2 pl-10 pr-3 transition"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-3">
+                  Select Time Slot
+                </label>
+
+                <div className="space-y-4 w-full">
+                  {/* Morning Slot */}
+                  <div>
+                    <h3 className=" text-sm font-semibold text-[#1F2937] mb-1">
+                      Morning
+                    </h3>
+                    <div className="grid grid-cols-10  gap-2">
+                      {times
+                        .filter((timeSlot) => timeSlot.slot === "morning")
+                        .sort(
+                          (a, b) =>
+                            new Date(`1970-01-01T${a.time}`) -
+                            new Date(`1970-01-01T${b.time}`)
+                        ) // Sorting time slots in ascending order
+                        .map((timeSlot) => {
+                          const formattedSlotTime = formatTimeSlot(
+                            timeSlot.time
+                          );
+                          const isBooked =
+                            bookedAppointments.includes(formattedSlotTime);
+
+                          return (
+                            <label
+                              key={timeSlot.id}
+                              className={`flex text-sm items-center justify-center border rounded-lg px-3 py-2  font-medium cursor-pointer transition 
                                 ${
                                   isBooked
                                     ? "bg-gray-400 text-gray-700 cursor-not-allowed" // Style booked slots differently
@@ -413,153 +463,153 @@ export default function CreateAppointment() {
                                     ? "bg-blue-500 text-white border-blue-600 shadow-md"
                                     : "bg-white text-gray-800 border-gray-300 hover:bg-blue-100 hover:border-blue-500"
                                 }`} // Style the slot based on selection
-                              >
-                                <input
-                                  type="radio"
-                                  name="time"
-                                  value={timeSlot.time}
-                                  checked={visitorData.time === timeSlot.time}
-                                  onChange={handleChange}
-                                  className="hidden"
-                                  disabled={isBooked}
-                                />
-                                {formatTime(timeSlot.time)}
-                              </label>
-                            );
-                          })}
-                      </div>
+                            >
+                              <input
+                                type="radio"
+                                name="time"
+                                value={timeSlot.time}
+                                checked={visitorData.time === timeSlot.time}
+                                onChange={handleChange}
+                                className="hidden"
+                                disabled={isBooked}
+                              />
+                              {formatTime(timeSlot.time)}
+                            </label>
+                          );
+                        })}
                     </div>
+                  </div>
 
-                    {/* Afternoon Slot */}
-                    <div>
-                      <h3 className=" text-sm font-semibold text-orange-600 mb-1">
-                        Afternoon
-                      </h3>
-                      <div className="grid grid-cols-10  gap-3">
-                        {times
-                          .filter((timeSlot) => timeSlot.slot === "afternoon")
-                          .sort(
-                            (a, b) =>
-                              new Date(`1970-01-01T${a.time}`) -
-                              new Date(`1970-01-01T${b.time}`)
-                          ) // Sorting time slots in ascending order
-                          .map((timeSlot) => {
-                            const formattedSlotTime = formatTimeSlot(
-                              timeSlot.time
-                            );
-                            const isBooked =
-                              bookedAppointments.includes(formattedSlotTime);
+                  {/* Afternoon Slot */}
+                  <div>
+                    <h3 className=" text-sm font-semibold text-[#1F2937] mb-1">
+                      Afternoon
+                    </h3>
+                    <div className="grid grid-cols-10  gap-3">
+                      {times
+                        .filter((timeSlot) => timeSlot.slot === "afternoon")
+                        .sort(
+                          (a, b) =>
+                            new Date(`1970-01-01T${a.time}`) -
+                            new Date(`1970-01-01T${b.time}`)
+                        ) // Sorting time slots in ascending order
+                        .map((timeSlot) => {
+                          const formattedSlotTime = formatTimeSlot(
+                            timeSlot.time
+                          );
+                          const isBooked =
+                            bookedAppointments.includes(formattedSlotTime);
 
-                            return (
-                              <label
-                                key={timeSlot.id}
-                                className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
+                          return (
+                            <label
+                              key={timeSlot.id}
+                              className={`flex items-center justify-center border rounded-lg py-2 px-3 text-sm font-medium cursor-pointer transition 
                                 ${
                                   isBooked
                                     ? "bg-gray-400 text-gray-700 cursor-not-allowed" // Style booked slots differently
                                     : visitorData.time === timeSlot.time
-                                    ? "bg-orange-500 text-white border-orange-600 shadow-md"
-                                    : "bg-white text-gray-800 border-gray-300 hover:bg-orange-100 hover:border-orange-500"
+                                    ? "bg-blue-500 text-white border-blue-600 shadow-md"
+                                    : "bg-white text-gray-800 border-gray-300 hover:bg-blue-100 hover:border-blue-500"
                                 }`} // Style the slot based on selection
-                              >
-                                <input
-                                  type="radio"
-                                  name="time"
-                                  value={timeSlot.time}
-                                  checked={visitorData.time === timeSlot.time}
-                                  onChange={handleChange}
-                                  className="hidden"
-                                  disabled={isBooked} // Disable the slot if it's booked
-                                />
-                                {formatTime(timeSlot.time)}
-                              </label>
-                            );
-                          })}
-                      </div>
+                            >
+                              <input
+                                type="radio"
+                                name="time"
+                                value={timeSlot.time}
+                                checked={visitorData.time === timeSlot.time}
+                                onChange={handleChange}
+                                className="hidden"
+                                disabled={isBooked} // Disable the slot if it's booked
+                              />
+                              {formatTime(timeSlot.time)}
+                            </label>
+                          );
+                        })}
                     </div>
+                  </div>
 
-                    {/* Evening Slot */}
-                    <div>
-                      <h3 className=" text-sm font-semibold text-purple-600 mb-1">
-                        Evening
-                      </h3>
-                      <div className="grid grid-cols-10  gap-3">
-                        {times
-                          .filter((timeSlot) => timeSlot.slot === "evening")
-                          .sort(
-                            (a, b) =>
-                              new Date(`1970-01-01T${a.time}`) -
-                              new Date(`1970-01-01T${b.time}`)
-                          ) // Sorting time slots in ascending order
-                          .map((timeSlot) => {
-                            const formattedSlotTime = formatTimeSlot(
-                              timeSlot.time
-                            );
-                            const isBooked =
-                              bookedAppointments.includes(formattedSlotTime);
+                  {/* Evening Slot */}
+                  <div>
+                    <h3 className=" text-sm font-semibold text-[#1F2937] mb-1">
+                      Evening
+                    </h3>
+                    <div className="grid grid-cols-10  gap-3">
+                      {times
+                        .filter((timeSlot) => timeSlot.slot === "evening")
+                        .sort(
+                          (a, b) =>
+                            new Date(`1970-01-01T${a.time}`) -
+                            new Date(`1970-01-01T${b.time}`)
+                        ) // Sorting time slots in ascending order
+                        .map((timeSlot) => {
+                          const formattedSlotTime = formatTimeSlot(
+                            timeSlot.time
+                          );
+                          const isBooked =
+                            bookedAppointments.includes(formattedSlotTime);
 
-                            return (
-                              <label
-                                key={timeSlot.id}
-                                className={`flex items-center justify-center border rounded-lg py-2 px-4 text-sm font-medium cursor-pointer transition 
+                          return (
+                            <label
+                              key={timeSlot.id}
+                              className={`flex items-center justify-center border rounded-lg py-2 px-3 text-sm font-medium cursor-pointer transition 
                               ${
                                 isBooked
                                   ? "bg-gray-400 text-gray-700 cursor-not-allowed" // Style booked slots differently
                                   : visitorData.time === timeSlot.time
-                                  ? "bg-purple-500 text-white border-purple-600 shadow-md"
-                                  : "bg-white text-gray-800 border-gray-300 hover:bg-purple-100 hover:border-purple-500"
+                                  ? "bg-blue-500 text-white border-blue-600 shadow-md"
+                                  : "bg-white text-gray-800 border-gray-300 hover:bg-blue-100 hover:border-blue-500"
                               }`} // Style the slot based on selection
-                              >
-                                <input
-                                  type="radio"
-                                  name="time"
-                                  value={timeSlot.time}
-                                  checked={visitorData.time === timeSlot.time}
-                                  onChange={handleChange}
-                                  className="hidden"
-                                  disabled={isBooked} // Disable the slot if it's booked
-                                />
-                                {formatTime(timeSlot.time)}
-                              </label>
-                            );
-                          })}
-                      </div>
+                            >
+                              <input
+                                type="radio"
+                                name="time"
+                                value={timeSlot.time}
+                                checked={visitorData.time === timeSlot.time}
+                                onChange={handleChange}
+                                className="hidden"
+                                disabled={isBooked} // Disable the slot if it's booked
+                              />
+                              {formatTime(timeSlot.time)}
+                            </label>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="mt-6">
-                  <button
-                    type="submit"
-                    className="w-full bg-green-600 text-white py-2 px-2 rounded-lg font-semibold shadow-md hover:bg-green-700 transition"
-                  >
-                    Book Appointment
-                  </button>
-                </div>
-              </form>
-            </div>
+              <div className="mt-6">
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 text-white py-2 px-2 rounded-lg font-semibold shadow-md hover:bg-green-700 transition"
+                >
+                  Book Appointment
+                </button>
+              </div>
+            </form>
           )}
-
+        </div>
+        <div className=" w-full mt-2">
           {selectedOption === "old-case" && (
             <>
-              <div className="flex gap-1 ">
-                <label className="font-medium text-md">Search:</label>
+              <div className="flex items-center w-full">
+                <IoSearchOutline className="absolute left-2 text-gray-500" />
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => handleSearchTerm(e.target.value)}
                   placeholder="Search User by First Name, Last Name, or Phone Number"
-                  className="py-1 px-2 rounded-md border border-black w-full"
+                  className="pl-8 p-2 rounded-md border text-black w-full text-sm"
                 />
               </div>
               {loading && <InsideLoader />}
               {error && <div className="text-red-500">{error}</div>}
               {getParticularCustomer?.length > 0 && (
-                <div className="space-y-1 ">
+                <div className="space-y-1 mt-2">
                   {getParticularCustomer.map((user) => (
                     <div
                       key={user.id}
-                      className="p-3 text-lg rounded-md cursor-pointer hover:bg-gray-100 flex  items-center"
+                      className="p-3 text- rounded-md cursor-pointer hover:bg-gray-100 flex  items-center"
                       onClick={() => handleUserSelect(user)}
                     >
                       <div>

@@ -45,68 +45,63 @@ const UserInquiry = () => {
   ];
 
   return (
-    <Box className="flex w-full font-sans bg-white">
-      <Box className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </Box>
-      <Box className="flex-grow overflow-auto flex flex-col content-start p-4">
-        <Box className="w-full flex justify-between items-center mb-4">
-          <Box className="flex gap-2">
-            <Select
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-              className="border border-black  rounded-md"
-              size="small"
-            >
-              {[...Array(12)].map((_, i) => (
-                <MenuItem key={i + 1} value={i + 1}>
-                  {new Date(0, i).toLocaleString("default", { month: "long" })}
-                </MenuItem>
-              ))}
-            </Select>
-            <Select
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-              className="border border-black p-1 rounded-md"
-              size="small"
-            >
-              {Array.from({ length: 5 }, (_, i) => (
-                <MenuItem key={i} value={currentYear - i}>
-                  {currentYear - i}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
+    <Box className="flex  flex-col w-full font-sans bg-white">
+      <Box className="w-full flex justify-between items-center mb-4">
+        <Box className="flex gap-2">
+          <Select
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            className="border border-black  rounded-md"
+            size="small"
+          >
+            {[...Array(12)].map((_, i) => (
+              <MenuItem key={i + 1} value={i + 1}>
+                {new Date(0, i).toLocaleString("default", { month: "long" })}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            className="border border-black p-1 rounded-md"
+            size="small"
+          >
+            {Array.from({ length: 5 }, (_, i) => (
+              <MenuItem key={i} value={currentYear - i}>
+                {currentYear - i}
+              </MenuItem>
+            ))}
+          </Select>
         </Box>
-
-        <MaterialReactTable
-          columns={columns}
-          data={filteredData}
-          initialState={{
-            showColumnFilters: true,
-            showGlobalFilter: true,
-            density: "comfortable",
-          }}
-          muiTableProps={{
-            sx: { borderRadius: "10px", boxShadow: "none" },
-          }}
-          enablePagination={false}
-          enableDensityToggle={false}
-          renderTopToolbarCustomActions={() => (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "10px",
-              }}
-            >
-              <AiOutlineFileSearch size={30} />
-              <label className="text-lg font-bold tracking-wide">Inquiry</label>
-            </div>
-          )}
-        />
       </Box>
+
+      <MaterialReactTable
+        columns={columns}
+        data={filteredData}
+        initialState={{
+          showColumnFilters: true,
+          showGlobalFilter: true,
+          density: "comfortable",
+        }}
+        muiTableProps={{
+          sx: { borderRadius: "10px", boxShadow: "none" },
+        }}
+        enablePagination={false}
+        enableDensityToggle={false}
+        renderTopToolbarCustomActions={() => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "10px",
+            }}
+          >
+            <AiOutlineFileSearch size={30} />
+            <label className="text-lg font-bold tracking-wide">Inquiry</label>
+          </div>
+        )}
+      />
     </Box>
   );
 };

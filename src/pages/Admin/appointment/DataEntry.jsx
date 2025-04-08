@@ -58,23 +58,31 @@ export default function DataEntry() {
   ];
 
   return (
-    <div className="w-full ">
-      <div className="grid grid-cols-2 gap-2 transition-transform lg:grid-cols-4  md:grid-cols-4 sm:grid-cols-4  p-1 min-w-fit xl:flex">
-        {buttons.map((res) => (
-          <button
-            key={res.id}
-            onClick={res.function}
-            className={clsx(
-              "min-w-fit flex items-center justify-center col-span-2 shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white p-2 rounded-md",
-              selectedId === res.id ? "bg-[#1F2937] text-white" : "bg-white"
-            )}
-          >
-            <div className="flex gap-2">
-              {res.icons} {res.name}
-            </div>
-          </button>
-        ))}
-      </div>
+    <div className="w-full h-full">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex  flex-col">
+          {/* <label className="flex justify-start text-xl font-bold ">
+            Data Entry Section
+          </label> */}
+        </div>
+        <div className="flex rounded-lg bg-gray-100 w-[450px] p-1 justify-between shadow-sm">
+          {buttons.map((res) => (
+            <button
+              key={res.id}
+              onClick={res.function}
+              className={`w-1/2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 ease-in-out ${
+                selectedId === res.id
+                  ? "bg-green-600 text-white transform scale-105"
+                  : "text-gray-600 bg-white hover:bg-gray-200"
+              }`}
+            >
+              <div className="flex gap-2">
+                {res.icons} {res.name}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div> 
       <div>
         {timeslot && <ConsultingTime />}
         {machines && <MachineDetails />}

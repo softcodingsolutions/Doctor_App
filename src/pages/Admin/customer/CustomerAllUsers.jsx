@@ -5,8 +5,14 @@ import InsideLoader from "../../InsideLoader";
 import { MaterialReactTable } from "material-react-table";
 import { Box, Button, IconButton, TextField } from "@mui/material";
 import { IoPersonSharp, IoCloseOutline } from "react-icons/io5";
+import { GiCaduceus } from "react-icons/gi";
+import { FaEye } from "react-icons/fa";
+import { Outlet, useOutletContext } from "react-router-dom";
+import Tooltip from "@mui/material/Tooltip";
+import { get } from "lodash";
 function CustomerAllUsers() {
   const navigate = useNavigate();
+  const [toggleSidebar, admin, showSidebar] = useOutletContext();
   const [getCustomers, setGetCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -16,7 +22,17 @@ function CustomerAllUsers() {
 
   const handleGetAllUsers = () => {
     axios.get(`/api/v1/users?user_id=${main_id}`).then((res) => {
-      setGetCustomers(res.data?.users);
+      const patients = res.data?.users?.filter(
+        (user) => user.role === "patient"
+      );
+      // Add `full_name` and `doctor_full_name` to each user object
+      const formattedPatients = patients.map((user) => ({
+        ...user,
+        full_name: `${user.first_name} ${user.last_name}`,
+      }));
+
+      setGetCustomers(formattedPatients);
+
       setLoading(false);
     });
   };
@@ -33,17 +49,9 @@ function CustomerAllUsers() {
 
   const formatType = (type) => {
     if (type === true) {
-      return (
-        <div className=" rounded  text-[#e78f3d]">
-          Follow Up
-        </div>
-      );
+      return <div className=" rounded  text-[#e78f3d]">Old Case</div>;
     } else if (type === false) {
-      return (
-        <div className=" rounded  text-[#00bad1]">
-          New Case
-        </div>
-      );
+      return <div className=" rounded  text-[#00bad1]">New Case</div>;
     }
   };
 
@@ -71,13 +79,23 @@ function CustomerAllUsers() {
     navigate(`/admin/patients/customer-details/progress-questions`);
   };
 
-  const filteredData = getCustomers.filter(
-    (user) =>
-      user.case_number.includes(searchTerm) ||
-      user.phone_number.includes(searchTerm) ||
-      user.email.includes(searchTerm) ||
-      user.first_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredData = getCustomers.filter((user) => {
+  //   const firstName = user.first_name?.toLowerCase() || "";
+  //   const lastName = user.last_name?.toLowerCase() || "";
+  //   const fullName = `${firstName} ${lastName}`;
+  //   const caseNumber = user.case_number || "";
+  //   const phoneNumber = user.phone_number || "";
+  //   const email = user.email?.toLowerCase() || "";
+  //   const typeText = user.follow_up ? "old case" : "new case";
+
+  //   return (
+  //     caseNumber.includes(searchTerm) ||
+  //     phoneNumber.includes(searchTerm) ||
+  //     email.includes(searchTerm.toLowerCase()) ||
+  //     fullName.includes(searchTerm.toLowerCase()) ||
+  //     typeText.includes(searchTerm.toLowerCase())
+  //   );
+  // });
 
   if (loading) {
     return <InsideLoader />;
@@ -85,17 +103,47 @@ function CustomerAllUsers() {
 
   const columns = [
     { accessorKey: "case_number", header: "Case No.", size: 10 },
-    { accessorKey: "first_name", header: "Patient Name" },
+    {
+      accessorKey: "full_name",
+      header: "Patient Name",
+      Cell: ({ row }) => `${row.original.first_name} ${row.original.last_name}`,
+      size: 10,
+    },
     { accessorKey: "personal_detail.age", header: "Age", size: 10 },
     { accessorKey: "personal_detail.weight", header: "Weight", size: 10 },
-    { accessorKey: "phone_number", header: "Phone Number" },
+    { accessorKey: "phone_number", header: "Contact No", size: 10 },
+    // {
+    //   accessorKey: "follow_up",
+    //   header: "Type",
+    //   Cell: ({ row }) => {
+    //     const date = row.original.follow_up;
+    //     return formatType(date);
+    //   },
+    //   size: 10,
+    // },
     {
-      accessorKey: "follow_up",
+      accessorFn: (row) => (row.follow_up ? "Old Case" : "New Case"),
+      id: "type",
       header: "Type",
-      Cell: ({ row }) => {
-        const date = row.original.follow_up;
-        return formatType(date);
+      Cell: ({ cell }) => {
+        return (
+          <div
+            className={`rounded text-sm ${
+              cell.getValue() === "Old Case"
+                ? "text-[#e78f3d]"
+                : "text-[#00bad1]"
+            }`}
+          >
+            {cell.getValue()}
+          </div>
+        );
       },
+      filterFn: "equals",
+      filterSelectOptions: [
+        { text: "Old Case", value: "Old Case" },
+        { text: "New Case", value: "New Case" },
+      ],
+      filterVariant: "select",
       size: 10,
     },
     {
@@ -112,42 +160,56 @@ function CustomerAllUsers() {
       Cell: ({ row }) => {
         const val = row.original;
         return (
-          <div className="flex flex-col gap-1">
-            <button
-              onClick={() => handleDiagnosis(val.id, val.case_number)}
-              className="font-medium p-1 text-green-600 bg-white border text-sm ml-1 border-gray-300 rounded-md hover:bg-green-600 hover:text-white"
-            >
-              Diagnosis
-            </button>
-            <button
-              className="font-medium p-1 text-white bg-green-600 border border-gray-300 text-sm rounded-md hover:text-green-600 hover:bg-white"
-              onClick={() => handleInventory(val.id, val.case_number)}
-            >
-              View Patient
-            </button>
+          <div className="flex  gap-1">
+            <Tooltip title="Diagnosis" arrow placement="top">
+              <button
+                onClick={() => handleDiagnosis(val.id, val.case_number)}
+                className="font-medium p-1 w-fit  text-green-600 bg-white border text-sm ml-1 border-gray-300 rounded-md hover:bg-green-600 hover:text-white"
+              >
+                <GiCaduceus size={20} />
+              </button>
+            </Tooltip>
+            <Tooltip title="View Patient Details" arrow placement="top">
+              <button
+                className="font-medium p-1 w-fit text-white bg-green-600 border border-gray-300 text-sm rounded-md hover:text-green-600 hover:bg-white"
+                onClick={() => handleInventory(val.id, val.case_number)}
+              >
+                <FaEye size={20} />
+              </button>
+            </Tooltip>
           </div>
         );
       },
+      size: 10,
     },
   ];
 
   return (
-    <Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        mb={2}
-        sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
-      >
+    <div className="w-full ">
+      <div className="flex justify-between w-full">
+        <div className="flex gap-1">
+          {/* <div className="mt-2">
+            <IoPersonSharp size={35} className="text-green-600" />{" "}
+          </div> */}
+          <div className="flex  flex-col">
+            <label className="flex justify-start text-xl font-bold ">
+              Patient List
+            </label>
+            <span className="text-md text-gray-600 ">
+              View and manage all patient records
+            </span>
+          </div>
+        </div>
         <button
-          className="border border-gray-300 lg:w-[15%] mt-10 bg-green-600 rounded-md text-lg text-white hover:scale-105"
+          className="flex gap-1 border border-gray-300  py-2  px-3 h-10 bg-green-600 rounded-md text-sm text-white hover:scale-105"
           onClick={() => navigate("../../new-user/general-details")}
         >
-          Create New Patient
+          <IoPersonSharp size={20} />
+          Create Patient
         </button>
-      </Box>
+      </div>
 
-      <MaterialReactTable
+      {/* <MaterialReactTable
         columns={columns}
         data={filteredData}
         initialState={{
@@ -156,7 +218,7 @@ function CustomerAllUsers() {
           density: "compact",
         }}
         muiTableBodyCellProps={{
-          sx: { padding: "16px" }, 
+          sx: { padding: "16px" },
         }}
         enablePagination={false}
         enableDensityToggle={false}
@@ -164,7 +226,6 @@ function CustomerAllUsers() {
           <div
             style={{
               display: "flex",
-              alignItems: "center",
               gap: "10px",
               padding: "10px",
             }}
@@ -175,8 +236,65 @@ function CustomerAllUsers() {
             </label>
           </div>
         )}
-      />
-    </Box>
+      /> */}
+      <div className={`${showSidebar ? "w-full" : "w-full"} overflow-y-auto `}>
+        <MaterialReactTable
+          columns={columns}
+          data={getCustomers.filter((user) => {
+            console.log(user, "USER");
+            const fullName = user.full_name;
+            const typeText = user.follow_up ? "old case" : "new case";
+            return (
+              user.case_number.includes(searchTerm) ||
+              user.phone_number.includes(searchTerm) ||
+              user.email.includes(searchTerm) ||
+              fullName.includes(searchTerm.toLowerCase()) ||
+              typeText.includes(searchTerm.toLowerCase())
+            );
+          })}
+          initialState={{
+            showColumnFilters: true,
+            showGlobalFilter: true,
+            density: "compact",
+          }}
+          enablePagination={false}
+          enableDensityToggle={false}
+          muiTableContainerProps={{
+            sx: {
+              maxHeight: "calc(100vh - 250px)", // Makes only data scrollable
+              overflowY: "auto",
+            },
+          }}
+          muiTableHeadCellProps={{
+            sx: {
+              position: "sticky",
+              top: 0,
+              backgroundColor: "white",
+              zIndex: 101, // Ensures header stays above data
+              borderBottom: "2px solid #ddd",
+            },
+          }}
+          muiTableBodyCellProps={{
+            sx: {
+              borderBottom: "1px solid #ddd", // Optional: Improves row separation
+            },
+          }}
+          // renderTopToolbarCustomActions={() => (
+          //   <div
+          //     style={{
+          //       display: "flex",
+          //       gap: 1,
+          //     }}
+          //   >
+          //     <IoPersonSharp size={20} />
+          //     <label className="text-md font-bold tracking-wide">
+          //       Patient List
+          //     </label>
+          //   </div>
+          // )}
+        />
+      </div>
+    </div>
   );
 }
 

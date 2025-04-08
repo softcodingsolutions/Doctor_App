@@ -5,6 +5,10 @@ import InsideLoader from "../../InsideLoader";
 import { HiClipboardDocumentList } from "react-icons/hi2";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { FaCirclePlus } from "react-icons/fa6";
+import { CiCalendar } from "react-icons/ci";
+import DatePicker from "react-datepicker";
+import { RiBillLine } from "react-icons/ri";
+import Tooltip from "@mui/material/Tooltip";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -21,7 +25,7 @@ export default function Home() {
   const [visitorData, setVisitorData] = useState([]);
 
   const handleConsulting = (e) => {
-    const selectedDate = e.target.value;
+    const selectedDate = e.toISOString().split("T")[0];
     setConsultingTime(selectedDate);
 
     const today = new Date().toISOString().split("T")[0];
@@ -100,6 +104,13 @@ export default function Home() {
       });
   }, []);
 
+  const handleBill = (id) => {
+    navigate(`/receptionist/generatebill`, {
+      state: {
+        user_id: id,
+      },
+    });
+  };
   useEffect(() => {
     allAppointments();
   }, [consultingTime]);
@@ -187,6 +198,7 @@ export default function Home() {
   };
 
   const combinedData = [...consultingTimes, ...visitorData];
+  console.log(combinedData, "DAta");
   const transformedDoctorData = transformDataForDoctors(combinedData);
 
   const handleRedirect = () => {
@@ -202,52 +214,62 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full bg-white h-full">
-      <div className="flex flex-col px-2 py-1 h-full">
-        <div className="flex flex-col gap-2 p-2 w-full">
-          <div className="flex w-full justify-center items-center mb-5">
-            <div>
-              <HiClipboardDocumentList size={40} />
-            </div>
-            <label className="flex justify-center text-lg font-bold  tracking-wide">
-              Consulting Appointment Lists
-            </label>
+    <div className="flex flex-col w-full bg-white h-full">
+      <div className="flex justify-between  rounded-t-lg w-full">
+        <div className="flex gap-1">
+          <div className="mt-2">
+            <HiClipboardDocumentList size={35} className="text-green-600" />{" "}
           </div>
-          <div className="flex justify-between ">
-            <div className="flex flex-col gap-2">
-              <div className="">
-                <input
-                  type="date"
-                  placeholder="Select date"
-                  className="py-1 px-2 rounded-md border border-black w-full "
-                  onChange={handleConsulting}
-                />
-              </div>
-              <label className="flex  justify-start text-md font-semibold tracking-wide">
-                {formatDate(consultingTime)}
-              </label>
+          <div className="flex  flex-col">
+            <label className="flex justify-start text-xl font-bold ">
+              Consulting Appointment
+            </label>
+            <span className="text-md text-gray-600 ">
+              View all scheduled appointments
+            </span>
+          </div>
+        </div>
+        <div className=" flex justify-end gap-2">
+          {/* <div className="flex flex-col gap-2">
+            <div className="">
+              <input
+                type="date"
+                placeholder="Select date"
+                className="py-1 px-2 rounded-md border border-black w-full "
+                onChange={handleConsulting}
+              />
             </div>
-            <div className="flex flex-col">
-              <div className="flex gap-1">
-                <button
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700"
-                  onClick={() =>
-                    navigate(`/receptionist/appointment/create-appointment`)
-                  }
-                >
-                  <FaCirclePlus size={20} /> Create Appointment
-                </button>
-              </div>
-              <div className="flex gap-1 mt-2">
-                <div className="w-4 h-4 bg-[#F1F1E8] border mt-1 border-gray-800"></div>
-                <div className="font-medium">- Visitor Patient</div>
-              </div>
+            <label className="flex  justify-start text-md font-semibold tracking-wide">
+              {formatDate(consultingTime)}
+            </label>
+          </div> */}
+          <div className="relative flex items-center w-[20vh] h-10">
+            <CiCalendar className="absolute left-3 text-black z-10" />
+            <DatePicker
+              selected={new Date(consultingTime)}
+              onChange={(date) => handleConsulting(date)}
+              dateFormat="dd-MM-yyyy"
+              placeholderText="Select date"
+              className="w-full  text-sm p-2.5 pl-10 pr-3 border rounded-md focus:outline-none bg-white"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <div className="flex gap-1">
+              <button
+                className="bg-green-600 text-white p-2 rounded-lg flex items-center gap-2 hover:bg-green-700"
+                onClick={() =>
+                  navigate(`/receptionist/appointment/create-appointment`)
+                }
+              >
+                <FaCirclePlus /> Create Appointment
+              </button>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="flex w-full h-full mt-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-full">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-full">
             {Object.keys(transformedDoctorData).map((doctor, doctorIndex) => (
               <div
                 key={doctorIndex}
@@ -332,8 +354,132 @@ export default function Home() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
+          </div> */}
+      <div className="w-full mt-10 border rounded-md">
+        <table className="w-full  rounded-md border-gray-300 text-sm text-left ">
+          <thead className=" text-[#71717A] font-medium border-b-2">
+            <tr>
+              <th className="border-b-2 p-3">Patient Name</th>
+              <th className="border-b-2 p-3">Phone</th>
+              <th className="border-b-2 p-3">Time</th>
+              <th className="border-b-2 p-3">Doctor</th>
+              <th className="border-b-2 p-3 ">Type</th>
+              <th className="border-b-2 p-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-300">
+            {combinedData.length > 0 ? (
+              combinedData.map((appointment, index) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="px-4 py-2">
+                    {appointment.name
+                      ? appointment.name
+                      : `${appointment.user?.first_name || "Unknown"} ${
+                          appointment.user?.last_name || ""
+                        }`}
+                  </td>
+
+                  <td className="px-4 py-2">
+                    {appointment.phone
+                      ? appointment.phone
+                      : `${appointment.user?.phone_number || "-"} `}
+                  </td>
+                  <td className="px-4 py-2">{appointment.time}</td>
+                  <td className="px-4 py-2">
+                    {appointment.doctor?.first_name}{" "}
+                    {appointment.doctor?.last_name}
+                  </td>
+                  <td className=" px-4 py-2">
+                    {appointment.user?.follow_up ? (
+                      <div className="bg-[#EFF6FF]  text-[#2563EB] border-b flex justify-center w-40 text-sm  h-full rounded-md p-2">
+                        Register Patient
+                      </div>
+                    ) : (
+                      <div className="bg-[#FAF5FF]  text-[#7E22CE] border-b flex justify-center w-40 text-sm  h-full rounded-md p-2">
+                        Visitor
+                      </div>
+                    )}
+                  </td>
+
+                  {/* <td className="px-4 py-2">
+                
+                    {appointment.status === "completed" && (
+                      <button
+                        onClick={() => handleBill(appointment.user?.id)}
+                        className="relative inline-block text-[#DD2590] bg-[#F79FC6] text-sm ml-1 p-1 font-medium after:absolute after:left-0 after:bottom-0 after:h-[1px] after:w-0 after:bg-[#DD2590] after:transition-all after:duration-300 hover:after:w-full"
+                      >
+                        <RiBillLine size={20} />
+                      </button>
+                    )}
+                    <button
+                      className="text-red-600 hover:text-red-800"
+                      onClick={() =>
+                        handleDelete(
+                          appointment.name
+                            ? `${appointment.name} (${appointment.phone})`
+                            : `${appointment.user?.first_name || "Unknown"} ${
+                                appointment.user?.last_name || ""
+                              } (${appointment.user?.phone_number || "-"})`,
+                          appointment.time,
+                          `${appointment.doctor?.first_name || "Unknown"} ${
+                            appointment.doctor?.last_name || ""
+                          }`
+                        )
+                      }
+                    >
+                      <IoIosRemoveCircleOutline size={20} />
+                    </button>
+                  </td> */}
+                  <td className="px-4 py-2 flex gap-2">
+                    <Tooltip title="Generate Bill">
+                      {appointment.status === "completed" && (
+                        <button
+                          onClick={() =>
+                            handleBill(appointment.user?.case_number)
+                          }
+                          className="relative inline-flex items-center justify-center text-[#06AED4]  bg-[#9FD7EA] text-sm p-1.5 rounded-full group transition-all duration-300 hover:shadow-md"
+                        >
+                          <RiBillLine
+                            size={17}
+                            className="transition-transform duration-500 group-hover:rotate-12"
+                          />
+                        </button>
+                      )}
+                    </Tooltip>
+                    <Tooltip title="Cancel Appointment">
+                      <button
+                        className="relative  inline-flex  p-1.5 rounded-full bg-red-100 text-red-600 group transition-all duration-300 hover:shadow-md"
+                        onClick={() =>
+                          handleDelete(
+                            appointment.name
+                              ? `${appointment.name} (${appointment.phone})`
+                              : `${appointment.user?.first_name || "Unknown"} ${
+                                  appointment.user?.last_name || ""
+                                } (${appointment.user?.phone_number || "-"})`,
+                            appointment.time,
+                            `${appointment.doctor?.first_name || "Unknown"} ${
+                              appointment.doctor?.last_name || ""
+                            }`
+                          )
+                        }
+                      >
+                        <span className="transition-transform duration-500 group-hover:rotate-12">
+                          <IoIosRemoveCircleOutline size={17} />
+                        </span>
+                      </button>
+                    </Tooltip>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="text-center py-4 text-gray-600">
+                  No appointments found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

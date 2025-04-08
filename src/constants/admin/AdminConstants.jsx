@@ -89,18 +89,18 @@ export const masterButtons = [
 ];
 
 export const reportButtons = [
-  // {
-  //   id: "2",
-  //   name: "Questions",
-  //   icons: <FaRegQuestionCircle size={18} />,
-  //   to: "questions",
-  // },
-  // {
-  //   id: "3",
-  //   name: "Past History",
-  //   icons: <GoHistory size={18} />,
-  //   to: "past-history",
-  // },
+  {
+    id: "2",
+    name: "Questions",
+    icons: <FaRegQuestionCircle size={18} />,
+    to: "questions",
+  },
+  {
+    id: "3",
+    name: "Past History",
+    icons: <GoHistory size={18} />,
+    to: "past-history",
+  },
   {
     id: "4",
     name: "Treatment",
@@ -211,7 +211,7 @@ export const reportTreatmentButtons = [
   },
   {
     id: "3",
-    name: "Nutrition / Supplements",
+    name: "Nutrition",
     icons: <LiaCapsulesSolid size={18} />,
     to: "nutrition",
   },

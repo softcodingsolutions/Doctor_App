@@ -94,8 +94,8 @@ const PatientAnalysis = () => {
   
 
   return (
-    <div className="flex flex-col p-4">
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6 overflow-auto">
+    <div className="flex flex-col p-2">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-3 overflow-auto">
         {dates.length > 0 && weight.length > 0 ? (
           <LineChart
             xAxis={[{ data: dates, scaleType: "point", label: "Date" }]}
@@ -120,7 +120,7 @@ const PatientAnalysis = () => {
 
           return (
             <div key={packageName} className="flex flex-col items-center">
-              <h3 className="text-md font-semibold text-left w-full">
+              <h3 className="text-sm font-semibold text-left w-full">
                 {`Package: ${uniqueWeightReasons.join(", ")}  ${packageName}`}
               </h3>
               <PieChart width={200} height={160}>

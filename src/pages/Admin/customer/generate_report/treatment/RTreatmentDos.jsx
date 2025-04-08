@@ -133,12 +133,12 @@ function RTreatmentDos() {
       <div className="rounded-lg bg-card h-[65vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex flex-col md:flex-row gap-5 text-center items-center justify-between">
-            <div className="font-[550] text-lg">
+            <div className="font-[530] text-sm">
               No. of dos checked: {selectedCheckboxes.length}
             </div>
-            <div className="font-[550] text-lg flex items-center">
+            <div className="font-[530] text-sm flex items-center">
               Mapped Dos -{" "}
-              <div className="ml-2 bg-gray-400 border border-gray-200 w-5 h-5"></div>
+              <div className="ml-2 bg-[#EFF6FF] border border-gray-200 w-5 h-5"></div>
             </div>
           </div>
 
@@ -177,7 +177,7 @@ function RTreatmentDos() {
                     <tr
                       className={`${
                         getPredictionDos.some((med) => med.id === val.id)
-                          ? "bg-gray-400 "
+                          ? "bg-[#EFF6FF] "
                           : ""
                       } w-full`}
                       key={val.id}

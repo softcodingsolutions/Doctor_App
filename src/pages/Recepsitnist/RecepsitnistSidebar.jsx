@@ -8,9 +8,13 @@ import { MdMenuBook } from "react-icons/md";
 import { MdApps } from "react-icons/md";
 import { FaLightbulb } from "react-icons/fa";
 import { IoCloseOutline, IoPersonSharp } from "react-icons/io5";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
 import { IoIosSend } from "react-icons/io";
 import { GrVirtualMachine } from "react-icons/gr";
 import icons_slime from "../../assets/images/icons_slime_converted.webp";
+import { IoSettingsSharp } from "react-icons/io5";
+import { MdLogout } from "react-icons/md";
 import { FaFilePen } from "react-icons/fa6";
 
 function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
@@ -71,12 +75,14 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       icons: <IoIosSend size={18} />,
     },
   ];
-
   const handleLogoutClick = () => {
     localStorage.clear();
     navigate("/");
   };
 
+  const handleRedirect = () => {
+    navigate("/receptionist/profile-setting");
+  };
   const toggleLogoutMenu = () => {
     setIsLogoutMenuOpen(!isLogoutMenuOpen);
   };
@@ -86,82 +92,179 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
   }, [selected]);
 
   return (
+    // <div
+    //   className={clsx(
+    //     "fixed inset-y-0 left-0 bg-card w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-[#1F2937] text-gray-100",
+    //     showSidebar ? "flex" : "hidden"
+    //   )}
+    // >
+    //   <div className="flex-shrink-0 overflow-hidden p-2">
+    //     <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
+    //       <div className="flex w-70 sm:hidden xl:flex p-5 items-center justify-center shadow-sm bg-white  rounded-md">
+    //         <img src={icons_slime} alt="Logo" className="h-[60px]" />
+    //       </div>
+    //       <div className="hidden sm:flex xl:hidden items-center justify-center shadow-sm bg-white p-3 rounded-md">
+    //         <FaPlus size={30} className="text-black" />
+    //       </div>
+
+    //       <div className="flex-grow sm:hidden xl:block text-black" />
+    //       <IoCloseOutline
+    //         size={25}
+    //         className="block sm:hidden cursor-pointer ml-1 hover:scale-110"
+    //         onClick={onSidebarHide}
+    //       />
+    //     </div>
+    //   </div>
+
+    //   <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
+    //     {sidebarItems.map((i) => (
+    //       <Link
+    //         to={i.to}
+    //         key={i.id}
+    //         className={clsx(
+    //           "w-full flex items-center px-2 text-base py-1.5 sm:px-0 xl:px-2 justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-2 cursor-pointer",
+    //           selected === i.id ? "sidebar-item-selected" : "sidebar-item"
+    //         )}
+    //         onClick={() => setSelected(i.id)}
+    //       >
+    //         {i.icons}
+    //         <div className="block sm:hidden xl:block ml-2 font-sans">
+    //           {i.title}
+    //         </div>
+    //         <div className="block sm:hidden xl:block flex-grow " />
+    //       </Link>
+    //     ))}
+
+    //     <div className="flex-grow" />
+    //   </div>
+
+    //   <div className="flex-shrink-0 overflow-hidden p-2">
+    //     <div className="flex flex-col items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
+    //       <div className="flex flex-row">
+    //         <div
+    //           onClick={() =>
+    //             toggleLogoutMenu(setIsLogoutMenuOpen, isLogoutMenuOpen)
+    //           }
+    //           className={
+    //             "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
+    //           }
+    //         >
+    //           <div className="text-lg font-semibold">
+    //             {admin?.first_name?.toUpperCase()[0]}
+    //             {admin?.last_name?.toUpperCase()[0]}
+    //           </div>
+    //         </div>
+    //         <div className="block sm:hidden xl:block ml-2 font-bold ">
+    //           {admin?.first_name} {admin?.last_name}{" "}
+    //           <span className="font-normal text-[0.80rem]">(Receptionist)</span>
+    //         </div>
+    //       </div>
+    //       {/* <div className="flex-grow block sm:hidden xl:block" /> */}
+
+    //       <div
+    //         onClick={() => handleLogoutClick()}
+    //         className="rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer shadow-lg text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-gray-400 bg-white rounded-md sm:rounded-bl-none w-full.avif z-50 hover:bg-black hover:border-gray-900 hover:text-gray-100"
+    //       >
+    //         Logout
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
     <div
       className={clsx(
-        "fixed inset-y-0 left-0 bg-card w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-[#1F2937] text-gray-100",
-        showSidebar ? "flex" : "hidden"
+        "fixed inset-y-0 left-0 bg-card font-sans flex flex-col z-10 bg-[#1F2937] h-full text-gray-100 transition-all duration-300",
+        showSidebar ? "w-56" : "w-20"
       )}
     >
-      <div className="flex-shrink-0 overflow-hidden p-2">
-        <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
-          <div className="flex w-70 sm:hidden xl:flex p-5 items-center justify-center shadow-sm bg-white  rounded-md">
-            <img src={icons_slime} alt="Logo" className="h-[60px]" />
-          </div>
-          <div className="hidden sm:flex xl:hidden items-center justify-center shadow-sm bg-white p-3 rounded-md">
-            <FaPlus size={30} className="text-black" />
-          </div>
-
-          <div className="flex-grow sm:hidden xl:block text-black" />
-          <IoCloseOutline
-            size={25}
-            className="block sm:hidden cursor-pointer ml-1 hover:scale-110"
-            onClick={onSidebarHide}
+      {/* Sidebar Header */}
+      <div className="flex-shrink-0 overflow-hidden p-4  justify-between flex items-center border-b border-blue-gray-800 mb-4">
+        {showSidebar ? (
+          <img
+            src={icons_slime}
+            alt="Logo"
+            className="h-[50px] bg-white  rounded-lg p-2"
           />
+        ) : (
+          ""
+        )}
+
+        <button
+          className="bg-gray-800 text-white p-2 rounded"
+          onClick={onSidebarHide}
+        >
+          {showSidebar ? <FiChevronLeft /> : <FiChevronRight />}
+        </button>
+      </div>
+
+      <div>
+        {showSidebar && (
+          <div className="text-[#ffffff99] px-6 text-xs"> Main Menu </div>
+        )}
+        <div className="px-3 py-1 ">
+          {/* {sidebarItems.map((i) => (
+            <Link
+              to={i.to}
+              key={i.id}
+              className={clsx(
+                "flex items-center rounded-md px-3 py-2 hover:bg-gray-700 transition-all text-xs mt-1",
+                selected === i.id ? "bg-gray-800" : ""
+              )}
+            >
+              {i.icons}
+              {showSidebar && <span className="ml-2 ">{i.title}</span>}
+            </Link>
+          ))} */}
+          {sidebarItems.map((i) => (
+            <Link
+              to={i.to}
+              key={i.id}
+              className={clsx(
+                "flex items-center rounded-md px-3 py-2 hover:bg-gray-700 transition-all text-xs mt-1",
+                selected === i.id ? "bg-gray-800" : "sidebar-item"
+              )}
+              onClick={() => setSelected(i.id)}
+            >
+              {i.icons}
+              {showSidebar && <span className="ml-2 ">{i.title}</span>}
+            </Link>
+          ))}
         </div>
       </div>
-
-      <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
-        {sidebarItems.map((i) => (
-          <Link
-            to={i.to}
-            key={i.id}
-            className={clsx(
-              "w-full flex items-center px-2 text-base py-1.5 sm:px-0 xl:px-2 justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-2 cursor-pointer",
-              selected === i.id ? "sidebar-item-selected" : "sidebar-item"
+      {/* Logout Section */}
+      <div className="p-2 flex flex-col items-center sidebar-bottom mt-28 ">
+        <div className="flex flex-row justify-between w-full items-center">
+          <div className="flex gap-1">
+            <div className="p-2 rounded-full bg-[#506930] text-white cursor-pointer">
+              {admin?.first_name?.[0]?.toUpperCase()}
+              {admin?.last_name?.[0]?.toUpperCase()}
+            </div>
+            {showSidebar && (
+              <span className="ml-2 font-bold">
+                {admin?.first_name} {admin?.last_name}
+              </span>
             )}
-            onClick={() => setSelected(i.id)}
-          >
-            {i.icons}
-            <div className="block sm:hidden xl:block ml-2 font-sans">
-              {i.title}
-            </div>
-            <div className="block sm:hidden xl:block flex-grow " />
-          </Link>
-        ))}
-
-        <div className="flex-grow" />
-      </div>
-
-      <div className="flex-shrink-0 overflow-hidden p-2">
-        <div className="flex flex-col items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
-          <div className="flex flex-row">
-            <div
-              onClick={() =>
-                toggleLogoutMenu(setIsLogoutMenuOpen, isLogoutMenuOpen)
-              }
-              className={
-                "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
-              }
-            >
-              <div className="text-lg font-semibold">
-                {admin?.first_name?.toUpperCase()[0]}
-                {admin?.last_name?.toUpperCase()[0]}
-              </div>
-            </div>
-            <div className="block sm:hidden xl:block ml-2 font-bold ">
-              {admin?.first_name} {admin?.last_name}{" "}
-              <span className="font-normal text-[0.80rem]">(Receptionist)</span>
-            </div>
           </div>
-          {/* <div className="flex-grow block sm:hidden xl:block" /> */}
-
-          <div
-            onClick={() => handleLogoutClick()}
-            className="rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer shadow-lg text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-gray-400 bg-white rounded-md sm:rounded-bl-none w-full.avif z-50 hover:bg-black hover:border-gray-900 hover:text-gray-100"
+          <div>
+            <button onClick={() => handleRedirect()}>
+              <IoSettingsSharp />
+            </button>
+          </div>
+        </div>
+        {showSidebar ? (
+          <button
+            onClick={handleLogoutClick}
+            className="mt-2 p-2 w-full bg-white text-black font-semibold rounded shadow hover:bg-gray-800 hover:text-white"
           >
             Logout
-          </div>
-        </div>
+          </button>
+        ) : (
+          <button
+            onClick={handleLogoutClick}
+            className="mt-2 p-2 mr-4 text-white font-bold rounded shadow hover:bg-gray-800 hover:text-white"
+          >
+            <MdLogout size={20} />
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,19 +1,19 @@
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import { FaLightbulb, FaWpforms } from "react-icons/fa";
-import { IoPersonSharp, IoCloseOutline } from "react-icons/io5";
+import { IoPersonSharp } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaPlus } from "react-icons/fa6";
-import { useState, useEffect } from "react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useState } from "react";
 import { MdOutlineGppGood } from "react-icons/md";
-import { Option, Select } from "@mui/joy";
 import { MdManageAccounts } from "react-icons/md";
-import { AiFillDatabase } from "react-icons/ai";
-import img from "../../assets/images/icons_slime_converted.webp";
 import { BsGraphDown } from "react-icons/bs";
 import { CiViewList } from "react-icons/ci";
 import { MdDashboard } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 import { AiOutlineFileSearch } from "react-icons/ai";
+import { IoSettingsSharp } from "react-icons/io5";
+import icons_slime from "../../assets/images/icons_slime_converted.webp";
 
 function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
   const navigate = useNavigate();
@@ -29,17 +29,13 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
       id: "1",
       title: "Dashboard",
       to: "dashboard",
-      icons: (
-        <div className="relative">
-          <IoMdHome size={18} />
-        </div>
-      ),
+      icons: <IoMdHome size={18} />,
     },
     {
       id: "14",
       title: "Appointments",
-      icons: <FaWpforms size={18} />,
       to: "appointments",
+      icons: <FaWpforms size={18} />,
     },
     {
       id: "2",
@@ -49,28 +45,42 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     },
     {
       id: "13",
-      title: "List Follow Up",
+      title: "Patient Visiting History",
       to: "list-follow-up",
       icons: <MdDashboard size={18} />,
     },
     {
       id: "3",
       title: "List Franchise",
-      icons: <CiViewList size={18} />,
       to: "list-franchise",
+      icons: <CiViewList size={18} />,
     },
     {
       id: "15",
       title: "Analysis Reports",
-      icons: <BsGraphDown size={18} />,
       to: "analysis",
+      icons: <BsGraphDown size={18} />,
     },
-
     {
       id: "25",
       title: "User Inquiry",
-      icons: <AiOutlineFileSearch size={19} />,
       to: "user-inqury",
+      icons: <AiOutlineFileSearch size={19} />,
+    },
+  ];
+
+  const other = [
+    {
+      id: "7",
+      title: "Master",
+      to: `master/questions`,
+      icons: <FaLightbulb size={18} />,
+    },
+    {
+      id: "8",
+      title: "Treatment",
+      to: "treatment/question-part1",
+      icons: <MdOutlineGppGood size={18} />,
     },
   ];
 
@@ -84,8 +94,8 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     {
       id: "5",
       title: "List Franchise",
-      icons: <CiViewList size={18} />,
       to: "list-franchise",
+      icons: <CiViewList size={18} />,
     },
     {
       id: "6",
@@ -101,206 +111,186 @@ function AdminSidebar({ onSidebarHide, showSidebar, admin }) {
     },
   ];
 
-  const masterItems = [
-    {
-      id: "7",
-      title: "Master",
-      to: `master/questions`,
-      icons: <FaLightbulb size={18} />,
-    },
-    {
-      id: "8",
-      title: "Treatment",
-      to: "treatment/question-part1",
-      icons: <MdOutlineGppGood size={18} />,
-    },
-  ];
+  // const masterItems = [
+  //   { id: "7", title: "Master", to: `master/questions`, icons: <FaLightbulb size={18} /> },
+  //   { id: "8", title: "Treatment", to: "treatment/question-part1", icons: <MdOutlineGppGood size={18} /> },
+  // ];
 
-  const surveyItems = [
-    {
-      id: "9",
-      title: "Survey Master",
-      to: `survey-master/health-problem`,
-      icons: <FaLightbulb size={18} />,
-    },
-    {
-      id: "10",
-      title: "Survey Treatment",
-      to: `suvrey-treatment/survey-weight-gain-questions`,
-      icons: <MdOutlineGppGood size={18} />,
-    },
-    {
-      id: "11",
-      title: "User Data",
-      to: `user-data`,
-      icons: <AiFillDatabase size={18} />,
-    },
-  ];
+  // const surveyItems = [
+  //   { id: "9", title: "Survey Master", to: `survey-master/health-problem`, icons: <FaLightbulb size={18} /> },
+  //   { id: "10", title: "Survey Treatment", to: `survey-treatment/survey-weight-gain-questions`, icons: <MdOutlineGppGood size={18} /> },
+  //   { id: "11", title: "User Data", to: `user-data`, icons: <AiFillDatabase size={18} /> },
+  // ];
 
   const handleLogoutClick = () => {
     localStorage.clear();
     navigate("/");
   };
 
-  const toggleLogoutMenu = () => {
-    setIsLogoutMenuOpen(!isLogoutMenuOpen);
+  const handleRedirect = () => {
+    navigate("/admin/profile-setting");
   };
 
   return (
     <div
       className={clsx(
-        "fixed inset-y-0 left-0 bg-card font-sans w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 bg-[#1F2937] text-gray-100",
-        showSidebar ? "flex" : "hidden"
+        "fixed inset-y-0 left-0 bg-card font-sans flex flex-col z-10 bg-[#1F2937] text-gray-100 transition-all duration-300",
+        showSidebar ? "w-56" : "w-20"
       )}
     >
-      <div className="flex-shrink-0 overflow-hidden p-2">
-        <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
-          <div className="flex w-70 sm:hidden xl:flex p-5 items-center justify-center shadow-sm bg-white  rounded-md">
-            <img className="h-16 sm:h-full" src={img} alt="img" />
-          </div>
-          <div className="hidden sm:flex xl:hidden items-center justify-center shadow-sm bg-white p-3 rounded-md">
-            <FaPlus size={30} className="text-black" />
-          </div>
-
-          <div className="flex-grow sm:hidden xl:block text-black" />
-          <IoCloseOutline
-            size={25}
-            className="block sm:hidden cursor-pointer ml-1 hover:scale-110"
-            onClick={onSidebarHide}
+      {/* Sidebar Header */}
+      <div className="flex-shrink-0 overflow-hidden p-4  justify-between flex items-center border-b border-blue-gray-800 mb-4">
+        {showSidebar ? (
+          <img
+            src={icons_slime}
+            alt="Logo"
+            className="h-[50px] bg-white  rounded-lg p-2"
           />
-        </div>
+        ) : (
+          ""
+        )}
+
+        <button
+          className="bg-gray-800 text-white p-2 rounded"
+          onClick={onSidebarHide}
+        >
+          {showSidebar ? <FiChevronLeft /> : <FiChevronRight />}
+        </button>
       </div>
+      {/* 
+      <hr className="border mt-3 mb-3" /> */}
+      {/* Sidebar Items */}
+      <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col mt-3">
+        {role === "doctor" && (
+          <div>
+            {showSidebar && (
+              <div className="text-[#ffffff99] px-6 text-xs"> Main Menu </div>
+            )}
+            <div className="px-3 py-1 ">
+              {doctorSidebarItems.map((i) => (
+                <Link
+                  to={i.to}
+                  key={i.id}
+                  className={clsx(
+                    "flex items-center rounded-md px-3 py-2 hover:bg-gray-700 transition-all text-xs mt-1",
+                    segment === i.to ? "bg-gray-800" : ""
+                  )}
+                >
+                  {i.icons}
+                  {showSidebar && <span className="ml-2 ">{i.title}</span>}
+                </Link>
+              ))}
+            </div>
+            {showSidebar && (
+              <div className="text-[#ffffff99] px-6 text-xs">Other </div>
+            )}
+            <div className="px-3 py-1">
+              {other.map((i) => (
+                <Link
+                  to={i.to}
+                  key={i.id}
+                  className={clsx(
+                    "flex items-center rounded-md px-3 py-2 hover:bg-gray-700 transition-all text-xs mt-1",
+                    segment === i.to ? "bg-gray-800" : ""
+                  )}
+                >
+                  {i.icons}
+                  {showSidebar && <span className="ml-2">{i.title}</span>}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
-      <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
-        {/* doctor side items */}
-        {role === "doctor" &&
-          doctorSidebarItems.map((i) => (
-            <Link
-              to={i.to}
-              key={i.id}
-              className={clsx(
-                "w-full mt-6 flex items-center px-3 py-1.5 sm:px-0 xl:px-3 text-base justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer",
-                segment === i.to ? "sidebar-item-selected" : "sidebar-item"
-              )}
-              onClick={() => setSelected(0)}
-            >
-              {i.icons}
-              <div className="block sm:hidden xl:block ml-2 relative">
-                {i.title}
-              </div>
-
-              <div className="block sm:hidden xl:block flex-grow" />
-            </Link>
-          ))}
-
-        {/* admin side items */}
         {role === "super_admin" &&
           adminSidebarItems.map((i) => (
             <Link
               to={i.to}
               key={i.id}
               className={clsx(
-                "w-full mt-6 flex items-center px-3 py-1.5 sm:px-0 xl:px-3 text-base justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer",
-                segment === i.to ? "sidebar-item-selected" : "sidebar-item"
+                "flex items-center px-3 py-2 hover:bg-gray-700 transition-all",
+                segment === i.to ? "bg-gray-800" : ""
               )}
-              onClick={() => setSelected(0)}
             >
               {i.icons}
-              <div className="block sm:hidden xl:block ml-2">{i.title}</div>
-              <div className="block sm:hidden xl:block flex-grow" />
+              {showSidebar && <span className="ml-2">{i.title}</span>}
             </Link>
           ))}
 
-        {/* treatment flow */}
-        {role === "doctor" && (
+        {/* Treatment Flow */}
+        {/* {role === "doctor" && (
           <Select
             style={{ backgroundColor: "transparent", color: "white" }}
-            className={clsx("xl:mt-4 mt-6 mx-1")}
+            className="mt-4 mx-1"
             value={selected}
             placeholder="Treatment Flow"
           >
             {masterItems.map((res) => (
               <Option key={res.id} value={res.title}>
-                {" "}
-                <Link
-                  to={res.to}
-                  key={res.id}
-                  className={"w-full flex items-center space-x-2"}
-                  onClick={() => {
-                    setSelected(res.title);
-                    localStorage.removeItem("doctor_id");
-                  }}
-                >
-                  <div className="font-sans">{res.icons}</div>
-                  <div className="font-sans"> {res.title}</div>
+                <Link to={res.to} onClick={() => setSelected(res.title)}>
+                  {res.icons}
+                  {showSidebar && <span className="ml-2">{res.title}</span>}
                 </Link>
               </Option>
             ))}
           </Select>
-        )}
+        )} */}
 
-        {/* survey flow */}
-        {role === "super_admin" && (
+        {/* Survey Flow */}
+        {/* {role === "super_admin" && (
           <Select
             style={{ backgroundColor: "transparent", color: "white" }}
-            className={clsx("xl:mt-4 mt-6 mx-1")}
+            className="mt-4 mx-1"
             value={selected}
             placeholder="Survey Flow"
           >
             {surveyItems.map((res) => (
               <Option key={res.id} value={res.title}>
-                {" "}
-                <Link
-                  to={res.to}
-                  key={res.id}
-                  className={"w-full flex items-center space-x-2"}
-                  onClick={() => setSelected(res.title)}
-                >
-                  <div className="font-sans">{res.icons}</div>
-                  <div className="font-sans">{res.title}</div>
+                <Link to={res.to} onClick={() => setSelected(res.title)}>
+                  {res.icons}
+                  {showSidebar && <span className="ml-2">{res.title}</span>}
                 </Link>
               </Option>
             ))}
           </Select>
-        )}
-        <div className="flex-grow" />
+        )} */}
       </div>
 
-      <div className="flex-shrink-0 overflow-hidden p-2">
-        <div className="flex flex-col items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
-          <div className="flex flex-row">
-            <div
-              onClick={() =>
-                toggleLogoutMenu(setIsLogoutMenuOpen, isLogoutMenuOpen)
-              }
-              className={
-                "size-fit p-1.5 rounded-full bg-[#506930] cursor-pointer border flex items-center justify-center"
-              }
-            >
-              <div className="text-lg font-semibold">
-                {admin?.first_name?.toUpperCase()[0]}
-                {admin?.last_name?.toUpperCase()[0]}
-              </div>
+      {/* Logout Section */}
+      <div className="p-2 flex flex-col items-center">
+        <div className="flex flex-row justify-between w-full items-center">
+          <div className="flex gap-1">
+            <div className="p-2 rounded-full bg-[#506930] text-white cursor-pointer">
+              {admin?.first_name?.[0]?.toUpperCase()}
+              {admin?.last_name?.[0]?.toUpperCase()}
             </div>
-            <div className="block sm:hidden xl:block ml-2 font-bold">
-              {admin?.first_name?.toUpperCase()[0] +
-                admin?.first_name?.slice(1)}{" "}
-              {admin?.last_name?.toUpperCase()[0] + admin?.last_name?.slice(1)}{" "}
-              {role === "super_admin" ? (
-                <span className="font-normal text-[0.80rem]">(Admin)</span>
-              ) : (
-                <span className="font-normal text-[0.80rem]">(Doctor)</span>
-              )}
-            </div>
+            {showSidebar && (
+              <span className="ml-2 font-bold">
+                {admin?.first_name} {admin?.last_name}
+              </span>
+            )}
           </div>
-          {/* <div className="flex-grow block sm:hidden xl:block" /> */}
-          <div
-            onClick={handleLogoutClick}
-            className=" rounded-br-none left-3/4 bottom-11 p-1 cursor-pointer shadow-lg text-black text-center sm:left-16 sm:bottom-11 xl:left-56 xl:bottom-10 mt-2 mr-2 border border-gray-400 bg-white rounded-md sm:rounded-bl-none w-full z-50 hover:bg-black hover:border-gray-900 hover:text-gray-100"
-          >
-            Logout
+          <div>
+            <button onClick={() => handleRedirect()}>
+              <IoSettingsSharp />
+            </button>
           </div>
         </div>
+        {showSidebar ? (
+          <button
+            onClick={handleLogoutClick}
+            className="mt-2 p-2 w-full bg-white text-black font-semibold rounded shadow hover:bg-gray-800 hover:text-white"
+          >
+            Logout
+          </button>
+        ) : (
+          <button
+            onClick={handleLogoutClick}
+            className="mt-2 p-2 mr-4 text-white font-bold rounded shadow hover:bg-gray-800 hover:text-white"
+          >
+            <MdLogout size={20} />
+          </button>
+        )}
       </div>
     </div>
   );

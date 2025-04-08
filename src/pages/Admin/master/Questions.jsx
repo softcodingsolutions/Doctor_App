@@ -20,7 +20,7 @@ function Questions() {
   const [getDoctors, setGetDoctors] = useState([]);
   const [getDoctorId, setGetDoctorId] = useState("all");
   const [loading, setLoading] = useState(true);
-  
+
   const handleGetQuestionsPart1 = () => {
     axios
       .get("/api/v1/questions/part1")
@@ -280,7 +280,7 @@ function Questions() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
+      <div className="rounded-lg bg-card h-[75vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Questions List</div>
@@ -347,7 +347,7 @@ function Questions() {
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase ">
+              <thead className="uppercase sticky top-0 z-10">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent
                     moreClasses={"rounded-tl-md rounded-bl-md"}
@@ -378,9 +378,7 @@ function Questions() {
                       return (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">
-                              {index + 1 }
-                            </div>
+                            <div className="flex items-center">{index + 1}</div>
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.question_in_english} />
@@ -449,9 +447,7 @@ function Questions() {
                       return (
                         <tr key={val.id}>
                           <td className="py-2 px-4 border-b border-b-gray-50">
-                            <div className="flex items-center">
-                              {index + 1 }
-                            </div>{" "}
+                            <div className="flex items-center">{index + 1}</div>{" "}
                           </td>
                           <td className="py-3 px-4 border-b border-b-gray-50">
                             <TdComponent things={val.question_in_english} />
@@ -508,7 +504,6 @@ function Questions() {
               </tbody>
             </table>
           </div>
-      
         </div>
       </div>
     </div>

@@ -165,7 +165,7 @@ function TreatmentDonts() {
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase ">
+              <thead className="uppercase sticky top-0 z-10">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent
                     moreClasses={"rounded-tl-md rounded-bl-md"}

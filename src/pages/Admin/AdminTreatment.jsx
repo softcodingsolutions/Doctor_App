@@ -71,57 +71,71 @@ function AdminTreatment() {
   }, []);
 
   return (
-    <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </div>
-      <div className=" h-screen flex-grow overflow-auto flex flex-col flex-wrap content-start">
-        <div className="w-fit ">
-          <div className="flex flex-col md:flex-row gap-2 p-4 justify-center lg:w-[180vh] ">
-            {weightReason ? (
-              <div className="flex justify-center lg:ml-2 text-xl font-semibold">
-                <div>Selected Treatment: {weightReason}</div>
-              </div>
-            ) : (
-              <Select
-                required
-                placeholder="Select a reason"
-                disabled={isDropdownDisabled}
-                className="lg:w-[100vh]"
-              >
-                {getWeightReason.map((res) => {
-                  return (
-                    <Option
-                      key={res.id}
-                      value={res.name}
-                      onClick={() => {
-                        handleSendWeightReason(res.name, res.user_id);
-                        setSeeRequired(false);
-                      }}
-                    >
-                      {res.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-            )}
-            {seeRequired && (
-              <div className="text-red-500 text-md">**Required</div>
-            )}
+    // <div className=" flex-grow overflow-auto flex flex-col h-[300px] flex-wrap content-start">
+    //   {weightReason ? (
+    //     <div className="flex justify-center  text-xl font-semibold">
+    //       <div>Selected Treatment: {weightReason}</div>
+    //     </div>
+    //   ) : (
+    //     <Select
+    //       required
+    //       placeholder="Select a reason"
+    //       disabled={isDropdownDisabled}
+    //       className=""
+    //     >
+    //       {getWeightReason.map((res) => {
+    //         return (
+    //           <Option
+    //             key={res.id}
+    //             value={res.name}
+    //             onClick={() => {
+    //               handleSendWeightReason(res.name, res.user_id);
+    //               setSeeRequired(false);
+    //             }}
+    //           >
+    //             {res.name}
+    //           </Option>
+    //         );
+    //       })}
+    //     </Select>
+    //   )}
+    //   {seeRequired && <div className="text-red-500 text-md">**Required</div>}
+
+    //   {sendWeightReason !== null && (
+    //     <Outlet context={[sendWeightReason, handlegetPackages, getPackages]} />
+    //   )}
+    // </div>
+    <div className="flex-grow overflow-auto flex flex-col h-fit  flex-wrap content-start">
+      <div className="sticky top-0 bg-white z-10 p-2 w-full">
+        {weightReason ? (
+          <div className="flex justify-center text-xl font-semibold">
+            <div>Selected Treatment: {weightReason}</div>
           </div>
-
-          <button
-            onClick={context[0]}
-            type="button"
-            className="absolute end-5 top-8 sm:hidden hover:scale-110 w-fit"
+        ) : (
+          <Select
+            required
+            placeholder="Select a reason"
+            disabled={isDropdownDisabled}
+            className=""
           >
-            <img
-              src={`https://assets.codepen.io/3685267/res-react-dash-sidebar-open.svg`}
-              alt=""
-            />
-          </button>
-        </div>
+            {getWeightReason.map((res) => (
+              <Option
+                key={res.id}
+                value={res.name}
+                onClick={() => {
+                  handleSendWeightReason(res.name, res.user_id);
+                  setSeeRequired(false);
+                }}
+              >
+                {res.name}
+              </Option>
+            ))}
+          </Select>
+        )}
+        {seeRequired && <div className="text-red-500 text-md">**Required</div>}
+      </div>
 
+      <div>
         {sendWeightReason !== null && (
           <Outlet
             context={[sendWeightReason, handlegetPackages, getPackages]}

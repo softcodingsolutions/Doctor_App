@@ -90,10 +90,10 @@ function QueFamilyHistory({
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[87vh] bg-white">
+      <div className="rounded-lg bg-card h-[77vh] bg-white">
         <div className="flex p-2 px-4 h-full flex-col space-y-4">
           <div className="text-xl font-semibold text-[#1F2937] p-2">Family History</div>
-          <div className="w-full flex justify-center p-4  border rounded-md animate-once animate-ease-out overflow-auto h-[91%]">
+          <div className="w-full flex justify-center p-4  border rounded-md animate-once animate-ease-out overflow-auto ">
             <form
               onSubmit={handleSubmit(submittedData)}
               className="w-[80%] h-full flex flex-col items-center gap-10 text-lg"

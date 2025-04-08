@@ -2,14 +2,32 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Dialog } from "@headlessui/react";
-import InsideLoader from "../../InsideLoader";
+import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
-import { GiCancel } from "react-icons/gi";
-import { GrVirtualMachine } from "react-icons/gr";
+import {
+  Calendar,
+  Clock,
+  X,
+  Search,
+  Plus,
+  Trash2,
+  FileText,
+  User,
+  Phone,
+  Hash,
+  Laptop,
+  UserCheck,
+} from "lucide-react";
+
+// const Loader = () => (
+//   <div className="fixed inset-0 flex items-center justify-center bg-white/80 z-50">
+//     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+//   </div>
+// );
 
 const generateTimeSlots = () => {
   const slots = [];
-  let currentTime = new Date();
+  const currentTime = new Date();
   currentTime.setHours(8, 0, 0, 0);
 
   while (currentTime.getHours() < 21) {
@@ -25,6 +43,7 @@ const generateTimeSlots = () => {
   return slots;
 };
 
+// Check if a time slot is booked for a specific machine
 const getCheckedCount = (appointments, machineId, time, machines) => {
   const appointment = appointments.find((appointment) => {
     if (appointment.machine_detail_id !== machineId) return false;
@@ -33,8 +52,8 @@ const getCheckedCount = (appointments, machineId, time, machines) => {
     const slotDuration =
       machines.find((machine) => machine.id === machineId)?.slot_number || 1;
 
-    let appointmentSlots = [];
-    let currentTime = new Date(`1970-01-01T${appointmentTime}:00`);
+    const appointmentSlots = [];
+    const currentTime = new Date(`1970-01-01T${appointmentTime}:00`);
     for (let i = 0; i < slotDuration; i++) {
       appointmentSlots.push(
         currentTime.toLocaleTimeString([], {
@@ -52,6 +71,7 @@ const getCheckedCount = (appointments, machineId, time, machines) => {
   return appointment ? appointment.id : null;
 };
 
+// User table component for each doctor
 const UserTable = ({
   userName,
   machines,
@@ -59,99 +79,94 @@ const UserTable = ({
   handleButtonClick,
   appointments,
 }) => {
+  const doctorMachines = machines.filter(
+    (machine) => machine?.user?.first_name === userName
+  );
+
   return (
-    <div className="m-1 w-full overflow-x-auto">
-      <div className="flex flex-col h-full space-y-4">
-        <div className="text-md font-semibold text-center mt-5">
-          Dr. {userName}
-        </div>
-        <div className="overflow-x-auto">
-          {" "}
-          {/* Added overflow container */}
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-3 sm:px-5 py-3 text-left text-xs sm:text-xs font-semibold text-gray-900 uppercase tracking-wider">
-                  Time
+    <div className="flex-1 w-[25vw] mx-auto overflow-hidden rounded-md justify-center  mt-4 m-3 ">
+      <div className="bg-green-600 text-white py-3 px-4 font-semibold text-center rounded-md">
+        Dr. {userName}
+      </div>
+      <div className="overflow-auto max-h-[calc(100vh-260px)]">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50 sticky top-0 z-10">
+            <tr>
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                Time
+              </th>
+              {doctorMachines.map((machine) => (
+                <th
+                  key={machine.id}
+                  className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                >
+                  {machine.name}
                 </th>
-                {machines
-                  .filter((machine) => machine?.user?.first_name === userName)
-                  .map((machine) => (
-                    <th
-                      key={machine.id}
-                      className="px-3 sm:px-2 py-3 text-left text-xs sm:text-xs font-semibold text-gray-900 uppercase tracking-wider"
-                    >
-                      {machine.name}
-                    </th>
-                  ))}
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y text-xs divide-gray-200">
-              {timeSlots.map((time, index) => {
-                let bookedCount = 0;
-                const rowItems = machines
-                  .filter((machine) => machine?.user?.first_name === userName)
-                  .map((machine) => {
-                    const appointmentId = getCheckedCount(
-                      appointments,
-                      machine.id,
-                      time,
-                      machines
-                    );
-                    const isBooked = !!appointmentId;
+              ))}
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {timeSlots.map((time, index) => {
+              let bookedCount = 0;
+              const rowItems = doctorMachines.map((machine) => {
+                const appointmentId = getCheckedCount(
+                  appointments,
+                  machine.id,
+                  time,
+                  machines
+                );
+                const isBooked = !!appointmentId;
 
-                    if (isBooked) {
-                      bookedCount++;
-                    }
-
-                    return (
-                      <td
-                        key={machine.id}
-                        className="px-3 sm:px-2 py-3 text-left text-xs sm:text-xs font-medium text-gray-900"
-                      >
-                        <div className="flex items-center justify-center sm:justify-start">
-                          <div
-                            onClick={() =>
-                              handleButtonClick(
-                                machine.id,
-                                machine.doctor_id,
-                                time,
-                                appointments,
-                                machines
-                              )
-                            }
-                            className={`w-4 h-4 border ${
-                              isBooked ? "bg-green-500" : "bg-white"
-                            } border-gray-400 rounded cursor-pointer flex items-center justify-center`}
-                          ></div>
-                        </div>
-                      </td>
-                    );
-                  });
+                if (isBooked) {
+                  bookedCount++;
+                }
 
                 return (
-                  <tr
-                    key={index}
-                    className={`${
-                      bookedCount >= 7 ? "pointer-events-none opacity-50" : ""
-                    }`}
-                  >
-                    <td className="px-2 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-900">
-                      {time}
-                    </td>
-                    {rowItems}
-                  </tr>
+                  <td key={machine.id} className="px-3 py-3 text-center">
+                    <div
+                      onClick={() =>
+                        handleButtonClick(
+                          machine.id,
+                          machine.doctor_id,
+                          time,
+                          appointments,
+                          machines
+                        )
+                      }
+                      className={`w-4 h-4 mx-auto border-2 ${
+                        isBooked
+                          ? "bg-green-500 border-green-600"
+                          : "bg-white border-gray-400 hover:border-blue-500"
+                      } rounded cursor-pointer transition-colors duration-200`}
+                    ></div>
+                  </td>
                 );
-              })}
-            </tbody>
-          </table>
-        </div>
+              });
+
+              return (
+                <tr
+                  key={index}
+                  className={`${
+                    bookedCount >= doctorMachines.length
+                      ? "bg-gray-100 opacity-70"
+                      : "hover:bg-gray-50"
+                  }`}
+                >
+                  <td className="px-3 py-3 text-xs font-medium text-gray-900">
+                    {time}
+                  </td>
+                  {rowItems}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
 
-export default function Indooractivity() {
+export default function IndoorActivity() {
   const navigate = useNavigate();
   const [machines, setMachines] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -167,6 +182,8 @@ export default function Indooractivity() {
     time: "",
     caseNumber: "",
     appointmentId: "",
+    machineId: "",
+    userId: "",
   });
   const [loader, setLoader] = useState(true);
   const [consultingTime, setConsultingTime] = useState(
@@ -175,21 +192,21 @@ export default function Indooractivity() {
   const timeSlots = generateTimeSlots();
   const [appointments, setAppointments] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [error, setError] = useState("");
 
   const handleDisplay = (date) => {
     const queryParam = date ? `?date=${date}` : "";
+    setLoader(true);
     axios
       .get(`/api/v1/appointments${queryParam}`)
       .then((res) => {
-        console.log(res.data?.appointments, "Appointments Data");
-        setLoader(false);
         setAppointments(res.data?.appointments || []);
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
         setLoader(false);
       });
   };
@@ -210,7 +227,7 @@ export default function Indooractivity() {
     let [hours, minutes] = time.split(":");
 
     if (modifier === "PM" && hours !== "12") {
-      hours = parseInt(hours, 10) + 12;
+      hours = Number.parseInt(hours, 10) + 12;
     }
     if (modifier === "AM" && hours === "12") {
       hours = "00";
@@ -224,7 +241,6 @@ export default function Indooractivity() {
       machines
     );
     const isBooked = !!appointmentId;
-    console.log(appointmentId);
 
     if (isBooked) {
       const existingAppointment = appointments.find(
@@ -234,7 +250,6 @@ export default function Indooractivity() {
       );
 
       if (existingAppointment) {
-        console.log(existingAppointment, "Patient Data");
         setDialogData({
           name: existingAppointment.user?.first_name || "",
           last_name: existingAppointment.user?.last_name || "",
@@ -260,12 +275,16 @@ export default function Indooractivity() {
       if (machine) {
         setDialogData({
           name: "",
+          last_name: "",
           number: "",
           machineName: machine.name,
           doctorId: actualDoctorId,
           doctorName,
           time: timeSlot,
           machineId: machineId,
+          caseNumber: "",
+          appointmentId: "",
+          userId: "",
         });
         setAssignedData(false);
         setIsDialogOpen(true);
@@ -276,25 +295,38 @@ export default function Indooractivity() {
   const resetDialog = () => {
     setDialogData({
       name: "",
+      last_name: "",
       number: "",
-      last_name: " ",
       machineName: "",
       doctorId: "",
       doctorName: "",
       time: "",
       caseNumber: "",
+      machineId: "",
+      appointmentId: "",
+      userId: "",
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!dialogData.userId) {
+      Swal.fire({
+        title: "Error",
+        text: "Please select a patient",
+        icon: "error",
+      });
+      return;
+    }
+
     setLoader(true);
     const timeString = dialogData.time;
     const [time, modifier] = timeString.split(" ");
     let [hours, minutes] = time.split(":");
 
     if (modifier === "PM" && hours !== "12") {
-      hours = parseInt(hours, 10) + 12;
+      hours = Number.parseInt(hours, 10) + 12;
     }
     if (modifier === "AM" && hours === "12") {
       hours = "00";
@@ -315,34 +347,40 @@ export default function Indooractivity() {
         formdata
       )
       .then((res) => {
-        console.log(res);
+        Swal.fire({
+          title: "Success",
+          text: "Appointment scheduled successfully",
+          icon: "success",
+        });
         setIsDialogOpen(false);
-        setLoader(false);
         resetDialog();
         handleDisplay(consultingTime);
         setSearchTerm("");
         setError("");
       })
       .catch((err) => {
-        console.error(err.response?.data?.message || "An error occurred!");
-
-        setIsDialogOpen(false);
+        Swal.fire({
+          title: "Error",
+          text: err.response?.data?.message || "Failed to schedule appointment",
+          icon: "error",
+        });
+      })
+      .finally(() => {
         setLoader(false);
       });
   };
 
   const handleConsulting = (e) => {
-    setConsultingTime(e.target.value);
-    console.log(e.target.value);
-    handleDisplay(e.target.value);
+    setConsultingTime(e.toISOString().split("T")[0]);
+    handleDisplay(e.toISOString().split("T")[0]);
   };
 
   const closeDialog = () => {
     setIsDialogOpen(false);
     resetDialog();
-    setDialogData([]);
     setSearchTerm("");
     setError("");
+    setGetParticularCustomer([]);
   };
 
   const formatDate = (date) => {
@@ -352,40 +390,38 @@ export default function Indooractivity() {
 
   const handleCancel = (appointmentId) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Cancel Appointment",
+      text: "Are you sure you want to cancel this appointment?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
         if (appointmentId) {
+          setLoader(true);
           axios
             .delete(`/api/v1/appointments/${appointmentId}`)
             .then((res) => {
-              console.log("Appointment cancelled:", res);
               Swal.fire({
-                title: "Deleted!",
-                text: `Appointment has been deleted.`,
+                title: "Cancelled",
+                text: "Appointment has been cancelled successfully",
                 icon: "success",
-              }).then(() => {
-                handleDisplay(consultingTime);
               });
+              handleDisplay(consultingTime);
             })
             .catch((err) => {
-              console.error("Error cancelling appointment:", err);
               Swal.fire({
                 title: "Error",
                 text:
-                  err.response?.data?.message ||
-                  "Failed to cancel appointment.",
+                  err.response?.data?.message || "Failed to cancel appointment",
                 icon: "error",
               });
             })
             .finally(() => {
               setIsDialogOpen(false);
+              setLoader(false);
             });
         }
       }
@@ -404,314 +440,383 @@ export default function Indooractivity() {
           `/api/v1/users?only_indoor_access_users=true&search_query=${value}`
         )
         .then((res) => {
-          setLoading(false);
           setGetParticularCustomer(res.data.users);
           if (res.data?.users?.length > 0) {
             setError("");
           } else {
-            setError("Not found in Indoor Activity List");
+            setError("No patients found matching your search");
           }
         })
         .catch((err) => {
-          console.log(err);
-          setLoading(false);
+          console.error(err);
+          setError("Error searching for patients");
         });
     } else {
       setGetParticularCustomer([]);
+      setError("");
     }
   };
 
   useEffect(() => {
-    handleDisplay(consultingTime);
-    axios
-      .get(`/api/v1/machine_details`)
-      .then((res) => {
-        setMachines(res.data.machine_details);
-        console.log(res);
+    Promise.all([
+      axios.get(`/api/v1/appointments?date=${consultingTime}`),
+      axios.get(`/api/v1/machine_details`),
+    ])
+      .then(([appointmentsRes, machinesRes]) => {
+        setAppointments(appointmentsRes.data?.appointments || []);
+        setMachines(machinesRes.data.machine_details || []);
       })
       .catch((err) => {
         console.error(err);
+        Swal.fire({
+          title: "Error",
+          text: "Failed to load data. Please try again.",
+          icon: "error",
+        });
+      })
+      .finally(() => {
+        setLoader(false);
       });
   }, [consultingTime]);
 
-  if (loader) {
-    return <InsideLoader />;
-  }
+  // if (loader) {
+  //   return <Loader />;
+  // }
 
   return (
-    <div className="w-full  ">
-      <div className="rounded-lg bg-card h-full bg-white">
-        <div className="flex flex-col px-2 py-1 h-full space-y-2 ">
-          <div className="flex flex-col w-full items-center">
-            <div className="flex justify-center m-5 w-[100%] ">
-              <div className="flex justify-center w-[70%] gap-2">
-                <div className="">
-                  <GrVirtualMachine size={30} />
-                </div>
-                <h2 className="text-xl font-semibold   md:w-auto">
-                  Indoor Activity Time Slot
-                </h2>
-              </div>
-              <div className="flex justify-end w-[35%]  md:w-auto bg-blue-gray-50  text-end">
-                <button
-                  type="submit"
-                  className="text-black p-2 bg-green-600 rounded-md border border-gray-500 font-medium text-lg hover:scale-105"
-                  onClick={handleSheet}
-                >
-                  Appointment Sheet
-                </button>
-              </div>
+    <div className="  ">
+      <div className="max-w-7xl mx-auto  overflow-hidden">
+        {/* Header */}
+        <div className="bg-white  ">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-3">
+              <Clock className="h-6 w-6 text-green-600" />
+              <h1 className="flex justify-start text-xl font-bold ">
+                Indoor Activity Time Slot
+              </h1>
             </div>
-
-            <div className="flex flex-col md:flex-row justify-center mt-5 gap-5 w-full items-center">
-              <div className="w-full md:w-auto">
-                <input
-                  type="date"
-                  placeholder="select date"
-                  className="py-1 px-2 rounded-md border border-black w-full md:w-[40vh]"
-                  onChange={handleConsulting}
-                />
-              </div>
-              <div className="w-full md:w-auto">
-                <div className="text-md font-semibold">
-                  Date: {formatDate(consultingTime)}
-                </div>
-              </div>
-            </div>
+            <button
+              onClick={handleSheet}
+              className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+            >
+              <FileText className="h-5 w-5" />
+              <span>Appointment Sheet</span>
+            </button>
           </div>
 
-          <div className="flex justify-center">
-            {["Bhavesh", "Dipalee", "Nidhi"].map((userName) => (
-              <UserTable
-                key={userName}
-                userName={userName}
-                machines={machines}
-                timeSlots={timeSlots}
-                handleButtonClick={handleButtonClick}
-                appointments={appointments}
-                handleCancel={handleCancel}
+          <div className="flex flex-col md:flex-row items-center justify-between mt-6 p-1 gap-4">
+            <div className="relative flex items-center gap-3 w-full md:w-auto z-50">
+              <Calendar className="absolute left-3 text-black z-10" />
+              <DatePicker
+                selected={new Date(consultingTime)}
+                onChange={(date) => handleConsulting(date)}
+                dateFormat="dd-MM-yyyy"
+                placeholderText="Select date"
+                className="border pl-12 pr-3 w-44 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                popperClassName="!z-50"
+                popperModifiers={[
+                  {
+                    name: "preventOverflow",
+                    options: {
+                      boundary: "viewport",
+                    },
+                  },
+                ]}
               />
-            ))}
+            </div>
+
+            <div className="text-lg font-medium text-gray-700">
+              Date: {formatDate(consultingTime)}
+            </div>
           </div>
-          {assignedData ? (
-            <Dialog open={isDialogOpen} onClose={closeDialog}>
-              <div
-                className="fixed inset-0 w-full bg-black/30"
-                aria-hidden="true"
-              />
-              <div className="fixed inset-0 flex items-center justify-center p-4">
-                <div className="bg-white rounded p-6 max-w-sm w-full">
-                  <h3 className="text-lg font-bold">Patient Details</h3>
-                  <div className="mt-4">
-                    <label className="block text-md font-medium ">
-                      Name : {` ${dialogData.name} ${dialogData.last_name} `}
-                    </label>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-md font-medium">
-                      Mobile Number : {dialogData.number}
-                    </label>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-md font-medium">
-                      Case Number : {dialogData.caseNumber}
-                    </label>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-md font-medium ">
-                      Machine Name : {dialogData.machineName}
-                    </label>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-md font-medium ">
-                      Doctor : Dr. {dialogData.doctorName}
-                    </label>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-md font-medium ">
-                      Time : {dialogData.time}
-                    </label>
-                  </div>
-                  <div className="mt-4 flex justify-end space-x-2">
-                    <button
-                      onClick={() => handleCancel(dialogData.appointmentId)}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-700 shadow-sm hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                      title="Cancel Appointment"
-                    >
-                      Cancel Appointment
-                    </button>
+        </div>
 
-                    <button
-                      type="button"
-                      onClick={closeDialog}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      <GiCancel size={20} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </Dialog>
-          ) : (
-            <Dialog open={isDialogOpen} onClose={closeDialog}>
-              <div className="fixed inset-0 bg-black/30 " aria-hidden="true" />
-              <div className="fixed inset-0 flex items-center justify-center p-4">
-                <div className="bg-white rounded p-6 max-w-sm w-full">
-                  <div className="grid grid-cols-2 gap-22">
-                    <div>
-                      <h3 className="text-lg font-semibold">Patient Details</h3>
-                    </div>
-                    <div className="flex w-full justify-end">
-                      <button
-                        type="button"
-                        onClick={closeDialog}
-                        className="inline-flex items-center px-4  py-2 border border-transparent text-sm font-medium rounded-md   shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                      >
-                        <GiCancel size={20} />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <div className="flex gap-3 p-2 items-center">
-                      <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => handleSearchTerm(e.target.value)}
-                        placeholder="Search User through First Name/Last Name/Phone Number"
-                        className="py-1 px-2 rounded-md border border-black w-full"
-                      />
-                    </div>
-                    {getParticularCustomer.length > 0 ? (
-                      <ul className="mt-2 border border-gray-200 rounded-md max-h-48 overflow-y-auto">
-                        {getParticularCustomer.map((user) => (
-                          <li
-                            key={user.id}
-                            className="p-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => {
-                              setDialogData({
-                                ...dialogData,
-                                name: user?.first_name,
-                                last_name: user?.last_name,
-                                number: user?.phone_number,
-                                caseNumber: user?.case_number,
-                              });
-                              setUserId(user?.id);
-                              setGetParticularCustomer([]);
-                              setSearchTerm(user.first_name);
-                            }}
-                          >
-                            Name: {user.first_name} {user.last_name} <br />
-                            Phone Number: {user.phone_number}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="block text-sm font-small text-red-700">
-                        {error}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex">
-                    {dialogData.name && dialogData.last_name && (
-                      <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          value={`${dialogData.name} ${dialogData.last_name}`}
-                          readOnly
-                          className="py-1 px-2 w-full"
-                        />
-                      </div>
-                    )}
-                    {dialogData.number && (
-                      <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                          Phone Number
-                        </label>
-                        <input
-                          type="text"
-                          value={dialogData.number}
-                          readOnly
-                          className="py-1 px-2 w-full"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex">
-                    {dialogData.caseNumber && (
-                      <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                          Case Number
-                        </label>
-                        <input
-                          type="text"
-                          value={dialogData.caseNumber}
-                          readOnly
-                          className="py-1 px-2 w-full"
-                        />
-                      </div>
-                    )}
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Machine Name
-                      </label>
-                      <input
-                        type="text"
-                        value={dialogData.machineName}
-                        readOnly
-                        className="py-1 px-2 w-full"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Doctor
-                      </label>
-                      <input
-                        type="text"
-                        value={`Dr. ${dialogData.doctorName}`}
-                        readOnly
-                        className="py-1 px-2 w-full"
-                      />
-                    </div>
-
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Time
-                      </label>
-                      <input
-                        type="text"
-                        value={dialogData.time}
-                        readOnly
-                        className="py-1 px-2 rounded-md  w-full"
-                      />
-                    </div>
-                  </div>
-                  <div className="mt-4 flex justify-end space-x-2">
-                    <button
-                      type="button"
-                      onClick={handleRedirect}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      Patient List
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleSubmit}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </Dialog>
-          )}
+        {/* Doctor Tables */}
+        <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+          {["Bhavesh", "Dipalee", "Nidhi"].map((userName) => (
+            <UserTable
+              key={userName}
+              userName={userName}
+              machines={machines}
+              timeSlots={timeSlots}
+              handleButtonClick={handleButtonClick}
+              appointments={appointments}
+            />
+          ))}
         </div>
       </div>
+
+      {/* Patient Details Dialog - Existing Appointment */}
+      {isDialogOpen && assignedData && (
+        <Dialog open={isDialogOpen} onClose={closeDialog}>
+          <div className="fixed inset-0 bg-black/50 z-40" aria-hidden="true" />
+          <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-800">
+                  Patient Details
+                </h2>
+                <button
+                  onClick={closeDialog}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-500">
+                        Name
+                      </span>
+                    </div>
+                    <p className="font-medium">
+                      {dialogData.name} {dialogData.last_name}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-500">
+                        Phone
+                      </span>
+                    </div>
+                    <p className="font-medium">{dialogData.number}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Hash className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-500">
+                        Case Number
+                      </span>
+                    </div>
+                    <p className="font-medium">{dialogData.caseNumber}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Laptop className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-500">
+                        Machine
+                      </span>
+                    </div>
+                    <p className="font-medium">{dialogData.machineName}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <UserCheck className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-500">
+                        Doctor
+                      </span>
+                    </div>
+                    <p className="font-medium">Dr. {dialogData.doctorName}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-500">
+                        Time
+                      </span>
+                    </div>
+                    <p className="font-medium">{dialogData.time}</p>
+                  </div>
+                </div>
+
+                <div className="pt-4 flex justify-end">
+                  <button
+                    onClick={() => handleCancel(dialogData.appointmentId)}
+                    className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span>Cancel Appointment</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+      )}
+
+      {/* Patient Details Dialog - New Appointment */}
+      {isDialogOpen && !assignedData && (
+        <Dialog open={isDialogOpen} onClose={closeDialog}>
+          <div className="fixed inset-0 bg-black/50 z-40" aria-hidden="true" />
+          <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-800">
+                  Schedule New Appointment
+                </h2>
+                <button
+                  onClick={closeDialog}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Search Patient
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => handleSearchTerm(e.target.value)}
+                      placeholder="Search by name or phone number"
+                      className="w-full border border-gray-300 rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    />
+                    <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                  </div>
+                  {error && <p className="text-sm text-red-600">{error}</p>}
+                  {getParticularCustomer.length > 0 && (
+                    <ul className="mt-1 border border-gray-200 rounded-md max-h-48 overflow-y-auto divide-y divide-gray-100">
+                      {getParticularCustomer.map((user) => (
+                        <li
+                          key={user.id}
+                          className="p-2 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+                          onClick={() => {
+                            setDialogData({
+                              ...dialogData,
+                              name: user?.first_name || "",
+                              last_name: user?.last_name || "",
+                              number: user?.phone_number || "",
+                              caseNumber: user?.case_number || "",
+                              userId: user?.id,
+                            });
+                            setUserId(user?.id);
+                            setGetParticularCustomer([]);
+                            setSearchTerm(
+                              `${user.first_name} ${user.last_name}`
+                            );
+                          }}
+                        >
+                          <div className="font-medium">
+                            {user.first_name} {user.last_name}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {user.phone_number}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {dialogData.name && (
+                  <div className="grid grid-cols-2 gap-4 p-3 bg-gray-50 rounded-md">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <User className="h-4 w-4 text-gray-500" />
+                        <span className="text-sm font-medium text-gray-500">
+                          Patient
+                        </span>
+                      </div>
+                      <p className="font-medium">
+                        {dialogData.name} {dialogData.last_name}
+                      </p>
+                    </div>
+
+                    {dialogData.number && (
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm font-medium text-gray-500">
+                            Phone
+                          </span>
+                        </div>
+                        <p className="font-medium">{dialogData.number}</p>
+                      </div>
+                    )}
+
+                    {dialogData.caseNumber && (
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Hash className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm font-medium text-gray-500">
+                            Case #
+                          </span>
+                        </div>
+                        <p className="font-medium">{dialogData.caseNumber}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Machine
+                    </label>
+                    <input
+                      type="text"
+                      value={dialogData.machineName}
+                      readOnly
+                      className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Doctor
+                    </label>
+                    <input
+                      type="text"
+                      value={`Dr. ${dialogData.doctorName}`}
+                      readOnly
+                      className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Appointment Time
+                  </label>
+                  <input
+                    type="text"
+                    value={dialogData.time}
+                    readOnly
+                    className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2"
+                  />
+                </div>
+
+                <div className="pt-4 flex justify-between">
+                  <button
+                    type="button"
+                    onClick={handleRedirect}
+                    className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md transition-colors duration-200"
+                  >
+                    <User className="h-4 w-4" />
+                    <span>Patient List</span>
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
+                    disabled={!dialogData.userId}
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span>Schedule Appointment</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </Dialog>
+      )}
     </div>
   );
 }

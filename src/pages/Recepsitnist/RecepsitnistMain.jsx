@@ -8,11 +8,11 @@ function RecepsitnistMain() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   const [admin, setAdmin] = useState();
-  const [showSidebar, onSetShowSidebar] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  const onSidebarHide = () => {
-    onSetShowSidebar(true);
+  const toggleSidebar = () => {
+    setShowSidebar((prev) => !prev);
   };
 
   const handleGetAdmin = () => {
@@ -56,17 +56,22 @@ function RecepsitnistMain() {
   }
 
   return (
-    <div className="flex font-sans">
-      <RecepsitnistSidebar
-        admin={admin}
-        onSidebarHide={() => {
-          onSetShowSidebar(false);
-        }}
-        showSidebar={showSidebar}
-        isCollapsed={isCollapsed}
-        setIsCollapsed={setIsCollapsed}
-      />
-      <Outlet context={{ isCollapsed, admin }} />
+    <div className="flex font-sans  bg-white  h-screen">
+      <div className="">
+        <RecepsitnistSidebar
+          admin={admin}
+          onSidebarHide={toggleSidebar}
+          showSidebar={showSidebar}
+        />
+      </div>
+      {/* Main Content (Outlet) */}
+      <div
+        className={`transition-all duration-300 flex-1  bg-white w-full  ${
+          showSidebar ? "ml-60 m-8" : "ml-20 p-5"
+        } `}
+      >
+        <Outlet context={[toggleSidebar, admin, showSidebar]} />
+      </div>
     </div>
   );
 }

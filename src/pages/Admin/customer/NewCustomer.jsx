@@ -142,96 +142,91 @@ function NewCustomer() {
   }
 
   return (
-    <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </div>
-      <div className=" h-screen flex-grow overflow-auto flex flex-wrap content-start p-3 font-sans">
-        <Stepper sx={{ width: "100%", height: "7%" }}>
-          {steps.map((step, index) => (
-            <Step
-              key={step}
-              orientation="vertical"
-              className="font-sans"
-              indicator={
-                <StepIndicator
-                  variant={currentStep <= index ? "outlined" : "solid"}
-                  color={currentStep < index ? "success" : "success"}
-                >
-                  {currentStep <= index ? index + 1 : <Check />}
-                </StepIndicator>
-              }
-              sx={{
-                "&::after": {
-                  ...(currentStep > index &&
-                    index !== steps.length - 1 && {
-                      bgcolor: "success.solidBg",
-                    }),
-                },
-              }}
-            >
-              <StepButton>{step}</StepButton>
-            </Step>
-          ))}
-        </Stepper>
-        {currentStep === 0 && (
-          <CustomerGeneralDetails
-            setStoreData={setStoreData}
-            onNext={handleNextStep}
-            onValidate={handleValidation}
-            storedData={storeData.generalDetails}
-          />
-        )}
-        {currentStep === 1 && (
-          <QueCurrentDiet
-            storedData={storeData.diet}
-            setStoreData={setStoreData}
-            onNext={handleNextStep}
-            onBack={handleBackStep}
-            onValidate={handleValidation}
-          />
-        )}
-        {currentStep === 2 && (
-          <QueFamilyHistory
-            storedData={storeData.familyHistory}
-            setStoreData={setStoreData}
-            onNext={handleNextStep}
-            onBack={handleBackStep}
-            onValidate={handleValidation}
-          />
-        )}
-        {currentStep === 3 && (
-          <QueComplains
-            storedData={storeData.complains}
-            setStoreData={setStoreData}
-            onNext={handleNextStep}
-            onBack={handleBackStep}
-            onValidate={handleValidation}
-          />
-        )}
-        {currentStep === 4 && (
-          <CustomerQuestionsPart1
-            storedData={storeData.questions}
-            setStoreData={setStoreData}
-            onNext={handleNextStep}
-            onBack={handleBackStep}
-            onValidate={handleValidation}
-          />
-        )}
-        {currentStep === 5 && (
-          <CustomerQuestionsPart2
-            storedData={storeData.diagnosis}
-            setStoreData={setStoreData}
-            // onNext={handleNextStep}
-            onBack={handleBackStep}
-            onValidate={handleValidation}
-            handleCallUserApi={handleCallUserApi}
-          />
-        )}
-        {/* {currentStep === 6 && (
+    <div className="  flex-grow overflow-auto flex flex-wrap content-start w-full  font-sans">
+      <Stepper sx={{ width: "100%", height: "7%" }}>
+        {steps.map((step, index) => (
+          <Step
+            key={step}
+            orientation="vertical"
+            className="font-sans"
+            indicator={
+              <StepIndicator
+                variant={currentStep <= index ? "outlined" : "solid"}
+                color={currentStep < index ? "success" : "success"}
+              >
+                {currentStep <= index ? index + 1 : <Check />}
+              </StepIndicator>
+            }
+            sx={{
+              "&::after": {
+                ...(currentStep > index &&
+                  index !== steps.length - 1 && {
+                    bgcolor: "success.solidBg",
+                  }),
+              },
+            }}
+          >
+            <StepButton>{step}</StepButton>
+          </Step>
+        ))}
+      </Stepper>
+      {currentStep === 0 && (
+        <CustomerGeneralDetails
+          setStoreData={setStoreData}
+          onNext={handleNextStep}
+          onValidate={handleValidation}
+          storedData={storeData.generalDetails}
+        />
+      )}
+      {currentStep === 1 && (
+        <QueCurrentDiet
+          storedData={storeData.diet}
+          setStoreData={setStoreData}
+          onNext={handleNextStep}
+          onBack={handleBackStep}
+          onValidate={handleValidation}
+        />
+      )}
+      {currentStep === 2 && (
+        <QueFamilyHistory
+          storedData={storeData.familyHistory}
+          setStoreData={setStoreData}
+          onNext={handleNextStep}
+          onBack={handleBackStep}
+          onValidate={handleValidation}
+        />
+      )}
+      {currentStep === 3 && (
+        <QueComplains
+          storedData={storeData.complains}
+          setStoreData={setStoreData}
+          onNext={handleNextStep}
+          onBack={handleBackStep}
+          onValidate={handleValidation}
+        />
+      )}
+      {currentStep === 4 && (
+        <CustomerQuestionsPart1
+          storedData={storeData.questions}
+          setStoreData={setStoreData}
+          onNext={handleNextStep}
+          onBack={handleBackStep}
+          onValidate={handleValidation}
+        />
+      )}
+      {currentStep === 5 && (
+        <CustomerQuestionsPart2
+          storedData={storeData.diagnosis}
+          setStoreData={setStoreData}
+          // onNext={handleNextStep}
+          onBack={handleBackStep}
+          onValidate={handleValidation}
+          handleCallUserApi={handleCallUserApi}
+        />
+      )}
+      {/* {currentStep === 6 && (
           <QueCheckout setStoreData={setStoreData} onBack={handleBackStep} />
         )} */}
-      </div>
     </div>
   );
 }

@@ -278,7 +278,7 @@ function ReportProgress() {
   return (
     <div className="w-full p-2">
       {userDetails?.treatment_packages?.length > 0 ? (
-        <div className="flex px-4 py-3 h-[75vh] flex-col space-y-4">
+        <div className="flex px-4 py-3 flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div>
               {(role === "super_admin" ||
@@ -307,7 +307,7 @@ function ReportProgress() {
           </div>
           {/* progress */}
 
-          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[60vh] ">
+          <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[20rem] ">
             <table className="w-full min-w-[460px] z-0">
               <thead className="uppercase ">
                 <tr className="bg-[#1F2937] text-white rounded-md">

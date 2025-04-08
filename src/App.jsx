@@ -115,6 +115,7 @@ import OverallAnalysis from "./pages/Admin/OverallAnalysis";
 import ChatComponent from "./components/Chat/ChatComponent";
 import Userinqury from "./pages/Admin/Userinqury";
 import NotificationComponent from "./NotificationComponent";
+import Settings from "./pages/Settings";
 
 function App() {
   const access_token = localStorage.getItem("access_token");
@@ -133,6 +134,7 @@ function App() {
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="signup" element={<UserChooseDoctor />} />
         <Route path="generate-report" element={<ReportGenerate />} />
+
         {/* User */}
         <Route path="user" element={<UserMain />}>
           <Route path="user-diagnosis" element={<UserDiagnosis />}>
@@ -156,6 +158,7 @@ function App() {
 
         {/* Admin */}
         <Route path="admin" element={<AdminMain />}>
+          <Route path="profile-setting" element={<Settings />} />
           <Route path="analysis" element={<OverallAnalysis />} />
           <Route path="user-inqury" element={<Userinqury />} />
           <Route path="appointments" element={<Appointments />} />
@@ -301,6 +304,8 @@ function App() {
 
         {/* Receptionist */}
         <Route path="receptionist" element={<RecepsitnistMain />}>
+          <Route path="profile-setting" element={<Settings />} />
+
           {/* appointment */}
           <Route path="appointment" element={<AdminAppointment />}>
             <Route path="data-entry" element={<DataEntry />} />

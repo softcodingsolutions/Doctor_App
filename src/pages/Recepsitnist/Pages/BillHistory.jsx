@@ -89,43 +89,6 @@ export default function BillHistory(props) {
             Bill History
           </div>
           <div className="w-full">
-            {/* <div className="flex gap-48">
-                <div className="text-md font-bold mb-4">
-                  <div>
-                    Patient Name:{" "}
-                    <span className="font-medium">
-                      {userDetails.first_name} {userDetails?.last_name}
-                    </span>
-                  </div>
-                  <div>
-                    Case Number:{" "}
-                    <span className="font-medium">
-                      {userDetails?.case_number}
-                    </span>
-                  </div>
-                  <div>
-                    Doctor Name:{" "}
-                    <span className="font-medium">
-                      {userDetails?.doctor?.first_name}{" "}
-                      {userDetails?.doctor?.last_name}
-                    </span>
-                  </div>
-                </div>
-                <div className="text-md font-bold mb-4">
-                  <div>
-                    Package Name:{" "}
-                    <span className="font-medium">
-                      {packageDetail?.package_name ?? "Will be given by doctor"}
-                    </span>
-                  </div>
-                  <div>
-                    Package Duration:{" "}
-                    <span className="font-medium">
-                      {packageDetail?.no_of_days} Days
-                    </span>
-                  </div>
-                </div>
-              </div> */}
             {bills.length > 0 ? (
               <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 {bills.map((bill) => (

@@ -75,11 +75,19 @@ function Medicine() {
       });
   };
 
-  const handleAddMedicine = (med_name, med_contact, med_quantity, doc_id , update) => {
+  const handleAddMedicine = (
+    med_name,
+    med_contact,
+    med_quantity,
+    doc_id,
+    update
+  ) => {
     const formData = new FormData();
     if (update) {
       axios
-        .put(`/api/v1/medicines/update_or_create_medicine?medicine_name=${med_name}&medicine_quantity=${med_quantity}&doctor_id=${main_id}`)
+        .put(
+          `/api/v1/medicines/update_or_create_medicine?medicine_name=${med_name}&medicine_quantity=${med_quantity}&doctor_id=${main_id}`
+        )
         .then((res) => {
           console.log(res);
           if (res.data) {
@@ -93,15 +101,13 @@ function Medicine() {
             });
           }
           handleGetMedicines();
-
         })
         .catch((err) => {
           console.log(err);
 
           alert(err.response?.data?.message + "!");
         });
-      }
-    else {
+    } else {
       formData.append("medicine[medicine_name]", med_name);
       formData.append("medicine[medicine_content]", med_contact);
       formData.append("medicine[medicine_quantity]", med_quantity);
@@ -223,7 +229,7 @@ function Medicine() {
 
   return (
     <div className="w-full p-2">
-      <div className="rounded-lg bg-card h-[85vh] bg-white">
+      <div className="rounded-lg bg-card h-[75vh] bg-white">
         <div className="flex px-4 py-3 h-full flex-col space-y-4">
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Medicines List</div>
@@ -263,7 +269,7 @@ function Medicine() {
 
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[93%]">
             <table className="w-full min-w-[460px] z-0">
-              <thead className="uppercase ">
+              <thead className="uppercase sticky top-0 z-10">
                 <tr className="bg-[#1F2937] text-white rounded-md">
                   <ThComponent
                     moreClasses={"rounded-tl-md rounded-bl-md"}
@@ -291,9 +297,7 @@ function Medicine() {
                     return (
                       <tr key={val.id}>
                         <td className="py-2 px-4 border-b border-b-gray-50">
-                          <div className="flex items-center">
-                            {index + 1}
-                          </div>
+                          <div className="flex items-center">{index + 1}</div>
                         </td>
                         <td className="py-3 px-4 border-b border-b-gray-50">
                           <TdComponent things={val.medicine_name} />
@@ -338,7 +342,6 @@ function Medicine() {
               </tbody>
             </table>
           </div>
-      
         </div>
       </div>
     </div>

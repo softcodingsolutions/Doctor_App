@@ -46,7 +46,7 @@ function ReportPastHistory() {
           <div className="flex items-center justify-between">
             <div className="font-semibold text-xl">Past History</div>
             <div className="space-x-2.5">
-              <button
+              {/* <button
                 onClick={() => {
                   setShowPart1(true);
                 }}
@@ -55,7 +55,7 @@ function ReportPastHistory() {
                 } hover:scale-105 border-x-gray-300`}
               >
                 Family Reason
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="animate-fade-left animate-delay-75 shadow-gray-400 shadow-inner border rounded-md border-gray-100 animate-once animate-ease-out overflow-auto h-[90%]">

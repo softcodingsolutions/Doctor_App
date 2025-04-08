@@ -10,7 +10,11 @@ import { BsFillTelephoneFill } from "react-icons/bs";
 import TdComponent from "../../../components/TdComponent";
 import ThComponent from "../../../components/ThComponent";
 import { MdEmail } from "react-icons/md";
+import { IoPersonSharp } from "react-icons/io5";
+import { SlGraph } from "react-icons/sl";
 import { GiWeight } from "react-icons/gi";
+import { CiCalendar } from "react-icons/ci";
+import { CiFileOn } from "react-icons/ci";
 
 function CustomerUserDiagnosis() {
   localStorage.getItem("caseNumber");
@@ -101,35 +105,42 @@ function CustomerUserDiagnosis() {
   });
 
   return (
-    <>
-      <div className="mx-2 w-full bg-white rounded-md px-2 py-2 flex flex-col md:flex-row items-center gap-2 font-sans overflow-x-auto">
-        {getCustomer.personal_detail?.gender === "male" ? (
-          <img src={male} alt="img" className="size-24 ml-2" />
-        ) : (
-          <img src={female} alt="img" className="size-24 ml-2" />
-        )}
-
-        <div className="flex flex-col gap-1.5 justify-center h-auto w-full md:w-[16rem] text-balance">
-          <div className="flex w-full">
-            <div className="text-right break-words font-semibold text-sm md:text-md">
-              Case Number:
-            </div>
-            <div className="pl-1.5 text-sm md:text-md">
-              {getCustomer?.case_number}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="text-right break-words font-semibold text-sm md:text-md">
-              Name:
-            </div>
-            <div className="pl-1.5 text-sm md:text-md">
+    <div className="flex flex-col   gap-2">
+      {/* Personal Details Card */}
+      <div className="bg-card text-card-foreground bg-white shadow-sm  border-slate-200 flex  pb-5 border-b-2   flex-col md:flex-row justify-between p-4">
+        <div className="flex items-center gap-4">
+          <span className="relative flex shrink-0 overflow-hidden rounded-full h-20  border-4 border-white shadow-sm">
+            {getCustomer.personal_detail?.gender === "male" ? (
+              <img src={male} alt="img" className="aspect-square h-full " />
+            ) : (
+              <img src={female} alt="img" className="aspect-square h-full " />
+            )}
+          </span>
+          <div>
+            <div className=" text-md font-semibold">
               {getCustomer?.first_name?.[0]?.toUpperCase() +
                 getCustomer?.first_name?.slice(1) +
                 " " +
                 getCustomer?.last_name?.[0]?.toUpperCase() +
                 getCustomer?.last_name?.slice(1)}
             </div>
+
+            <div className="inline-flex items-center rounded-full border transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 font-normal text-xs px-2 py-0 h-5 bg-blue-50 text-blue-700 border-blue-200">
+              Case Number: {getCustomer?.case_number}
+            </div>
+            <div className="flex flex-col mt-1 text-xs text-slate-500">
+              <div className="flex items-center gap-1">
+                <MdEmail />
+                {getCustomer?.email}
+              </div>
+              <div className="flex items-center gap-1">
+                <BsFillTelephoneFill /> {getCustomer?.phone_number}
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* <div className="flex flex-col gap-1.5 justify-center  w-full md:w-[16rem] text-balance">
           <div className="flex">
             <div className="text-right break-words font-semibold mt-1 text-sm md:text-md">
               <MdEmail />
@@ -146,9 +157,53 @@ function CustomerUserDiagnosis() {
               {getCustomer?.phone_number}
             </div>
           </div>
+        </div> */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <IoPersonSharp />
+            </div>
+            <div className="flex gap-1 ">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                Age:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {" "}
+                {getCustomer?.personal_detail?.age}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <SlGraph />
+            </div>
+            <div className="flex gap-1 ">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                Height:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {" "}
+                {getCustomer?.personal_detail?.height} cm
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <GiWeight />
+            </div>
+            <div className="flex gap-1 ">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                Weight:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {" "}
+                {getCustomer?.personal_detail?.weight} kgs
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[16rem]">
+        {/* <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[16rem]">
           <div className="flex">
             <div className="text-right break-words font-semibold text-sm md:text-md">
               Age:
@@ -173,9 +228,64 @@ function CustomerUserDiagnosis() {
               {getCustomer?.personal_detail?.weight} kgs
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[16rem]">
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <CiCalendar />
+            </div>
+            <div className="flex gap-1">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                Created At:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {" "}
+                {getCustomer?.personal_detail?.created_at
+                  ?.slice(0, 10)
+                  ?.split("-")
+                  ?.reverse()
+                  ?.join("-")}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <CiCalendar />
+            </div>
+            <div className="flex gap-1">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                Starting Date:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {getCustomer?.user_packages?.starting_date
+                  ?.slice(0, 10)
+                  ?.split("-")
+                  ?.reverse()
+                  ?.join("-")}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <CiCalendar />
+            </div>
+            <div className="flex gap-1">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                {" "}
+                Ending Date:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {getCustomer?.user_packages?.ending_date
+                  ?.slice(0, 10)
+                  ?.split("-")
+                  ?.reverse()
+                  ?.join("-")}
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[16rem]">
           <div className="flex">
             <div className="text-right break-words font-semibold text-sm md:text-md">
               Created At:
@@ -212,8 +322,61 @@ function CustomerUserDiagnosis() {
                 ?.join("-")}
             </div>
           </div>
-        </div>
+        </div> */}
 
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <CiFileOn />
+            </div>
+            <div className="flex gap-1">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                {" "}
+                Package:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {" "}
+                {getCustomer?.user_packages?.package_name ?? "Not Assigned"}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <CiFileOn />
+            </div>
+            <div className="flex gap-1">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                Treatment Package:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {getCustomer?.treatment_packages?.[0]?.treatment_package
+                  ?.weight_reason
+                  ? getCustomer?.treatment_packages?.[0]?.treatment_package
+                      ?.weight_reason +
+                    "-" +
+                    getCustomer?.treatment_packages?.[0]?.treatment_package
+                      ?.package_name
+                  : "Not Assigned"}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="text-slate-400 text-[#64748B] text-sm">
+              <IoPersonSharp />
+            </div>
+            <div className="flex gap-1">
+              <span className="text-sm font-semibold text-slate-500 text-black">
+                {" "}
+                Registration Through:
+              </span>
+              <span className="text-sm font-medium text-gray-700">
+                {getCustomer?.creator === "doctor" ? "Doctor" : "Franchise"} (
+                {getCustomer?.doctor.first_name})
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* 
         <div className="flex flex-col gap-2 justify-center h-auto w-full md:w-[19rem]">
           <div className="flex">
             <div className="text-right break-words font-semibold text-sm md:text-md">
@@ -247,150 +410,62 @@ function CustomerUserDiagnosis() {
               {getCustomer?.doctor.first_name})
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
-      <div className="flex flex-col md:flex-row mx-1 rounded-md gap-4 font-sans w-full h-[40%] p-2 overflow-hidden">
-        {/* Questions List Section */}
-        <div className="bg-white rounded-md p-4 w-full md:w-1/2 overflow-auto">
-          <div className="animate-fade-left animate-delay-75 rounded-md animate-once animate-ease-out overflow-auto">
-            <div className="flex items-center justify-between mb-2">
-              <div className="font-semibold text-sm">Questions List</div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setShow(!show)}
-                  className={`p-2 border-2 rounded-md transition-transform duration-200 ${
-                    show ? "scale-105 bg-gray-700 text-white" : "bg-gray-50"
-                  } hover:scale-105 border-gray-300`}
-                >
-                  Part 1
-                </button>
-                <button
-                  onClick={() => setShow(!show)}
-                  className={`p-2 border-2 rounded-md transition-transform duration-200 ${
-                    !show ? "scale-105 bg-gray-700 text-white" : "bg-gray-50"
-                  } hover:scale-105 border-gray-300`}
-                >
-                  Part 2
-                </button>
-              </div>
-            </div>
 
-            <table className="w-full z-0">
-              <tbody>
-                {show ? (
-                  showPart1.length === 0 ? (
-                    <tr>
-                      <th
-                        className="uppercase tracking-wide font-medium py-20 text-sm text-center"
-                        colSpan={3}
-                      >
-                        No Questions found in Part 1!
-                      </th>
-                    </tr>
-                  ) : (
-                    showPart1.map((val, index) => (
-                      <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-gray-50 text-center text-2xl">
-                          *
-                        </td>
-                        <td className="py-3 px-4 border-b border-gray-50 text-sm">
-                          <TdComponent things={val} />
-                        </td>
-                      </tr>
-                    ))
-                  )
-                ) : showPart2.length === 0 ? (
-                  <tr>
-                    <th
-                      className="uppercase tracking-wide font-medium py-20 text-sm text-center"
-                      colSpan={3}
-                    >
-                      No Questions found in Part 2!
-                    </th>
-                  </tr>
-                ) : (
-                  showPart2.map((val, index) => (
-                    <tr key={val.id}>
-                      <td className="py-2 px-4 border-b border-gray-50 text-center text-sm">
-                        {index + 1}
-                      </td>
-                      <td className="py-3 px-4 border-b border-gray-50 text-sm">
-                        <TdComponent things={val} />
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Family History Section */}
-        <div className="bg-white rounded-md p-5 w-full md:w-1/2 overflow-auto">
-          <div className="font-semibold text-sm mb-2">Family History</div>
-          <div className="animate-fade-left animate-delay-75 rounded-md animate-once animate-ease-out overflow-auto">
-            <table className="w-full min-w-[460px] z-0">
-              <tbody>
-                {showPart1 ? (
-                  pastHistory.length === 0 ? (
-                    <tr>
-                      <th
-                        className="uppercase tracking-wide font-medium py-20 text-lg text-center"
-                        colSpan={2}
-                      >
-                        No Family Reason Found!
-                      </th>
-                    </tr>
-                  ) : (
-                    pastHistory.map((val, index) => (
-                      <tr key={val.id}>
-                        <td className="py-2 px-4 border-b border-gray-50 text-center text-2xl">
-                          *
-                        </td>
-                        <td className="py-3 px-4 border-b border-gray-50">
-                          <TdComponent things={val} />
-                        </td>
-                      </tr>
-                    ))
-                  )
-                ) : null}
-              </tbody>
-            </table>
-          </div>
+      {/* Report Buttons Section */}
+      <div className=" rounded-lg border bg-white shadow-sm rounde-md overflow-auto">
+        <div className="flex  ">
+          {reportButtonsMain.map((res) => (
+            <Link
+              to={res.to}
+              onClick={() => setSelectedId(res.id)}
+              key={res.id}
+              className={clsx(
+                "w-full flex items-center justify-center  cursor-pointer p-1.5 rounded-md",
+                pathname === res.to
+                  ? "bg-[#EFF6FF] w-10 text-[#2563EB] border-b border-[#2563EB] h-full rounded-b-none"
+                  : "bg-white hover:bg-[#e3eaf3] "
+              )}
+            >
+              {res.icons}
+              <span className="ml-1.5">{res.name}</span>
+            </Link>
+          ))}
         </div>
       </div>
 
-      <div className="w-full grid grid-cols-1 p-3 items-end">
-        <div className="sm:flex-grow flex justify-between overflow-x-hidden">
-          <div
-            className={`grid grid-cols-3 gap-2 w-full ${
-              selectedId ? "merged-height" : ""
-            }`}
-          >
-            {reportButtonsMain.map((res) => {
-              return (
-                <Link
-                  to={res.to}
-                  onClick={() => setSelectedId(res.id)}
-                  key={res.id}
-                  className={clsx(
-                    "min-w-fit flex items-center justify-center shadow-md cursor-pointer p-2 rounded-md",
-                    pathname === res.to
-                      ? "bg-[#1F2937] text-white h-full rounded-b-none"
-                      : "bg-white h-auto hover:bg-[#1F2937] hover:text-white"
-                  )}
-                >
-                  {res.icons}
-                  <span className="ml-1.5">{res.name}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
+      {/* Report Section */}
+      <div className=" rounded-lg h-[25rem] overflow-y-auto">
+        {selectedId && <Outlet context={[id, getCustomer, handlegetUser]} />}
       </div>
 
-      {selectedId && <Outlet context={[id, getCustomer, handlegetUser]} />}
-    </>
+      {/* <div className="flex h-[25rem] ">
+        <div className="flex flex-col gap-1">
+          {reportButtonsMain.map((res) => (
+            <Link
+              to={res.to}
+              onClick={() => setSelectedId(res.id)}
+
+              key={res.id}
+              className={clsx(
+                "flex items-center w-32 p-1 rounded-md cursor-pointer",
+                pathname === res.to
+                  ? "bg-[#1F2937] text-white"
+                  : "hover:bg-[#1F2937] hover:text-white"
+              )}
+            >
+              {res.icons}
+              <span className="ml-1">{res.name}</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex-1  p-2 rounded-lg overflow-y-auto ">
+          {selectedId && <Outlet context={[id, getCustomer, handlegetUser]} />}
+        </div>
+      </div> */}
+    </div>
   );
 }
 

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import InsideLoader from "../../InsideLoader";
+import { CiCalendar } from "react-icons/ci";
+import DatePicker from "react-datepicker";
 
 export default function Consulting(props) {
   const [consultingTime, setConsultingTime] = useState("");
@@ -16,8 +18,11 @@ export default function Consulting(props) {
     console.log(e.target.value, "Selected Time");
   };
 
-  const handleConsulting = (e) => {
-    setConsultingTime(e.target.value);
+  const handleConsulting = (date) => {
+    if (date) {
+      const formattedDate = date.toLocaleDateString("en-CA"); // This gives YYYY-MM-DD in local time
+      setConsultingTime(formattedDate);
+    }
   };
 
   const fetchTimeSlots = () => {
@@ -63,7 +68,7 @@ export default function Consulting(props) {
       const response = await axios.get(
         `/api/v1/appointments/show_all_appointments?date=${consultingTime}&doctor_id=${props.doctor}`
       );
-      const bookedTimes = response.data.visitor_list.map(
+      const bookedTimes = response.data.appointments.map(
         (appointment) => appointment.time
       );
 
@@ -118,14 +123,27 @@ export default function Consulting(props) {
     <div className="space-y-2">
       <form className="flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row items-center gap-1">
-          <label className="text-sm font-semibold text-gray-700 sm:w-28">
+          {/* <label className="text-sm font-semibold text-gray-700 sm:w-28">
             Select Date:
           </label>
           <input
             type="date"
             className="py-1 px-2 rounded-md border border-black w-1/2"
             onChange={handleConsulting}
-          />
+          /> */}
+          <label className="text-sm font-semibold text-gray-700 sm:w-28">
+            Select Date:
+          </label>
+          <div className="relative flex items-center w-full h-10">
+            <CiCalendar className="absolute left-3 text-black z-10" />
+            <DatePicker
+              selected={consultingTime ? new Date(consultingTime) : null}
+              onChange={handleConsulting}
+              dateFormat="dd-MM-yyyy"
+              placeholderText="Select date"
+              className="w-full text-sm p-2 pl-10 pr-3 border rounded-md focus:outline-none bg-white"
+            />
+          </div>
         </div>
 
         <div>
@@ -136,15 +154,7 @@ export default function Consulting(props) {
           <div className="space-y-4">
             {["morning", "afternoon", "evening"].map((slotType) => (
               <div key={slotType}>
-                <h3
-                  className={`text-sm font-semibold ${
-                    slotType === "morning"
-                      ? "text-blue-600"
-                      : slotType === "afternoon"
-                      ? "text-orange-600"
-                      : "text-purple-600"
-                  } mb-1`}
-                >
+                <h3 className={`text-sm font-semibold text-[#1F2937] mb-1`}>
                   {slotType.charAt(0).toUpperCase() + slotType.slice(1)}
                 </h3>
                 <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
@@ -157,8 +167,18 @@ export default function Consulting(props) {
                     ) // Sorting time slots in ascending order
                     .map((timeSlot) => {
                       const formattedTime = formatTime(timeSlot.time);
+                      console.log(formattedTime, "Formatted Time");
+                      console.log(bookedSlots, "Booked Time");
                       const isBooked = bookedSlots.includes(formattedTime);
+                      // const formattedTime = new Date(
+                      //   `1970-01-01T${timeSlot.time}`
+                      // ).toLocaleTimeString("en-GB", {
+                      //   hour: "2-digit",
+                      //   minute: "2-digit",
+                      //   hour12: false,
+                      // });
 
+                      // const isBooked = bookedSlots.includes(formattedTime);
                       return (
                         <label
                           key={timeSlot.id}

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import InsideLoader from "../../../InsideLoader";
 
 function ReportTreatment() {
+  const appointment_id = localStorage.getItem("appointment_id");
   const navigate = useNavigate();
   const getCustomers = useOutletContext();
   const [selectedId, setSelectedId] = useState("1");
@@ -71,8 +72,19 @@ function ReportTreatment() {
               text: "Your treatment package has been assigned to the user.",
               icon: "success",
             });
-            getCustomers[2]();
-            navigate("/admin/patients/user-diagnosis/lab-tests");
+            const formdata = new FormData();
+            formdata.append("appointment[status]", "completed");
+            axios
+              .put(`/api/v1/appointments/${appointment_id}`, formdata)
+              .then((res) => {
+                console.log(res);
+                localStorage.removeItem("appointment_id");
+                getCustomers[2]();
+                navigate("/admin/patients/user-diagnosis/lab-tests");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           })
           .catch((err) => {
             console.log(err);
@@ -167,95 +179,160 @@ function ReportTreatment() {
   }
 
   return (
-    <div className="w-full p-2">
-      <div
-        className={`rounded-lg bg-card ${
-          role === "patient" ? "h-[85vh]" : "h-[95vh]"
-        } bg-white`}
-      >
-        <div className="flex px-4 py-3 h-full flex-col">
-          <div className="w-full sm:flex p-1 items-end">
-            <div className="sm:flex-grow flex flex-col justify-between overflow-x-hidden">
-              <div className="flex flex-wrap items-center gap-4 transition-transform pb-2">
-                <div className="flex justify-center w-full md:w-[180vh]  px-4">
-                  <Select
-                    sx={{
-                      width: "100%", 
-                      maxWidth: "400px", 
-                      border: "1px solid black",
-                    }}
-                    value={sendWeightReason ? sendWeightReason[0] : ""}
-                    required
-                    placeholder="Select Weight Reason"
-                  >
-                    {getWeightReason?.map((res) => {
-                      return (
-                        <Option
-                          style={{
-                            backgroundColor: res[1] ? "" : "lightgreen",
-                            marginBottom: "1px",
-                          }}
-                          key={res[0]}
-                          value={res[0]}
-                          onClick={() => setSendWeightReason(res)}
-                        >
-                          {res[0]}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-                  {!sendWeightReason && (
-                    <span className="text-red-500 font-medium text-sm mt-2 md:mt-5">
-                      *Required
-                    </span>
-                  )}
-                </div>
-
-                {sendWeightReason !== null && (
-                  <div className={clsx(`flex flex-wrap space-x-3`)}>
-                    {reportTreatmentButtons.map((res) => {
-                      return (
-                        <Link
-                          to={res.to}
-                          onClick={() => setSelectedId(res.id)}
-                          key={res.id}
-                          className={clsx(
-                            "min-w-fit flex flex-wrap items-center border shadow-md cursor-pointer hover:bg-[#1F2937] hover:text-white py-2 px-2.5 rounded-md",
-                            selectedId === res.id
-                              ? "bg-[#1F2937] text-white"
-                              : "bg-white"
-                          )}
-                        >
-                          {res.icons}
-                          <span className="ml-1.5">{res.name}</span>
-                        </Link>
-                      );
-                    })}
-                    <button
-                      onClick={submitDataToCreateTreatmentPackage}
-                      className="min-w-fit flex flex-wrap text-green-500 font-semibold items-center border shadow-md cursor-pointer hover:bg-[#17da21] hover:text-white py-2 px-3.5 rounded-md"
-                    >
-                      <IoIosCheckmarkCircle size={20} /> Submit
-                    </button>
-                  </div>
-                )}
-              </div>
-              {sendWeightReason !== null && (
-                <div className={clsx()}>
-                  <Outlet
-                    context={{
-                      sendWeightReason,
-                      mappingPackages,
-                      handleGetWeightReason,
-                      setStoreData,
-                      storeData,
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
+    // <div className={`rounded-lg  w-full `}>
+    //   <div className="flex flex-wrap items-center gap-4 transition-transform ">
+    //     <div className="flex justify-center w-full  mt-2 p-2 bg-white shadow-sm border">
+    //       <Select
+    //         sx={{
+    //           width: "100%",
+    //           border: "1px solid black",
+    //         }}
+    //         value={sendWeightReason ? sendWeightReason[0] : ""}
+    //         required
+    //         placeholder="Select Weight Reason"
+    //       >
+    //         {getWeightReason?.map((res) => {
+    //           return (
+    //             <Option
+    //               style={{
+    //                 backgroundColor: res[1] ? "" : "lightgreen",
+    //                 marginBottom: "1px",
+    //               }}
+    //               key={res[0]}
+    //               value={res[0]}
+    //               onClick={() => setSendWeightReason(res)}
+    //             >
+    //               {res[0]}
+    //             </Option>
+    //           );
+    //         })}
+    //       </Select>
+    //       {!sendWeightReason && (
+    //         <span className="text-red-500 font-medium text-sm mt-2 md:mt-5">
+    //           *Required
+    //         </span>
+    //       )}
+    //     </div>
+    //     <div className="bg-white shadow-sm border mt-2 p-1 w-full rounded-md">
+    //       {sendWeightReason !== null && (
+    //         <div className="grid grid-cols-7">
+    //           {reportTreatmentButtons.map((res) => {
+    //             return (
+    //               <Link
+    //                 to={res.to}
+    //                 onClick={() => setSelectedId(res.id)}
+    //                 key={res.id}
+    //                 className={clsx(
+    //                   " w-full flex items-center justify-center text-md p-1 cursor-pointer rounded-md",
+    //                   selectedId === res.id
+    //                     ? "bg-[#EFF6FF] text-[#2563EB] border-b border-[#2563EB]  rounded-b-none"
+    //                     : "bg-white hover:bg-[#e3eaf3]"
+    //                 )}
+    //               >
+    //                 {res.icons}
+    //                 <span className="ml-1">{res.name}</span>
+    //               </Link>
+    //             );
+    //           })}
+    //           <button
+    //             onClick={submitDataToCreateTreatmentPackage}
+    //             className=" w-full flex  justify-center text-md p-1 text-green-500 font-semibold items-center  shadow-md cursor-pointer hover:bg-[#17da21] hover:text-white "
+    //           >
+    //             <IoIosCheckmarkCircle size={20} /> Submit
+    //           </button>
+    //         </div>
+    //       )}
+    //     </div>
+    //   </div>
+    //   {sendWeightReason !== null && (
+    //     <div className="bg-white mt-5 shadow-sm border">
+    //       <Outlet
+    //         context={{
+    //           sendWeightReason,
+    //           mappingPackages,
+    //           handleGetWeightReason,
+    //           setStoreData,
+    //           storeData,
+    //         }}
+    //       />
+    //     </div>
+    //   )}
+    // </div>
+    <div className="relative">
+      {" "}
+      {/* Added relative parent */}
+      <div className="flex flex-wrap items-center gap-4 transition-transform sticky top-0 bg-white z-10 shadow-md">
+        <div className="flex justify-center w-full mt-2 p-2 bg-white shadow-sm border">
+          <Select
+            sx={{
+              width: "100%",
+              border: "1px solid black",
+            }}
+            value={sendWeightReason ? sendWeightReason[0] : ""}
+            required
+            placeholder="Select Weight Reason"
+          >
+            {getWeightReason?.map((res) => (
+              <Option
+                style={{
+                  backgroundColor: res[1] ? "" : "lightgreen",
+                  marginBottom: "1px",
+                }}
+                key={res[0]}
+                value={res[0]}
+                onClick={() => setSendWeightReason(res)}
+              >
+                {res[0]}
+              </Option>
+            ))}
+          </Select>
+          {!sendWeightReason && (
+            <span className="text-red-500 font-medium text-sm mt-2 md:mt-5">
+              *Required
+            </span>
+          )}
         </div>
+        <div className="bg-white shadow-sm border mt-2 p-1 w-full rounded-md">
+          {sendWeightReason !== null && (
+            <div className="grid grid-cols-7">
+              {reportTreatmentButtons.map((res) => (
+                <Link
+                  to={res.to}
+                  onClick={() => setSelectedId(res.id)}
+                  key={res.id}
+                  className={clsx(
+                    " w-full flex items-center justify-center text-md p-1 cursor-pointer rounded-md",
+                    selectedId === res.id
+                      ? "bg-[#EFF6FF] text-[#2563EB] border-b border-[#2563EB]  rounded-b-none"
+                      : "bg-white hover:bg-[#e3eaf3]"
+                  )}
+                >
+                  {res.icons}
+                  <span className="ml-1">{res.name}</span>
+                </Link>
+              ))}
+              <button
+                onClick={submitDataToCreateTreatmentPackage}
+                className="w-full flex justify-center text-md p-1 text-green-500 font-semibold items-center shadow-md cursor-pointer hover:bg-[#17da21] hover:text-white"
+              >
+                <IoIosCheckmarkCircle size={20} /> Submit
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="bg-white mt-5 shadow-sm border">
+        {sendWeightReason !== null && (
+          <Outlet
+            context={{
+              sendWeightReason,
+              mappingPackages,
+              handleGetWeightReason,
+              setStoreData,
+              storeData,
+            }}
+          />
+        )}
       </div>
     </div>
   );
