@@ -232,7 +232,11 @@ function RecepsitnistSidebar({ onSidebarHide, showSidebar, admin }) {
       </div>
       {/* Logout Section */}
       <div className="p-2 flex flex-col items-center sidebar-bottom mt-28 ">
-        <div className="flex flex-row justify-between w-full items-center">
+        <div
+          className={`flex ${
+            showSidebar ? "flex-row" : "flex-col gap-5"
+          } justify-between w-full items-center`}
+        >
           <div className="flex gap-1">
             <div className="p-2 rounded-full bg-[#506930] text-white cursor-pointer">
               {admin?.first_name?.[0]?.toUpperCase()}

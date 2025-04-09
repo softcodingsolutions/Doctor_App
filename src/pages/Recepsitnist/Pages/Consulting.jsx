@@ -106,12 +106,10 @@ export default function Consulting(props) {
       .post(`/api/v1/appointments`, formdata)
       .then(() => {
         setLoader(false);
-        alert("Successfully created your Consulting Appointment!");
         navigate(`/receptionist/appointment/home`);
       })
       .catch((err) => {
         setLoader(false);
-        alert(err.response?.data?.message + "!");
       });
   };
 

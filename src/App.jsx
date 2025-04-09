@@ -201,6 +201,7 @@ function App() {
 
               {/* customer treatment */}
               <Route path="treatment" element={<ReportTreatment />}>
+                <Route index element={<RTreatmentDiet />} />
                 <Route path="medicine" element={<RTreatmentMedicine />} />
                 <Route path="diet" element={<RTreatmentDiet />} />
                 <Route path="nutrition" element={<RTreatmentNutrition />} />

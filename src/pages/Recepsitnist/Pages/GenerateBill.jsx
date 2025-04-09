@@ -8,8 +8,12 @@ import { IoSearchOutline } from "react-icons/io5";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { RiDownloadCloud2Line } from "react-icons/ri";
+import { TfiWrite } from "react-icons/tfi";
 import { FaEye } from "react-icons/fa";
 import Tooltip from "@mui/material/Tooltip";
+import { CiCalendar } from "react-icons/ci";
+import DatePicker from "react-datepicker";
+import { CiEdit } from "react-icons/ci";
 
 export default function GenerateBill() {
   const location = useLocation();
@@ -38,6 +42,7 @@ export default function GenerateBill() {
   const [errors, setErrors] = useState({});
   const [getParticularCustomer, setGetParticularCustomer] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [filterDate, setFilterDate] = useState("");
   const [error, setError] = useState("");
   const resetForm = () => {
     setSearchTerm("");
@@ -83,6 +88,7 @@ export default function GenerateBill() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Pdf Section
   const handleDownload = (bill) => {
     const doc = new jsPDF();
 
@@ -135,11 +141,18 @@ export default function GenerateBill() {
     doc.save(`Bill_${bill.id}.pdf`);
   };
 
+  // const handleEdit = (bill) => {
+  //   setEditBillId(bill.id);
+  //   setEditableValues({
+  //     paid_payment: bill.paid_payment,
+  //     remaining_payment: bill.remaining_payment,
+  //   });
+  // };
   const handleEdit = (bill) => {
     setEditBillId(bill.id);
     setEditableValues({
       paid_payment: bill.paid_payment,
-      remaining_payment: bill.remaining_payment,
+      remaining_payment: bill.total_price - bill.paid_payment,
     });
   };
 
@@ -319,14 +332,28 @@ export default function GenerateBill() {
     }
   }, [userId]);
 
+  const filteredBills = filterDate
+    ? bills.filter((bill) => {
+        const billDate = new Date(bill.created_at).toDateString();
+        const selectedDate = filterDate.toDateString();
+        return billDate === selectedDate;
+      })
+    : bills;
+
   return (
-    <div className="flex flex-col    flex-grow overflow-auto bg-white content-start max-h-full">
+    <div className="flex flex-col  p-3  flex-grow overflow-auto bg-white content-start max-h-full">
       <div className="flex justify-between ">
-        <div className="flex gap-1 ">
+        <div className="flex gap-2">
+          <div className="mt-2">
+            <TfiWrite size={30} className="text-green-600" />{" "}
+          </div>
           <div className="flex  flex-col">
             <label className="flex justify-start text-xl font-bold ">
               Generate Bill
             </label>
+            <span className="text-md text-gray-600 ">
+              Review, Edit & Download Bills
+            </span>
           </div>
         </div>
         <div className="mt-2 relative flex items-center pr-2 w-[30rem]">
@@ -341,601 +368,589 @@ export default function GenerateBill() {
         </div>
       </div>
 
-      <div className="p-2">
-        {error && <div className="text-red-500">{error}</div>}
-        {getParticularCustomer?.length > 0 ? (
-          <ul className="mt-1 border border-gray-200 rounded-md max-h-96 overflow-y-auto divide-y divide-gray-100">
-            {getParticularCustomer.map((user) => (
-              <li
-                key={user.id}
-                className="p-2 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
-                onClick={() => handleUserSelect(user)}
-              >
-                <div>
-                  <div className="font-medium">
-                    {user.first_name} {user.last_name}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    Phone: {user.phone_number}
-                  </div>
-                </div>
-                <div className="text-gray-500 text-sm">
-                  {user.follow_up ? "Old Case" : "New Case"}
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <>
-            {userDetails?.first_name && (
-              <div className="flex flex-col md:flex-row gap-4 mt-5">
-                <div className="text-md font-bold mb-4 flex-1">
-                  <div>
-                    Patient Name:{" "}
-                    <span className="font-medium">
-                      {userDetails?.first_name} {userDetails?.last_name}
-                    </span>
-                  </div>
-                  <div>
-                    Case Number:{" "}
-                    <span className="font-medium">
-                      {userDetails?.case_number}
-                    </span>
-                  </div>
-                </div>
-                <div className="text-md font-bold mb-4 flex-1">
-                  <div>
-                    Package Name:{" "}
-                    <span className="font-medium">
-                      {packageDetail?.package_name ?? "No Package Assigned"}
-                    </span>
-                  </div>
-                  <div>
-                    Package Duration:{" "}
-                    <span className="font-medium">
-                      {packageDetail?.no_of_days} Days
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-
-      {medicines.length > 0 && (
-        <table className="bg-white border  overflow-auto w-full  rounded-md border-gray-300 text-sm text-left">
-          <thead className="sticky top-0 z-10 text-[#71717A] font-medium border-b-2 bg-white">
-            <tr>
-              <th className="border-b-2 p-3">Medicine Name</th>
-              <th className="border-b-2 p-3">Medicine Intake</th>
-              <th className="border-b-2 p-3">Assigned Medicine</th>
-              <th className="border-b-2 p-3">Total Quantity</th>
-              <th className="border-b-2 p-3">With Milk</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {medicines.length > 0 ? (
-              medicines.map((med, index) => (
-                <tr key={med.id} className="map hover:bg-gray-200">
-                  <td className="border-b-1 p-3">{med.medicine_name}</td>
-                  <td className="border-b-1 p-3">
-                    {formatDosage(med?.dosage)}
-                  </td>
-                  <td className="border-b-1 p-3">
-                    {med.is_assigned ? "Yes" : "No"}
-                  </td>
-                  <td className="border-b-1 p-3">
-                    <input
-                      type="number"
-                      className={`border rounded-md p-2 ${
-                        errors[`totalQuantities_${index}`]
-                          ? "border-red-500"
-                          : "border-blue-gray-400"
-                      }`}
-                      min={0}
-                      onChange={(e) =>
-                        handleTotalMedicine(index, e.target.value)
-                      }
-                    />
-                    {errors[`totalQuantities_${index}`] && (
-                      <p className="text-red-500 text-sm">
-                        {errors[`totalQuantities_${index}`]}
-                      </p>
-                    )}
-                  </td>
-                  <td className="border-b-1 p-3">
-                    {med.with_milk ? "Yes" : "No"}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan={5}
-                  className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
-                >
-                  No medicines assigned.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      )}
-
-      {medicines.length > 0 && (
-        // <div className="flex flex-col gap-2 p-3">
-        //   <div className="flex flex-col md:flex-row gap-3">
-        //     <div className="flex flex-col w-full">
-        //       <label
-        //         className="font-medium text-sm text-[#06AED4]  mb-2"
-        //         htmlFor="totalPrice"
-        //       >
-        //         Total Price
-        //       </label>
-        //       <input
-        //         type="number"
-        //         id="totalPrice"
-        //         value={price}
-        //         onChange={handlePrice}
-        //         placeholder="Total Price"
-        //         className=" rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-        //       />
-        //     </div>
-        //     <div className="flex flex-col w-full">
-        //       <label
-        //         className="font-medium text-sm text-[#06AED4]  mb-2"
-        //         htmlFor="paidAmount"
-        //       >
-        //         Paid Amount
-        //       </label>
-        //       <input
-        //         type="number"
-        //         id="paidAmount"
-        //         value={pay}
-        //         onChange={handlePay}
-        //         placeholder="Paid Amount"
-        //         className=" rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-        //       />
-        //     </div>
-        //     <div className="flex flex-col w-full">
-        //       <label
-        //         className="font-medium text-sm text-[#06AED4]  mb-2"
-        //         htmlFor="paymentMethod"
-        //       >
-        //         Payment Method
-        //       </label>
-        //       <select
-        //         id="paymentMethod"
-        //         value={method}
-        //         onChange={handleMethod}
-        //         className=" rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-        //       >
-        //         <option value="Online">Online</option>
-        //         <option value="Offline">Offline</option>
-        //       </select>
-        //     </div>
-        //   </div>
-        //   <div className="flex flex-col w-full ">
-        //     <label
-        //       className="font-medium text-sm text-[#06AED4]  mb-2"
-        //       htmlFor="remainingAmount"
-        //     >
-        //       Remaining Amount
-        //     </label>
-        //     <input
-        //       type="number"
-        //       id="remainingAmount"
-        //       value={remaining}
-        //       readOnly
-        //       className=" rounded-md border border-gray-300  focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-        //     />
-        //   </div>
-        // </div>
-        <div className="flex flex-col gap-4 p-4">
-          {/* Row: Total Price, Paid Amount, Payment Method */}
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Total Price */}
-            <div className="flex flex-col w-full">
-              <label
-                htmlFor="totalPrice"
-                className="font-medium text-sm text-[#06AED4] mb-2"
-              >
-                Total Price
-              </label>
-              <input
-                type="number"
-                id="totalPrice"
-                value={price}
-                onChange={handlePrice}
-                placeholder="Total Price"
-                className="rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-              />
-            </div>
-
-            {/* Paid Amount */}
-            <div className="flex flex-col w-full">
-              <label
-                htmlFor="paidAmount"
-                className="font-medium text-sm text-[#06AED4] mb-2"
-              >
-                Paid Amount
-              </label>
-              <input
-                type="number"
-                id="paidAmount"
-                value={pay}
-                onChange={handlePay}
-                placeholder="Paid Amount"
-                className="rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-              />
-            </div>
-
-            {/* Payment Method */}
-            <div className="flex flex-col w-full">
-              <label
-                htmlFor="paymentMethod"
-                className="font-medium text-sm text-[#06AED4] mb-2"
-              >
-                Payment Method
-              </label>
-              <select
-                id="paymentMethod"
-                value={method}
-                onChange={handleMethod}
-                className="rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-              >
-                <option value="Online">Online</option>
-                <option value="Offline">Offline</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Remaining Amount */}
-          <div className="flex flex-col w-full">
-            <label
-              htmlFor="remainingAmount"
-              className="font-medium text-sm text-[#06AED4] mb-2"
-            >
-              Remaining Amount
-            </label>
-            <input
-              type="number"
-              id="remainingAmount"
-              value={remaining}
-              readOnly
-              className="rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
-            />
-          </div>
-        </div>
-      )}
-      <div className="flex justify-center w-full">
-        {medicines.length > 0 && (
-          <button
-            onClick={handleBill}
-            variant="solid"
-            className="flex justify-center w-[20rem] items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-center px-4 py-2 rounded-md transition-colors duration-200"
-          >
-            Generate Bill
-          </button>
-        )}
-      </div>
-      {/* Bill History Section */}
-      {bills.length > 0 ? (
-        <div className="mt-10">
-          <h2 className="text-xl font-bold mb-4 text-gray-800">Bill History</h2>
-
-          <table className="min-w-full divide-y divide-gray-200 overflow-x-auto">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                  Date
-                </th>
-                {/* <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                  Bill No
-                </th> */}
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                  Total Amount
-                </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                  Paid
-                </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                  Remaining
-                </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                  Method
-                </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {bills.length > 0 ? (
-                bills.map((bill) => (
-                  <tr key={bill.id}>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
-                      {new Date(bill.created_at).toLocaleString("en-GB", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      })}
-                    </td>
-                    {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
-                      {bill.bill_number}
-                    </td> */}
-                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      ₹{bill.total_price}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-green-600">
-                      ₹{bill.paid_payment}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-red-500">
-                      ₹{bill.remaining_payment}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
-                      {bill.payment_method}
-                    </td>
-                    <td className="flex px-4 gap-4 py-4 whitespace-nowrap text-sm">
-                      <Tooltip title="View">
-                        <button
-                          onClick={() => setSelectedBillId(bill.id)}
-                          className="relative inline-flex items-center justify-center text-[#40ADBF]  bg-[#CBFBF9] text-sm p-1.5 rounded-full group transition-all duration-300 hover:shadow-md"
-                        >
-                          <FaEye
-                            className="transition-transform duration-500 group-hover:rotate-12"
-                            size={17}
-                          />
-                        </button>
-                      </Tooltip>
-                      <Tooltip title="Download">
-                        <button
-                          onClick={() => handleDownload(bill)}
-                          className="relative inline-flex items-center justify-center text-[#8069DE]  bg-[#EEE9FF] text-sm p-1.5 rounded-full group transition-all duration-300 hover:shadow-md"
-                        >
-                          <RiDownloadCloud2Line
-                            className="transition-transform duration-500 group-hover:rotate-12"
-                            size={17}
-                          />
-                        </button>
-                      </Tooltip>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={7}
-                    className="text-center px-6 py-4 text-gray-500 text-sm"
+      {getParticularCustomer?.length > 0 || medicines?.length > 0 ? (
+        <>
+          <div className="p-2">
+            {error && <div className="text-red-500">{error}</div>}
+            {getParticularCustomer?.length > 0 ? (
+              // Selection Section
+              <ul className="mt-1 border border-gray-200 rounded-md max-h-96 overflow-y-auto divide-y divide-gray-100">
+                {getParticularCustomer.map((user) => (
+                  <li
+                    key={user.id}
+                    className="p-2 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+                    onClick={() => handleUserSelect(user)}
                   >
-                    No bill history available.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div> </div>
-      )}
-
-      {selectedBillId && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={() => setSelectedBillId(null)} // Click on backdrop closes modal
-        >
-          <div
-            className="bg-white rounded-xl w-full max-w-5xl max-h-[90vh] overflow-y-auto border border-gray-200"
-            onClick={(e) => e.stopPropagation()} // Prevent close when clicking inside modal
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 rounded-t-xl">
-              <h2 className="text-lg font-semibold">Bill Information</h2>
-              <button
-                className="text-2xl hover:text-red-300"
-                onClick={() => setSelectedBillId(null)}
-              >
-                &times;
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="pl-8 pr-8  pb-8 space-y-8">
-              {(() => {
-                const selectedBill = bills.find(
-                  (bill) => bill.id === selectedBillId
-                );
-                if (!selectedBill)
-                  return <div className="text-center">Bill not found</div>;
-
-                return (
-                  <>
-                    {/* Patient Info */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
-                      <div>
-                        <strong>Name:</strong>{" "}
-                        {userDetails?.first_name || "N/A"}{" "}
-                        {userDetails?.last_name || ""}
+                    <div>
+                      <div className="font-medium">
+                        {user.first_name} {user.last_name}
                       </div>
-                      <div>
-                        <strong>Case Number:</strong> {userDetails?.case_number}
-                      </div>
-                      <div>
-                        <strong>Phone:</strong>{" "}
-                        {userDetails?.phone_number || "N/A"}
+                      <div className="text-sm text-gray-500">
+                        Phone: {user.phone_number}
                       </div>
                     </div>
-
-                    {/* Bill Items */}
-                    <section>
-                      <h3 className="text-md font-bold text-blue-600 mb-2">
-                        Bill ID: {selectedBill.id}
-                      </h3>
-                      <div className="overflow-x-auto">
-                        <table className="w-full border text-sm rounded overflow-hidden">
-                          <thead className="bg-blue-100 text-blue-900">
-                            <tr>
-                              <th className="py-2 px-4 text-left">#</th>
-                              <th className="py-2 px-4 text-left">
-                                Medicine Name
-                              </th>
-                              <th className="py-2 px-4 text-left">Quantity</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {selectedBill.bill_items.map((item, index) => (
-                              <tr
-                                key={index}
-                                className="border-t hover:bg-gray-50"
-                              >
-                                <td className="py-2 px-4">{index + 1}</td>
-                                <td className="py-2 px-4">
-                                  {item.medicine_name}
-                                </td>
-                                <td className="py-2 px-4">{item.quantity}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                    <div className="text-gray-500 text-sm">
+                      {user.follow_up ? "Old Case" : "New Case"}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <>
+                {/* Patient/Package Details */}
+                {userDetails?.first_name && (
+                  <div className="flex flex-col md:flex-row gap-4 mt-5">
+                    <div className="text-md font-bold mb-4 flex-1">
+                      <div>
+                        Patient Name:{" "}
+                        <span className="font-medium">
+                          {userDetails?.first_name} {userDetails?.last_name}
+                        </span>
                       </div>
-                    </section>
+                      <div>
+                        Case Number:{" "}
+                        <span className="font-medium">
+                          {userDetails?.case_number}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-md font-bold mb-4 flex-1">
+                      <div>
+                        Treatment Name:{" "}
+                        <span className="font-medium">
+                          {packageDetail?.package_name ?? "No Package Assigned"}
+                        </span>
+                      </div>
+                      <div>
+                        Treatment Duration:{" "}
+                        <span className="font-medium">
+                          {packageDetail?.no_of_days} Days
+                        </span>
+                      </div>
+                      <div>
+                        Treatment Assigned At:{" "}
+                        <span className="font-medium">
+                          {packageDetail?.updated_at
+                            ?.slice(0, 10)
+                            ?.split("-")
+                            ?.reverse()
+                            ?.join("-")}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+          {/* Medicine Item Section */}
+          {medicines.length > 0 && (
+            <table className="bg-white border  overflow-auto w-full  rounded-md border-gray-300 text-sm text-left mt-4">
+              <thead className="sticky top-0 z-10 text-[#71717A] font-medium border-b-2 bg-white">
+                <tr>
+                  <th className="border-b-2 p-3">Medicine Name</th>
+                  <th className="border-b-2 p-3">Medicine Intake</th>
+                  <th className="border-b-2 p-3">Assigned Medicine</th>
+                  <th className="border-b-2 p-3">Total Quantity</th>
+                  <th className="border-b-2 p-3">With Milk</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {medicines.length > 0 ? (
+                  medicines.map((med, index) => (
+                    <tr key={med.id} className="map hover:bg-gray-200">
+                      <td className="border-b-1 p-3">{med.medicine_name}</td>
+                      <td className="border-b-1 p-3">
+                        {formatDosage(med?.dosage)}
+                      </td>
+                      <td className="border-b-1 p-3">
+                        {med.is_assigned ? "Yes" : "No"}
+                      </td>
+                      <td className="border-b-1 p-3">
+                        <input
+                          type="number"
+                          className={`border rounded-md p-2 ${
+                            errors[`totalQuantities_${index}`]
+                              ? "border-red-500"
+                              : "border-blue-gray-400"
+                          }`}
+                          min={0}
+                          onChange={(e) =>
+                            handleTotalMedicine(index, e.target.value)
+                          }
+                        />
+                        {errors[`totalQuantities_${index}`] && (
+                          <p className="text-red-500 text-sm">
+                            {errors[`totalQuantities_${index}`]}
+                          </p>
+                        )}
+                      </td>
+                      <td className="border-b-1 p-3">
+                        {med.with_milk ? "Yes" : "No"}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      className="text-center px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900"
+                    >
+                      No medicines assigned.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+          {/* Price Section */}
+          {medicines.length > 0 && (
+            <div className="flex flex-col gap-4 p-4">
+              {/* Row: Total Price, Paid Amount, Payment Method */}
+              <div className="flex flex-col md:flex-row gap-4">
+                {/* Total Price */}
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="totalPrice"
+                    className="font-medium text-sm text-[#06AED4] mb-2"
+                  >
+                    Total Price
+                  </label>
+                  <input
+                    type="number"
+                    id="totalPrice"
+                    value={price}
+                    onChange={handlePrice}
+                    placeholder="Total Price"
+                    className="rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
+                  />
+                </div>
 
-                    {/* Summary */}
-                    {/* <section>
-                      <h3 className="text-md font-bold text-blue-600 mb-2">
-                        Payment Summary
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
-                        <div className="space-y-1">
-                          <div>
-                            <strong>Total Price:</strong> ₹
-                            {selectedBill.total_price}
-                          </div>
-                          <div>
-                            <strong>Paid:</strong> ₹{selectedBill.paid_payment}
-                          </div>
-                          <div>
-                            <strong>Remaining:</strong> ₹
-                            {selectedBill.remaining_payment}
-                          </div>
-                        </div>
-                        <div className="space-y-1">
-                          <div>
-                            <strong>Payment Method:</strong>{" "}
-                            {selectedBill.payment_method}
-                          </div>
-                          <div>
-                            <strong>Created At:</strong>{" "}
-                            {new Date(selectedBill.created_at).toLocaleString(
-                              "en-GB",
-                              {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: true,
+                {/* Paid Amount */}
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="paidAmount"
+                    className="font-medium text-sm text-[#06AED4] mb-2"
+                  >
+                    Paid Amount
+                  </label>
+                  <input
+                    type="number"
+                    id="paidAmount"
+                    value={pay}
+                    onChange={handlePay}
+                    placeholder="Paid Amount"
+                    className="rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
+                  />
+                </div>
+
+                {/* Payment Method */}
+                <div className="flex flex-col w-full">
+                  <label
+                    htmlFor="paymentMethod"
+                    className="font-medium text-sm text-[#06AED4] mb-2"
+                  >
+                    Payment Method
+                  </label>
+                  <select
+                    id="paymentMethod"
+                    value={method}
+                    onChange={handleMethod}
+                    className="rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
+                  >
+                    <option value="Online">Online</option>
+                    <option value="Offline">Cash</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Remaining Amount */}
+              <div className="flex flex-col w-full">
+                <label
+                  htmlFor="remainingAmount"
+                  className="font-medium text-sm text-[#06AED4] mb-2"
+                >
+                  Remaining Amount
+                </label>
+                <input
+                  type="number"
+                  id="remainingAmount"
+                  value={remaining}
+                  readOnly
+                  className="rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 p-2"
+                />
+              </div>
+            </div>
+          )}
+          {/* Bill Generate Button */}
+          <div className="flex justify-center w-full">
+            {medicines.length > 0 && (
+              <button
+                onClick={handleBill}
+                variant="solid"
+                className="flex justify-center w-[20rem] items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-center px-4 py-2 rounded-md transition-colors duration-200"
+              >
+                Generate Bill
+              </button>
+            )}
+          </div>
+
+          {/* Bill History Section */}
+          {bills.length > 0 ? (
+            <div className="mt-10">
+              <div className="flex justify-between w-full">
+                <div>
+                  <h2 className="text-xl font-bold mb-4 text-gray-800">
+                    Bill History
+                  </h2>
+                </div>
+                <div className="flex gap-2">
+                  <div className="relative flex items-center  h-10">
+                    <CiCalendar className="absolute left-3 text-black z-10" />
+                    <DatePicker
+                      selected={filterDate}
+                      onChange={(date) => setFilterDate(date)}
+                      dateFormat="dd-MM-yyyy"
+                      placeholderText="Select date"
+                      className=" text-sm p-2.5 pl-10 pr-3 border rounded-md focus:outline-none bg-white"
+                    />
+                  </div>
+                  {filterDate && (
+                    <Tooltip title="Clear Filter">
+                      <button
+                        onClick={() => setFilterDate("")}
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-[#9FD7EA] text-[#06AED4] hover:bg-[#06AED4] hover:text-white transition duration-200"
+                      >
+                        <span className="text-lg leading-none">&times;</span>
+                      </button>
+                    </Tooltip>
+                  )}
+                </div>
+              </div>
+              {/* Bill history Table */}
+              <table className="bg-white border  overflow-auto w-full  rounded-md border-gray-300 text-sm  mt-5 text-left">
+                <thead className="sticky top-0 z-10 text-[#71717A] font-medium border-b-2 bg-white">
+                  <tr>
+                    <th className="border-b-2 p-3">Date</th>
+                    {/* <th className="border-b-2 p-3">
+                  Bill No
+                </th> */}
+                    <th className="border-b-2 p-3">Total Amount</th>
+                    <th className="border-b-2 p-3">Paid</th>
+                    <th className="border-b-2 p-3">Remaining</th>
+                    <th className="border-b-2 p-3">Method</th>
+                    <th className="border-b-2 p-3">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredBills.length > 0 ? (
+                    filteredBills.map((bill) => (
+                      <tr key={bill.id}>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
+                          {new Date(bill.created_at).toLocaleString("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          })}
+                        </td>
+
+                        {/* Total Amount - not editable */}
+                        <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          ₹{bill.total_price}
+                        </td>
+
+                        {/* Paid - editable */}
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-green-600">
+                          {editBillId === bill.id ? (
+                            <input
+                              type="number"
+                              value={editableValues.paid_payment}
+                              onChange={(e) =>
+                                handlePaidAmountChange(e, bill.total_price)
                               }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </section> */}
-                    <section>
-                      <h3 className="text-md font-bold text-blue-600 mb-2">
-                        Payment Summary
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
-                        <div className="space-y-1">
-                          <div>
-                            <strong>Total Price:</strong> ₹
-                            {selectedBill.total_price}
-                          </div>
-                          <div>
-                            <strong>Paid:</strong>{" "}
-                            {editBillId === selectedBill.id ? (
-                              <input
-                                type="number"
-                                value={editableValues.paid_payment}
-                                onChange={(e) =>
-                                  handlePaidAmountChange(
-                                    e,
-                                    selectedBill.total_price
-                                  )
-                                }
-                                className="py-1 px-2 border rounded"
-                              />
-                            ) : (
-                              <>₹{selectedBill.paid_payment}</>
-                            )}
-                          </div>
-                          <div>
-                            <strong>Remaining:</strong>{" "}
-                            {editBillId === selectedBill.id ? (
-                              <input
-                                type="number"
-                                value={editableValues.remaining_payment}
-                                onChange={(e) =>
-                                  setEditableValues({
-                                    ...editableValues,
-                                    remaining_payment: e.target.value,
-                                  })
-                                }
-                                className="py-1 px-2 border rounded"
-                                readOnly
-                              />
-                            ) : (
-                              <>₹{selectedBill.remaining_payment}</>
-                            )}
-                          </div>
-                          <div>
-                            {editBillId === selectedBill.id ? (
-                              <Button
-                                variant="solid"
-                                color="success"
-                                onClick={() => handleSave(selectedBill.id)}
+                              className="py-1 px-2 border rounded w-24"
+                            />
+                          ) : (
+                            <>₹{bill.paid_payment}</>
+                          )}
+                        </td>
+
+                        {/* Remaining - calculated or editable */}
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-red-500">
+                          {editBillId === bill.id ? (
+                            <input
+                              type="number"
+                              value={editableValues.remaining_payment}
+                              readOnly
+                              className="py-1 px-2 border rounded w-24 bg-gray-100"
+                            />
+                          ) : (
+                            <>₹{bill.remaining_payment}</>
+                          )}
+                        </td>
+
+                        {/* Payment Method - not editable here */}
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
+                          {bill.payment_method}
+                        </td>
+
+                        {/* Actions */}
+                        <td className="flex px-4 gap-4 py-4 whitespace-nowrap text-sm">
+                          {editBillId === bill.id ? (
+                            <>
+                              <button
+                                onClick={() => handleSave(bill.id)}
+                                className="text-green-600 bg-green-100 px-3 py-1 rounded hover:bg-green-200"
                               >
                                 Save
-                              </Button>
-                            ) : (
-                              <Button
-                                variant="solid"
-                                color="primary"
-                                onClick={() => handleEdit(selectedBill)}
+                              </button>
+                              <button
+                                onClick={() => setEditBillId(null)}
+                                className="text-gray-600 bg-gray-100 px-3 py-1 rounded hover:bg-gray-200"
                               >
-                                Edit
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                        <div className="space-y-1">
-                          <div>
-                            <strong>Payment Method:</strong>{" "}
-                            {selectedBill.payment_method}
-                          </div>
-                          <div>
-                            <strong>Created At:</strong>{" "}
-                            {new Date(selectedBill.created_at).toLocaleString(
-                              "en-GB",
-                              {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: true,
-                              }
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  </>
-                );
-              })()}
+                                Cancel
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <Tooltip title="Edit">
+                                <button
+                                  onClick={() => handleEdit(bill)}
+                                  className="text-[#FBBF24] bg-[#FFF4D6] text-sm p-1.5 rounded-full"
+                                >
+                                  <CiEdit size={20} />
+                                </button>
+                              </Tooltip>
+                              <Tooltip title="View">
+                                <button
+                                  onClick={() => setSelectedBillId(bill.id)}
+                                  className="text-[#40ADBF] bg-[#CBFBF9] text-sm p-1.5 rounded-full"
+                                >
+                                  <FaEye size={17} />
+                                </button>
+                              </Tooltip>
+                              <Tooltip title="Download">
+                                <button
+                                  onClick={() => handleDownload(bill)}
+                                  className="text-[#8069DE] bg-[#EEE9FF] text-sm p-1.5 rounded-full"
+                                >
+                                  <RiDownloadCloud2Line size={17} />
+                                </button>
+                              </Tooltip>
+                            </>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={7}
+                        className="text-center px-6 py-4 text-gray-500 text-sm"
+                      >
+                        No bill history available.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
-          </div>
+          ) : (
+            <div> </div>
+          )}
+
+          {selectedBillId && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+              onClick={() => setSelectedBillId(null)} // Click on backdrop closes modal
+            >
+              <div
+                className="bg-white rounded-xl w-full max-w-5xl max-h-[93vh] overflow-y-auto border border-gray-200"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between px-6 py-4 rounded-t-xl">
+                  <h2 className="text-lg font-semibold">Bill Information</h2>
+                  <button
+                    className="text-2xl hover:text-red-300"
+                    onClick={() => setSelectedBillId(null)}
+                  >
+                    &times;
+                  </button>
+                </div>
+
+                {/* Content */}
+                <div className="pl-8 pr-8  pb-5 space-y-8">
+                  {(() => {
+                    const selectedBill = bills.find(
+                      (bill) => bill.id === selectedBillId
+                    );
+                    if (!selectedBill)
+                      return <div className="text-center">Bill not found</div>;
+
+                    return (
+                      <>
+                        {/* Patient Info */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-sm text-gray-700">
+                          <div>
+                            <strong>Name:</strong>{" "}
+                            {userDetails?.first_name || "N/A"}{" "}
+                            {userDetails?.last_name || ""}
+                          </div>
+                          <div>
+                            <strong>Case Number:</strong>{" "}
+                            {userDetails?.case_number}
+                          </div>
+                          <div>
+                            <strong>Phone:</strong>{" "}
+                            {userDetails?.phone_number || "N/A"}
+                          </div>
+                        </div>
+
+                        {/* Bill Items */}
+                        <section>
+                          <h3 className="text-md font-bold text-blue-600 mb-2">
+                            Bill ID: {selectedBill.id}
+                          </h3>
+                          <div className="overflow-x-auto">
+                            <div className="max-h-64 overflow-y-auto">
+                              <table className="w-full border text-sm rounded">
+                                <thead className="bg-blue-100 text-blue-900 sticky top-0 z-10">
+                                  <tr>
+                                    <th className="py-2 px-4 text-left">#</th>
+                                    <th className="py-2 px-4 text-left">
+                                      Medicine Name
+                                    </th>
+                                    <th className="py-2 px-4 text-left">
+                                      Quantity
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {selectedBill.bill_items.map(
+                                    (item, index) => (
+                                      <tr
+                                        key={index}
+                                        className="border-t hover:bg-gray-50"
+                                      >
+                                        <td className="p-3">{index + 1}</td>
+                                        <td className="p-3">
+                                          {item.medicine_name}
+                                        </td>
+                                        <td className="p-3">{item.quantity}</td>
+                                      </tr>
+                                    )
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </section>
+
+                        {/* Summary */}
+                        <section>
+                          <h3 className="text-md font-bold text-blue-600 mb-2">
+                            Payment Summary
+                          </h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
+                            <div className="space-y-1">
+                              <div>
+                                <strong>Total Price:</strong> ₹
+                                {selectedBill.total_price}
+                              </div>
+                              <div>
+                                <strong>Paid:</strong>{" "}
+                                {editBillId === selectedBill.id ? (
+                                  <input
+                                    type="number"
+                                    value={editableValues.paid_payment}
+                                    onChange={(e) =>
+                                      handlePaidAmountChange(
+                                        e,
+                                        selectedBill.total_price
+                                      )
+                                    }
+                                    className="py-1 px-2 border rounded"
+                                  />
+                                ) : (
+                                  <>₹{selectedBill.paid_payment}</>
+                                )}
+                              </div>
+                              <div>
+                                <strong>Remaining:</strong>{" "}
+                                {editBillId === selectedBill.id ? (
+                                  <input
+                                    type="number"
+                                    value={editableValues.remaining_payment}
+                                    onChange={(e) =>
+                                      setEditableValues({
+                                        ...editableValues,
+                                        remaining_payment: e.target.value,
+                                      })
+                                    }
+                                    className="py-1 px-2 border rounded"
+                                    readOnly
+                                  />
+                                ) : (
+                                  <>₹{selectedBill.remaining_payment}</>
+                                )}
+                              </div>
+                            </div>
+                            <div className="space-y-1">
+                              <div>
+                                <strong>Payment Method:</strong>{" "}
+                                {selectedBill.payment_method}
+                              </div>
+                              <div>
+                                <strong>Created At:</strong>{" "}
+                                {new Date(
+                                  selectedBill.created_at
+                                ).toLocaleString("en-GB", {
+                                  day: "2-digit",
+                                  month: "2-digit",
+                                  year: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: true,
+                                })}
+                              </div>
+                            </div>
+                            <div className="space-y-1 flex justify-end w-full">
+                              <div>
+                                {editBillId === selectedBill.id ? (
+                                  <Button
+                                    variant="solid"
+                                    color="success"
+                                    onClick={() => handleSave(selectedBill.id)}
+                                  >
+                                    Save
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    variant="solid"
+                                    color="primary"
+                                    onClick={() => handleEdit(selectedBill)}
+                                  >
+                                    Edit
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="flex  justify-center w-full ">
+          <h1 className="flex justify-center mt-72  text-center w-full h-full text-gray-600">
+            Search Patient to Manage Bills
+          </h1>
         </div>
       )}
     </div>

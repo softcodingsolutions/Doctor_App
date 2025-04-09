@@ -10,8 +10,13 @@ import InsideLoader from "../../../../InsideLoader";
 import { debounce } from "lodash";
 
 function RTreatmentMedicine() {
-  const { sendWeightReason, mappingPackages, setStoreData, storeData } =
-    useOutletContext();
+  const {
+    sendWeightReason,
+    mappingPackages,
+    setStoreData,
+    storeData,
+    user_id,
+  } = useOutletContext();
   const [getPredictionMedicine, setGetPredictionMedicine] = useState([]);
   const [getMedicines, setGetMedicines] = useState([]);
   const [filteredMedicines, setFilteredMedicines] = useState([]);
@@ -31,7 +36,7 @@ function RTreatmentMedicine() {
     }
 
     axios
-      .get(`/api/v1/medicines?user_id=${localStorage.getItem("doctor_id")}}`)
+      .get(`/api/v1/medicines?user_id=${localStorage.getItem("doctor_id")}`)
       .then((res) => {
         console.log("All the medicines:", res.data?.medicines);
         setGetMedicines(res.data?.medicines);
@@ -58,9 +63,18 @@ function RTreatmentMedicine() {
       );
     }
 
+    // filtered.sort((a, b) => {
+    //   const isAMapped = getPredictionMedicine.some((med) => med.id === a.id);
+    //   const isBMapped = getPredictionMedicine.some((med) => med.id === b.id);
+    //   return isBMapped - isAMapped;
+    // });
     filtered.sort((a, b) => {
-      const isAMapped = getPredictionMedicine.some((med) => med.id === a.id);
-      const isBMapped = getPredictionMedicine.some((med) => med.id === b.id);
+      const isAMapped =
+        Array.isArray(getPredictionMedicine) &&
+        getPredictionMedicine.some((med) => med.id === a.id);
+      const isBMapped =
+        Array.isArray(getPredictionMedicine) &&
+        getPredictionMedicine.some((med) => med.id === b.id);
       return isBMapped - isAMapped;
     });
 
@@ -174,7 +188,7 @@ function RTreatmentMedicine() {
 
   useEffect(() => {
     handleGetMedicines();
-  }, [sendWeightReason]);
+  }, [sendWeightReason, user_id]);
 
   useEffect(() => {
     filterMedicines(searchTerm);

@@ -89,7 +89,7 @@ const Appointments = () => {
       .put(`/api/v1/appointments/${id}`, formdata)
       .then((res) => {
         console.log(res);
-        navigate(`../patients/user-diagnosis/treatment/medicine`);
+        handleGetAppointment();
       })
       .catch((err) => {
         console.log(err);
