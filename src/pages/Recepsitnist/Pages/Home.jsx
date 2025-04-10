@@ -389,13 +389,24 @@ export default function Home() {
                     {appointment.doctor?.first_name}{" "}
                     {appointment.doctor?.last_name}
                   </td>
-                  <td className=" px-4 py-2">
+                  {/* <td className=" px-4 py-2">
                     {appointment.user?.follow_up ? (
                       <div className="bg-[#EFF6FF]  text-[#2563EB] border-b flex justify-center w-40 text-sm  h-full rounded-md p-2">
                         Register Patient
                       </div>
                     ) : (
                       <div className="bg-[#FAF5FF]  text-[#7E22CE] border-b flex justify-center w-40 text-sm  h-full rounded-md p-2">
+                        Visitor
+                      </div>
+                    )}
+                  </td> */}
+                  <td className="px-4 py-2">
+                    {appointment.user && "follow_up" in appointment.user ? (
+                      <div className="bg-[#EFF6FF] text-[#2563EB] border-b flex justify-center w-40 text-sm h-full rounded-md p-2">
+                        Register Patient
+                      </div>
+                    ) : (
+                      <div className="bg-[#FAF5FF] text-[#7E22CE] border-b flex justify-center w-40 text-sm h-full rounded-md p-2">
                         Visitor
                       </div>
                     )}
