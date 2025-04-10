@@ -70,14 +70,18 @@ const Appointments = () => {
     const formdata = new FormData();
     formdata.append("appointment[status]", "started");
     axios
-      .put(`/api/v1/appointments/${appointment_id}`, formdata)
+      .put(`/api/v1/appointments/${appointment_id}`, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         // console.log(res);
         navigate(`../patients/user-diagnosis/treatment/medicine`);
         localStorage.setItem("appointment_id", appointment_id);
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
       });
   };
 
@@ -133,7 +137,12 @@ const Appointments = () => {
     formdata.append("appointment[status]", "completed");
 
     axios
-      .put(`/api/v1/appointments/${id}`, formdata)
+      .put(`/api/v1/appointments/${id}`, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+
       .then((res) => {
         // console.log(res);
         handleGetAppointment();
@@ -501,7 +510,7 @@ const Appointments = () => {
                         {res.user?.phone_number}
                       </td>
                       <td className="border-b-1 p-3">
-                        {res.user?.follow_up ? "Follow Up" : "New Case"}
+                        {res.user?.follow_up ? "Old Case" : "New Case"}
                       </td>
                       <td className="border-b-1 p-3">
                         {res.machine_detail?.name

@@ -19,7 +19,8 @@ function RTreatmentDiet() {
       const data = mappingPackages.filter((pack) => {
         return sendWeightReason[0] === pack.package.weight_reason;
       });
-      setGetPredictionDiet(data[0]?.package?.diet);
+      setGetPredictionDiet(data[0]?.package?.diet || []);
+
       console.log("Predicted Diet:", data[0]?.package?.diet);
     }
 
@@ -101,14 +102,17 @@ function RTreatmentDiet() {
     }
     setSelectAll(!selectAll);
   };
+  const predictedDiets = getPredictionDiet?.length
+    ? getDiet.filter((diet) =>
+        getPredictionDiet.some((med) => med.id === diet.id)
+      )
+    : [];
 
-  const predictedDiets = getDiet.filter((diet) =>
-    getPredictionDiet.some((med) => med.id === diet.id)
-  );
-
-  const otherDiets = getDiet.filter(
-    (diet) => !getPredictionDiet.some((med) => med.id === diet.id)
-  );
+  const otherDiets = getPredictionDiet?.length
+    ? getDiet.filter(
+        (diet) => !getPredictionDiet.some((med) => med.id === diet.id)
+      )
+    : getDiet;
 
   const sortedDiets = [...predictedDiets, ...otherDiets];
 
