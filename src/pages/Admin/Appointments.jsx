@@ -41,13 +41,13 @@ const Appointments = () => {
     axios
       .get(`api/v1/appointments?date=${date}&doctor_id=${main_id}`)
       .then((res) => {
-        console.log("Todays Appointment: ", res.data?.appointments);
+        // console.log("Todays Appointment: ", res.data?.appointments);
         setGetAppointments(res.data?.appointments);
         setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -72,13 +72,60 @@ const Appointments = () => {
     axios
       .put(`/api/v1/appointments/${appointment_id}`, formdata)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         navigate(`../patients/user-diagnosis/treatment/medicine`);
         localStorage.setItem("appointment_id", appointment_id);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
+  };
+
+  const handleRevisitDiagnosis = async (res) => {
+    const userId = res.user?.id;
+    const appointmentId = res.id;
+
+    // Check if the status is continue or started (ongoing appointment)
+    // if (res.status === "started") {
+    //   try {
+    //     // Fetch latest treatment data
+    //     const treatmentRes = await axios.get(
+    //       `/api/v1/user_treatments/${userId}/latest`
+    //     );
+    //     const treatment = treatmentRes.data?.treatment;
+
+    //     if (treatment) {
+    //       const structuredData = {
+    //         medicine: treatment.medicines || [],
+    //         diet: treatment.diet || [],
+    //         nutrition: treatment.nutrition || [],
+    //         exercise: treatment.exercise || [],
+    //         dos: treatment.dos || [],
+    //         donts: treatment.dont || [],
+    //       };
+
+    //       localStorage.setItem("is_revisit", "true");
+    //       localStorage.setItem(
+    //         `storeTreatmentData_${userId}`,
+    //         JSON.stringify(structuredData)
+    //       );
+    //       localStorage.setItem(
+    //         `sendWeightReason_${userId}`,
+    //         JSON.stringify([treatment.weight_reason, true])
+    //       );
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching previous treatment:", error);
+    //   }
+    // }
+
+    // Always store current appointment ID and user
+    localStorage.setItem("appointment_id", appointmentId);
+    localStorage.setItem("userId", userId);
+    localStorage.setItem("caseNumber", res.user?.case_number);
+
+    // Navigate to treatment page
+    navigate("../patients/user-diagnosis/treatment/medicine");
   };
 
   const handleCompleteAppointment = (id) => {
@@ -88,11 +135,12 @@ const Appointments = () => {
     axios
       .put(`/api/v1/appointments/${id}`, formdata)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         handleGetAppointment();
+        window.location.reload();
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -120,7 +168,7 @@ const Appointments = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
   useEffect(() => {
@@ -490,13 +538,7 @@ const Appointments = () => {
                             )}
                             {res.status === "started" && (
                               <button
-                                onClick={() =>
-                                  handleDiagnosis(
-                                    res.user?.id,
-                                    res.user?.case_number,
-                                    res.id
-                                  )
-                                }
+                                onClick={() => handleRevisitDiagnosis(res)}
                                 className="relative inline-block text-[#F5A03A] text-sm ml-1 p-1 font-medium after:absolute after:left-0 after:bottom-0 after:h-[1px] after:w-0 after:bg-[#F5A03A] after:transition-all after:duration-300 hover:after:w-full"
                               >
                                 Continue

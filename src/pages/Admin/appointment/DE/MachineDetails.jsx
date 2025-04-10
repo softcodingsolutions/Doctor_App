@@ -21,33 +21,33 @@ export default function MachineDetails() {
     axios
       .get(`/api/v1/machine_details`)
       .then((res) => {
-        console.log(res.data, "Show ");
+        // console.log(res.data, "Show ");
         setMachines(res.data?.machine_details);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
       });
 
     axios
       .get(`api/v1/users`)
       .then((res) => {
-        console.log(
-          res.data.users.filter((user) => user.role === "doctor"),
-          "Doctor"
-        );
+        // console.log(
+        //   res.data.users.filter((user) => user.role === "doctor"),
+        //   "Doctor"
+        // );
         setDoctor(res.data.users.filter((user) => user.role === "doctor"));
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
       });
   };
 
   function handleGiveDoctorId(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setDoctorId(e.target.value);
   }
 
@@ -76,7 +76,7 @@ export default function MachineDetails() {
         formdata.append("client_id", res.data?.client_id);
         formdata.append("machine_detail[slot_number]", slot);
         axios.post(`/api/v1/machine_details`, formdata).then((res) => {
-          console.log(res);
+          // console.log(res);
           Swal.fire({
             position: "top-end",
             showConfirmButton: false,
@@ -89,8 +89,8 @@ export default function MachineDetails() {
         });
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
+        // console.log(err);
+        // alert(err.response?.data?.message + "!");
       });
   }
 
@@ -108,7 +108,7 @@ export default function MachineDetails() {
         axios
           .delete(`/api/v1/machine_details/${id}`)
           .then((res) => {
-            console.log(res, "DELETE");
+            // console.log(res, "DELETE");
             handleShow();
             Swal.fire({
               title: "Deleted!",
@@ -117,8 +117,8 @@ export default function MachineDetails() {
             });
           })
           .catch((err) => {
-            console.log(err);
-            alert(err.response?.data?.message + "!");
+            // console.log(err);
+            // alert(err.response?.data?.message + "!");
           });
       }
     });
@@ -154,7 +154,7 @@ export default function MachineDetails() {
     axios
       .put(`/api/v1/machine_details/${machine.id}`, updatedMachine)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         handleShow();
         setEditIndex(null);
         setEditedMachineName("");
@@ -163,8 +163,8 @@ export default function MachineDetails() {
         setEditedDoctorId("");
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
+        // console.log(err);
+        // alert(err.response?.data?.message + "!");
       });
   };
 

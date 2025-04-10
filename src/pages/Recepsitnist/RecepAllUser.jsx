@@ -94,12 +94,12 @@ function RecepAllUsers() {
     axios
       .put(`/api/v1/users/indoor_activity_accessibility`, formdata)
       .then((res) => {
-        console.log(res, "DATA RESPONSe");
+        // console.log(res, "DATA RESPONSe");
         setLoading(false);
         handleGetAllUsers();
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
       });
   };

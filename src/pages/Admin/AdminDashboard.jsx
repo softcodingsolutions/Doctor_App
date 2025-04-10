@@ -43,7 +43,7 @@ function AdminDashboard() {
         });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
     setSelectedUser(null);
     notificationSound.current = new Audio("/Audio/notification.mp3");
@@ -59,7 +59,10 @@ function AdminDashboard() {
     "wss://docapi.softcodingsolutions.com/cable",
     {
       protocol: "actioncable-v1-json",
-      onOpen: () => console.log("WebSocket connection established."),
+      onOpen: () => {
+        // console.log("WebSocket connection established.")
+
+      },
       onMessage: (event) => handleWebSocketMessage(event),
       share: true,
     }
@@ -68,7 +71,7 @@ function AdminDashboard() {
   const subscribeToChannel = (doctorId, patientId) => {
     const channelKey = `${doctorId}-${patientId}`;
     if (activeSubscriptions.current[channelKey]) return;
-    console.log("Subscribing to");
+    // console.log("Subscribing to");
     const subscriptionMessage = {
       command: "subscribe",
       identifier: JSON.stringify({
@@ -79,7 +82,7 @@ function AdminDashboard() {
     };
 
     sendJsonMessage(subscriptionMessage);
-    console.log(subscriptionMessage);
+    // console.log(subscriptionMessage);
     activeSubscriptions.current[channelKey] = true;
   };
 
@@ -93,7 +96,7 @@ function AdminDashboard() {
     };
 
     sendJsonMessage(subscriptionMessage);
-    console.log("Subscribed to NotificationChannel:", subscriptionMessage);
+    // console.log("Subscribed to NotificationChannel:", subscriptionMessage);
   };
 
   const handleWebSocketMessage = (event) => {
@@ -167,7 +170,7 @@ function AdminDashboard() {
       });
       messageInput.value = "";
     } catch (error) {
-      console.error("Error sending message:", error);
+      // console.error("Error sending message:", error);
     }
   };
 
@@ -175,11 +178,11 @@ function AdminDashboard() {
     axios
       .get(`/api/v2/dashboards?doctor_id=${main_id}&date=${today}`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setData(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
   function formatDate(timestamp) {
@@ -208,11 +211,11 @@ function AdminDashboard() {
     axios
       .get(`/api/v1/notifications?user_id=${main_id}`)
       .then((res) => {
-        console.log(res, "Notification Response");
+        // console.log(res, "Notification Response");
         setNotifications(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
@@ -230,7 +233,7 @@ function AdminDashboard() {
     axios
       .get(`/messages/between/${main_id}/${user.id}`)
       .then((res) => setComplaints(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => {});
   };
 
   const formatTime = (timestamp) => {

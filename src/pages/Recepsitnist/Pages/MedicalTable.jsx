@@ -205,7 +205,7 @@ export default function MedicalTable({ data, refreshData }) {
         axios
           .delete(`/api/v1/medicines/${id}`)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             refreshData();
             Swal.fire({
               title: "Deleted!",
@@ -214,8 +214,8 @@ export default function MedicalTable({ data, refreshData }) {
             });
           })
           .catch((err) => {
-            console.log(err);
-            alert(err.response?.data?.message + "!");
+            // console.log(err);
+            // alert(err.response?.data?.message + "!");
           });
       }
     });
@@ -238,13 +238,13 @@ export default function MedicalTable({ data, refreshData }) {
     axios
       .put(`/api/v1/medicines/${id}`, updatedItem)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         refreshData();
         setEditingId(null);
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
+        // console.log(err);
+        // alert(err.response?.data?.message + "!");
       });
   };
 

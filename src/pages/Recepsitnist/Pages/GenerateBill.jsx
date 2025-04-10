@@ -14,6 +14,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { CiCalendar } from "react-icons/ci";
 import DatePicker from "react-datepicker";
 import { CiEdit } from "react-icons/ci";
+// import icons_slime from "../../../assets/images/icons_slime_converted.webp";
 
 export default function GenerateBill() {
   const location = useLocation();
@@ -89,19 +90,82 @@ export default function GenerateBill() {
   };
 
   // Pdf Section
+  // const handleDownload = (bill) => {
+  //   const doc = new jsPDF();
+
+  //   const fullName = `${userDetails?.first_name || ""} ${
+  //     userDetails?.last_name || ""
+  //   }`;
+
+  //   // Title
+  //   doc.setFontSize(18);
+  //   doc.text("Patient Bill Summary", 14, 20);
+
+  //   // Patient Details
+  //   doc.setFontSize(12);
+  //   doc.text(`Name: ${fullName}`, 14, 30);
+  //   doc.text(`Case Number: ${userDetails?.case_number || "N/A"}`, 14, 36);
+  //   doc.text(`Phone: ${userDetails?.phone_number || "N/A"}`, 14, 42);
+  //   doc.text(`Bill ID: ${bill.id}`, 14, 48);
+  //   doc.text(
+  //     `Created At: ${new Date(bill.created_at).toLocaleString("en-GB")}`,
+  //     14,
+  //     54
+  //   );
+
+  //   // Table Header
+  //   autoTable(doc, {
+  //     startY: 60,
+  //     head: [["#", "Medicine Name", "Quantity"]],
+  //     body: bill.bill_items.map((item, index) => [
+  //       index + 1,
+  //       item.medicine_name,
+  //       item.quantity,
+  //     ]),
+  //     styles: {
+  //       fontSize: 10,
+  //     },
+  //     headStyles: {
+  //       fillColor: [100, 149, 237], // Cornflower Blue
+  //     },
+  //   });
+
+  //   const finalY = doc.lastAutoTable.finalY + 10;
+
+  //   // Payment Summary
+  //   doc.text(`Total Price: Rs. ${bill.total_price} `, 14, finalY);
+  //   doc.text(`Paid: Rs. ${bill.paid_payment}`, 14, finalY + 6);
+  //   doc.text(`Remaining: Rs. ${bill.remaining_payment}`, 14, finalY + 12);
+  //   doc.text(`Payment Method: ${bill.payment_method}`, 14, finalY + 18);
+
+  //   // Save the PDF
+  //   doc.save(`Bill_${bill.id}.pdf`);
+  // };
   const handleDownload = (bill) => {
     const doc = new jsPDF();
-
     const fullName = `${userDetails?.first_name || ""} ${
       userDetails?.last_name || ""
     }`;
 
+    // Add Header Icon
+    // const imageProps = doc.getImageProperties(icons_slime);
+    // const imageRatio = imageProps.width / imageProps.height;
+    // const imgHeight = 20;
+    // const imgWidth = imgHeight * imageRatio;
+    // doc.addImage(icons_slime, "WEBP", 150, 10, 40, 20);
+
     // Title
     doc.setFontSize(18);
+    doc.setTextColor(40, 40, 40);
     doc.text("Patient Bill Summary", 14, 20);
+
+    // Divider Line
+    doc.setLineWidth(0.5);
+    doc.line(14, 24, 195, 24);
 
     // Patient Details
     doc.setFontSize(12);
+    doc.setTextColor(60, 60, 60);
     doc.text(`Name: ${fullName}`, 14, 30);
     doc.text(`Case Number: ${userDetails?.case_number || "N/A"}`, 14, 36);
     doc.text(`Phone: ${userDetails?.phone_number || "N/A"}`, 14, 42);
@@ -112,7 +176,7 @@ export default function GenerateBill() {
       54
     );
 
-    // Table Header
+    // Table
     autoTable(doc, {
       startY: 60,
       head: [["#", "Medicine Name", "Quantity"]],
@@ -121,23 +185,39 @@ export default function GenerateBill() {
         item.medicine_name,
         item.quantity,
       ]),
+      theme: "grid",
       styles: {
         fontSize: 10,
+        cellPadding: 3,
       },
       headStyles: {
-        fillColor: [100, 149, 237], // Cornflower Blue
+        fillColor: [15, 76, 129], // Deep blue
+        textColor: 255,
+        fontStyle: "bold",
       },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245],
+      },
+      margin: { left: 14, right: 14 },
     });
 
     const finalY = doc.lastAutoTable.finalY + 10;
 
-    // Payment Summary
-    doc.text(`Total Price: Rs. ${bill.total_price} `, 14, finalY);
-    doc.text(`Paid: Rs. ${bill.paid_payment}`, 14, finalY + 6);
-    doc.text(`Remaining: Rs. ${bill.remaining_payment}`, 14, finalY + 12);
+    // Payment Summary Section
+    doc.setFontSize(12);
+    doc.setTextColor(40, 40, 40);
+    doc.text(`Total Price: Rs.${bill.total_price}`, 14, finalY);
+    doc.text(`Paid: Rs.${bill.paid_payment}`, 14, finalY + 6);
+    doc.text(`Remaining: Rs.${bill.remaining_payment}`, 14, finalY + 12);
     doc.text(`Payment Method: ${bill.payment_method}`, 14, finalY + 18);
 
-    // Save the PDF
+    // Footer Line
+    doc.setLineWidth(0.3);
+    doc.line(14, finalY + 24, 195, finalY + 24);
+    doc.setFontSize(10);
+    doc.setTextColor(150);
+    doc.text("Thank you for choosing our service!", 14, finalY + 30);
+
     doc.save(`Bill_${bill.id}.pdf`);
   };
 
@@ -163,6 +243,7 @@ export default function GenerateBill() {
             ...bill,
             paid_payment: editableValues.paid_payment,
             remaining_payment: editableValues.remaining_payment,
+            created_at: new Date().toISOString(),
           }
         : bill
     );
@@ -173,13 +254,14 @@ export default function GenerateBill() {
       .put(`/api/v1/bills/${billId}`, {
         paid_payment: editableValues.paid_payment,
         remaining_payment: editableValues.remaining_payment,
+        created_at: new Date().toISOString(),
       })
       .then((res) => {
-        console.log("Bill updated successfully");
+        // console.log("Bill updated successfully");
       })
       .catch((err) => {
-        console.log(err);
-        alert("Failed to update the bill");
+        // console.log(err);
+        // alert("Failed to update the bill");
       });
   };
 
@@ -210,13 +292,13 @@ export default function GenerateBill() {
         },
       };
 
-      console.log("Form Data to be sent:", formData);
+      // console.log("Form Data to be sent:", formData);
 
       axios
         .post(`/api/v1/bills`, formData)
         .then((res) => {
-          console.log("Bill created successfully", res);
-          alert("Bill created successfully");
+          // console.log("Bill created successfully", res);
+          // alert("Bill created successfully");
           resetForm();
           setSearchTerm("");
           navigate("");
@@ -224,8 +306,8 @@ export default function GenerateBill() {
           selectedBillId("");
         })
         .catch((err) => {
-          console.log("Error creating bill", err);
-          alert("Error creating bill");
+          // console.log("Error creating bill", err);
+          // alert("Error creating bill");
         });
     }
   };
@@ -261,10 +343,10 @@ export default function GenerateBill() {
         .then((res) => {
           setBills(res.data?.bills);
           setUserDetails(res.data?.user);
-          console.log(res);
+          // console.log(res);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     }
   }, [userDetails?.case_number]);
@@ -280,13 +362,13 @@ export default function GenerateBill() {
       axios
         .get(`/api/v2/users/search?search_query=${value}`)
         .then((res) => {
-          console.log(res, "search term");
+          // console.log(res, "search term");
           const userId = res?.data?.user?.id;
           setGetParticularCustomer(res.data.user);
           setError("");
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     } else {
       setGetParticularCustomer([]);
@@ -299,7 +381,7 @@ export default function GenerateBill() {
 
   const handleUserSelect = (user) => {
     setSearchTerm("");
-    console.log(user, "SELECTED USER");
+    // console.log(user, "SELECTED USER");
     setLoader(false);
     setUser(user);
     setPackageDetail(user?.treatment_packages[0]?.treatment_package);
@@ -315,7 +397,7 @@ export default function GenerateBill() {
       axios
         .get(`/api/v2/users/search?search_query=${userId}`)
         .then((res) => {
-          console.log(res?.data?.user[0], "Ds");
+          // console.log(res?.data?.user[0], "Ds");
           setUser(res?.data?.user[0]);
           setPackageDetail(
             res?.data?.user[0]?.treatment_packages[0]?.treatment_package
@@ -327,7 +409,7 @@ export default function GenerateBill() {
           setId(res?.data?.user[0]?.id);
         })
         .catch((err) => {
-          console.log("Error fetching user by ID:", err);
+          // console.log("Error fetching user by ID:", err);
         });
     }
   }, [userId]);
@@ -605,7 +687,7 @@ export default function GenerateBill() {
                   </h2>
                 </div>
                 <div className="flex gap-2">
-                  <div className="relative flex items-center  h-10">
+                  <div className="relative flex items-center h-10 datepicker-z-50">
                     <CiCalendar className="absolute left-3 text-black z-10" />
                     <DatePicker
                       selected={filterDate}
@@ -629,7 +711,7 @@ export default function GenerateBill() {
               </div>
               {/* Bill history Table */}
               <table className="bg-white border  overflow-auto w-full  rounded-md border-gray-300 text-sm  mt-5 text-left">
-                <thead className="sticky top-0 z-10 text-[#71717A] font-medium border-b-2 bg-white">
+                <thead className="sticky top-0 z-0 text-[#71717A] font-medium border-b-2 bg-white">
                   <tr>
                     <th className="border-b-2 p-3">Date</th>
                     {/* <th className="border-b-2 p-3">

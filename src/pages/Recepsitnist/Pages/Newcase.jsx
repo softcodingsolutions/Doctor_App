@@ -67,8 +67,15 @@ export default function Newcase(props) {
       const response = await axios.get(
         `/api/v1/appointments/show_all_appointments?date=${consultingTime}&doctor_id=${props.doctor}`
       );
-      const bookedTimes = response.data.appointments.map(
-        (appointment) => appointment.time
+      const appointments = response.data.appointments || [];
+      const visitors = response.data.visitor_list || [];
+
+      const appointmentTimes = appointments.map((a) => a.time);
+      const visitorTimes = visitors.map((v) => v.time);
+
+      // Merge both arrays and remove duplicates
+      const bookedTimes = Array.from(
+        new Set([...appointmentTimes, ...visitorTimes])
       );
 
       setBookedSlots(bookedTimes);
@@ -167,7 +174,7 @@ export default function Newcase(props) {
                     .map((timeSlot) => {
                       const formattedTime = formatTime(timeSlot.time);
                       const isBooked = bookedSlots.includes(formattedTime);
-                    
+
                       return (
                         <label
                           key={timeSlot.id}

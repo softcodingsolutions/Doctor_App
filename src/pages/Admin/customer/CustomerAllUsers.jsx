@@ -241,7 +241,7 @@ function CustomerAllUsers() {
         <MaterialReactTable
           columns={columns}
           data={getCustomers.filter((user) => {
-            console.log(user, "USER");
+            // console.log(user, "USER");
             const fullName = user.full_name;
             const typeText = user.follow_up ? "old case" : "new case";
             return (

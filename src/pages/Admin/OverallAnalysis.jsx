@@ -64,7 +64,7 @@ const OverallAnalysis = () => {
         `/api/v2/dashboards/fetch_analysis_reports?month=${monthIndex}&doctor_id=${main_id}&year=${selectedYear}`
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         SetFranchises(res.data?.franchises);
         setFranchisesUsers(res.data?.frenchis_users);
         setNewData(res.data?.monthly_new_users);
@@ -79,7 +79,7 @@ const OverallAnalysis = () => {
         setCount;
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 

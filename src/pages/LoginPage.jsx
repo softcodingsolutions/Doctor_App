@@ -29,7 +29,7 @@ function LoginPage() {
 
 
   const submittedData = (d) => {
-    console.log(d);
+    // console.log(d);
     const trimmedEmail = d.email.trim();
     const trimmedPassword = d.password.trim();
 
@@ -45,7 +45,7 @@ function LoginPage() {
         axios
           .post("/api/v1/users/login", formData)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             localStorage.setItem("access_token", res.data?.user?.access_token);
             localStorage.setItem("role", res.data?.user?.role);
             localStorage.setItem("main_id", res.data?.user?.not_a_number);
@@ -102,7 +102,7 @@ function LoginPage() {
             reset();
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             setLoading(false);
             if (err.response?.data?.success === false) {
               setWrongCreds(true);
@@ -111,7 +111,7 @@ function LoginPage() {
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err.message);
+        // console.log(err.message);
         alert(err.response?.data?.message + "!");
       });
   };

@@ -36,8 +36,8 @@ function ListFranchise() {
         );
       })
       .catch((err) => {
-        console.error(err);
-        alert(err.message);
+        // console.error(err);
+        // alert(err.message);
       });
   };
 
@@ -63,8 +63,8 @@ function ListFranchise() {
       })
       .catch((err) => {
         setLoading(false);
-        console.error(err);
-        alert(err.message);
+        // console.error(err);
+        // alert(err.message);
       });
   };
 
@@ -161,7 +161,7 @@ function ListFranchise() {
 
   const handleAddFranchise = async (d) => {
     setLoading(true);
-    console.log(d);
+    // console.log(d);
     if (role === "doctor") {
       await axios
         .get("/api/v1/users/app_creds")
@@ -192,7 +192,7 @@ function ListFranchise() {
               client_id: res.data?.client_id,
             })
             .then((res) => {
-              console.log(res);
+              // console.log(res);
               setLoading(false);
               handleGetFranchise();
               Swal.fire({
@@ -203,9 +203,9 @@ function ListFranchise() {
             });
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
-          alert(err.message);
+          // alert(err.message);
         });
     } else {
       await axios
@@ -236,7 +236,7 @@ function ListFranchise() {
               client_id: res.data?.client_id,
             })
             .then((res) => {
-              console.log(res);
+              // console.log(res);
               handleGetFranchise();
               Swal.fire({
                 title: "Added!",
@@ -246,8 +246,8 @@ function ListFranchise() {
             });
         })
         .catch((err) => {
-          console.log(err);
-          alert(err.message);
+          // console.log(err);
+          // alert(err.message);
         });
     }
   };
@@ -326,12 +326,12 @@ function ListFranchise() {
         `/api/v1/users/add_amount_to_franchise?id=${val}&amount=${formValues[0]}`
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         handleGetFranchise();
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
+        // console.log(err);
+        // alert(err.response?.data?.message + "!");
       });
   };
 
@@ -349,7 +349,7 @@ function ListFranchise() {
         axios
           .delete(`/api/v1/users/${val}`)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             handleGetFranchise();
             Swal.fire({
               title: "Deleted!",
@@ -358,8 +358,8 @@ function ListFranchise() {
             });
           })
           .catch((err) => {
-            console.log(err);
-            alert(err.response?.data?.message + "!");
+            // console.log(err);
+            // alert(err.response?.data?.message + "!");
           });
       }
     });

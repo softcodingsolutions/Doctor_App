@@ -204,7 +204,7 @@ export default function IndoorActivity() {
         setAppointments(res.data?.appointments || []);
       })
       .catch((err) => {
-        console.error(err);
+        // console.error(err);
       })
       .finally(() => {
         setLoader(false);
@@ -448,7 +448,7 @@ export default function IndoorActivity() {
           }
         })
         .catch((err) => {
-          console.error(err);
+          // console.error(err);
           setError("Error searching for patients");
         });
     } else {
@@ -467,7 +467,7 @@ export default function IndoorActivity() {
         setMachines(machinesRes.data.machine_details || []);
       })
       .catch((err) => {
-        console.error(err);
+        // console.error(err);
         Swal.fire({
           title: "Error",
           text: "Failed to load data. Please try again.",

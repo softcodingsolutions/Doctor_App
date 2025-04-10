@@ -224,8 +224,15 @@ export default function CreateAppointment() {
         `/api/v1/appointments/show_all_appointments?date=${visitorData.date}&doctor_id=${visitorData.doctor_id}`
       );
       console.log(response, "Appointmnets");
-      const bookedTimes = response.data.appointments.map(
-        (appointment) => appointment.time
+      const appointments = response.data.appointments || [];
+      const visitors = response.data.visitor_list || [];
+
+      const appointmentTimes = appointments.map((a) => a.time);
+      const visitorTimes = visitors.map((v) => v.time);
+
+      // Merge both arrays and remove duplicates
+      const bookedTimes = Array.from(
+        new Set([...appointmentTimes, ...visitorTimes])
       );
 
       setBookedAppointments(bookedTimes);
@@ -300,7 +307,10 @@ export default function CreateAppointment() {
                 ? " bg-green-600 text-white scale-105 "
                 : "text-[#71717A] "
             }`}
-            onClick={() => setSelectedOption("first-time")}
+            onClick={() => {
+              window.location.reload();
+              setSelectedOption("first-time");
+            }}
           >
             First-Time Visitor
           </button>
@@ -310,7 +320,9 @@ export default function CreateAppointment() {
                 ? "bg-green-600 text-white scale-105 "
                 : "text-[#71717A]"
             }`}
-            onClick={() => setSelectedOption("old-case")}
+            onClick={() => {
+              setSelectedOption("old-case");
+            }}
           >
             Register Patient
           </button>

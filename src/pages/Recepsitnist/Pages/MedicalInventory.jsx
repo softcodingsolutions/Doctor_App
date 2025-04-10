@@ -27,14 +27,14 @@ export default function MedicalInventory() {
     axios
       .get(`api/v1/medicines`)
       .then((res) => {
-        console.log(res, "Medicine");
+        // console.log(res, "Medicine");
         setData(res.data?.medicines);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
-        alert(err.response?.data?.message + "!");
+        // alert(err.response?.data?.message + "!");
       });
   };
 
@@ -56,13 +56,13 @@ export default function MedicalInventory() {
     axios
       .post(`/api/v1/medicine_inventories`, formdata)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setOpen(false);
         handleShow();
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
+        // console.log(err);
+        // alert(err.response?.data?.message + "!");
       });
   };
 

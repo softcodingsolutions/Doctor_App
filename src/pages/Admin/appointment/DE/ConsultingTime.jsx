@@ -18,14 +18,14 @@ export default function ConsultingTime() {
     axios
       .get(`api/v1/users`)
       .then((res) => {
-        console.log(res.data?.users);
+        // console.log(res.data?.users);
         setDoctorNames(res.data?.users);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
-        alert(err.response?.data?.message + "!");
+        // alert(err.response?.data?.message + "!");
       });
   };
 
@@ -33,20 +33,20 @@ export default function ConsultingTime() {
     axios
       .get(`/api/v1/consulting_times`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setData(res.data.consulting_times);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
-        alert(err.response?.data?.message + "!");
+        // alert(err.response?.data?.message + "!");
       });
   };
 
   function handleTimeChange(e) {
     setInputTime(e.target.value);
-    console.log(e.target.value, "");
+    // console.log(e.target.value, "");
   }
 
   function handleSlotChange(e) {
@@ -83,7 +83,7 @@ export default function ConsultingTime() {
       axios
         .post(`/api/v1/consulting_times?id=${inputDoctor}`, formdata)
         .then((res) => {
-          console.log(res, "ADD");
+          // console.log(res, "ADD");
           Swal.fire({
             position: "top-end",
             showConfirmButton: false,
@@ -95,8 +95,8 @@ export default function ConsultingTime() {
           handleData();
         })
         .catch((err) => {
-          console.log(err);
-          alert(err.response?.data?.message + "!");
+          // console.log(err);
+          // alert(err.response?.data?.message + "!");
         });
     }
   }
@@ -115,7 +115,7 @@ export default function ConsultingTime() {
         axios
           .delete(`/api/v1/consulting_times/${id}`)
           .then((res) => {
-            console.log(res, "DELETE");
+            // console.log(res, "DELETE");
             handleData();
             Swal.fire({
               title: "Deleted!",
@@ -124,8 +124,8 @@ export default function ConsultingTime() {
             });
           })
           .catch((err) => {
-            console.log(err);
-            alert(err.response?.data?.message + "!");
+            // console.log(err);
+            // alert(err.response?.data?.message + "!");
           });
       }
     });

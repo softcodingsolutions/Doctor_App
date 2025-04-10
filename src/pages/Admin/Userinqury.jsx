@@ -22,7 +22,9 @@ const UserInquiry = () => {
       .then((res) => {
         setData(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        // console.log(err)
+      });
   };
 
   useEffect(() => {

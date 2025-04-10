@@ -16,5 +16,7 @@ module.exports = withMT({
             },
         },
     },
+    
     plugins: [tailwindcssAnimated],
 });
+

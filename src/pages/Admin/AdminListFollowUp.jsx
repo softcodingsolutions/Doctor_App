@@ -43,16 +43,16 @@ function AdminListFollowUp() {
           `/api/v1/appointments/fetch_users_appointments?search_query=${value}`
         )
         .then((res) => {
-          console.log(res, "List Follow Up");
+          // console.log(res, "List Follow Up");
           setGetParticularCustomer(res.data.appointments);
           setOpen(false);
           setOpenConsulting(false);
           setMessage("");
-          console.log(res.data.appointments.user);
+          // console.log(res.data.appointments.user);
         })
         .catch((err) => {
-          console.log(err);
-          alert("USER NOT FOUND");
+          // console.log(err);
+          // alert("USER NOT FOUND");
         });
     } else {
       setGetParticularCustomer([]);
@@ -62,7 +62,7 @@ function AdminListFollowUp() {
 
   const handleUserSelect = (user) => {
     setSearchTerm("");
-    console.log(user, "SELECTED USER");
+    // console.log(user, "SELECTED USER");
     setData(user);
     setOpenConsulting(true);
     setGetParticularCustomer([]);
@@ -389,7 +389,7 @@ function AdminListFollowUp() {
           </div>
         )} */}
         {getParticularCustomer?.length > 0 ? (
-          <div className="space-y-2 ">
+          <div className="space-y-2 h-[30rem] overflow-y-auto ">
             {getParticularCustomer.map((appointment) => (
               <div
                 key={appointment.user.id}

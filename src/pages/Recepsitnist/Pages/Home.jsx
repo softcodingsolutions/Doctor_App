@@ -45,17 +45,17 @@ export default function Home() {
     axios
       .get(`api/v1/appointments?date=${consultingTime}&doctor_id=${doctorList}`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data?.cosulting_times, "Consulting Time");
-        console.log(res.data.machine_details, "Machine Time");
+        // console.log(res);
+        // console.log(res.data?.cosulting_times, "Consulting Time");
+        // console.log(res.data.machine_details, "Machine Time");
         setConsultingTimes(res.data?.cosulting_times);
         setMachineConsultingTimes(res.data?.machine_details);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setLoading(false);
-        alert(err.response?.data?.message + "!");
+        // alert(err.response?.data?.message + "!");
       });
   };
 
@@ -82,12 +82,12 @@ export default function Home() {
     axios
       .get(`/api/v1/appointments/show_all_appointments?date=${consultingTime}`)
       .then((res) => {
-        console.log(res, "All Appointments");
+        // console.log(res, "All Appointments");
         setVisitorData(res.data.visitor_list);
         setConsultingTimes(res.data?.cosulting_times);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -95,12 +95,12 @@ export default function Home() {
     axios
       .get("api/v1/users")
       .then((res) => {
-        console.log("all the users: ", res);
+        // console.log("all the users: ", res);
         setFilteredDoctors(res.data.users);
       })
       .catch((err) => {
-        console.log(err);
-        alert(err.response?.data?.message + "!");
+        // console.log(err);
+        // alert(err.response?.data?.message + "!");
       });
   }, []);
 
@@ -181,24 +181,24 @@ export default function Home() {
     }
 
     if (!appointmentId) {
-      alert("Appointment not found.");
+      // alert("Appointment not found.");
       return;
     }
 
     axios
       .delete(apiUrl)
       .then((res) => {
-        alert("Appointment deleted successfully!");
+        // alert("Appointment deleted successfully!");
         allAppointments();
       })
       .catch((err) => {
-        console.log(err);
-        alert("Error deleting appointment.");
+        // console.log(err);
+        // alert("Error deleting appointment.");
       });
   };
 
   const combinedData = [...consultingTimes, ...visitorData];
-  console.log(combinedData, "DAta");
+  // console.log(combinedData, "DAta");
   const transformedDoctorData = transformDataForDoctors(combinedData);
 
   const handleRedirect = () => {
@@ -355,9 +355,9 @@ export default function Home() {
               </div>
             ))}
           </div> */}
-      <div className="w-full mt-10 border rounded-md">
-        <table className="w-full  rounded-md border-gray-300 text-sm text-left ">
-          <thead className=" text-[#71717A] font-medium border-b-2">
+      <div className="animate-fade-left animate-delay-75  border rounded-md border-gray-100 animate-once animate-ease-out h-[30rem] overflow-y-auto mt-4">
+        <table className="w-full  rounded-md border-gray-300 text-sm text-left">
+          <thead className="sticky top-0 z-10 text-[#71717A] font-medium border-b-2 bg-white">
             <tr>
               <th className="border-b-2 p-3">Patient Name</th>
               <th className="border-b-2 p-3">Phone</th>
@@ -367,11 +367,11 @@ export default function Home() {
               <th className="border-b-2 p-3">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-300">
+          <tbody>
             {combinedData.length > 0 ? (
               combinedData.map((appointment, index) => (
-                <tr key={index} className="hover:bg-gray-100">
-                  <td className="px-4 py-2">
+                <tr key={index} className="map hover:bg-gray-200">
+                  <td className="border-b-1 p-3">
                     {appointment.name
                       ? appointment.name
                       : `${appointment.user?.first_name || "Unknown"} ${
@@ -379,13 +379,13 @@ export default function Home() {
                         }`}
                   </td>
 
-                  <td className="px-4 py-2">
+                  <td className="border-b-1 p-3">
                     {appointment.phone
                       ? appointment.phone
                       : `${appointment.user?.phone_number || "-"} `}
                   </td>
-                  <td className="px-4 py-2">{appointment.time}</td>
-                  <td className="px-4 py-2">
+                  <td className="border-b-1 p-3">{appointment.time}</td>
+                  <td className="border-b-1 p-3">
                     {appointment.doctor?.first_name}{" "}
                     {appointment.doctor?.last_name}
                   </td>
@@ -401,7 +401,7 @@ export default function Home() {
                     )}
                   </td>
 
-                  {/* <td className="px-4 py-2">
+                  {/* <td className="border-b-1 p-3">
                 
                     {appointment.status === "completed" && (
                       <button
@@ -430,7 +430,7 @@ export default function Home() {
                       <IoIosRemoveCircleOutline size={20} />
                     </button>
                   </td> */}
-                  <td className="px-4 py-2 flex gap-2">
+                  <td className="border-b-1 p-3 flex gap-2">
                     <Tooltip title="Generate Bill">
                       {appointment.status === "completed" && (
                         <button
@@ -472,11 +472,15 @@ export default function Home() {
                 </tr>
               ))
             ) : (
-              <tr>
-                <td colSpan="7" className="text-center py-4 text-gray-600">
-                  No appointments found.
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td colSpan={7} className="h-[70vh]">
+                    <div className="flex items-center justify-center h-full text-gray-600">
+                      No appointments found.
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             )}
           </tbody>
         </table>
