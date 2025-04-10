@@ -7,8 +7,8 @@ import { store, persistor } from "./store/store";
 import { PersistGate } from "redux-persist/integration/react";
 import axios from "axios";
 
-// axios.defaults.baseURL = "https://docapi.softcodingsolutions.com/";
-axios.defaults.baseURL = "http://localhost:3000/";
+axios.defaults.baseURL = "https://docapi.softcodingsolutions.com/";
+// axios.defaults.baseURL = "http://localhost:3000/";
 axios.defaults.headers.common["ngrok-skip-browser-warning"] = true;
 axios.interceptors.request.use(
   (config) => {
