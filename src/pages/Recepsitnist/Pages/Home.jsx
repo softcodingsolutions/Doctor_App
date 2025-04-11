@@ -483,15 +483,11 @@ export default function Home() {
                 </tr>
               ))
             ) : (
-              <tbody>
-                <tr>
-                  <td colSpan={7} className="h-[70vh]">
-                    <div className="flex items-center justify-center h-full text-gray-600">
-                      No appointments found.
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+              <tr>
+                <td colSpan="7" className="text-center py-4 text-gray-600">
+                  No appointments found.
+                </td>
+              </tr>
             )}
           </tbody>
         </table>

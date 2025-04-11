@@ -1030,9 +1030,17 @@ export default function GenerateBill() {
         </>
       ) : (
         <div className="flex  justify-center w-full ">
-          <h1 className="flex justify-center mt-72  text-center w-full h-full text-gray-600">
-            Search Patient to Manage Bills
-          </h1>
+          {userDetails?.first_name && bills.length <= 0 ? (
+            <h1 className="flex justify-center mt-60 text-center w-full h-full text-gray-600">
+              Bill is not generated / Treatment is not assigned yet
+            </h1>
+          ) : (
+            getParticularCustomer?.length <= 0 && (
+              <h1 className="flex justify-center mt-60 text-center w-full h-full text-gray-600">
+                Search Patient to Manage Bills
+              </h1>
+            )
+          )}
         </div>
       )}
     </div>
